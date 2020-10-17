@@ -5,6 +5,8 @@
   "author": "Allan Gaby <allan.gaby@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "git-commit-msg-linter": "^3.0.0"
+    "@types/typescript": "^2.0.0",
+    "git-commit-msg-linter": "^3.0.0",
+    "typescript": "^4.0.3"
   }
 }
