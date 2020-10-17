@@ -1,0 +1,7 @@
+{
+  "name": "api-node-ts-clean-identity",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Allan Gaby <allan.gaby@gmail.com>",
+  "license": "MIT"
+}
