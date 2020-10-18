@@ -1,6 +1,7 @@
 import { DbCreateAccount } from './create-account'
 import { HasherSpy } from '@/data/test/mock-criptography'
 import { GetAccountByEmailRepositorySpy, CreateAccountRepositorySpy, makeAddAccountDTO, mockAccountModel } from '@/data/test/auth'
+import { SendMailAdapterSpy } from '@/data/test/mock-comunication'
 import faker from 'faker'
 
 interface sutTypes {
@@ -8,18 +9,21 @@ interface sutTypes {
   getAccountByEmailRepositorySpy: GetAccountByEmailRepositorySpy
   hasherSpy: HasherSpy
   createAccountRepositorySpy: CreateAccountRepositorySpy
+  sendMailAdapterSpy: SendMailAdapterSpy
 }
 
 const makeSut = (): sutTypes => {
   const getAccountByEmailRepositorySpy = new GetAccountByEmailRepositorySpy()
   const hasherSpy = new HasherSpy()
   const createAccountRepositorySpy = new CreateAccountRepositorySpy()
-  const sut = new DbCreateAccount(getAccountByEmailRepositorySpy, hasherSpy, createAccountRepositorySpy)
+  const sendMailAdapterSpy = new SendMailAdapterSpy()
+  const sut = new DbCreateAccount(getAccountByEmailRepositorySpy, hasherSpy, createAccountRepositorySpy, sendMailAdapterSpy)
   return {
     sut,
     getAccountByEmailRepositorySpy,
     hasherSpy,
-    createAccountRepositorySpy
+    createAccountRepositorySpy,
+    sendMailAdapterSpy
   }
 }
 
