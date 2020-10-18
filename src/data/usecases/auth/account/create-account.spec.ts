@@ -1,7 +1,5 @@
 import { DbCreateAccount } from './create-account'
-import { HasherSpy } from '@/data/test/mock-criptography'
-import { GetAccountByEmailRepositorySpy, CreateAccountRepositorySpy, makeAddAccountDTO, mockAccountModel } from '@/data/test/auth'
-import { SendMailAdapterSpy } from '@/data/test/mock-comunication'
+import { GetAccountByEmailRepositorySpy, CreateAccountRepositorySpy, makeAddAccountDTO, mockAccountModel, HasherSpy, CreateSessionRepositorySpy } from '@/data/test'
 import faker from 'faker'
 
 interface sutTypes {
@@ -9,21 +7,21 @@ interface sutTypes {
   getAccountByEmailRepositorySpy: GetAccountByEmailRepositorySpy
   hasherSpy: HasherSpy
   createAccountRepositorySpy: CreateAccountRepositorySpy
-  sendMailAdapterSpy: SendMailAdapterSpy
+  createSessionRepositorySpy: CreateSessionRepositorySpy
 }
 
 const makeSut = (): sutTypes => {
   const getAccountByEmailRepositorySpy = new GetAccountByEmailRepositorySpy()
   const hasherSpy = new HasherSpy()
   const createAccountRepositorySpy = new CreateAccountRepositorySpy()
-  const sendMailAdapterSpy = new SendMailAdapterSpy()
-  const sut = new DbCreateAccount(getAccountByEmailRepositorySpy, hasherSpy, createAccountRepositorySpy, sendMailAdapterSpy)
+  const createSessionRepositorySpy = new CreateSessionRepositorySpy()
+  const sut = new DbCreateAccount(getAccountByEmailRepositorySpy, hasherSpy, createAccountRepositorySpy, createSessionRepositorySpy)
   return {
     sut,
     getAccountByEmailRepositorySpy,
     hasherSpy,
     createAccountRepositorySpy,
-    sendMailAdapterSpy
+    createSessionRepositorySpy
   }
 }
 
