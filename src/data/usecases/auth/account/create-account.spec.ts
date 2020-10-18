@@ -7,6 +7,7 @@ import {
   HasherSpy,
   CreateSessionRepositorySpy,
   MailTemplateAdapterSpy,
+  SendMailAdapterSpy,
   throwError
 } from '@/data/test'
 import faker from 'faker'
@@ -21,6 +22,7 @@ interface sutTypes {
   createSessionRepositorySpy: CreateSessionRepositorySpy
   mailTemplateAdapterSpy: MailTemplateAdapterSpy
   mailFilePath: string
+  sendMailAdapterSpy: SendMailAdapterSpy
 }
 
 const makeSut = (): sutTypes => {
@@ -30,6 +32,7 @@ const makeSut = (): sutTypes => {
   const createSessionRepositorySpy = new CreateSessionRepositorySpy()
   const mailTemplateAdapterSpy = new MailTemplateAdapterSpy()
   const mailFilePath = faker.internet.url()
+  const sendMailAdapterSpy = new SendMailAdapterSpy()
   const sut =
     new DbCreateAccount(
       getAccountByEmailRepositorySpy,
@@ -37,7 +40,8 @@ const makeSut = (): sutTypes => {
       createAccountRepositorySpy,
       createSessionRepositorySpy,
       mailTemplateAdapterSpy,
-      mailFilePath)
+      mailFilePath,
+      sendMailAdapterSpy)
   return {
     sut,
     getAccountByEmailRepositorySpy,
@@ -45,7 +49,8 @@ const makeSut = (): sutTypes => {
     createAccountRepositorySpy,
     createSessionRepositorySpy,
     mailTemplateAdapterSpy,
-    mailFilePath
+    mailFilePath,
+    sendMailAdapterSpy
   }
 }
 
@@ -133,5 +138,20 @@ describe('DbCreateAccount', () => {
     jest.spyOn(mailTemplateAdapterSpy, 'parse').mockImplementationOnce(throwError)
     const promise = sut.add(makeAddAccountDTO())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call SendMailAdapter with correct values', async () => {
+    const { sut, mailTemplateAdapterSpy, sendMailAdapterSpy } = makeSut()
+    mailTemplateAdapterSpy.mailParsed = faker.random.words()
+    const addAccountParams = makeAddAccountDTO()
+    await sut.add(addAccountParams)
+    expect(sendMailAdapterSpy.sendMailParams).toEqual({
+      to: {
+        name: addAccountParams.name,
+        email: addAccountParams.email
+      },
+      subject: `[Identity] - ${addAccountParams.name}, sua conta foi criada com sucesso`,
+      content: mailTemplateAdapterSpy.mailParsed
+    })
   })
 })

@@ -7,7 +7,7 @@ export interface SendMailDTO {
   sender?: Contact
   to: Contact
   subject: string
-  contenct: string
+  content: string
 }
 
 export interface SendMailAdapter {
