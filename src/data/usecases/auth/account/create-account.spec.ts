@@ -1,5 +1,5 @@
 import { DbCreateAccount } from './create-account'
-import { GetAccountByEmailRepositorySpy, makeAddAccountDTO } from '@/data/test/auth'
+import { GetAccountByEmailRepositorySpy, makeAddAccountDTO, mockAccountModel } from '@/data/test/auth'
 
 interface sutTypes {
   sut: DbCreateAccount
@@ -21,5 +21,12 @@ describe('DbCreateAccount', () => {
     const addAccountParams = makeAddAccountDTO()
     await sut.add(addAccountParams)
     expect(getAccountByEmailRepositorySpy.searchMail).toBe(addAccountParams.email)
+  })
+
+  test('Should return null if GetAccountByEmail return an Account', async () => {
+    const { sut, getAccountByEmailRepositorySpy } = makeSut()
+    getAccountByEmailRepositorySpy.account = mockAccountModel()
+    const account = await sut.add(makeAddAccountDTO())
+    expect(account).toBeFalsy()
   })
 })

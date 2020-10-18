@@ -1,4 +1,5 @@
 import { AddAccountDTO } from '@/domain/dtos/auth/account'
+import { AccountModel } from '@/domain/models/auth'
 import faker from 'faker'
 
 export const makeAddAccountDTO = (): AddAccountDTO => {
@@ -10,3 +11,12 @@ export const makeAddAccountDTO = (): AddAccountDTO => {
     passwordConfirmation: password
   }
 }
+
+export const mockAccountModel = (): AccountModel => ({
+  id: faker.random.uuid(),
+  name: faker.name.findName(),
+  email: faker.internet.email(),
+  password: faker.random.uuid(),
+  created_at: faker.date.past(),
+  updated_at: faker.date.past()
+})
