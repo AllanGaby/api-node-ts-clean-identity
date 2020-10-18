@@ -1,6 +1,16 @@
 import { DbCreateAccount } from './create-account'
-import { GetAccountByEmailRepositorySpy, CreateAccountRepositorySpy, makeAddAccountDTO, mockAccountModel, HasherSpy, CreateSessionRepositorySpy } from '@/data/test'
+import {
+  GetAccountByEmailRepositorySpy,
+  CreateAccountRepositorySpy,
+  makeAddAccountDTO,
+  mockAccountModel,
+  HasherSpy,
+  CreateSessionRepositorySpy,
+  MailTemplateAdapterSpy
+} from '@/data/test'
 import faker from 'faker'
+import { mockSessionModel } from '@/data/test/auth/mock-session'
+import { SessionType } from '@/domain/models/auth'
 
 interface sutTypes {
   sut: DbCreateAccount
@@ -8,6 +18,7 @@ interface sutTypes {
   hasherSpy: HasherSpy
   createAccountRepositorySpy: CreateAccountRepositorySpy
   createSessionRepositorySpy: CreateSessionRepositorySpy
+  mailTemplateAdapterSpy: MailTemplateAdapterSpy
 }
 
 const makeSut = (): sutTypes => {
@@ -15,13 +26,21 @@ const makeSut = (): sutTypes => {
   const hasherSpy = new HasherSpy()
   const createAccountRepositorySpy = new CreateAccountRepositorySpy()
   const createSessionRepositorySpy = new CreateSessionRepositorySpy()
-  const sut = new DbCreateAccount(getAccountByEmailRepositorySpy, hasherSpy, createAccountRepositorySpy, createSessionRepositorySpy)
+  const mailTemplateAdapterSpy = new MailTemplateAdapterSpy()
+  const sut =
+    new DbCreateAccount(
+      getAccountByEmailRepositorySpy,
+      hasherSpy,
+      createAccountRepositorySpy,
+      createSessionRepositorySpy,
+      mailTemplateAdapterSpy)
   return {
     sut,
     getAccountByEmailRepositorySpy,
     hasherSpy,
     createAccountRepositorySpy,
-    createSessionRepositorySpy
+    createSessionRepositorySpy,
+    mailTemplateAdapterSpy
   }
 }
 
@@ -58,6 +77,17 @@ describe('DbCreateAccount', () => {
       name: addAccountParams.name,
       email: addAccountParams.email,
       password: hasherSpy.hash
+    })
+  })
+
+  test('Should call MailTemplateAdapter with correct values', async () => {
+    const { sut, createSessionRepositorySpy, mailTemplateAdapterSpy } = makeSut()
+    createSessionRepositorySpy.session = mockSessionModel(SessionType.activeAccount)
+    const addAccountParams = makeAddAccountDTO()
+    await sut.add(addAccountParams)
+    expect(mailTemplateAdapterSpy.variables).toEqual({
+      sessionId: createSessionRepositorySpy.session.id,
+      name: addAccountParams.name
     })
   })
 })
