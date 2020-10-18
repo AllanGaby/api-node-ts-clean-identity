@@ -6,7 +6,8 @@ import {
   mockAccountModel,
   HasherSpy,
   CreateSessionRepositorySpy,
-  MailTemplateAdapterSpy
+  MailTemplateAdapterSpy,
+  throwError
 } from '@/data/test'
 import faker from 'faker'
 import { mockSessionModel } from '@/data/test/auth/mock-session'
@@ -49,11 +50,19 @@ const makeSut = (): sutTypes => {
 }
 
 describe('DbCreateAccount', () => {
-  test('Should call GetAccountByEmail with correct value', async () => {
+  test('Should call GetAccountByEmailRepository with correct value', async () => {
     const { sut, getAccountByEmailRepositorySpy } = makeSut()
     const addAccountParams = makeAddAccountDTO()
     await sut.add(addAccountParams)
     expect(getAccountByEmailRepositorySpy.searchMail).toBe(addAccountParams.email)
+  })
+
+  test('Should return throw if GetAccountByEmailRepository throws', async () => {
+    const { sut, getAccountByEmailRepositorySpy } = makeSut()
+    jest.spyOn(getAccountByEmailRepositorySpy, 'getAccountByEmail').mockImplementationOnce(throwError)
+    const addAccountParams = makeAddAccountDTO()
+    const promise = sut.add(addAccountParams)
+    await expect(promise).rejects.toThrow()
   })
 
   test('Should return null if GetAccountByEmailRepository return an Account', async () => {
