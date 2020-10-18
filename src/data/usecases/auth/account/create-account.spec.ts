@@ -60,8 +60,8 @@ describe('DbCreateAccount', () => {
     const { sut, getAccountByEmailRepositorySpy, hasherSpy } = makeSut()
     const createHashSpy = jest.spyOn(hasherSpy, 'createHash')
     getAccountByEmailRepositorySpy.account = mockAccountModel()
-    const account = await sut.add(makeAddAccountDTO())
-    expect(account).toBeFalsy()
+    const session = await sut.add(makeAddAccountDTO())
+    expect(session).toBeFalsy()
     expect(createHashSpy).not.toBeCalled()
   })
 
