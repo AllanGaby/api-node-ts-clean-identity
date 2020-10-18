@@ -106,6 +106,13 @@ describe('DbCreateAccount', () => {
     await expect(promise).rejects.toThrow()
   })
 
+  test('Should return throw if createSessionRepositorySpy throws', async () => {
+    const { sut, createSessionRepositorySpy } = makeSut()
+    jest.spyOn(createSessionRepositorySpy, 'add').mockImplementationOnce(throwError)
+    const promise = sut.add(makeAddAccountDTO())
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should call MailTemplateAdapter with correct values', async () => {
     const { sut, createSessionRepositorySpy, mailTemplateAdapterSpy, mailFilePath } = makeSut()
     createSessionRepositorySpy.session = mockSessionModel(SessionType.activeAccount)
@@ -121,9 +128,9 @@ describe('DbCreateAccount', () => {
     })
   })
 
-  test('Should return throw if createSessionRepositorySpy throws', async () => {
-    const { sut, createSessionRepositorySpy } = makeSut()
-    jest.spyOn(createSessionRepositorySpy, 'add').mockImplementationOnce(throwError)
+  test('Should return throw if MailTemplateAdapter throws', async () => {
+    const { sut, mailTemplateAdapterSpy } = makeSut()
+    jest.spyOn(mailTemplateAdapterSpy, 'parse').mockImplementationOnce(throwError)
     const promise = sut.add(makeAddAccountDTO())
     await expect(promise).rejects.toThrow()
   })
