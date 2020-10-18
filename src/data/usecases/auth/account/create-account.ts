@@ -9,7 +9,9 @@ export class DbCreateAccount implements CreateAccount {
   ) {}
 
   async add (data: AddAccountDTO): Promise<AccountModel> {
-    await this.getAccountByEmail.getAccountByEmail(data.email)
-    return null
+    const accountByEmail = await this.getAccountByEmail.getAccountByEmail(data.email)
+    if (accountByEmail) {
+      return null
+    }
   }
 }
