@@ -1,4 +1,4 @@
-import { GetAccountByEmailRepository, CreateAccountRepository, AddAccountModel } from '@/data/protocols/repository/auth/account'
+import { GetAccountByEmailRepository, CreateAccountRepository, AddAccountModel } from '@/data/repositories/auth/account'
 import { AccountModel } from '@/domain/models/auth'
 
 export class GetAccountByEmailRepositorySpy implements GetAccountByEmailRepository {

@@ -1,7 +1,7 @@
 import { CreateAccount } from '@/domain//usecases/auth/account'
 import { AddAccountDTO } from '@/domain/dtos/auth/account'
 import { AccountModel } from '@/domain/models/auth'
-import { GetAccountByEmailRepository, CreateAccountRepository } from '@/data/protocols/repository/auth/account'
+import { GetAccountByEmailRepository, CreateAccountRepository } from '@/data/repositories/auth/account'
 import { Hasher } from '@/data/protocols/criptography/hasher'
 import { SendMailAdapter } from '@/data/protocols/comunication/mail/send-mail-adapter'
 
