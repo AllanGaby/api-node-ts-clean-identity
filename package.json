@@ -5,6 +5,7 @@
   "author": "Allan Gaby <allan.gaby@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "@types/faker": "^5.1.2",
     "@types/jest": "^26.0.14",
     "@types/node": "^14.11.10",
     "@types/typescript": "^2.0.0",
@@ -15,6 +16,7 @@
     "eslint-plugin-node": "11",
     "eslint-plugin-promise": "4",
     "eslint-plugin-standard": "4",
+    "faker": "^5.1.0",
     "git-commit-msg-linter": "^3.0.0",
     "husky": "^4.3.0",
     "jest": "^26.5.3",
