@@ -12,7 +12,8 @@ export class DbCreateAccount implements CreateAccount {
     private readonly hasher: Hasher,
     private readonly createAccountRepository: CreateAccountRepository,
     private readonly createSessionRepository: CreateSessionRepository,
-    private readonly mailTemplateAdapter: MailTemplateAdapter
+    private readonly mailTemplateAdapter: MailTemplateAdapter,
+    private readonly mailFilePath: string
   ) {}
 
   async add (data: AddAccountDTO): Promise<AccountModel> {
@@ -30,9 +31,13 @@ export class DbCreateAccount implements CreateAccount {
         type: SessionType.activeAccount,
         experied_at: new Date(new Date().getDate() + 1)
       })
-      await this.mailTemplateAdapter.parse({
+      const variables = {
         sessionId: session.id,
         name
+      }
+      await this.mailTemplateAdapter.parse({
+        filePath: this.mailFilePath,
+        variables
       })
       return account
     }
