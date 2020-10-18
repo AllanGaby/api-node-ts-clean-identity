@@ -154,4 +154,11 @@ describe('DbCreateAccount', () => {
       content: mailTemplateAdapterSpy.mailParsed
     })
   })
+
+  test('Should return throw if SendMailAdapter throws', async () => {
+    const { sut, sendMailAdapterSpy } = makeSut()
+    jest.spyOn(sendMailAdapterSpy, 'sendMail').mockImplementationOnce(throwError)
+    const promise = sut.add(makeAddAccountDTO())
+    await expect(promise).rejects.toThrow()
+  })
 })
