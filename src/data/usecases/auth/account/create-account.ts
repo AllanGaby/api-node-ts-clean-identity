@@ -1,6 +1,6 @@
 import { CreateAccount } from '@/domain//usecases/auth/account'
 import { AddAccountDTO } from '@/domain/dtos/auth/account'
-import { AccountModel } from '@/domain/models/auth'
+import { AccountModel, SessionType } from '@/domain/models/auth'
 import { GetAccountByEmailRepository, CreateAccountRepository } from '@/data/repositories/auth/account'
 import { Hasher } from '@/data/protocols/criptography/hasher'
 import { CreateSessionRepository } from '@/data/repositories/auth/session'
@@ -22,6 +22,11 @@ export class DbCreateAccount implements CreateAccount {
         name,
         email,
         password: passwordHashed
+      })
+      await this.createSessionRepository.add({
+        accountId: account.id,
+        type: SessionType.activeAccount,
+        experied_at: new Date(new Date().getDate() + 1)
       })
       return account
     }
