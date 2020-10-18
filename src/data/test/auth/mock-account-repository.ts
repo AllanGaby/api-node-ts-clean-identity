@@ -1,6 +1,5 @@
 import { GetAccountByEmailRepository, CreateAccountRepository, AddAccountModel } from '@/data/repositories/auth/account'
 import { AccountModel } from '@/domain/models/auth'
-import { mockAccountModel } from './mock-account'
 
 export class GetAccountByEmailRepositorySpy implements GetAccountByEmailRepository {
   searchMail: string
@@ -14,7 +13,7 @@ export class GetAccountByEmailRepositorySpy implements GetAccountByEmailReposito
 
 export class CreateAccountRepositorySpy implements CreateAccountRepository {
   addAccountParams: AddAccountModel
-  account: AccountModel = mockAccountModel()
+  account: AccountModel
 
   async add (data: AddAccountModel): Promise<AccountModel> {
     this.addAccountParams = data

@@ -1,6 +1,5 @@
 import { DbCreateAccount } from './create-account'
 import { GetAccountByEmailRepositorySpy, CreateAccountRepositorySpy, makeAddAccountDTO, mockAccountModel, HasherSpy, CreateSessionRepositorySpy } from '@/data/test'
-import { SessionType } from '@/domain/models/auth'
 import faker from 'faker'
 
 interface sutTypes {
@@ -60,13 +59,5 @@ describe('DbCreateAccount', () => {
       email: addAccountParams.email,
       password: hasherSpy.hash
     })
-  })
-
-  test('Should call CreateSessionRepository with correct values', async () => {
-    const { sut, createSessionRepositorySpy, createAccountRepositorySpy } = makeSut()
-    createAccountRepositorySpy.account = mockAccountModel()
-    await sut.add(makeAddAccountDTO())
-    expect(createSessionRepositorySpy.addSessionParams.accountId).toBe(createAccountRepositorySpy.account.id)
-    expect(createSessionRepositorySpy.addSessionParams.type).toBe(SessionType.activeAccount)
   })
 })
