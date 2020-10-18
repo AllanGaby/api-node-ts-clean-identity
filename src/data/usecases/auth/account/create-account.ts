@@ -3,14 +3,14 @@ import { AddAccountDTO } from '@/domain/dtos/auth/account'
 import { AccountModel } from '@/domain/models/auth'
 import { GetAccountByEmailRepository, CreateAccountRepository } from '@/data/repositories/auth/account'
 import { Hasher } from '@/data/protocols/criptography/hasher'
-import { SendMailAdapter } from '@/data/protocols/comunication/mail/send-mail-adapter'
+import { CreateSessionRepository } from '@/data/repositories/auth/session'
 
 export class DbCreateAccount implements CreateAccount {
   constructor (
     private readonly getAccountByEmailRepository: GetAccountByEmailRepository,
     private readonly hasher: Hasher,
     private readonly createAccountRepository: CreateAccountRepository,
-    private readonly sendMailAdapter: SendMailAdapter
+    private readonly createSessionRepository: CreateSessionRepository
   ) {}
 
   async add (data: AddAccountDTO): Promise<AccountModel> {
