@@ -9,11 +9,11 @@ export class SendMailAdapterSpy implements SendMailAdapter {
 }
 
 export class MailTemplateAdapterSpy implements MailTemplateAdapter {
-  variables: MailTemplateDTO
+  parseParams: MailTemplateDTO
   mailParsed: string
 
-  async parse (variables: MailTemplateDTO): Promise<string> {
-    this.variables = variables
+  async parse (parseParams: MailTemplateDTO): Promise<string> {
+    this.parseParams = parseParams
     return this.mailParsed
   }
 }

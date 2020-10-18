@@ -19,6 +19,7 @@ interface sutTypes {
   createAccountRepositorySpy: CreateAccountRepositorySpy
   createSessionRepositorySpy: CreateSessionRepositorySpy
   mailTemplateAdapterSpy: MailTemplateAdapterSpy
+  mailFilePath: string
 }
 
 const makeSut = (): sutTypes => {
@@ -27,20 +28,23 @@ const makeSut = (): sutTypes => {
   const createAccountRepositorySpy = new CreateAccountRepositorySpy()
   const createSessionRepositorySpy = new CreateSessionRepositorySpy()
   const mailTemplateAdapterSpy = new MailTemplateAdapterSpy()
+  const mailFilePath = faker.internet.url()
   const sut =
     new DbCreateAccount(
       getAccountByEmailRepositorySpy,
       hasherSpy,
       createAccountRepositorySpy,
       createSessionRepositorySpy,
-      mailTemplateAdapterSpy)
+      mailTemplateAdapterSpy,
+      mailFilePath)
   return {
     sut,
     getAccountByEmailRepositorySpy,
     hasherSpy,
     createAccountRepositorySpy,
     createSessionRepositorySpy,
-    mailTemplateAdapterSpy
+    mailTemplateAdapterSpy,
+    mailFilePath
   }
 }
 
@@ -81,13 +85,17 @@ describe('DbCreateAccount', () => {
   })
 
   test('Should call MailTemplateAdapter with correct values', async () => {
-    const { sut, createSessionRepositorySpy, mailTemplateAdapterSpy } = makeSut()
+    const { sut, createSessionRepositorySpy, mailTemplateAdapterSpy, mailFilePath } = makeSut()
     createSessionRepositorySpy.session = mockSessionModel(SessionType.activeAccount)
     const addAccountParams = makeAddAccountDTO()
     await sut.add(addAccountParams)
-    expect(mailTemplateAdapterSpy.variables).toEqual({
+    const variables = {
       sessionId: createSessionRepositorySpy.session.id,
       name: addAccountParams.name
+    }
+    expect(mailTemplateAdapterSpy.parseParams).toEqual({
+      filePath: mailFilePath,
+      variables
     })
   })
 })
