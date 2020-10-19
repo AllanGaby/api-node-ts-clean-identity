@@ -23,4 +23,11 @@ describe('DbUpdateAccount', () => {
     await sut.update(updateAccountDTO)
     expect(getAccountByIdRepositorySpy.accountId).toBe(updateAccountDTO.id)
   })
+
+  test('Should return null if GetAccountByIdRepostirory return null', async () => {
+    const { sut, getAccountByIdRepositorySpy } = makeSut()
+    getAccountByIdRepositorySpy.account = null
+    const account = await sut.update(mockUpdateAccountDTO())
+    expect(account).toBeFalsy()
+  })
 })
