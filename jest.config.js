@@ -1,7 +1,7 @@
 module.exports = {
   roots: ['<rootDir>/src'],
   collectCoverageFrom: [
-    '<rootDir>/src/data/usecases/*.ts',
+    '<rootDir>/src/data/usecases/**/*.ts',
     '!**/protocols/**',
     '!**/index.ts'
   ],
