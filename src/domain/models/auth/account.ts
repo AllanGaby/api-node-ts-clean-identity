@@ -3,6 +3,7 @@ export interface AccountModel {
   name: string
   email: string
   password: string
+  email_valided: boolean
   created_at: Date
   updated_at: Date
 }
