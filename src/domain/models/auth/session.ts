@@ -1,5 +1,6 @@
 export enum SessionType {
-  activeAccount
+  activeAccount,
+  recoverPassword
 }
 
 export interface SessionModel {
