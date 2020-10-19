@@ -93,18 +93,20 @@ describe('DbActiveAccount', () => {
 
   test('Should call UpdateAccountRepository with correct value', async () => {
     const { sut, getAccountByIdRepositorySpy, updateAccountRepositorySpy } = makeSut()
+    getAccountByIdRepositorySpy.account.email_valided = false
     await sut.active(mockActiveAccountDTO())
     const updatedAccount = getAccountByIdRepositorySpy.account
     updatedAccount.email_valided = true
     expect(updateAccountRepositorySpy.account).toEqual(updatedAccount)
   })
-/*
+
   test('Should return account updated if GetAccountByIfRepository return an account with invalided email', async () => {
     const { sut, getAccountByIdRepositorySpy } = makeSut()
-    getAccountByIdRepositorySpy.account.email_valided = true
-    const activeAccountDTO = mockActiveAccountDTO()
-    const account = await sut.active(activeAccountDTO)
-    expect(account).toBeFalsy()
+    getAccountByIdRepositorySpy.account.email_valided = false
+    const account = await sut.active(mockActiveAccountDTO())
+    expect(account.id).toBe(getAccountByIdRepositorySpy.account.id)
+    expect(account.name).toBe(getAccountByIdRepositorySpy.account.name)
+    expect(account.email).toBe(getAccountByIdRepositorySpy.account.email)
+    expect(account.email_valided).toBe(getAccountByIdRepositorySpy.account.email_valided)
   })
-  */
 })
