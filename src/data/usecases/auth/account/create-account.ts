@@ -1,5 +1,5 @@
 import { CreateAccount } from '@/domain//usecases/auth/account'
-import { AddAccountDTO } from '@/domain/dtos/auth/account'
+import { CreateAccountDTO } from '@/domain/dtos/auth/account'
 import { SessionModel, SessionType } from '@/domain/models/auth'
 import { GetAccountByEmailRepository, CreateAccountRepository } from '@/data/repositories/auth/account'
 import { Hasher } from '@/data/protocols/criptography/hasher'
@@ -17,7 +17,7 @@ export class DbCreateAccount implements CreateAccount {
     private readonly sendMailAdapter: SendMailAdapter
   ) {}
 
-  async add (data: AddAccountDTO): Promise<SessionModel> {
+  async add (data: CreateAccountDTO): Promise<SessionModel> {
     const accountByEmail = await this.getAccountByEmailRepository.getAccountByEmail(data.email)
     if (!accountByEmail) {
       const { name, email, password } = data

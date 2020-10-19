@@ -1,8 +1,8 @@
-import { AddAccountDTO } from '@/domain/dtos/auth/account'
+import { CreateAccountDTO } from '@/domain/dtos/auth/account'
 import { AccountModel } from '@/domain/models/auth'
 import faker from 'faker'
 
-export const makeAddAccountDTO = (): AddAccountDTO => {
+export const makeCreateAccountDTO = (): CreateAccountDTO => {
   const password = faker.internet.password()
   return {
     name: faker.name.findName(),

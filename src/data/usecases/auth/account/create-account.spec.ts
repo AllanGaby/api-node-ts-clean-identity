@@ -2,7 +2,7 @@ import { DbCreateAccount } from './create-account'
 import {
   GetAccountByEmailRepositorySpy,
   CreateAccountRepositorySpy,
-  makeAddAccountDTO,
+  makeCreateAccountDTO,
   mockAccountModel,
   HasherSpy,
   CreateSessionRepositorySpy,
@@ -57,15 +57,15 @@ const makeSut = (): sutTypes => {
 describe('DbCreateAccount', () => {
   test('Should call GetAccountByEmailRepository with correct value', async () => {
     const { sut, getAccountByEmailRepositorySpy } = makeSut()
-    const addAccountParams = makeAddAccountDTO()
-    await sut.add(addAccountParams)
-    expect(getAccountByEmailRepositorySpy.searchMail).toBe(addAccountParams.email)
+    const createAccountParams = makeCreateAccountDTO()
+    await sut.add(createAccountParams)
+    expect(getAccountByEmailRepositorySpy.searchMail).toBe(createAccountParams.email)
   })
 
   test('Should return throw if GetAccountByEmailRepository throws', async () => {
     const { sut, getAccountByEmailRepositorySpy } = makeSut()
     jest.spyOn(getAccountByEmailRepositorySpy, 'getAccountByEmail').mockImplementationOnce(throwError)
-    const promise = sut.add(makeAddAccountDTO())
+    const promise = sut.add(makeCreateAccountDTO())
     await expect(promise).rejects.toThrow()
   })
 
@@ -73,14 +73,14 @@ describe('DbCreateAccount', () => {
     const { sut, getAccountByEmailRepositorySpy, hasherSpy } = makeSut()
     const createHashSpy = jest.spyOn(hasherSpy, 'createHash')
     getAccountByEmailRepositorySpy.account = mockAccountModel()
-    const session = await sut.add(makeAddAccountDTO())
+    const session = await sut.add(makeCreateAccountDTO())
     expect(session).toBeFalsy()
     expect(createHashSpy).not.toBeCalled()
   })
 
   test('Should call Hasher with correct value', async () => {
     const { sut, hasherSpy } = makeSut()
-    const addAccountParams = makeAddAccountDTO()
+    const addAccountParams = makeCreateAccountDTO()
     await sut.add(addAccountParams)
     expect(hasherSpy.payload).toBe(addAccountParams.password)
   })
@@ -88,14 +88,14 @@ describe('DbCreateAccount', () => {
   test('Should return throw if Hasher throws', async () => {
     const { sut, hasherSpy } = makeSut()
     jest.spyOn(hasherSpy, 'createHash').mockImplementationOnce(throwError)
-    const promise = sut.add(makeAddAccountDTO())
+    const promise = sut.add(makeCreateAccountDTO())
     await expect(promise).rejects.toThrow()
   })
 
   test('Should call CreateAccountRepository with correct values', async () => {
     const { sut, createAccountRepositorySpy, hasherSpy } = makeSut()
     hasherSpy.hash = faker.random.uuid()
-    const addAccountParams = makeAddAccountDTO()
+    const addAccountParams = makeCreateAccountDTO()
     await sut.add(addAccountParams)
     expect(createAccountRepositorySpy.addAccountParams).toEqual({
       name: addAccountParams.name,
@@ -107,21 +107,21 @@ describe('DbCreateAccount', () => {
   test('Should return throw if CreateAccountRepository throws', async () => {
     const { sut, createAccountRepositorySpy } = makeSut()
     jest.spyOn(createAccountRepositorySpy, 'add').mockImplementationOnce(throwError)
-    const promise = sut.add(makeAddAccountDTO())
+    const promise = sut.add(makeCreateAccountDTO())
     await expect(promise).rejects.toThrow()
   })
 
   test('Should return throw if createSessionRepositorySpy throws', async () => {
     const { sut, createSessionRepositorySpy } = makeSut()
     jest.spyOn(createSessionRepositorySpy, 'add').mockImplementationOnce(throwError)
-    const promise = sut.add(makeAddAccountDTO())
+    const promise = sut.add(makeCreateAccountDTO())
     await expect(promise).rejects.toThrow()
   })
 
   test('Should call MailTemplateAdapter with correct values', async () => {
     const { sut, createSessionRepositorySpy, mailTemplateAdapterSpy, mailFilePath } = makeSut()
     createSessionRepositorySpy.session = mockSessionModel(SessionType.activeAccount)
-    const addAccountParams = makeAddAccountDTO()
+    const addAccountParams = makeCreateAccountDTO()
     await sut.add(addAccountParams)
     const variables = {
       sessionId: createSessionRepositorySpy.session.id,
@@ -136,21 +136,21 @@ describe('DbCreateAccount', () => {
   test('Should return throw if MailTemplateAdapter throws', async () => {
     const { sut, mailTemplateAdapterSpy } = makeSut()
     jest.spyOn(mailTemplateAdapterSpy, 'parse').mockImplementationOnce(throwError)
-    const promise = sut.add(makeAddAccountDTO())
+    const promise = sut.add(makeCreateAccountDTO())
     await expect(promise).rejects.toThrow()
   })
 
   test('Should call SendMailAdapter with correct values', async () => {
     const { sut, mailTemplateAdapterSpy, sendMailAdapterSpy } = makeSut()
     mailTemplateAdapterSpy.mailParsed = faker.random.words()
-    const addAccountParams = makeAddAccountDTO()
-    await sut.add(addAccountParams)
+    const createAccountParams = makeCreateAccountDTO()
+    await sut.add(createAccountParams)
     expect(sendMailAdapterSpy.sendMailParams).toEqual({
       to: {
-        name: addAccountParams.name,
-        email: addAccountParams.email
+        name: createAccountParams.name,
+        email: createAccountParams.email
       },
-      subject: `[Identity] - ${addAccountParams.name}, sua conta foi criada com sucesso`,
+      subject: `[Identity] - ${createAccountParams.name}, sua conta foi criada com sucesso`,
       content: mailTemplateAdapterSpy.mailParsed
     })
   })
@@ -158,7 +158,7 @@ describe('DbCreateAccount', () => {
   test('Should return throw if SendMailAdapter throws', async () => {
     const { sut, sendMailAdapterSpy } = makeSut()
     jest.spyOn(sendMailAdapterSpy, 'sendMail').mockImplementationOnce(throwError)
-    const promise = sut.add(makeAddAccountDTO())
+    const promise = sut.add(makeCreateAccountDTO())
     await expect(promise).rejects.toThrow()
   })
 })
