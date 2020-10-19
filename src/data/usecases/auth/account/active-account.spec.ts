@@ -1,5 +1,6 @@
 import { DbActiveAccount } from './active-account'
 import { GetSessionByIdRepositorySpy } from '@/data/test/auth/mock-session-repository'
+import { GetAccountByIdRepositorySpy } from '@/data/test/auth/mock-account-repository'
 import { mockActiveAccountDTO } from '@/data/test/auth'
 import { throwError } from '@/data/test'
 import { SessionType } from '@/domain/models/auth'
@@ -7,14 +8,17 @@ import { SessionType } from '@/domain/models/auth'
 interface sutTypes {
   sut: DbActiveAccount
   getSessionByIdRepositorySpy: GetSessionByIdRepositorySpy
+  getAccountByIdRepositorySpy: GetAccountByIdRepositorySpy
 }
 
 const makeSut = (): sutTypes => {
   const getSessionByIdRepositorySpy = new GetSessionByIdRepositorySpy()
-  const sut = new DbActiveAccount(getSessionByIdRepositorySpy)
+  const getAccountByIdRepositorySpy = new GetAccountByIdRepositorySpy()
+  const sut = new DbActiveAccount(getSessionByIdRepositorySpy, getAccountByIdRepositorySpy)
   return {
     sut,
-    getSessionByIdRepositorySpy
+    getSessionByIdRepositorySpy,
+    getAccountByIdRepositorySpy
   }
 }
 
@@ -60,5 +64,12 @@ describe('DbActiveAccount', () => {
     getSessionByIdRepositorySpy.session.deleted_at = new Date()
     const account = await sut.active(mockActiveAccountDTO())
     expect(account).toBeFalsy()
+  })
+
+  test('Should call GetAccountByIfRepository with correct values', async () => {
+    const { sut, getSessionByIdRepositorySpy, getAccountByIdRepositorySpy } = makeSut()
+    const activeAccountDTO = mockActiveAccountDTO()
+    await sut.active(activeAccountDTO)
+    expect(getAccountByIdRepositorySpy.accountId).toBe(getSessionByIdRepositorySpy.session.accountId)
   })
 })
