@@ -1,6 +1,6 @@
 import { ActiveAccount } from '@/domain/usecases/auth/account'
 import { ActiveAccountDTO } from '@/domain/dtos/auth/account'
-import { AccountModel } from '@/domain/models/auth'
+import { AccountModel, SessionType } from '@/domain/models/auth'
 import { GetSessionByIdRepository } from '@/data/repositories/auth/session'
 
 export class DbActiveAccount implements ActiveAccount {
@@ -9,7 +9,13 @@ export class DbActiveAccount implements ActiveAccount {
   ) {}
 
   async active ({ sessionId }: ActiveAccountDTO): Promise<AccountModel> {
-    await this.getSessionByIdRepository.getSessionById(sessionId)
+    const session = await this.getSessionByIdRepository.getSessionById(sessionId)
+    if ((session) &&
+        (session.type === SessionType.activeAccount) &&
+        (session.experied_at > new Date()) &&
+        (session.deleted_at === null)) {
+
+    }
     return null
   }
 }
