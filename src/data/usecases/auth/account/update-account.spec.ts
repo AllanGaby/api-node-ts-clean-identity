@@ -1,6 +1,6 @@
 import { DbUpdateAccount } from './update-account'
 import { GetAccountByIdRepositorySpy } from '@/data/test/auth/mock-account-repository'
-import { mockUpdateAccountDTO } from '@/data/test'
+import { mockUpdateAccountDTO, throwError } from '@/data/test'
 
 interface sutTypes {
   sut: DbUpdateAccount
@@ -29,5 +29,12 @@ describe('DbUpdateAccount', () => {
     getAccountByIdRepositorySpy.account = null
     const account = await sut.update(mockUpdateAccountDTO())
     expect(account).toBeFalsy()
+  })
+
+  test('Should throw if GetAccountByIdRepostirory throws', async () => {
+    const { sut, getAccountByIdRepositorySpy } = makeSut()
+    jest.spyOn(getAccountByIdRepositorySpy, 'getAccountById').mockImplementationOnce(throwError)
+    const promise = sut.update(mockUpdateAccountDTO())
+    await expect(promise).rejects.toThrow()
   })
 })
