@@ -100,6 +100,14 @@ describe('DbActiveAccount', () => {
     expect(updateAccountRepositorySpy.account).toEqual(updatedAccount)
   })
 
+  test('Should throw if UpdateAccountRepository throws', async () => {
+    const { sut, getAccountByIdRepositorySpy, updateAccountRepositorySpy } = makeSut()
+    getAccountByIdRepositorySpy.account.email_valided = false
+    jest.spyOn(updateAccountRepositorySpy, 'update').mockImplementationOnce(throwError)
+    const promise = sut.active(mockActiveAccountDTO())
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should return account updated if GetAccountByIfRepository return an account with invalided email', async () => {
     const { sut, getAccountByIdRepositorySpy } = makeSut()
     getAccountByIdRepositorySpy.account.email_valided = false
