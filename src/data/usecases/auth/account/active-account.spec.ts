@@ -1,6 +1,6 @@
 import { DbActiveAccount } from './active-account'
 import { GetSessionByIdRepositorySpy } from '@/data/test/auth/mock-session-repository'
-import { GetAccountByIdRepositorySpy } from '@/data/test/auth/mock-account-repository'
+import { GetAccountByIdRepositorySpy, UpdateAccountRepositorySpy } from '@/data/test/auth/mock-account-repository'
 import { mockActiveAccountDTO } from '@/data/test/auth'
 import { throwError } from '@/data/test'
 import { SessionType } from '@/domain/models/auth'
@@ -9,16 +9,19 @@ interface sutTypes {
   sut: DbActiveAccount
   getSessionByIdRepositorySpy: GetSessionByIdRepositorySpy
   getAccountByIdRepositorySpy: GetAccountByIdRepositorySpy
+  updateAccountRepositorySpy: UpdateAccountRepositorySpy
 }
 
 const makeSut = (): sutTypes => {
   const getSessionByIdRepositorySpy = new GetSessionByIdRepositorySpy()
   const getAccountByIdRepositorySpy = new GetAccountByIdRepositorySpy()
-  const sut = new DbActiveAccount(getSessionByIdRepositorySpy, getAccountByIdRepositorySpy)
+  const updateAccountRepositorySpy = new UpdateAccountRepositorySpy()
+  const sut = new DbActiveAccount(getSessionByIdRepositorySpy, getAccountByIdRepositorySpy, updateAccountRepositorySpy)
   return {
     sut,
     getSessionByIdRepositorySpy,
-    getAccountByIdRepositorySpy
+    getAccountByIdRepositorySpy,
+    updateAccountRepositorySpy
   }
 }
 
@@ -72,4 +75,36 @@ describe('DbActiveAccount', () => {
     await sut.active(activeAccountDTO)
     expect(getAccountByIdRepositorySpy.accountId).toBe(getSessionByIdRepositorySpy.session.accountId)
   })
+
+  test('Should throw if GetAccountByIfRepository throws', async () => {
+    const { sut, getAccountByIdRepositorySpy } = makeSut()
+    jest.spyOn(getAccountByIdRepositorySpy, 'getAccountById').mockImplementationOnce(throwError)
+    const promise = sut.active(mockActiveAccountDTO())
+    await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return null if GetAccountByIfRepository return an account with valided email', async () => {
+    const { sut, getAccountByIdRepositorySpy } = makeSut()
+    getAccountByIdRepositorySpy.account.email_valided = true
+    const activeAccountDTO = mockActiveAccountDTO()
+    const account = await sut.active(activeAccountDTO)
+    expect(account).toBeFalsy()
+  })
+
+  test('Should call UpdateAccountRepository with correct value', async () => {
+    const { sut, getAccountByIdRepositorySpy, updateAccountRepositorySpy } = makeSut()
+    await sut.active(mockActiveAccountDTO())
+    const updatedAccount = getAccountByIdRepositorySpy.account
+    updatedAccount.email_valided = true
+    expect(updateAccountRepositorySpy.account).toEqual(updatedAccount)
+  })
+/*
+  test('Should return account updated if GetAccountByIfRepository return an account with invalided email', async () => {
+    const { sut, getAccountByIdRepositorySpy } = makeSut()
+    getAccountByIdRepositorySpy.account.email_valided = true
+    const activeAccountDTO = mockActiveAccountDTO()
+    const account = await sut.active(activeAccountDTO)
+    expect(account).toBeFalsy()
+  })
+  */
 })
