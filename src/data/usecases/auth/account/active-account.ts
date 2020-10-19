@@ -18,8 +18,11 @@ export class DbActiveAccount implements ActiveAccount {
         (session.experied_at > new Date()) &&
         (!session.deleted_at)) {
       const account = await this.getAccountByIdRepository.getAccountById(session.accountId)
-      account.email_valided = true
-      await this.updateAccountRepository.update(account)
+      if (!account.email_valided) {
+        account.email_valided = true
+        const updatedAccount = await this.updateAccountRepository.update(account)
+        return updatedAccount
+      }
     }
     return null
   }
