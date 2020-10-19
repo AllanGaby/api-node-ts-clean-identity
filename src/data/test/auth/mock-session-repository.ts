@@ -1,4 +1,5 @@
 import { CreateSessionRepository, CreateSessionModel, GetSessionByIdRepository } from '@/data/repositories/auth/session'
+import { DeleteSessionRepository } from '@/data/repositories/auth/session/delete-session'
 import { SessionModel } from '@/domain/models/auth'
 import { mockSessionModel } from './mock-session'
 
@@ -19,5 +20,13 @@ export class GetSessionByIdRepositorySpy implements GetSessionByIdRepository {
   async getSessionById (sessionId: string): Promise<SessionModel> {
     this.sessionId = sessionId
     return this.session
+  }
+}
+
+export class DeleteSessionRepositorySpy implements DeleteSessionRepository {
+  session: SessionModel
+
+  async delete (session: SessionModel): Promise<void> {
+    this.session = session
   }
 }

@@ -1,5 +1,5 @@
 import { DbActiveAccount } from './active-account'
-import { GetSessionByIdRepositorySpy } from '@/data/test/auth/mock-session-repository'
+import { GetSessionByIdRepositorySpy, DeleteSessionRepositorySpy } from '@/data/test/auth/mock-session-repository'
 import { GetAccountByIdRepositorySpy, UpdateAccountRepositorySpy } from '@/data/test/auth/mock-account-repository'
 import { mockActiveAccountDTO } from '@/data/test/auth'
 import { throwError } from '@/data/test'
@@ -10,18 +10,21 @@ interface sutTypes {
   getSessionByIdRepositorySpy: GetSessionByIdRepositorySpy
   getAccountByIdRepositorySpy: GetAccountByIdRepositorySpy
   updateAccountRepositorySpy: UpdateAccountRepositorySpy
+  deleteSessionRepositorySpy: DeleteSessionRepositorySpy
 }
 
 const makeSut = (): sutTypes => {
   const getSessionByIdRepositorySpy = new GetSessionByIdRepositorySpy()
   const getAccountByIdRepositorySpy = new GetAccountByIdRepositorySpy()
   const updateAccountRepositorySpy = new UpdateAccountRepositorySpy()
-  const sut = new DbActiveAccount(getSessionByIdRepositorySpy, getAccountByIdRepositorySpy, updateAccountRepositorySpy)
+  const deleteSessionRepositorySpy = new DeleteSessionRepositorySpy()
+  const sut = new DbActiveAccount(getSessionByIdRepositorySpy, getAccountByIdRepositorySpy, updateAccountRepositorySpy, deleteSessionRepositorySpy)
   return {
     sut,
     getSessionByIdRepositorySpy,
     getAccountByIdRepositorySpy,
-    updateAccountRepositorySpy
+    updateAccountRepositorySpy,
+    deleteSessionRepositorySpy
   }
 }
 
@@ -116,5 +119,20 @@ describe('DbActiveAccount', () => {
     expect(account.name).toBe(getAccountByIdRepositorySpy.account.name)
     expect(account.email).toBe(getAccountByIdRepositorySpy.account.email)
     expect(account.email_valided).toBe(getAccountByIdRepositorySpy.account.email_valided)
+  })
+
+  test('Should call DeleteSessionRepository with correct value', async () => {
+    const { sut, getAccountByIdRepositorySpy, getSessionByIdRepositorySpy, deleteSessionRepositorySpy } = makeSut()
+    getAccountByIdRepositorySpy.account.email_valided = false
+    await sut.active(mockActiveAccountDTO())
+    expect(deleteSessionRepositorySpy.session).toEqual(getSessionByIdRepositorySpy.session)
+  })
+
+  test('Should throw if DeleteSessionRepository throws', async () => {
+    const { sut, getAccountByIdRepositorySpy, deleteSessionRepositorySpy } = makeSut()
+    getAccountByIdRepositorySpy.account.email_valided = false
+    jest.spyOn(deleteSessionRepositorySpy, 'delete').mockImplementationOnce(throwError)
+    const promise = sut.active(mockActiveAccountDTO())
+    await expect(promise).rejects.toThrow()
   })
 })
