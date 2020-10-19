@@ -31,4 +31,11 @@ describe('DbActiveAccount', () => {
     const promise = sut.active(mockActiveAccountDTO())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return null GetSessionByIdRepository return null', async () => {
+    const { sut, getSessionByIdRepositorySpy } = makeSut()
+    getSessionByIdRepositorySpy.session = null
+    const account = await sut.active(mockActiveAccountDTO())
+    expect(account).toBeFalsy()
+  })
 })
