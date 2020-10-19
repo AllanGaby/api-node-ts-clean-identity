@@ -17,10 +17,9 @@ export class DbCreateAccount implements CreateAccount {
     private readonly sendMailAdapter: SendMailAdapter
   ) {}
 
-  async add (data: CreateAccountDTO): Promise<SessionModel> {
-    const accountByEmail = await this.getAccountByEmailRepository.getAccountByEmail(data.email)
+  async add ({ name, email, password }: CreateAccountDTO): Promise<SessionModel> {
+    const accountByEmail = await this.getAccountByEmailRepository.getAccountByEmail(email)
     if (!accountByEmail) {
-      const { name, email, password } = data
       const passwordHashed = await this.hasher.createHash(password)
       const account = await this.createAccountRepository.add({
         name,
