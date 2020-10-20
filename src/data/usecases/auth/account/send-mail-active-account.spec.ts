@@ -1,4 +1,4 @@
-import { CreateSessionRepositorySpy, mockSendMailActiveAccountDTO } from '@/data/test'
+import { CreateSessionRepositorySpy, mockSendMailActiveAccountDTO, throwError } from '@/data/test'
 import { SessionType } from '@/domain/models/auth'
 import { DbSendMailActiveAccount } from './send-mail-active-account'
 
@@ -23,5 +23,12 @@ describe('DbSendMailActiveAccount', () => {
     await sut.sendMail(sendMailActiveAccountDTO)
     expect(createSessionRepositorySpy.addSessionParams.accountId).toBe(sendMailActiveAccountDTO.accountId)
     expect(createSessionRepositorySpy.addSessionParams.type).toBe(SessionType.activeAccount)
+  })
+
+  test('Should throw if CreateSessionRepository throws', async () => {
+    const { sut, createSessionRepositorySpy } = makeSut()
+    jest.spyOn(createSessionRepositorySpy, 'add').mockImplementationOnce(throwError)
+    const promise = sut.sendMail(mockSendMailActiveAccountDTO())
+    await expect(promise).rejects.toThrow()
   })
 })
