@@ -1,7 +1,7 @@
 import { Hasher } from '@/data/protocols/criptography/hasher'
 import { GetAccountByIdRepository, UpdateAccountRepository } from '@/data/repositories/auth/account'
 import { UpdateAccountDTO } from '@/domain/dtos/auth/account'
-import { AccountModel } from '@/domain/models/auth'
+import { AccountModel, SessionType } from '@/domain/models/auth'
 import { UpdateAccount } from '@/domain/usecases/auth/account'
 import { CreateSessionRepository } from '@/data/repositories/auth/session'
 
@@ -20,14 +20,21 @@ export class DbUpdateAccount implements UpdateAccount {
       if (password) {
         passwordHashed = await this.hasher.createHash(password)
       }
-      const emailValided = email ? true : accountById.email_valided
-      await this.updateAccountRepoitory.update({
+      const emailValided = email ? false : accountById.email_valided
+      const updatedAccount = await this.updateAccountRepoitory.update({
         id: accountById.id,
         email,
         password: passwordHashed,
         name,
         email_valided: emailValided
       })
+      if (!emailValided) {
+        await this.createSessionRepository.add({
+          accountId: updatedAccount.id,
+          type: SessionType.activeAccount,
+          experied_at: new Date(new Date().getDate() + 1)
+        })
+      }
     }
     return null
   }
