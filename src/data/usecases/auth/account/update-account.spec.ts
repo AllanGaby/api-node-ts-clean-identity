@@ -66,6 +66,13 @@ describe('DbUpdateAccount', () => {
     expect(createHashSpy).not.toBeCalled()
   })
 
+  test('Should throw if Hasher throws', async () => {
+    const { sut, hasherSpy } = makeSut()
+    jest.spyOn(hasherSpy, 'createHash').mockImplementationOnce(throwError)
+    const promise = sut.update(mockUpdateAccountDTO())
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should call Hasher with correct values if change password', async () => {
     const { sut, hasherSpy } = makeSut()
     const updateAccountDTO = mockUpdateAccountDTO()
@@ -81,6 +88,13 @@ describe('DbUpdateAccount', () => {
     expect(updateAccountRepositorySpy.account.name).toBe(updateAccountDTO.name)
     expect(updateAccountRepositorySpy.account.email).toBe(updateAccountDTO.email)
     expect(updateAccountRepositorySpy.account.password).toBe(hasherSpy.hash)
+  })
+
+  test('Should throw if UpdateAccountRepository throws', async () => {
+    const { sut, updateAccountRepositorySpy } = makeSut()
+    jest.spyOn(updateAccountRepositorySpy, 'update').mockImplementationOnce(throwError)
+    const promise = sut.update(mockUpdateAccountDTO())
+    await expect(promise).rejects.toThrow()
   })
 
   test('Should call CreateSessionRepositorySpy with correct values', async () => {
