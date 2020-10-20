@@ -1,5 +1,13 @@
 import { AccountModel } from '@/domain/models/auth'
 
+export interface UpdateAccountModel {
+  id: string
+  name: string
+  email: string
+  password: string
+  email_valided: boolean
+}
+
 export interface UpdateAccountRepository {
-  update: (update: AccountModel) => Promise<AccountModel>
+  update: (update: UpdateAccountModel) => Promise<AccountModel>
 }
