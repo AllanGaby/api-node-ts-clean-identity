@@ -138,6 +138,15 @@ describe('DbUpdateAccount', () => {
     })
   })
 
+  test('Should not call MailTemplateAdapter if not change email', async () => {
+    const { sut, mailTemplateAdapterSpy } = makeSut()
+    const parseSpy = jest.spyOn(mailTemplateAdapterSpy, 'parse')
+    const updateAccountDTO = mockUpdateAccountDTO()
+    delete updateAccountDTO.email
+    await sut.update(updateAccountDTO)
+    expect(parseSpy).not.toBeCalled()
+  })
+
   test('Should throw if MailTemplateAdapter throws', async () => {
     const { sut, mailTemplateAdapterSpy } = makeSut()
     jest.spyOn(mailTemplateAdapterSpy, 'parse').mockImplementationOnce(throwError)
