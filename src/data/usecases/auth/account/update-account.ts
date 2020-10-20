@@ -42,9 +42,17 @@ export class DbUpdateAccount implements UpdateAccount {
           sessionId: session.id,
           name
         }
-        await this.mailTemplateAdapter.parse({
+        const mailContent = await this.mailTemplateAdapter.parse({
           filePath: this.mailFilePath,
           variables
+        })
+        await this.sendMailAdapter.sendMail({
+          to: {
+            name,
+            email
+          },
+          subject: `[Identity] - ${name}, sua conta foi alterada com sucesso`,
+          content: mailContent
         })
       }
     }
