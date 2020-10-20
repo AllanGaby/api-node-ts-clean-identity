@@ -144,4 +144,19 @@ describe('DbUpdateAccount', () => {
     const promise = sut.update(mockUpdateAccountDTO())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should call SendMailAdapter with correct values', async () => {
+    const { sut, mailTemplateAdapterSpy, sendMailAdapterSpy } = makeSut()
+    mailTemplateAdapterSpy.mailParsed = faker.random.words()
+    const updateAccountDTO = mockUpdateAccountDTO()
+    await sut.update(updateAccountDTO)
+    expect(sendMailAdapterSpy.sendMailParams).toEqual({
+      to: {
+        name: updateAccountDTO.name,
+        email: updateAccountDTO.email
+      },
+      subject: `[Identity] - ${updateAccountDTO.name}, sua conta foi alterada com sucesso`,
+      content: mailTemplateAdapterSpy.mailParsed
+    })
+  })
 })
