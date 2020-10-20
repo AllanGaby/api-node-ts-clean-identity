@@ -4,7 +4,7 @@ import { UpdateAccountDTO } from '@/domain/dtos/auth/account'
 import { AccountModel, SessionType } from '@/domain/models/auth'
 import { UpdateAccount } from '@/domain/usecases/auth/account'
 import { CreateSessionRepository } from '@/data/repositories/auth/session'
-import { MailTemplateAdapter } from '@/data/protocols/comunication/mail'
+import { MailTemplateAdapter, SendMailAdapter } from '@/data/protocols/comunication/mail'
 
 export class DbUpdateAccount implements UpdateAccount {
   constructor (
@@ -13,7 +13,8 @@ export class DbUpdateAccount implements UpdateAccount {
     private readonly updateAccountRepoitory: UpdateAccountRepository,
     private readonly createSessionRepository: CreateSessionRepository,
     private readonly mailTemplateAdapter: MailTemplateAdapter,
-    private readonly mailFilePath: string
+    private readonly mailFilePath: string,
+    private readonly sendMailAdapter: SendMailAdapter
   ) {}
 
   async update ({ id, name, email, password }: UpdateAccountDTO): Promise<AccountModel> {
