@@ -75,4 +75,11 @@ describe('DbSendMailActiveAccount', () => {
       content: mailTemplateAdapterSpy.mailParsed
     })
   })
+
+  test('Should return throw if SendMailAdapter throws', async () => {
+    const { sut, sendMailAdapterSpy } = makeSut()
+    jest.spyOn(sendMailAdapterSpy, 'sendMail').mockImplementationOnce(throwError)
+    const promise = sut.sendMail(mockSendMailActiveAccountDTO())
+    await expect(promise).rejects.toThrow()
+  })
 })
