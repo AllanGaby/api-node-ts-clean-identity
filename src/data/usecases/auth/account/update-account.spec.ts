@@ -168,4 +168,11 @@ describe('DbUpdateAccount', () => {
       content: mailTemplateAdapterSpy.mailParsed
     })
   })
+
+  test('Shoud throw id SendMailAdapter throws', async () => {
+    const { sut, sendMailAdapterSpy } = makeSut()
+    jest.spyOn(sendMailAdapterSpy, 'sendMail').mockImplementationOnce(throwError)
+    const promise = sut.update(mockUpdateAccountDTO())
+    await expect(promise).rejects.toThrow()
+  })
 })
