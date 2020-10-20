@@ -28,7 +28,6 @@ export class DbCreateAccount implements CreateAccount {
         name: account.name,
         subject: `[Identity] - ${account.name}, sua conta foi criada com sucesso`,
         mailFilePath: this.mailFilePath
-
       })
       return session
     }

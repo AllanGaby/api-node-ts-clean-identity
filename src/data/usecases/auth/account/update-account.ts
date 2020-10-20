@@ -1,20 +1,16 @@
 import { Hasher } from '@/data/protocols/criptography/hasher'
 import { GetAccountByIdRepository, UpdateAccountRepository } from '@/data/repositories/auth/account'
 import { UpdateAccountDTO } from '@/domain/dtos/auth/account'
-import { AccountModel, SessionType } from '@/domain/models/auth'
-import { UpdateAccount } from '@/domain/usecases/auth/account'
-import { CreateSessionRepository } from '@/data/repositories/auth/session'
-import { MailTemplateAdapter, SendMailAdapter } from '@/data/protocols/comunication/mail'
+import { AccountModel } from '@/domain/models/auth'
+import { SendMailActiveAccount, UpdateAccount } from '@/domain/usecases/auth/account'
 
 export class DbUpdateAccount implements UpdateAccount {
   constructor (
     private readonly getAccountByIdRepository: GetAccountByIdRepository,
     private readonly hasher: Hasher,
     private readonly updateAccountRepoitory: UpdateAccountRepository,
-    private readonly createSessionRepository: CreateSessionRepository,
-    private readonly mailTemplateAdapter: MailTemplateAdapter,
-    private readonly mailFilePath: string,
-    private readonly sendMailAdapter: SendMailAdapter
+    private readonly sendMailActiveAccount: SendMailActiveAccount,
+    private readonly mailFilePath: string
   ) {}
 
   async update ({ id, name, email, password }: UpdateAccountDTO): Promise<AccountModel> {
@@ -33,28 +29,15 @@ export class DbUpdateAccount implements UpdateAccount {
         email_valided: emailValided
       })
       if (!emailValided) {
-        const session = await this.createSessionRepository.add({
+        await this.sendMailActiveAccount.sendMail({
           accountId: updatedAccount.id,
-          type: SessionType.activeAccount,
-          experied_at: new Date(new Date().getDate() + 1)
-        })
-        const variables = {
-          sessionId: session.id,
-          name
-        }
-        const mailContent = await this.mailTemplateAdapter.parse({
-          filePath: this.mailFilePath,
-          variables
-        })
-        await this.sendMailAdapter.sendMail({
-          to: {
-            name,
-            email
-          },
-          subject: `[Identity] - ${name}, sua conta foi alterada com sucesso`,
-          content: mailContent
+          email: updatedAccount.email,
+          name: updatedAccount.name,
+          subject: `[Identity] - ${updatedAccount.name}, sua conta foi alterada com sucesso`,
+          mailFilePath: this.mailFilePath
         })
       }
+      return updatedAccount
     }
     return null
   }
