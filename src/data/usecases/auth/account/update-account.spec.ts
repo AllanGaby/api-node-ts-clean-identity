@@ -90,4 +90,11 @@ describe('DbUpdateAccount', () => {
     expect(createSessionRepositorySpy.addSessionParams.accountId).toBe(getAccountByIdRepositorySpy.account.id)
     expect(createSessionRepositorySpy.addSessionParams.type).toBe(SessionType.activeAccount)
   })
+
+  test('Should throw if CreateSessionRepositorySpy throws', async () => {
+    const { sut, createSessionRepositorySpy } = makeSut()
+    jest.spyOn(createSessionRepositorySpy, 'add').mockImplementationOnce(throwError)
+    const promise = sut.update(mockUpdateAccountDTO())
+    await expect(promise).rejects.toThrow()
+  })
 })
