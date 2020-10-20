@@ -111,7 +111,14 @@ describe('DbCreateAccount', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should return throw if createSessionRepositorySpy throws', async () => {
+  test('Should call CreateSessionRepositorySpy with correct values', async () => {
+    const { sut, createSessionRepositorySpy, createAccountRepositorySpy } = makeSut()
+    await sut.add(mockCreateAccountDTO())
+    expect(createSessionRepositorySpy.addSessionParams.accountId).toBe(createAccountRepositorySpy.account.id)
+    expect(createSessionRepositorySpy.addSessionParams.type).toBe(SessionType.activeAccount)
+  })
+
+  test('Should return throw if CreateSessionRepositorySpy throws', async () => {
     const { sut, createSessionRepositorySpy } = makeSut()
     jest.spyOn(createSessionRepositorySpy, 'add').mockImplementationOnce(throwError)
     const promise = sut.add(mockCreateAccountDTO())
