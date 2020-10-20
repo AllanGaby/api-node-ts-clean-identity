@@ -3,12 +3,14 @@ import { GetAccountByIdRepository, UpdateAccountRepository } from '@/data/reposi
 import { UpdateAccountDTO } from '@/domain/dtos/auth/account'
 import { AccountModel } from '@/domain/models/auth'
 import { UpdateAccount } from '@/domain/usecases/auth/account'
+import { CreateSessionRepository } from '@/data/repositories/auth/session'
 
 export class DbUpdateAccount implements UpdateAccount {
   constructor (
     private readonly getAccountByIdRepository: GetAccountByIdRepository,
     private readonly hasher: Hasher,
-    private readonly updateAccountRepoitory: UpdateAccountRepository
+    private readonly updateAccountRepoitory: UpdateAccountRepository,
+    private readonly createSessionRepository: CreateSessionRepository
   ) {}
 
   async update ({ id, name, email, password }: UpdateAccountDTO): Promise<AccountModel> {
