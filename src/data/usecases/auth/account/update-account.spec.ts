@@ -3,7 +3,7 @@ import { GetAccountByIdRepositorySpy, UpdateAccountRepositorySpy } from '@/data/
 import { CreateSessionRepositorySpy } from '@/data/test/auth/mock-session-repository'
 import { mockSessionModel, mockUpdateAccountDTO, throwError } from '@/data/test'
 import { HasherSpy } from '@/data/test/mock-criptography'
-import { MailTemplateAdapterSpy } from '@/data/test/mock-comunication'
+import { MailTemplateAdapterSpy, SendMailAdapterSpy } from '@/data/test/mock-comunication'
 import faker from 'faker'
 import { SessionType } from '@/domain/models/auth'
 
@@ -15,6 +15,7 @@ interface sutTypes {
   createSessionRepositorySpy: CreateSessionRepositorySpy
   mailTemplateAdapterSpy: MailTemplateAdapterSpy
   mailFilePath: string
+  sendMailAdapterSpy: SendMailAdapterSpy
 }
 
 const makeSut = (): sutTypes => {
@@ -24,7 +25,15 @@ const makeSut = (): sutTypes => {
   const createSessionRepositorySpy = new CreateSessionRepositorySpy()
   const mailTemplateAdapterSpy = new MailTemplateAdapterSpy()
   const mailFilePath = faker.internet.url()
-  const sut = new DbUpdateAccount(getAccountByIdRepositorySpy, hasherSpy, updateAccountRepositorySpy, createSessionRepositorySpy, mailTemplateAdapterSpy, mailFilePath)
+  const sendMailAdapterSpy = new SendMailAdapterSpy()
+  const sut = new DbUpdateAccount(
+    getAccountByIdRepositorySpy,
+    hasherSpy,
+    updateAccountRepositorySpy,
+    createSessionRepositorySpy,
+    mailTemplateAdapterSpy,
+    mailFilePath,
+    sendMailAdapterSpy)
   return {
     sut,
     getAccountByIdRepositorySpy,
@@ -32,7 +41,8 @@ const makeSut = (): sutTypes => {
     updateAccountRepositorySpy,
     createSessionRepositorySpy,
     mailTemplateAdapterSpy,
-    mailFilePath
+    mailFilePath,
+    sendMailAdapterSpy
   }
 }
 
@@ -126,5 +136,12 @@ describe('DbUpdateAccount', () => {
       filePath: mailFilePath,
       variables
     })
+  })
+
+  test('Should throw if MailTemplateAdapter throws', async () => {
+    const { sut, mailTemplateAdapterSpy } = makeSut()
+    jest.spyOn(mailTemplateAdapterSpy, 'parse').mockImplementationOnce(throwError)
+    const promise = sut.update(mockUpdateAccountDTO())
+    await expect(promise).rejects.toThrow()
   })
 })
