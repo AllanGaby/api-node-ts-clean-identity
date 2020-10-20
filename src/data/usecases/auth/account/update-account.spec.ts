@@ -116,4 +116,13 @@ describe('DbUpdateAccount', () => {
     const promise = sut.update(mockUpdateAccountDTO())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should not call SendMailActiveAccount if not change mail', async () => {
+    const { sut, sendMailActiveAccountSpy } = makeSut()
+    const sendMailSpy = jest.spyOn(sendMailActiveAccountSpy, 'sendMail')
+    const updateAccountDTO = mockUpdateAccountDTO()
+    delete updateAccountDTO.email
+    await sut.update(updateAccountDTO)
+    expect(sendMailSpy).not.toBeCalled()
+  })
 })
