@@ -25,8 +25,10 @@ export const mockAccountModel = (): AccountModel => ({
   updated_at: faker.date.past()
 })
 
-export const mockSendMailActiveAccountDTO = (): SendMailActiveAccountDTO => ({
+export const mockSendMailActiveAccountDTO = (subject: string = faker.random.words()): SendMailActiveAccountDTO => ({
   accountId: faker.random.uuid(),
   email: faker.internet.email(),
-  name: faker.name.findName()
+  name: faker.name.findName(),
+  mailFilePath: faker.internet.url(),
+  subject
 })
