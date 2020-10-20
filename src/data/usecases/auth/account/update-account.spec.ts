@@ -1,7 +1,7 @@
 import { DbUpdateAccount } from './update-account'
 import { GetAccountByIdRepositorySpy, UpdateAccountRepositorySpy } from '@/data/test/auth/mock-account-repository'
 import { CreateSessionRepositorySpy } from '@/data/test/auth/mock-session-repository'
-import { mockUpdateAccountDTO, throwError } from '@/data/test'
+import { mockSessionModel, mockUpdateAccountDTO, throwError } from '@/data/test'
 import { HasherSpy } from '@/data/test/mock-criptography'
 import { MailTemplateAdapterSpy } from '@/data/test/mock-comunication'
 import faker from 'faker'
@@ -23,7 +23,8 @@ const makeSut = (): sutTypes => {
   const updateAccountRepositorySpy = new UpdateAccountRepositorySpy()
   const createSessionRepositorySpy = new CreateSessionRepositorySpy()
   const mailTemplateAdapterSpy = new MailTemplateAdapterSpy()
-  const sut = new DbUpdateAccount(getAccountByIdRepositorySpy, hasherSpy, updateAccountRepositorySpy, createSessionRepositorySpy)
+  const mailFilePath = faker.internet.url()
+  const sut = new DbUpdateAccount(getAccountByIdRepositorySpy, hasherSpy, updateAccountRepositorySpy, createSessionRepositorySpy, mailTemplateAdapterSpy, mailFilePath)
   return {
     sut,
     getAccountByIdRepositorySpy,
@@ -31,7 +32,7 @@ const makeSut = (): sutTypes => {
     updateAccountRepositorySpy,
     createSessionRepositorySpy,
     mailTemplateAdapterSpy,
-    mailFilePath: faker.internet.url()
+    mailFilePath
   }
 }
 
@@ -110,5 +111,20 @@ describe('DbUpdateAccount', () => {
     jest.spyOn(createSessionRepositorySpy, 'add').mockImplementationOnce(throwError)
     const promise = sut.update(mockUpdateAccountDTO())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call MailTemplateAdapter with correct values', async () => {
+    const { sut, createSessionRepositorySpy, mailTemplateAdapterSpy, mailFilePath } = makeSut()
+    createSessionRepositorySpy.session = mockSessionModel()
+    const updateAccountDTO = mockUpdateAccountDTO()
+    await sut.update(updateAccountDTO)
+    const variables = {
+      sessionId: createSessionRepositorySpy.session.id,
+      name: updateAccountDTO.name
+    }
+    expect(mailTemplateAdapterSpy.parseParams).toEqual({
+      filePath: mailFilePath,
+      variables
+    })
   })
 })
