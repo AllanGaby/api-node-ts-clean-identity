@@ -1,25 +1,37 @@
 import { DbUpdateAccount } from './update-account'
 import { GetAccountByIdRepositorySpy, UpdateAccountRepositorySpy } from '@/data/test/auth/mock-account-repository'
+import { CreateSessionRepositorySpy } from '@/data/test/auth/mock-session-repository'
 import { mockUpdateAccountDTO, throwError } from '@/data/test'
 import { HasherSpy } from '@/data/test/mock-criptography'
+import { MailTemplateAdapterSpy } from '@/data/test/mock-comunication'
+import faker from 'faker'
+import { SessionType } from '@/domain/models/auth'
 
 interface sutTypes {
   sut: DbUpdateAccount
   getAccountByIdRepositorySpy: GetAccountByIdRepositorySpy
   hasherSpy: HasherSpy
   updateAccountRepositorySpy: UpdateAccountRepositorySpy
+  createSessionRepositorySpy: CreateSessionRepositorySpy
+  mailTemplateAdapterSpy: MailTemplateAdapterSpy
+  mailFilePath: string
 }
 
 const makeSut = (): sutTypes => {
   const hasherSpy = new HasherSpy()
   const getAccountByIdRepositorySpy = new GetAccountByIdRepositorySpy()
   const updateAccountRepositorySpy = new UpdateAccountRepositorySpy()
-  const sut = new DbUpdateAccount(getAccountByIdRepositorySpy, hasherSpy, updateAccountRepositorySpy)
+  const createSessionRepositorySpy = new CreateSessionRepositorySpy()
+  const mailTemplateAdapterSpy = new MailTemplateAdapterSpy()
+  const sut = new DbUpdateAccount(getAccountByIdRepositorySpy, hasherSpy, updateAccountRepositorySpy, createSessionRepositorySpy)
   return {
     sut,
     getAccountByIdRepositorySpy,
     hasherSpy,
-    updateAccountRepositorySpy
+    updateAccountRepositorySpy,
+    createSessionRepositorySpy,
+    mailTemplateAdapterSpy,
+    mailFilePath: faker.internet.url()
   }
 }
 
@@ -69,5 +81,13 @@ describe('DbUpdateAccount', () => {
     expect(updateAccountRepositorySpy.account.name).toBe(updateAccountDTO.name)
     expect(updateAccountRepositorySpy.account.email).toBe(updateAccountDTO.email)
     expect(updateAccountRepositorySpy.account.password).toBe(hasherSpy.hash)
+  })
+
+  test('Should call CreateSessionRepositorySpy with correct values', async () => {
+    const { sut, getAccountByIdRepositorySpy, createSessionRepositorySpy } = makeSut()
+    const updateAccountDTO = mockUpdateAccountDTO()
+    await sut.update(updateAccountDTO)
+    expect(createSessionRepositorySpy.addSessionParams.accountId).toBe(getAccountByIdRepositorySpy.account.id)
+    expect(createSessionRepositorySpy.addSessionParams.type).toBe(SessionType.activeAccount)
   })
 })
