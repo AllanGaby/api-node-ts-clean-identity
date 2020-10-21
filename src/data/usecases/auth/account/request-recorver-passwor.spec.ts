@@ -1,4 +1,4 @@
-import { GetAccountByEmailRepositorySpy } from '@/data/test'
+import { GetAccountByEmailRepositorySpy, throwError } from '@/data/test'
 import { DbRequestRecoverPassword } from './request-recover-password'
 import faker from 'faker'
 
@@ -22,5 +22,12 @@ describe('DbRequestRecoverPassword', () => {
     const email = faker.internet.email()
     await sut.request({ email })
     expect(getAccountByEmailRepositorySpy.searchMail).toBe(email)
+  })
+
+  test('Should throw if GetSessionByIdRepository throws', async () => {
+    const { sut, getAccountByEmailRepositorySpy } = makeSut()
+    jest.spyOn(getAccountByEmailRepositorySpy, 'getAccountByEmail').mockImplementationOnce(throwError)
+    const promise = sut.request({ email: faker.internet.email() })
+    await expect(promise).rejects.toThrow()
   })
 })
