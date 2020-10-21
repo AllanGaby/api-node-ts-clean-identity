@@ -18,7 +18,7 @@ export class DbAuthenticationAccount implements AuthenticationAccount {
         hashedText: account.password
       })
       if (isCorrectPassword) {
-        await this.encrypter.encrypt(account.id)
+        return await this.encrypter.encrypt(account.id)
       }
     }
     return null
