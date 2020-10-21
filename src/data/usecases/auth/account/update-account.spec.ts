@@ -145,6 +145,13 @@ describe('DbUpdateAccount', () => {
     })
   })
 
+  test('Should return throw if UploadFile throws', async () => {
+    const { sut, uploadFileSpy } = makeSut()
+    jest.spyOn(uploadFileSpy, 'upload').mockImplementationOnce(throwError)
+    const promise = sut.update(mockUpdateAccountDTO())
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should not call UploadFile if not change AvatarFile', async () => {
     const { sut, uploadFileSpy } = makeSut()
     const uploadSpy = jest.spyOn(uploadFileSpy, 'upload')
