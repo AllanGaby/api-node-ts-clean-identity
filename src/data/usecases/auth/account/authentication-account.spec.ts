@@ -52,4 +52,11 @@ describe('DbAuthenticationAccount', () => {
       hashedText: getAccountByEmailRepositorySpy.account.password
     })
   })
+
+  test('Should throw if HashComparer throws', async () => {
+    const { sut, hashComparerSpy } = makeSut()
+    jest.spyOn(hashComparerSpy, 'compare').mockImplementationOnce(throwError)
+    const promise = sut.authenticate(mockAuthenticationAccountDTO())
+    await expect(promise).rejects.toThrow()
+  })
 })
