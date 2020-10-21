@@ -1,6 +1,7 @@
 import { CreateAccountDTO, UpdateAccountDTO, SendMailActiveAccountDTO, AuthenticationAccountDTO } from '@/domain/dtos/auth/account'
 import { AccountModel } from '@/domain/models/auth'
 import faker from 'faker'
+import path from 'path'
 
 export const mockCreateAccountDTO = (): CreateAccountDTO => ({
   name: faker.name.findName(),
@@ -12,7 +13,8 @@ export const mockUpdateAccountDTO = (): UpdateAccountDTO => ({
   id: faker.random.uuid(),
   name: faker.name.findName(),
   email: faker.internet.email(),
-  password: faker.internet.password()
+  password: faker.internet.password(),
+  avatarFilePath: `${faker.system.directoryPath()}${path.sep}${faker.system.filePath()}`
 })
 
 export const mockAccountModel = (): AccountModel => ({

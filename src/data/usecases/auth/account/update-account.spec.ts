@@ -1,8 +1,9 @@
 import { DbUpdateAccount } from './update-account'
 import { GetAccountByIdRepositorySpy, UpdateAccountRepositorySpy } from '@/data/test/auth/mock-account-repository'
-import { mockUpdateAccountDTO, SendMailActiveAccountSpy, throwError } from '@/data/test'
+import { mockUpdateAccountDTO, SendMailActiveAccountSpy, throwError, UploadFileSpy } from '@/data/test'
 import { HashCreatorSpy } from '@/data/test/mock-criptography'
 import faker from 'faker'
+import path from 'path'
 
 interface sutTypes {
   sut: DbUpdateAccount
@@ -11,6 +12,8 @@ interface sutTypes {
   updateAccountRepositorySpy: UpdateAccountRepositorySpy
   sendMailActiveAccountSpy: SendMailActiveAccountSpy
   mailFilePath: string
+  uploadFileSpy: UploadFileSpy
+  destinationFileDir: string
 }
 
 const makeSut = (): sutTypes => {
@@ -18,21 +21,26 @@ const makeSut = (): sutTypes => {
   const getAccountByIdRepositorySpy = new GetAccountByIdRepositorySpy()
   const updateAccountRepositorySpy = new UpdateAccountRepositorySpy()
   const sendMailActiveAccountSpy = new SendMailActiveAccountSpy()
-
   const mailFilePath = faker.internet.url()
+  const uploadFileSpy = new UploadFileSpy()
+  const destinationFileDir = faker.internet.url()
   const sut = new DbUpdateAccount(
     getAccountByIdRepositorySpy,
     hashCreatorSpy,
     updateAccountRepositorySpy,
     sendMailActiveAccountSpy,
-    mailFilePath)
+    mailFilePath,
+    uploadFileSpy,
+    destinationFileDir)
   return {
     sut,
     getAccountByIdRepositorySpy,
     hashCreatorSpy,
     updateAccountRepositorySpy,
     sendMailActiveAccountSpy,
-    mailFilePath
+    mailFilePath,
+    uploadFileSpy,
+    destinationFileDir
   }
 }
 
@@ -124,5 +132,16 @@ describe('DbUpdateAccount', () => {
     delete updateAccountDTO.email
     await sut.update(updateAccountDTO)
     expect(sendMailSpy).not.toBeCalled()
+  })
+
+  test('Should call UploadFile if change AvatarFile', async () => {
+    const { sut, uploadFileSpy, destinationFileDir } = makeSut()
+    const updateAccountDTO = mockUpdateAccountDTO()
+    await sut.update(updateAccountDTO)
+    const extFile = path.extname(updateAccountDTO.avatarFilePath)
+    expect(uploadFileSpy.uploadParams).toEqual({
+      sourceFilePath: updateAccountDTO.avatarFilePath,
+      destinationFilePath: `${destinationFileDir}${path.sep}${updateAccountDTO.id}${extFile}`
+    })
   })
 })
