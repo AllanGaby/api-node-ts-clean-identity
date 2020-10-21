@@ -7,7 +7,8 @@ export class DbRequestRecoverPassword implements RequestRecoverPassword {
     private readonly getAccountByEmailRepository: GetAccountByEmailRepository
   ) {}
 
-  async request ({ email }: RequestRecoverPasswordDTO): Promise<void> {
+  async request ({ email }: RequestRecoverPasswordDTO): Promise<boolean> {
     await this.getAccountByEmailRepository.getAccountByEmail(email)
+    return false
   }
 }
