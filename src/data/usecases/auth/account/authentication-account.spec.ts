@@ -35,7 +35,7 @@ describe('DbAuthenticationAccount', () => {
     expect(getAccountByEmailRepositorySpy.searchMail).toBe(authenticationAccountDTO.email)
   })
 
-  test('Should throw if GetSessionByIdRepository throws', async () => {
+  test('Should throw if GetAccountByEmailRepository throws', async () => {
     const { sut, getAccountByEmailRepositorySpy } = makeSut()
     jest.spyOn(getAccountByEmailRepositorySpy, 'getAccountByEmail').mockImplementationOnce(throwError)
     const promise = sut.authenticate(mockAuthenticationAccountDTO())
