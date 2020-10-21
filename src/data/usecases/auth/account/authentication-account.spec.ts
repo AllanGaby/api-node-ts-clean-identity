@@ -59,4 +59,11 @@ describe('DbAuthenticationAccount', () => {
     const promise = sut.authenticate(mockAuthenticationAccountDTO())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return null if HashComparer return false', async () => {
+    const { sut, hashComparerSpy } = makeSut()
+    hashComparerSpy.isValidHash = false
+    const token = await sut.authenticate(mockAuthenticationAccountDTO())
+    expect(token).toBeFalsy()
+  })
 })
