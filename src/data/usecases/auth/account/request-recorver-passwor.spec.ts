@@ -24,10 +24,18 @@ describe('DbRequestRecoverPassword', () => {
     expect(getAccountByEmailRepositorySpy.searchMail).toBe(email)
   })
 
-  test('Should throw if GetSessionByIdRepository throws', async () => {
+  test('Should throw if GetAccountByEmailRepository throws', async () => {
     const { sut, getAccountByEmailRepositorySpy } = makeSut()
     jest.spyOn(getAccountByEmailRepositorySpy, 'getAccountByEmail').mockImplementationOnce(throwError)
     const promise = sut.request({ email: faker.internet.email() })
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return null if GetAccountByEmailRepository return null', async () => {
+    const { sut, getAccountByEmailRepositorySpy } = makeSut()
+    getAccountByEmailRepositorySpy.account = null
+    const email = faker.internet.email()
+    const sendMail = await sut.request({ email })
+    expect(sendMail).toBeFalsy()
   })
 })
