@@ -31,4 +31,11 @@ describe('DbAuthenticationAccount', () => {
     const promise = sut.authenticate(mockAuthenticationAccountDTO())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return null if GetSessionByIdRepository return null', async () => {
+    const { sut, getAccountByEmailRepositorySpy } = makeSut()
+    getAccountByEmailRepositorySpy.account = null
+    const token = await sut.authenticate(mockAuthenticationAccountDTO())
+    expect(token).toBeFalsy()
+  })
 })
