@@ -1,19 +1,23 @@
 import { DbAuthenticationAccount } from './authentication-account'
-import { mockAuthenticationAccountDTO, throwError } from '@/data/test'
+import { mockAuthenticationAccountDTO, throwError, HashComparerSpy, mockAccountModel } from '@/data/test'
 
 import { GetAccountByEmailRepositorySpy } from '@/data/test/auth/mock-account-repository'
 
 interface sutTypes {
   sut: DbAuthenticationAccount
   getAccountByEmailRepositorySpy: GetAccountByEmailRepositorySpy
+  hashComparerSpy: HashComparerSpy
 }
 
 const makeSut = (): sutTypes => {
   const getAccountByEmailRepositorySpy = new GetAccountByEmailRepositorySpy()
-  const sut = new DbAuthenticationAccount(getAccountByEmailRepositorySpy)
+  getAccountByEmailRepositorySpy.account = mockAccountModel()
+  const hashComparerSpy = new HashComparerSpy()
+  const sut = new DbAuthenticationAccount(getAccountByEmailRepositorySpy, hashComparerSpy)
   return {
     sut,
-    getAccountByEmailRepositorySpy
+    getAccountByEmailRepositorySpy,
+    hashComparerSpy
   }
 }
 
@@ -37,5 +41,15 @@ describe('DbAuthenticationAccount', () => {
     getAccountByEmailRepositorySpy.account = null
     const token = await sut.authenticate(mockAuthenticationAccountDTO())
     expect(token).toBeFalsy()
+  })
+
+  test('Should call HashComparer with correct values', async () => {
+    const { sut, hashComparerSpy, getAccountByEmailRepositorySpy } = makeSut()
+    const authenticationAccountDTO = mockAuthenticationAccountDTO()
+    await sut.authenticate(authenticationAccountDTO)
+    expect(hashComparerSpy.compareParams).toEqual({
+      payload: authenticationAccountDTO.password,
+      hashedText: getAccountByEmailRepositorySpy.account.password
+    })
   })
 })

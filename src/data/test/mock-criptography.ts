@@ -1,4 +1,4 @@
-import { Hasher } from '@/data/protocols/criptography/hasher'
+import { Hasher, HashComparer, ComparerDTO } from '@/data/protocols/criptography'
 
 export class HasherSpy implements Hasher {
   payload: string
@@ -7,5 +7,15 @@ export class HasherSpy implements Hasher {
   async createHash (payload: string): Promise<string> {
     this.payload = payload
     return this.hash
+  }
+}
+
+export class HashComparerSpy implements HashComparer {
+  isValidHash: boolean = true
+  compareParams: ComparerDTO
+
+  async compare (params: ComparerDTO): Promise<boolean> {
+    this.compareParams = params
+    return this.isValidHash
   }
 }
