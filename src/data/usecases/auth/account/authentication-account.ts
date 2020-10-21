@@ -21,12 +21,12 @@ export class DbAuthenticationAccount implements AuthenticationAccount {
         hashedText: account.password
       })
       if (isCorrectPassword) {
-        await this.createSessionRepository.add({
+        const session = await this.createSessionRepository.add({
           accountId: account.id,
           type: SessionType.authentication,
           experied_at: new Date(new Date().getDate() + 1)
         })
-        return await this.encrypter.encrypt(account.id)
+        return await this.encrypter.encrypt(session.id)
       }
     }
     return null
