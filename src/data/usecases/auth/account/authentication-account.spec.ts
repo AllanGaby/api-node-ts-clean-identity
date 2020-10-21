@@ -1,6 +1,5 @@
 import { DbAuthenticationAccount } from './authentication-account'
 import { mockAuthenticationAccountDTO, throwError, HashComparerSpy, mockAccountModel, EncrypterSpy } from '@/data/test'
-
 import { GetAccountByEmailRepositorySpy } from '@/data/test/auth/mock-account-repository'
 
 interface sutTypes {
@@ -82,5 +81,11 @@ describe('DbAuthenticationAccount', () => {
     jest.spyOn(encrypterSpy, 'encrypt').mockImplementationOnce(throwError)
     const promise = sut.authenticate(mockAuthenticationAccountDTO())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return encrypted token if HashComparer return true', async () => {
+    const { sut, encrypterSpy } = makeSut()
+    const token = await sut.authenticate(mockAuthenticationAccountDTO())
+    expect(token).toBe(encrypterSpy.encryptedText)
   })
 })
