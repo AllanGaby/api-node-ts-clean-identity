@@ -1,4 +1,4 @@
-import { CreateAccountDTO, UpdateAccountDTO, SendMailActiveAccountDTO } from '@/domain/dtos/auth/account'
+import { CreateAccountDTO, UpdateAccountDTO, SendMailActiveAccountDTO, AuthenticationAccountDTO } from '@/domain/dtos/auth/account'
 import { AccountModel } from '@/domain/models/auth'
 import faker from 'faker'
 
@@ -31,4 +31,9 @@ export const mockSendMailActiveAccountDTO = (subject: string = faker.random.word
   name: faker.name.findName(),
   mailFilePath: faker.internet.url(),
   subject
+})
+
+export const mockAuthenticationAccountDTO = (): AuthenticationAccountDTO => ({
+  email: faker.internet.email(),
+  password: faker.internet.password()
 })
