@@ -1,5 +1,6 @@
 import { DbAuthenticationAccount } from './authentication-account'
-import { mockAuthenticationAccountDTO } from '@/data/test/auth'
+import { mockAuthenticationAccountDTO, throwError } from '@/data/test'
+
 import { GetAccountByEmailRepositorySpy } from '@/data/test/auth/mock-account-repository'
 
 interface sutTypes {
@@ -22,5 +23,12 @@ describe('DbAuthenticationAccount', () => {
     const authenticationAccountDTO = mockAuthenticationAccountDTO()
     await sut.authenticate(authenticationAccountDTO)
     expect(getAccountByEmailRepositorySpy.searchMail).toBe(authenticationAccountDTO.email)
+  })
+
+  test('Should throw if GetSessionByIdRepository throws', async () => {
+    const { sut, getAccountByEmailRepositorySpy } = makeSut()
+    jest.spyOn(getAccountByEmailRepositorySpy, 'getAccountByEmail').mockImplementationOnce(throwError)
+    const promise = sut.authenticate(mockAuthenticationAccountDTO())
+    await expect(promise).rejects.toThrow()
   })
 })
