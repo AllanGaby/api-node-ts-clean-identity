@@ -4,7 +4,7 @@ import {
   CreateAccountRepositorySpy,
   mockCreateAccountDTO,
   mockAccountModel,
-  HasherSpy,
+  HashCreatorSpy,
   throwError,
   SendMailActiveAccountSpy
 } from '@/data/test'
@@ -13,7 +13,7 @@ import faker from 'faker'
 interface sutTypes {
   sut: DbCreateAccount
   getAccountByEmailRepositorySpy: GetAccountByEmailRepositorySpy
-  hasherSpy: HasherSpy
+  hashCreatorSpy: HashCreatorSpy
   createAccountRepositorySpy: CreateAccountRepositorySpy
   sendMailActiveAccountSpy: SendMailActiveAccountSpy
   mailFilePath: string
@@ -21,21 +21,21 @@ interface sutTypes {
 
 const makeSut = (): sutTypes => {
   const getAccountByEmailRepositorySpy = new GetAccountByEmailRepositorySpy()
-  const hasherSpy = new HasherSpy()
+  const hashCreatorSpy = new HashCreatorSpy()
   const createAccountRepositorySpy = new CreateAccountRepositorySpy()
   const sendMailActiveAccountSpy = new SendMailActiveAccountSpy()
   const mailFilePath = faker.internet.url()
   const sut =
     new DbCreateAccount(
       getAccountByEmailRepositorySpy,
-      hasherSpy,
+      hashCreatorSpy,
       createAccountRepositorySpy,
       sendMailActiveAccountSpy,
       mailFilePath)
   return {
     sut,
     getAccountByEmailRepositorySpy,
-    hasherSpy,
+    hashCreatorSpy,
     createAccountRepositorySpy,
     sendMailActiveAccountSpy,
     mailFilePath
@@ -58,24 +58,24 @@ describe('DbCreateAccount', () => {
   })
 
   test('Should return null if GetAccountByEmailRepository return an Account', async () => {
-    const { sut, getAccountByEmailRepositorySpy, hasherSpy } = makeSut()
-    const createHashSpy = jest.spyOn(hasherSpy, 'createHash')
+    const { sut, getAccountByEmailRepositorySpy, hashCreatorSpy } = makeSut()
+    const createHashSpy = jest.spyOn(hashCreatorSpy, 'createHash')
     getAccountByEmailRepositorySpy.account = mockAccountModel()
     const session = await sut.add(mockCreateAccountDTO())
     expect(session).toBeFalsy()
     expect(createHashSpy).not.toBeCalled()
   })
 
-  test('Should call Hasher with correct value', async () => {
-    const { sut, hasherSpy } = makeSut()
+  test('Should call HashCreator with correct value', async () => {
+    const { sut, hashCreatorSpy } = makeSut()
     const addAccountParams = mockCreateAccountDTO()
     await sut.add(addAccountParams)
-    expect(hasherSpy.payload).toBe(addAccountParams.password)
+    expect(hashCreatorSpy.payload).toBe(addAccountParams.password)
   })
 
-  test('Should return throw if Hasher throws', async () => {
-    const { sut, hasherSpy } = makeSut()
-    jest.spyOn(hasherSpy, 'createHash').mockImplementationOnce(throwError)
+  test('Should return throw if HashCreator throws', async () => {
+    const { sut, hashCreatorSpy } = makeSut()
+    jest.spyOn(hashCreatorSpy, 'createHash').mockImplementationOnce(throwError)
     const promise = sut.add(mockCreateAccountDTO())
     await expect(promise).rejects.toThrow()
   })

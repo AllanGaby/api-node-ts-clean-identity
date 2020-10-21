@@ -1,3 +1,3 @@
-export interface Hasher{
+export interface HashCreator{
   createHash: (payload: string) => Promise<string>
 }

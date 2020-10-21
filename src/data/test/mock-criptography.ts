@@ -1,7 +1,7 @@
-import { Hasher, HashComparer, ComparerDTO, Encrypter } from '@/data/protocols/criptography'
+import { HashCreator, HashComparer, ComparerDTO, Encrypter } from '@/data/protocols/criptography'
 import faker from 'faker'
 
-export class HasherSpy implements Hasher {
+export class HashCreatorSpy implements HashCreator {
   payload: string
   hash: string
 

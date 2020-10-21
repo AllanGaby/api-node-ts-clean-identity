@@ -1,4 +1,4 @@
-import { Hasher } from '@/data/protocols/criptography/hasher'
+import { HashCreator } from '@/data/protocols/criptography'
 import { GetAccountByIdRepository, UpdateAccountRepository } from '@/data/repositories/auth/account'
 import { UpdateAccountDTO } from '@/domain/dtos/auth/account'
 import { AccountModel } from '@/domain/models/auth'
@@ -7,7 +7,7 @@ import { SendMailActiveAccount, UpdateAccount } from '@/domain/usecases/auth/acc
 export class DbUpdateAccount implements UpdateAccount {
   constructor (
     private readonly getAccountByIdRepository: GetAccountByIdRepository,
-    private readonly hasher: Hasher,
+    private readonly hashCreator: HashCreator,
     private readonly updateAccountRepoitory: UpdateAccountRepository,
     private readonly sendMailActiveAccount: SendMailActiveAccount,
     private readonly mailFilePath: string
@@ -18,7 +18,7 @@ export class DbUpdateAccount implements UpdateAccount {
     if (accountById) {
       let passwordHashed = accountById.password
       if (password) {
-        passwordHashed = await this.hasher.createHash(password)
+        passwordHashed = await this.hashCreator.createHash(password)
       }
       const emailValided = email ? false : accountById.email_valided
       const updatedAccount = await this.updateAccountRepoitory.update({

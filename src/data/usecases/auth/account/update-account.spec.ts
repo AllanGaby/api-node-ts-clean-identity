@@ -1,20 +1,20 @@
 import { DbUpdateAccount } from './update-account'
 import { GetAccountByIdRepositorySpy, UpdateAccountRepositorySpy } from '@/data/test/auth/mock-account-repository'
 import { mockUpdateAccountDTO, SendMailActiveAccountSpy, throwError } from '@/data/test'
-import { HasherSpy } from '@/data/test/mock-criptography'
+import { HashCreatorSpy } from '@/data/test/mock-criptography'
 import faker from 'faker'
 
 interface sutTypes {
   sut: DbUpdateAccount
   getAccountByIdRepositorySpy: GetAccountByIdRepositorySpy
-  hasherSpy: HasherSpy
+  hashCreatorSpy: HashCreatorSpy
   updateAccountRepositorySpy: UpdateAccountRepositorySpy
   sendMailActiveAccountSpy: SendMailActiveAccountSpy
   mailFilePath: string
 }
 
 const makeSut = (): sutTypes => {
-  const hasherSpy = new HasherSpy()
+  const hashCreatorSpy = new HashCreatorSpy()
   const getAccountByIdRepositorySpy = new GetAccountByIdRepositorySpy()
   const updateAccountRepositorySpy = new UpdateAccountRepositorySpy()
   const sendMailActiveAccountSpy = new SendMailActiveAccountSpy()
@@ -22,14 +22,14 @@ const makeSut = (): sutTypes => {
   const mailFilePath = faker.internet.url()
   const sut = new DbUpdateAccount(
     getAccountByIdRepositorySpy,
-    hasherSpy,
+    hashCreatorSpy,
     updateAccountRepositorySpy,
     sendMailActiveAccountSpy,
     mailFilePath)
   return {
     sut,
     getAccountByIdRepositorySpy,
-    hasherSpy,
+    hashCreatorSpy,
     updateAccountRepositorySpy,
     sendMailActiveAccountSpy,
     mailFilePath
@@ -58,37 +58,37 @@ describe('DbUpdateAccount', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should not call Hasher if not change password', async () => {
-    const { sut, hasherSpy } = makeSut()
-    const createHashSpy = jest.spyOn(hasherSpy, 'createHash')
+  test('Should not call HashCreator if not change password', async () => {
+    const { sut, hashCreatorSpy } = makeSut()
+    const createHashSpy = jest.spyOn(hashCreatorSpy, 'createHash')
     const updateAccountDTO = mockUpdateAccountDTO()
     delete updateAccountDTO.password
     await sut.update(updateAccountDTO)
     expect(createHashSpy).not.toBeCalled()
   })
 
-  test('Should throw if Hasher throws', async () => {
-    const { sut, hasherSpy } = makeSut()
-    jest.spyOn(hasherSpy, 'createHash').mockImplementationOnce(throwError)
+  test('Should throw if HashCreator throws', async () => {
+    const { sut, hashCreatorSpy } = makeSut()
+    jest.spyOn(hashCreatorSpy, 'createHash').mockImplementationOnce(throwError)
     const promise = sut.update(mockUpdateAccountDTO())
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should call Hasher with correct values if change password', async () => {
-    const { sut, hasherSpy } = makeSut()
+  test('Should call HashCreator with correct values if change password', async () => {
+    const { sut, hashCreatorSpy } = makeSut()
     const updateAccountDTO = mockUpdateAccountDTO()
     await sut.update(updateAccountDTO)
-    expect(hasherSpy.payload).toBe(updateAccountDTO.password)
+    expect(hashCreatorSpy.payload).toBe(updateAccountDTO.password)
   })
 
   test('Should call UpdateAccountRepository with correct values', async () => {
-    const { sut, hasherSpy, getAccountByIdRepositorySpy, updateAccountRepositorySpy } = makeSut()
+    const { sut, hashCreatorSpy, getAccountByIdRepositorySpy, updateAccountRepositorySpy } = makeSut()
     const updateAccountDTO = mockUpdateAccountDTO()
     await sut.update(updateAccountDTO)
     expect(updateAccountRepositorySpy.account.id).toBe(getAccountByIdRepositorySpy.account.id)
     expect(updateAccountRepositorySpy.account.name).toBe(updateAccountDTO.name)
     expect(updateAccountRepositorySpy.account.email).toBe(updateAccountDTO.email)
-    expect(updateAccountRepositorySpy.account.password).toBe(hasherSpy.hash)
+    expect(updateAccountRepositorySpy.account.password).toBe(hashCreatorSpy.hash)
   })
 
   test('Should throw if UpdateAccountRepository throws', async () => {
