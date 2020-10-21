@@ -2,8 +2,8 @@ import { HashCreator } from '@/data/protocols/criptography'
 import { UploadFile } from '@/data/protocols/storage'
 import { GetAccountByIdRepository, UpdateAccountRepository } from '@/data/repositories/auth/account'
 import { UpdateAccountDTO } from '@/domain/dtos/auth/account'
-import { AccountModel } from '@/domain/models/auth'
-import { SendMailActiveAccount, UpdateAccount } from '@/domain/usecases/auth/account'
+import { AccountModel, SessionType } from '@/domain/models/auth'
+import { SendMailAccount, UpdateAccount } from '@/domain/usecases/auth/account'
 import path from 'path'
 
 export class DbUpdateAccount implements UpdateAccount {
@@ -11,7 +11,7 @@ export class DbUpdateAccount implements UpdateAccount {
     private readonly getAccountByIdRepository: GetAccountByIdRepository,
     private readonly hashCreator: HashCreator,
     private readonly updateAccountRepoitory: UpdateAccountRepository,
-    private readonly sendMailActiveAccount: SendMailActiveAccount,
+    private readonly sendMailAccount: SendMailAccount,
     private readonly mailFilePath: string,
     private readonly uploadFile: UploadFile,
     private readonly fileDestinationDir: string
@@ -40,12 +40,13 @@ export class DbUpdateAccount implements UpdateAccount {
         email_valided: emailValided
       })
       if (!emailValided) {
-        await this.sendMailActiveAccount.sendMail({
+        await this.sendMailAccount.sendMail({
           accountId: updatedAccount.id,
           email: updatedAccount.email,
           name: updatedAccount.name,
           subject: `[Identity] - ${updatedAccount.name}, sua conta foi alterada com sucesso`,
-          mailFilePath: this.mailFilePath
+          mailFilePath: this.mailFilePath,
+          sessionType: SessionType.activeAccount
         })
       }
       return updatedAccount

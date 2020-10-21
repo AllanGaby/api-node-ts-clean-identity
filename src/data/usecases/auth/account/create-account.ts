@@ -1,6 +1,6 @@
-import { CreateAccount, SendMailActiveAccount } from '@/domain//usecases/auth/account'
+import { CreateAccount, SendMailAccount } from '@/domain//usecases/auth/account'
 import { CreateAccountDTO } from '@/domain/dtos/auth/account'
-import { SessionModel } from '@/domain/models/auth'
+import { SessionModel, SessionType } from '@/domain/models/auth'
 import { GetAccountByEmailRepository, CreateAccountRepository } from '@/data/repositories/auth/account'
 import { HashCreator } from '@/data/protocols/criptography'
 
@@ -9,7 +9,7 @@ export class DbCreateAccount implements CreateAccount {
     private readonly getAccountByEmailRepository: GetAccountByEmailRepository,
     private readonly hashCreator: HashCreator,
     private readonly createAccountRepository: CreateAccountRepository,
-    private readonly sendMailActiveAccount: SendMailActiveAccount,
+    private readonly sendMailAccount: SendMailAccount,
     private readonly mailFilePath: string
   ) {}
 
@@ -22,12 +22,13 @@ export class DbCreateAccount implements CreateAccount {
         email,
         password: passwordHashed
       })
-      const session = await this.sendMailActiveAccount.sendMail({
+      const session = await this.sendMailAccount.sendMail({
         accountId: account.id,
         email: account.email,
         name: account.name,
         subject: `[Identity] - ${account.name}, sua conta foi criada com sucesso`,
-        mailFilePath: this.mailFilePath
+        mailFilePath: this.mailFilePath,
+        sessionType: SessionType.activeAccount
       })
       return session
     }

@@ -6,16 +6,17 @@ import {
   mockAccountModel,
   HashCreatorSpy,
   throwError,
-  SendMailActiveAccountSpy
+  SendMailAccountSpy
 } from '@/data/test'
 import faker from 'faker'
+import { SessionType } from '@/domain/models/auth'
 
 interface sutTypes {
   sut: DbCreateAccount
   getAccountByEmailRepositorySpy: GetAccountByEmailRepositorySpy
   hashCreatorSpy: HashCreatorSpy
   createAccountRepositorySpy: CreateAccountRepositorySpy
-  sendMailActiveAccountSpy: SendMailActiveAccountSpy
+  sendMailAccountSpy: SendMailAccountSpy
   mailFilePath: string
 }
 
@@ -23,21 +24,21 @@ const makeSut = (): sutTypes => {
   const getAccountByEmailRepositorySpy = new GetAccountByEmailRepositorySpy()
   const hashCreatorSpy = new HashCreatorSpy()
   const createAccountRepositorySpy = new CreateAccountRepositorySpy()
-  const sendMailActiveAccountSpy = new SendMailActiveAccountSpy()
+  const sendMailAccountSpy = new SendMailAccountSpy()
   const mailFilePath = faker.internet.url()
   const sut =
     new DbCreateAccount(
       getAccountByEmailRepositorySpy,
       hashCreatorSpy,
       createAccountRepositorySpy,
-      sendMailActiveAccountSpy,
+      sendMailAccountSpy,
       mailFilePath)
   return {
     sut,
     getAccountByEmailRepositorySpy,
     hashCreatorSpy,
     createAccountRepositorySpy,
-    sendMailActiveAccountSpy,
+    sendMailAccountSpy,
     mailFilePath
   }
 }
@@ -80,21 +81,22 @@ describe('DbCreateAccount', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should call SendMailActiveAccount with correct values', async () => {
-    const { sut, createAccountRepositorySpy, sendMailActiveAccountSpy, mailFilePath } = makeSut()
+  test('Should call SendMailAccount with correct values', async () => {
+    const { sut, createAccountRepositorySpy, sendMailAccountSpy, mailFilePath } = makeSut()
     await sut.add(mockCreateAccountDTO())
-    expect(sendMailActiveAccountSpy.sendMailParams).toEqual({
+    expect(sendMailAccountSpy.sendMailParams).toEqual({
       accountId: createAccountRepositorySpy.account.id,
       name: createAccountRepositorySpy.account.name,
       email: createAccountRepositorySpy.account.email,
       subject: `[Identity] - ${createAccountRepositorySpy.account.name}, sua conta foi criada com sucesso`,
-      mailFilePath
+      mailFilePath,
+      sessionType: SessionType.activeAccount
     })
   })
 
-  test('Should return throw if SendMailActiveAccount throws', async () => {
-    const { sut, sendMailActiveAccountSpy } = makeSut()
-    jest.spyOn(sendMailActiveAccountSpy, 'sendMail').mockImplementationOnce(throwError)
+  test('Should return throw if SendMailAccount throws', async () => {
+    const { sut, sendMailAccountSpy } = makeSut()
+    jest.spyOn(sendMailAccountSpy, 'sendMail').mockImplementationOnce(throwError)
     const promise = sut.add(mockCreateAccountDTO())
     await expect(promise).rejects.toThrow()
   })
