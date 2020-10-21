@@ -1,8 +1,7 @@
 import { DbActiveAccount } from './active-account'
 import { GetSessionByIdRepositorySpy, DeleteSessionRepositorySpy } from '@/data/test/auth/mock-session-repository'
 import { GetAccountByIdRepositorySpy, UpdateAccountRepositorySpy } from '@/data/test/auth/mock-account-repository'
-import { mockActiveAccountDTO } from '@/data/test/auth'
-import { throwError } from '@/data/test'
+import { mockActiveAccountDTO, throwError } from '@/data/test'
 import { SessionType } from '@/domain/models/auth'
 
 interface sutTypes {
