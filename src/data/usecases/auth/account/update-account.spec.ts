@@ -144,4 +144,13 @@ describe('DbUpdateAccount', () => {
       destinationFilePath: `${destinationFileDir}${path.sep}${updateAccountDTO.id}${extFile}`
     })
   })
+
+  test('Should not call UploadFile if not change AvatarFile', async () => {
+    const { sut, uploadFileSpy } = makeSut()
+    const uploadSpy = jest.spyOn(uploadFileSpy, 'upload')
+    const updateAccountDTO = mockUpdateAccountDTO()
+    delete updateAccountDTO.avatarFilePath
+    await sut.update(updateAccountDTO)
+    expect(uploadSpy).not.toBeCalled()
+  })
 })
