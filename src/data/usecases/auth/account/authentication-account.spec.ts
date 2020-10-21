@@ -1,5 +1,5 @@
 import { DbAuthenticationAccount } from './authentication-account'
-import { mockAuthenticationAccountDTO, throwError, HashComparerSpy, mockAccountModel } from '@/data/test'
+import { mockAuthenticationAccountDTO, throwError, HashComparerSpy, mockAccountModel, EncrypterSpy } from '@/data/test'
 
 import { GetAccountByEmailRepositorySpy } from '@/data/test/auth/mock-account-repository'
 
@@ -7,17 +7,20 @@ interface sutTypes {
   sut: DbAuthenticationAccount
   getAccountByEmailRepositorySpy: GetAccountByEmailRepositorySpy
   hashComparerSpy: HashComparerSpy
+  encrypterSpy: EncrypterSpy
 }
 
 const makeSut = (): sutTypes => {
   const getAccountByEmailRepositorySpy = new GetAccountByEmailRepositorySpy()
   getAccountByEmailRepositorySpy.account = mockAccountModel()
   const hashComparerSpy = new HashComparerSpy()
-  const sut = new DbAuthenticationAccount(getAccountByEmailRepositorySpy, hashComparerSpy)
+  const encrypterSpy = new EncrypterSpy()
+  const sut = new DbAuthenticationAccount(getAccountByEmailRepositorySpy, hashComparerSpy, encrypterSpy)
   return {
     sut,
     getAccountByEmailRepositorySpy,
-    hashComparerSpy
+    hashComparerSpy,
+    encrypterSpy
   }
 }
 
@@ -65,5 +68,12 @@ describe('DbAuthenticationAccount', () => {
     hashComparerSpy.isValidHash = false
     const token = await sut.authenticate(mockAuthenticationAccountDTO())
     expect(token).toBeFalsy()
+  })
+
+  test('Should call Encrypter with correct values', async () => {
+    const { sut, encrypterSpy, getAccountByEmailRepositorySpy } = makeSut()
+    const authenticationAccountDTO = mockAuthenticationAccountDTO()
+    await sut.authenticate(authenticationAccountDTO)
+    expect(encrypterSpy.plainText).toBe(getAccountByEmailRepositorySpy.account.id)
   })
 })
