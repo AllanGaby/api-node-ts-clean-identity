@@ -80,6 +80,14 @@ describe('DbAuthenticationAccount', () => {
     expect(createSessionRepositorySpy.addSessionParams.accountId).toBe(getAccountByEmailRepositorySpy.account.id)
     expect(createSessionRepositorySpy.addSessionParams.type).toBe(SessionType.authentication)
   })
+
+  test('Should throw if CreateSessionRepository throws', async () => {
+    const { sut, createSessionRepositorySpy } = makeSut()
+    jest.spyOn(createSessionRepositorySpy, 'add').mockImplementationOnce(throwError)
+    const promise = sut.authenticate(mockAuthenticationAccountDTO())
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should call Encrypter with correct values', async () => {
     const { sut, encrypterSpy, getAccountByEmailRepositorySpy } = makeSut()
     const authenticationAccountDTO = mockAuthenticationAccountDTO()
