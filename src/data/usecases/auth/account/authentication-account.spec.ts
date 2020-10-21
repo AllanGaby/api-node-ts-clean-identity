@@ -89,10 +89,10 @@ describe('DbAuthenticationAccount', () => {
   })
 
   test('Should call Encrypter with correct values', async () => {
-    const { sut, encrypterSpy, getAccountByEmailRepositorySpy } = makeSut()
+    const { sut, encrypterSpy, createSessionRepositorySpy } = makeSut()
     const authenticationAccountDTO = mockAuthenticationAccountDTO()
     await sut.authenticate(authenticationAccountDTO)
-    expect(encrypterSpy.plainText).toBe(getAccountByEmailRepositorySpy.account.id)
+    expect(encrypterSpy.plainText).toBe(createSessionRepositorySpy.session.id)
   })
 
   test('Should throw if Encrypter throws', async () => {
