@@ -1,11 +1,13 @@
 import { DbAuthenticationAccount } from './authentication-account'
-import { mockAuthenticationAccountDTO, throwError, HashComparerSpy, mockAccountModel, EncrypterSpy } from '@/data/test'
+import { mockAuthenticationAccountDTO, throwError, HashComparerSpy, mockAccountModel, EncrypterSpy, CreateSessionRepositorySpy } from '@/data/test'
 import { GetAccountByEmailRepositorySpy } from '@/data/test/auth/mock-account-repository'
+import { SessionType } from '@/domain/models/auth'
 
 interface sutTypes {
   sut: DbAuthenticationAccount
   getAccountByEmailRepositorySpy: GetAccountByEmailRepositorySpy
   hashComparerSpy: HashComparerSpy
+  createSessionRepositorySpy: CreateSessionRepositorySpy
   encrypterSpy: EncrypterSpy
 }
 
@@ -13,12 +15,14 @@ const makeSut = (): sutTypes => {
   const getAccountByEmailRepositorySpy = new GetAccountByEmailRepositorySpy()
   getAccountByEmailRepositorySpy.account = mockAccountModel()
   const hashComparerSpy = new HashComparerSpy()
+  const createSessionRepositorySpy = new CreateSessionRepositorySpy()
   const encrypterSpy = new EncrypterSpy()
-  const sut = new DbAuthenticationAccount(getAccountByEmailRepositorySpy, hashComparerSpy, encrypterSpy)
+  const sut = new DbAuthenticationAccount(getAccountByEmailRepositorySpy, hashComparerSpy, createSessionRepositorySpy, encrypterSpy)
   return {
     sut,
     getAccountByEmailRepositorySpy,
     hashComparerSpy,
+    createSessionRepositorySpy,
     encrypterSpy
   }
 }
@@ -69,6 +73,13 @@ describe('DbAuthenticationAccount', () => {
     expect(token).toBeFalsy()
   })
 
+  test('Should call CreateSessionRepository with correct value', async () => {
+    const { sut, createSessionRepositorySpy, getAccountByEmailRepositorySpy } = makeSut()
+    const authenticationAccountDTO = mockAuthenticationAccountDTO()
+    await sut.authenticate(authenticationAccountDTO)
+    expect(createSessionRepositorySpy.addSessionParams.accountId).toBe(getAccountByEmailRepositorySpy.account.id)
+    expect(createSessionRepositorySpy.addSessionParams.type).toBe(SessionType.authentication)
+  })
   test('Should call Encrypter with correct values', async () => {
     const { sut, encrypterSpy, getAccountByEmailRepositorySpy } = makeSut()
     const authenticationAccountDTO = mockAuthenticationAccountDTO()
