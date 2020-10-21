@@ -50,4 +50,11 @@ describe('DbRequestRecoverPassword', () => {
     expect(createSessionRepositorySpy.addSessionParams.accountId).toBe(getAccountByEmailRepositorySpy.account.id)
     expect(createSessionRepositorySpy.addSessionParams.type).toBe(SessionType.recoverPassword)
   })
+
+  test('Should throw if CreateSessionRepository throws', async () => {
+    const { sut, createSessionRepositorySpy } = makeSut()
+    jest.spyOn(createSessionRepositorySpy, 'add').mockImplementationOnce(throwError)
+    const promise = sut.request({ email: faker.internet.email() })
+    await expect(promise).rejects.toThrow()
+  })
 })
