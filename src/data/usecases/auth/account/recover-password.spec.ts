@@ -69,4 +69,11 @@ describe('DbRecoverPassword', () => {
     await sut.recover(mockRecoverPasswordDTO())
     expect(getAccountByIdRepositorySpy.accountId).toBe(getSessionByIdRepositorySpy.session.accountId)
   })
+
+  test('Should throw if GetAccountByIdRepository throws', async () => {
+    const { sut, getAccountByIdRepositorySpy } = makeSut()
+    jest.spyOn(getAccountByIdRepositorySpy, 'getAccountById').mockImplementationOnce(throwError)
+    const promise = sut.recover(mockRecoverPasswordDTO())
+    await expect(promise).rejects.toThrow()
+  })
 })
