@@ -1,4 +1,4 @@
-import { ActiveAccountDTO } from '@/domain/dtos/auth/account'
+import { ActiveAccountDTO, RecoverPasswordDTO } from '@/domain/dtos/auth/account'
 import { SendMailSessionDTO } from '@/domain/dtos/auth/session'
 import { SessionModel, SessionType } from '@/domain/models/auth'
 import faker from 'faker'
@@ -23,4 +23,9 @@ export const mockSendMailSessionDTO = (sessionType: SessionType, subject: string
   mailFilePath: faker.internet.url(),
   subject,
   sessionType
+})
+
+export const mockRecoverPasswordDTO = (): RecoverPasswordDTO => ({
+  sessionId: faker.random.uuid(),
+  password: faker.internet.password()
 })
