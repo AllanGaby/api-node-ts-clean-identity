@@ -29,4 +29,11 @@ describe('DbRecoverPassword', () => {
     const promise = sut.recover(mockRecoverPasswordDTO())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return null if GetSessionByIdRepository return null', async () => {
+    const { sut, getSessionByIdRepositorySpy } = makeSut()
+    getSessionByIdRepositorySpy.session = null
+    const account = await sut.recover(mockRecoverPasswordDTO())
+    expect(account).toBe(null)
+  })
 })
