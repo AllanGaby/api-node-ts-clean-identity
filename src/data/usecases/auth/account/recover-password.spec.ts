@@ -1,22 +1,25 @@
 import { DbRecoverPassword } from './recover-password'
-import { GetSessionByIdRepositorySpy, mockRecoverPasswordDTO, throwError, GetAccountByIdRepositorySpy, mockSessionModel } from '@/data/test'
+import { GetSessionByIdRepositorySpy, mockRecoverPasswordDTO, throwError, GetAccountByIdRepositorySpy, mockSessionModel, HashCreatorSpy } from '@/data/test'
 import { SessionType } from '@/domain/models/auth'
 
 interface sutTypes {
   sut: DbRecoverPassword
   getSessionByIdRepositorySpy: GetSessionByIdRepositorySpy
   getAccountByIdRepositorySpy: GetAccountByIdRepositorySpy
+  hashCreatorSpy: HashCreatorSpy
 }
 
 const makeSut = (): sutTypes => {
   const getSessionByIdRepositorySpy = new GetSessionByIdRepositorySpy()
   getSessionByIdRepositorySpy.session = mockSessionModel(SessionType.recoverPassword)
   const getAccountByIdRepositorySpy = new GetAccountByIdRepositorySpy()
-  const sut = new DbRecoverPassword(getSessionByIdRepositorySpy, getAccountByIdRepositorySpy)
+  const hashCreatorSpy = new HashCreatorSpy()
+  const sut = new DbRecoverPassword(getSessionByIdRepositorySpy, getAccountByIdRepositorySpy, hashCreatorSpy)
   return {
     sut,
     getSessionByIdRepositorySpy,
-    getAccountByIdRepositorySpy
+    getAccountByIdRepositorySpy,
+    hashCreatorSpy
   }
 }
 
@@ -73,6 +76,20 @@ describe('DbRecoverPassword', () => {
   test('Should throw if GetAccountByIdRepository throws', async () => {
     const { sut, getAccountByIdRepositorySpy } = makeSut()
     jest.spyOn(getAccountByIdRepositorySpy, 'getAccountById').mockImplementationOnce(throwError)
+    const promise = sut.recover(mockRecoverPasswordDTO())
+    await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call HashCreator with correct value', async () => {
+    const { sut, hashCreatorSpy } = makeSut()
+    const recoverPasswordDTO = mockRecoverPasswordDTO()
+    await sut.recover(recoverPasswordDTO)
+    expect(hashCreatorSpy.payload).toBe(recoverPasswordDTO.password)
+  })
+
+  test('Should throw if HashCreator throws', async () => {
+    const { sut, hashCreatorSpy } = makeSut()
+    jest.spyOn(hashCreatorSpy, 'createHash').mockImplementationOnce(throwError)
     const promise = sut.recover(mockRecoverPasswordDTO())
     await expect(promise).rejects.toThrow()
   })
