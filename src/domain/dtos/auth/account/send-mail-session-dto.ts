@@ -1,6 +1,6 @@
 import { SessionType } from '@/domain/models/auth'
 
-export interface SendMailAccountDTO {
+export interface SendMailSessionDTO {
   accountId: string
   sessionType: SessionType
   name: string

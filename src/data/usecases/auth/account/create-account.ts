@@ -1,4 +1,4 @@
-import { CreateAccount, SendMailAccount } from '@/domain//usecases/auth/account'
+import { CreateAccount, SendMailSession } from '@/domain//usecases/auth/account'
 import { CreateAccountDTO } from '@/domain/dtos/auth/account'
 import { SessionModel, SessionType } from '@/domain/models/auth'
 import { GetAccountByEmailRepository, CreateAccountRepository } from '@/data/repositories/auth/account'
@@ -9,7 +9,7 @@ export class DbCreateAccount implements CreateAccount {
     private readonly getAccountByEmailRepository: GetAccountByEmailRepository,
     private readonly hashCreator: HashCreator,
     private readonly createAccountRepository: CreateAccountRepository,
-    private readonly sendMailAccount: SendMailAccount,
+    private readonly sendMailSession: SendMailSession,
     private readonly mailFilePath: string
   ) {}
 
@@ -22,7 +22,7 @@ export class DbCreateAccount implements CreateAccount {
         email,
         password: passwordHashed
       })
-      const session = await this.sendMailAccount.sendMail({
+      const session = await this.sendMailSession.sendMail({
         accountId: account.id,
         email: account.email,
         name: account.name,

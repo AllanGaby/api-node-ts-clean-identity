@@ -3,7 +3,7 @@ import { UploadFile } from '@/data/protocols/storage'
 import { GetAccountByIdRepository, UpdateAccountRepository } from '@/data/repositories/auth/account'
 import { UpdateAccountDTO } from '@/domain/dtos/auth/account'
 import { AccountModel, SessionType } from '@/domain/models/auth'
-import { SendMailAccount, UpdateAccount } from '@/domain/usecases/auth/account'
+import { SendMailSession, UpdateAccount } from '@/domain/usecases/auth/account'
 import path from 'path'
 
 export class DbUpdateAccount implements UpdateAccount {
@@ -11,7 +11,7 @@ export class DbUpdateAccount implements UpdateAccount {
     private readonly getAccountByIdRepository: GetAccountByIdRepository,
     private readonly hashCreator: HashCreator,
     private readonly updateAccountRepoitory: UpdateAccountRepository,
-    private readonly sendMailAccount: SendMailAccount,
+    private readonly sendMailSession: SendMailSession,
     private readonly mailFilePath: string,
     private readonly uploadFile: UploadFile,
     private readonly fileDestinationDir: string
@@ -40,7 +40,7 @@ export class DbUpdateAccount implements UpdateAccount {
         email_valided: emailValided
       })
       if (!emailValided) {
-        await this.sendMailAccount.sendMail({
+        await this.sendMailSession.sendMail({
           accountId: updatedAccount.id,
           email: updatedAccount.email,
           name: updatedAccount.name,

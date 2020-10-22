@@ -1,4 +1,4 @@
-import { GetAccountByEmailRepositorySpy, throwError, mockAccountModel, SendMailAccountSpy } from '@/data/test'
+import { GetAccountByEmailRepositorySpy, throwError, mockAccountModel, SendMailSessionSpy } from '@/data/test'
 import { DbRequestRecoverPassword } from './request-recover-password'
 import faker from 'faker'
 import { SessionType } from '@/domain/models/auth'
@@ -6,20 +6,20 @@ import { SessionType } from '@/domain/models/auth'
 interface sutTypes {
   sut: DbRequestRecoverPassword
   getAccountByEmailRepositorySpy: GetAccountByEmailRepositorySpy
-  sendMailAccountSpy: SendMailAccountSpy
+  sendMailSessionSpy: SendMailSessionSpy
   mailFilePath: string
 }
 
 const makeSut = (): sutTypes => {
   const getAccountByEmailRepositorySpy = new GetAccountByEmailRepositorySpy()
   getAccountByEmailRepositorySpy.account = mockAccountModel()
-  const sendMailAccountSpy = new SendMailAccountSpy()
+  const sendMailSessionSpy = new SendMailSessionSpy()
   const mailFilePath = faker.internet.url()
-  const sut = new DbRequestRecoverPassword(getAccountByEmailRepositorySpy, sendMailAccountSpy, mailFilePath)
+  const sut = new DbRequestRecoverPassword(getAccountByEmailRepositorySpy, sendMailSessionSpy, mailFilePath)
   return {
     sut,
     getAccountByEmailRepositorySpy,
-    sendMailAccountSpy,
+    sendMailSessionSpy,
     mailFilePath
   }
 }
@@ -47,10 +47,10 @@ describe('DbRequestRecoverPassword', () => {
     expect(sendMail).toBeFalsy()
   })
 
-  test('Should call SendMailAccount with correct values', async () => {
-    const { sut, getAccountByEmailRepositorySpy, sendMailAccountSpy, mailFilePath } = makeSut()
+  test('Should call SendMailSession with correct values', async () => {
+    const { sut, getAccountByEmailRepositorySpy, sendMailSessionSpy, mailFilePath } = makeSut()
     await sut.request({ email: faker.internet.email() })
-    expect(sendMailAccountSpy.sendMailParams).toEqual({
+    expect(sendMailSessionSpy.sendMailParams).toEqual({
       accountId: getAccountByEmailRepositorySpy.account.id,
       name: getAccountByEmailRepositorySpy.account.name,
       email: getAccountByEmailRepositorySpy.account.email,
@@ -60,9 +60,9 @@ describe('DbRequestRecoverPassword', () => {
     })
   })
 
-  test('Should return throw if SendMailAccount throws', async () => {
-    const { sut, sendMailAccountSpy } = makeSut()
-    jest.spyOn(sendMailAccountSpy, 'sendMail').mockImplementationOnce(throwError)
+  test('Should return throw if SendMailSession throws', async () => {
+    const { sut, sendMailSessionSpy } = makeSut()
+    jest.spyOn(sendMailSessionSpy, 'sendMail').mockImplementationOnce(throwError)
     const promise = sut.request({ email: faker.internet.email() })
     await expect(promise).rejects.toThrow()
   })

@@ -1,17 +1,17 @@
-import { SendMailAccountDTO } from '@/domain/dtos/auth/account'
-import { SendMailAccount } from '@/domain/usecases/auth/account'
+import { SendMailSessionDTO } from '@/domain/dtos/auth/account'
+import { SendMailSession } from '@/domain/usecases/auth/account'
 import { SessionModel } from '@/domain/models/auth'
 import { CreateSessionRepository } from '@/data/repositories/auth/session'
 import { MailTemplateAdapter, SendMailAdapter } from '@/data/protocols/comunication/mail'
 
-export class DbSendMailAccount implements SendMailAccount {
+export class DbSendMailSession implements SendMailSession {
   constructor (
     private readonly createSessionRepository: CreateSessionRepository,
     private readonly mailTemplateAdapter: MailTemplateAdapter,
     private readonly sendMailAdapter: SendMailAdapter
   ) {}
 
-  async sendMail ({ accountId, email, name, subject, mailFilePath, sessionType }: SendMailAccountDTO): Promise<SessionModel> {
+  async sendMail ({ accountId, email, name, subject, mailFilePath, sessionType }: SendMailSessionDTO): Promise<SessionModel> {
     const session = await this.createSessionRepository.add({
       accountId,
       type: sessionType,

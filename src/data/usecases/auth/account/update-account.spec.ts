@@ -1,6 +1,6 @@
 import { DbUpdateAccount } from './update-account'
 import { GetAccountByIdRepositorySpy, UpdateAccountRepositorySpy } from '@/data/test/auth/mock-account-repository'
-import { mockUpdateAccountDTO, SendMailAccountSpy, throwError, UploadFileSpy } from '@/data/test'
+import { mockUpdateAccountDTO, SendMailSessionSpy, throwError, UploadFileSpy } from '@/data/test'
 import { HashCreatorSpy } from '@/data/test/mock-criptography'
 import faker from 'faker'
 import path from 'path'
@@ -11,7 +11,7 @@ interface sutTypes {
   getAccountByIdRepositorySpy: GetAccountByIdRepositorySpy
   hashCreatorSpy: HashCreatorSpy
   updateAccountRepositorySpy: UpdateAccountRepositorySpy
-  sendMailAccountSpy: SendMailAccountSpy
+  sendMailSessionSpy: SendMailSessionSpy
   mailFilePath: string
   uploadFileSpy: UploadFileSpy
   destinationFileDir: string
@@ -21,7 +21,7 @@ const makeSut = (): sutTypes => {
   const hashCreatorSpy = new HashCreatorSpy()
   const getAccountByIdRepositorySpy = new GetAccountByIdRepositorySpy()
   const updateAccountRepositorySpy = new UpdateAccountRepositorySpy()
-  const sendMailAccountSpy = new SendMailAccountSpy()
+  const sendMailSessionSpy = new SendMailSessionSpy()
   const mailFilePath = faker.internet.url()
   const uploadFileSpy = new UploadFileSpy()
   const destinationFileDir = faker.internet.url()
@@ -29,7 +29,7 @@ const makeSut = (): sutTypes => {
     getAccountByIdRepositorySpy,
     hashCreatorSpy,
     updateAccountRepositorySpy,
-    sendMailAccountSpy,
+    sendMailSessionSpy,
     mailFilePath,
     uploadFileSpy,
     destinationFileDir)
@@ -38,7 +38,7 @@ const makeSut = (): sutTypes => {
     getAccountByIdRepositorySpy,
     hashCreatorSpy,
     updateAccountRepositorySpy,
-    sendMailAccountSpy,
+    sendMailSessionSpy,
     mailFilePath,
     uploadFileSpy,
     destinationFileDir
@@ -107,10 +107,10 @@ describe('DbUpdateAccount', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should call SendMailAccount with correct values', async () => {
-    const { sut, updateAccountRepositorySpy, sendMailAccountSpy, mailFilePath } = makeSut()
+  test('Should call SendMailSession with correct values', async () => {
+    const { sut, updateAccountRepositorySpy, sendMailSessionSpy, mailFilePath } = makeSut()
     await sut.update(mockUpdateAccountDTO())
-    expect(sendMailAccountSpy.sendMailParams).toEqual({
+    expect(sendMailSessionSpy.sendMailParams).toEqual({
       accountId: updateAccountRepositorySpy.account.id,
       name: updateAccountRepositorySpy.account.name,
       email: updateAccountRepositorySpy.account.email,
@@ -120,16 +120,16 @@ describe('DbUpdateAccount', () => {
     })
   })
 
-  test('Should return throw if SendMailAccount throws', async () => {
-    const { sut, sendMailAccountSpy } = makeSut()
-    jest.spyOn(sendMailAccountSpy, 'sendMail').mockImplementationOnce(throwError)
+  test('Should return throw if SendMailSession throws', async () => {
+    const { sut, sendMailSessionSpy } = makeSut()
+    jest.spyOn(sendMailSessionSpy, 'sendMail').mockImplementationOnce(throwError)
     const promise = sut.update(mockUpdateAccountDTO())
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should not call SendMailAccount if not change mail', async () => {
-    const { sut, sendMailAccountSpy } = makeSut()
-    const sendMailSpy = jest.spyOn(sendMailAccountSpy, 'sendMail')
+  test('Should not call SendMailSession if not change mail', async () => {
+    const { sut, sendMailSessionSpy } = makeSut()
+    const sendMailSpy = jest.spyOn(sendMailSessionSpy, 'sendMail')
     const updateAccountDTO = mockUpdateAccountDTO()
     delete updateAccountDTO.email
     await sut.update(updateAccountDTO)

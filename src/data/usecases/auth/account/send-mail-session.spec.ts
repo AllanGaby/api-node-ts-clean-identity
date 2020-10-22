@@ -1,10 +1,10 @@
 import { CreateSessionRepositorySpy, mockSendMailAccountDTO, throwError, MailTemplateAdapterSpy, mockSessionModel, SendMailAdapterSpy } from '@/data/test'
 import { SessionType } from '@/domain/models/auth'
-import { DbSendMailAccount } from './send-mail-account'
+import { DbSendMailSession } from './send-mail-session'
 import faker from 'faker'
 
 interface sutTypes {
-  sut: DbSendMailAccount
+  sut: DbSendMailSession
   createSessionRepositorySpy: CreateSessionRepositorySpy
   mailTemplateAdapterSpy: MailTemplateAdapterSpy
   sendMailAdapterSpy: SendMailAdapterSpy
@@ -14,7 +14,7 @@ const makeSut = (): sutTypes => {
   const createSessionRepositorySpy = new CreateSessionRepositorySpy()
   const mailTemplateAdapterSpy = new MailTemplateAdapterSpy()
   const sendMailAdapterSpy = new SendMailAdapterSpy()
-  const sut = new DbSendMailAccount(createSessionRepositorySpy, mailTemplateAdapterSpy, sendMailAdapterSpy)
+  const sut = new DbSendMailSession(createSessionRepositorySpy, mailTemplateAdapterSpy, sendMailAdapterSpy)
   return {
     sut,
     createSessionRepositorySpy,
@@ -23,7 +23,7 @@ const makeSut = (): sutTypes => {
   }
 }
 
-describe('DbSendMailActiveAccount', () => {
+describe('DbSendMailSession', () => {
   test('Should call CreateSessionRepository with correct value', async () => {
     const { sut, createSessionRepositorySpy } = makeSut()
     const sendMailAccountDTO = mockSendMailAccountDTO(SessionType.activeAccount)
