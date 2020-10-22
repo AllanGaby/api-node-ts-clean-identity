@@ -1,18 +1,22 @@
 import { DbRecoverPassword } from './recover-password'
-import { GetSessionByIdRepositorySpy, mockRecoverPasswordDTO, throwError } from '@/data/test'
+import { GetSessionByIdRepositorySpy, mockRecoverPasswordDTO, throwError, GetAccountByIdRepositorySpy, mockSessionModel } from '@/data/test'
 import { SessionType } from '@/domain/models/auth'
 
 interface sutTypes {
   sut: DbRecoverPassword
   getSessionByIdRepositorySpy: GetSessionByIdRepositorySpy
+  getAccountByIdRepositorySpy: GetAccountByIdRepositorySpy
 }
 
 const makeSut = (): sutTypes => {
   const getSessionByIdRepositorySpy = new GetSessionByIdRepositorySpy()
-  const sut = new DbRecoverPassword(getSessionByIdRepositorySpy)
+  getSessionByIdRepositorySpy.session = mockSessionModel(SessionType.recoverPassword)
+  const getAccountByIdRepositorySpy = new GetAccountByIdRepositorySpy()
+  const sut = new DbRecoverPassword(getSessionByIdRepositorySpy, getAccountByIdRepositorySpy)
   return {
     sut,
-    getSessionByIdRepositorySpy
+    getSessionByIdRepositorySpy,
+    getAccountByIdRepositorySpy
   }
 }
 
@@ -58,5 +62,11 @@ describe('DbRecoverPassword', () => {
     getSessionByIdRepositorySpy.session.deleted_at = new Date()
     const account = await sut.recover(mockRecoverPasswordDTO())
     expect(account).toBe(null)
+  })
+
+  test('Should call GetAccountByIdRepository with correct value', async () => {
+    const { sut, getSessionByIdRepositorySpy, getAccountByIdRepositorySpy } = makeSut()
+    await sut.recover(mockRecoverPasswordDTO())
+    expect(getAccountByIdRepositorySpy.accountId).toBe(getSessionByIdRepositorySpy.session.accountId)
   })
 })
