@@ -1,5 +1,5 @@
 import { DbRecoverPassword } from './recover-password'
-import { GetSessionByIdRepositorySpy, mockRecoverPasswordDTO } from '@/data/test'
+import { GetSessionByIdRepositorySpy, mockRecoverPasswordDTO, throwError } from '@/data/test'
 
 interface sutTypes {
   sut: DbRecoverPassword
@@ -21,5 +21,12 @@ describe('DbRecoverPassword', () => {
     const recoverPasswordDTO = mockRecoverPasswordDTO()
     await sut.recover(recoverPasswordDTO)
     expect(getSessionByIdRepositorySpy.sessionId).toBe(recoverPasswordDTO.sessionId)
+  })
+
+  test('Should throw if GetSessionByIdRepository throws', async () => {
+    const { sut, getSessionByIdRepositorySpy } = makeSut()
+    jest.spyOn(getSessionByIdRepositorySpy, 'getSessionById').mockImplementationOnce(throwError)
+    const promise = sut.recover(mockRecoverPasswordDTO())
+    await expect(promise).rejects.toThrow()
   })
 })
