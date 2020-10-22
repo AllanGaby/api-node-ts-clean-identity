@@ -1,5 +1,5 @@
-import { CreateAccountDTO, UpdateAccountDTO, SendMailAccountDTO, AuthenticationAccountDTO } from '@/domain/dtos/auth/account'
-import { AccountModel, SessionType } from '@/domain/models/auth'
+import { CreateAccountDTO, UpdateAccountDTO, AuthenticationAccountDTO } from '@/domain/dtos/auth/account'
+import { AccountModel } from '@/domain/models/auth'
 import faker from 'faker'
 import path from 'path'
 
@@ -25,15 +25,6 @@ export const mockAccountModel = (): AccountModel => ({
   password: faker.random.uuid(),
   created_at: faker.date.past(),
   updated_at: faker.date.past()
-})
-
-export const mockSendMailAccountDTO = (sessionType: SessionType, subject: string = faker.random.words()): SendMailAccountDTO => ({
-  accountId: faker.random.uuid(),
-  email: faker.internet.email(),
-  name: faker.name.findName(),
-  mailFilePath: faker.internet.url(),
-  subject,
-  sessionType
 })
 
 export const mockAuthenticationAccountDTO = (): AuthenticationAccountDTO => ({
