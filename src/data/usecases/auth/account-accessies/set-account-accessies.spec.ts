@@ -48,4 +48,12 @@ describe('DbSetAccountAccessies', () => {
     await sut.set(accountAccessies)
     expect(createAccountAccessiesRepositorySpy.accountAccessies).toEqual(accountAccessies)
   })
+
+  test('Should throw if CreateAccountAccessiesByAccountIdRepository throw', async () => {
+    const { sut, getAccountAccessiesByAccountIdRepositorySpy, createAccountAccessiesRepositorySpy } = makeSut()
+    getAccountAccessiesByAccountIdRepositorySpy.accountAccessies = null
+    jest.spyOn(createAccountAccessiesRepositorySpy, 'create').mockImplementationOnce(throwError)
+    const promise = sut.set(mockAccountAccessiesModel())
+    await expect(promise).rejects.toThrow()
+  })
 })
