@@ -1,5 +1,5 @@
 import { DbShowAccount } from './show-account'
-import { mockShowAccountFilter, ShowAccountRepositorySpy, throwError } from '@/data/test'
+import { mockAccountModel, mockShowAccountFilter, ShowAccountRepositorySpy, throwError } from '@/data/test'
 
 interface sutTypes {
   sut: DbShowAccount
@@ -23,10 +23,24 @@ describe('DbShowAccount', () => {
     expect(showAccountRepositorySpy.filter).toEqual(showAccountFilter)
   })
 
-  test('Should throw if ListAccountRepository throws', async () => {
+  test('Should throw if ShowAccountRepository throws', async () => {
     const { sut, showAccountRepositorySpy } = makeSut()
     jest.spyOn(showAccountRepositorySpy, 'show').mockImplementationOnce(throwError)
     const promise = sut.show(mockShowAccountFilter())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return null if ShowAccountRepository return null', async () => {
+    const { sut, showAccountRepositorySpy } = makeSut()
+    showAccountRepositorySpy.account = null
+    const account = await sut.show(mockShowAccountFilter())
+    expect(account).toBeFalsy()
+  })
+
+  test('Should return an account if ShowAccountRepository return an account', async () => {
+    const { sut, showAccountRepositorySpy } = makeSut()
+    showAccountRepositorySpy.account = mockAccountModel()
+    const account = await sut.show(mockShowAccountFilter())
+    expect(account).toEqual(showAccountRepositorySpy.account)
   })
 })
