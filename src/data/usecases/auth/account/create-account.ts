@@ -1,4 +1,5 @@
-import { CreateAccount, SendMailSession } from '@/domain//usecases/auth/account'
+import { CreateAccount } from '@/domain//usecases/auth/account'
+import { SendMailSession } from '@/domain/usecases/auth/session'
 import { CreateAccountDTO } from '@/domain/dtos/auth/account'
 import { SessionModel, SessionType } from '@/domain/models/auth'
 import { GetAccountByEmailRepository, CreateAccountRepository } from '@/data/repositories/auth/account'

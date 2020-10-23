@@ -1,5 +1,5 @@
-import { SendMailSessionDTO } from '@/domain/dtos/auth/account'
-import { SendMailSession } from '@/domain/usecases/auth/account'
+import { SendMailSessionDTO } from '@/domain/dtos/auth/session'
+import { SendMailSession } from '@/domain/usecases/auth/session'
 import { SessionModel } from '@/domain/models/auth'
 import { mockSessionModel } from './mock-session'
 

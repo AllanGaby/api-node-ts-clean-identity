@@ -1,5 +1,6 @@
 import { RequestRecoverPasswordDTO } from '@/domain/dtos/auth/account'
-import { RequestRecoverPassword, SendMailSession } from '@/domain/usecases/auth/account'
+import { RequestRecoverPassword } from '@/domain/usecases/auth/account'
+import { SendMailSession } from '@/domain/usecases/auth/session'
 import { GetAccountByEmailRepository } from '@/data/repositories/auth/account'
 import { SessionType } from '@/domain/models/auth'
 
