@@ -1,5 +1,5 @@
 import { DbSetAccountAccessies } from './set-account-accessies'
-import { GetAccountAccessiesByAccountIdRepositorySpy, mockAccountAccessiesModel } from '@/data/test'
+import { GetAccountAccessiesByAccountIdRepositorySpy, mockAccountAccessiesModel, throwError } from '@/data/test'
 
 interface sutTypes {
   sut: DbSetAccountAccessies
@@ -21,5 +21,12 @@ describe('DbSetAccountAccessies', () => {
     const accountAccessies = mockAccountAccessiesModel()
     await sut.set(accountAccessies)
     expect(getAccountAccessiesByAccountIdRepositorySpy.accountId).toBe(accountAccessies.accountId)
+  })
+
+  test('Should throw if GetAccountAccessiesByAccountIdRepository throws', async () => {
+    const { sut, getAccountAccessiesByAccountIdRepositorySpy } = makeSut()
+    jest.spyOn(getAccountAccessiesByAccountIdRepositorySpy, 'getAccountAccessiesByAccountId').mockImplementationOnce(throwError)
+    const promise = sut.set(mockAccountAccessiesModel())
+    await expect(promise).rejects.toThrow()
   })
 })
