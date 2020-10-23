@@ -23,10 +23,17 @@ describe('DbListAccount', () => {
     expect(listAccountRepositorySpy.filter).toEqual(filterAccount)
   })
 
-  test('Should throw if throws', async () => {
+  test('Should throw if ListAccountRepository throws', async () => {
     const { sut, listAccountRepositorySpy } = makeSut()
     jest.spyOn(listAccountRepositorySpy, 'list').mockImplementationOnce(throwError)
     const promise = sut.list(mockListAccountFilter())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return null if ListAccountRepository return null', async () => {
+    const { sut, listAccountRepositorySpy } = makeSut()
+    listAccountRepositorySpy.listAccount = null
+    const accountList = await sut.list(mockListAccountFilter())
+    expect(accountList).toBeFalsy()
   })
 })
