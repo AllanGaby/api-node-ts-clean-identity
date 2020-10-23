@@ -1,4 +1,4 @@
-import { CreateAccountDTO, UpdateAccountDTO, AuthenticationAccountDTO } from '@/domain/dtos/auth/account'
+import { CreateAccountDTO, UpdateAccountDTO, AuthenticationAccountDTO } from '@/domain/usecases/auth/account'
 import { AccountModel } from '@/domain/models/auth'
 import faker from 'faker'
 import path from 'path'

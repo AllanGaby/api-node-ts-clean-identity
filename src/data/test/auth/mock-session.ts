@@ -1,5 +1,5 @@
-import { ActiveAccountDTO, RecoverPasswordDTO } from '@/domain/dtos/auth/account'
-import { SendMailSessionDTO } from '@/domain/dtos/auth/session'
+import { ActiveAccountDTO, RecoverPasswordDTO } from '@/domain/usecases/auth/account'
+import { SendMailSessionDTO } from '@/domain/usecases/auth/session'
 import { SessionModel, SessionType } from '@/domain/models/auth'
 import faker from 'faker'
 

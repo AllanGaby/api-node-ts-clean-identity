@@ -1,5 +1,4 @@
-import { ActiveAccount } from '@/domain/usecases/auth/account'
-import { ActiveAccountDTO } from '@/domain/dtos/auth/account'
+import { ActiveAccount, ActiveAccountDTO } from '@/domain/usecases/auth/account'
 import { AccountModel, SessionType } from '@/domain/models/auth'
 import { GetAccountByIdRepository, UpdateAccountRepository } from '@/data/repositories/auth/account'
 import { GetSessionByIdRepository, DeleteSessionRepository } from '@/data/repositories/auth/session'

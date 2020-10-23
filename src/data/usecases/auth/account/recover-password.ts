@@ -1,5 +1,4 @@
-import { RecoverPassword } from '@/domain/usecases/auth/account'
-import { RecoverPasswordDTO } from '@/domain/dtos/auth/account'
+import { RecoverPassword, RecoverPasswordDTO } from '@/domain/usecases/auth/account'
 import { AccountModel, SessionType } from '@/domain/models/auth'
 import { GetSessionByIdRepository } from '@/data/repositories/auth/session'
 import { GetAccountByIdRepository, UpdateAccountRepository } from '@/data/repositories/auth/account'

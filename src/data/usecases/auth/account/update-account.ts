@@ -1,9 +1,8 @@
 import { HashCreator } from '@/data/protocols/criptography'
 import { UploadFile } from '@/data/protocols/storage'
 import { GetAccountByIdRepository, UpdateAccountRepository } from '@/data/repositories/auth/account'
-import { UpdateAccountDTO } from '@/domain/dtos/auth/account'
 import { AccountModel, SessionType } from '@/domain/models/auth'
-import { UpdateAccount } from '@/domain/usecases/auth/account'
+import { UpdateAccount, UpdateAccountDTO } from '@/domain/usecases/auth/account'
 import { SendMailSession } from '@/domain/usecases/auth/session'
 import path from 'path'
 

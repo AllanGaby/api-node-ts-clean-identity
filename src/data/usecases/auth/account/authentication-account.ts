@@ -1,5 +1,4 @@
-import { AuthenticationAccountDTO } from '@/domain/dtos/auth/account'
-import { AuthenticationAccount } from '@/domain/usecases/auth/account'
+import { AuthenticationAccount, AuthenticationAccountDTO } from '@/domain/usecases/auth/account'
 import { GetAccountByEmailRepository } from '@/data/repositories/auth/account'
 import { CreateSessionRepository } from '@/data/repositories/auth/session'
 import { HashComparer, Encrypter } from '@/data/protocols/criptography'

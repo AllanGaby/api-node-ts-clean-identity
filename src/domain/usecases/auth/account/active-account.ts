@@ -1,5 +1,8 @@
 import { AccountModel } from '@/domain/models/auth'
-import { ActiveAccountDTO } from '@/domain/dtos/auth/account'
+
+export interface ActiveAccountDTO {
+  sessionId: string
+}
 
 export interface ActiveAccount {
   active: (data: ActiveAccountDTO) => Promise<AccountModel>
