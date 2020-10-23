@@ -1,5 +1,5 @@
 import { DbListAccount } from './list-account'
-import { ListAccountRepositorySpy, mockListAccountFilter, throwError } from '@/data/test'
+import { ListAccountRepositorySpy, mockAccountModel, mockListAccountFilter, throwError } from '@/data/test'
 
 interface sutTypes {
   sut: DbListAccount
@@ -35,5 +35,15 @@ describe('DbListAccount', () => {
     listAccountRepositorySpy.listAccount = null
     const accountList = await sut.list(mockListAccountFilter())
     expect(accountList).toBeFalsy()
+  })
+
+  test('Should return account list if ListAccountRepository return an account list', async () => {
+    const { sut, listAccountRepositorySpy } = makeSut()
+    listAccountRepositorySpy.listAccount = [
+      mockAccountModel(),
+      mockAccountModel()
+    ]
+    const accountList = await sut.list(mockListAccountFilter())
+    expect(accountList).toHaveLength(2)
   })
 })
