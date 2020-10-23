@@ -1,5 +1,5 @@
 import { DbListAccount } from './list-account'
-import { ListAccountRepositorySpy, mockListAccountFilter } from '@/data/test'
+import { ListAccountRepositorySpy, mockListAccountFilter, throwError } from '@/data/test'
 
 interface sutTypes {
   sut: DbListAccount
@@ -21,5 +21,12 @@ describe('DbListAccount', () => {
     const filterAccount = mockListAccountFilter()
     await sut.list(filterAccount)
     expect(listAccountRepositorySpy.filter).toEqual(filterAccount)
+  })
+
+  test('Should throw if throws', async () => {
+    const { sut, listAccountRepositorySpy } = makeSut()
+    jest.spyOn(listAccountRepositorySpy, 'list').mockImplementationOnce(throwError)
+    const promise = sut.list(mockListAccountFilter())
+    await expect(promise).rejects.toThrow()
   })
 })
