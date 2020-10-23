@@ -1,17 +1,20 @@
 import { DbSetAccountAccessies } from './set-account-accessies'
-import { GetAccountAccessiesByAccountIdRepositorySpy, mockAccountAccessiesModel, throwError } from '@/data/test'
+import { GetAccountAccessiesByAccountIdRepositorySpy, mockAccountAccessiesModel, throwError, CreateAccountAccessiesRepositorySpy } from '@/data/test'
 
 interface sutTypes {
   sut: DbSetAccountAccessies
   getAccountAccessiesByAccountIdRepositorySpy: GetAccountAccessiesByAccountIdRepositorySpy
+  createAccountAccessiesRepositorySpy: CreateAccountAccessiesRepositorySpy
 }
 
 const makeSut = (): sutTypes => {
   const getAccountAccessiesByAccountIdRepositorySpy = new GetAccountAccessiesByAccountIdRepositorySpy()
-  const sut = new DbSetAccountAccessies(getAccountAccessiesByAccountIdRepositorySpy)
+  const createAccountAccessiesRepositorySpy = new CreateAccountAccessiesRepositorySpy()
+  const sut = new DbSetAccountAccessies(getAccountAccessiesByAccountIdRepositorySpy, createAccountAccessiesRepositorySpy)
   return {
     sut,
-    getAccountAccessiesByAccountIdRepositorySpy
+    getAccountAccessiesByAccountIdRepositorySpy,
+    createAccountAccessiesRepositorySpy
   }
 }
 
@@ -28,5 +31,13 @@ describe('DbSetAccountAccessies', () => {
     jest.spyOn(getAccountAccessiesByAccountIdRepositorySpy, 'getAccountAccessiesByAccountId').mockImplementationOnce(throwError)
     const promise = sut.set(mockAccountAccessiesModel())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call CreateAccountAccessiesByAccountIdRepository with correct value', async () => {
+    const { sut, getAccountAccessiesByAccountIdRepositorySpy, createAccountAccessiesRepositorySpy } = makeSut()
+    getAccountAccessiesByAccountIdRepositorySpy.accountAccessies = null
+    const accountAccessies = mockAccountAccessiesModel()
+    await sut.set(accountAccessies)
+    expect(createAccountAccessiesRepositorySpy.accountAccessies).toEqual(accountAccessies)
   })
 })
