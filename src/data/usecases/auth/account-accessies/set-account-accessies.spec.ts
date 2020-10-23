@@ -33,6 +33,14 @@ describe('DbSetAccountAccessies', () => {
     await expect(promise).rejects.toThrow()
   })
 
+  test('Should call CreateAccountAccessiesByAccountIdRepository if GetAccountAccessiesByAccountIdRepository return null', async () => {
+    const { sut, getAccountAccessiesByAccountIdRepositorySpy, createAccountAccessiesRepositorySpy } = makeSut()
+    const cresteSpy = jest.spyOn(createAccountAccessiesRepositorySpy, 'create')
+    getAccountAccessiesByAccountIdRepositorySpy.accountAccessies = null
+    await sut.set(mockAccountAccessiesModel())
+    expect(cresteSpy).toBeCalledTimes(1)
+  })
+
   test('Should call CreateAccountAccessiesByAccountIdRepository with correct value', async () => {
     const { sut, getAccountAccessiesByAccountIdRepositorySpy, createAccountAccessiesRepositorySpy } = makeSut()
     getAccountAccessiesByAccountIdRepositorySpy.accountAccessies = null
