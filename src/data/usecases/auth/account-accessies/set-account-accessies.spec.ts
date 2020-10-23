@@ -37,11 +37,13 @@ describe('DbSetAccountAccessies', () => {
   })
 
   test('Should call CreateAccountAccessiesByAccountIdRepository if GetAccountAccessiesByAccountIdRepository return null', async () => {
-    const { sut, getAccountAccessiesByAccountIdRepositorySpy, createAccountAccessiesRepositorySpy } = makeSut()
+    const { sut, getAccountAccessiesByAccountIdRepositorySpy, createAccountAccessiesRepositorySpy, updateAccountAccessiesRepositorySpy } = makeSut()
     const cresteSpy = jest.spyOn(createAccountAccessiesRepositorySpy, 'create')
+    const updateSPy = jest.spyOn(updateAccountAccessiesRepositorySpy, 'update')
     getAccountAccessiesByAccountIdRepositorySpy.accountAccessies = null
     await sut.set(mockAccountAccessiesModel())
     expect(cresteSpy).toBeCalledTimes(1)
+    expect(updateSPy).not.toBeCalled()
   })
 
   test('Should call CreateAccountAccessiesByAccountIdRepository with correct value', async () => {
@@ -61,9 +63,25 @@ describe('DbSetAccountAccessies', () => {
   })
 
   test('Should call UpdateAccountAccessiesRepository if GetAccountAccessiesByAccountIdRepository return any accountAccessies', async () => {
+    const { sut, createAccountAccessiesRepositorySpy, updateAccountAccessiesRepositorySpy } = makeSut()
+    const cresteSpy = jest.spyOn(createAccountAccessiesRepositorySpy, 'create')
+    const updateSPy = jest.spyOn(updateAccountAccessiesRepositorySpy, 'update')
+    await sut.set(mockAccountAccessiesModel())
+    expect(cresteSpy).not.toBeCalled()
+    expect(updateSPy).toBeCalledTimes(1)
+  })
+
+  test('Should call UpdateAccountAccessiesRepository with correct value', async () => {
     const { sut, updateAccountAccessiesRepositorySpy } = makeSut()
     const accountAccessies = mockAccountAccessiesModel()
     await sut.set(accountAccessies)
     expect(updateAccountAccessiesRepositorySpy.accountAccessies).toBe(accountAccessies)
+  })
+
+  test('Should throw if UpdateAccountAccessiesRepository throw', async () => {
+    const { sut, updateAccountAccessiesRepositorySpy } = makeSut()
+    jest.spyOn(updateAccountAccessiesRepositorySpy, 'update').mockImplementationOnce(throwError)
+    const promise = sut.set(mockAccountAccessiesModel())
+    await expect(promise).rejects.toThrow()
   })
 })
