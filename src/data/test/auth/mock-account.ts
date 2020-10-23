@@ -1,4 +1,4 @@
-import { CreateAccountDTO, UpdateAccountDTO, AuthenticationAccountDTO } from '@/domain/usecases/auth/account'
+import { CreateAccountDTO, UpdateAccountDTO, AuthenticationAccountDTO, ListAccountFilter } from '@/domain/usecases/auth/account'
 import { AccountModel } from '@/domain/models/auth'
 import faker from 'faker'
 import path from 'path'
@@ -30,4 +30,9 @@ export const mockAccountModel = (): AccountModel => ({
 export const mockAuthenticationAccountDTO = (): AuthenticationAccountDTO => ({
   email: faker.internet.email(),
   password: faker.internet.password()
+})
+
+export const mockListAccountFilter = (): ListAccountFilter => ({
+  name: faker.name.findName(),
+  email: faker.internet.email()
 })

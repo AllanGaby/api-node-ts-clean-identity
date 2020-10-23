@@ -1,4 +1,5 @@
-import { GetAccountByEmailRepository, CreateAccountRepository, CreateAccountModel, UpdateAccountRepository } from '@/data/repositories/auth/account'
+import { GetAccountByEmailRepository, CreateAccountRepository, CreateAccountModel, UpdateAccountRepository, ListAccountRepository } from '@/data/repositories/auth/account'
+import { ListAccountFilter } from '@/domain/usecases/auth/account'
 import { GetAccountByIdRepository } from '@/data/repositories/auth/account/get-account-by-id'
 import { AccountModel } from '@/domain/models/auth'
 import { mockAccountModel } from './mock-account'
@@ -39,5 +40,15 @@ export class UpdateAccountRepositorySpy implements UpdateAccountRepository {
   async update (account: AccountModel): Promise<AccountModel> {
     this.account = account
     return this.account
+  }
+}
+
+export class ListAccountRepositorySpy implements ListAccountRepository {
+  filter: ListAccountFilter
+  listAccount: AccountModel[]
+
+  async list (filter: ListAccountFilter): Promise<AccountModel[]> {
+    this.filter = filter
+    return this.listAccount
   }
 }
