@@ -36,4 +36,10 @@ describe('DbShowAccountAccessies', () => {
     const accountAccessies = await sut.show(mockShowAccountAccessiesFilter())
     expect(accountAccessies).toBeFalsy()
   })
+
+  test('Should return accountAccessies if GetAccountAccessiesByAccountIdRepository not return null', async () => {
+    const { sut, getAccountAccessiesByAccountIdRepositorySpy } = makeSut()
+    const accountAccessies = await sut.show(mockShowAccountAccessiesFilter())
+    expect(accountAccessies).toEqual(getAccountAccessiesByAccountIdRepositorySpy.accountAccessies)
+  })
 })
