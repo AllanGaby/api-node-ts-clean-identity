@@ -32,6 +32,12 @@ export class DbUpdateAccount implements UpdateAccount {
         })
       }
       const emailValided = email ? false : accountById.email_valided
+      if (!email) {
+        email = accountById.email
+      }
+      if (!name) {
+        name = accountById.name
+      }
       const updatedAccount = await this.updateAccountRepoitory.update({
         id: accountById.id,
         email,

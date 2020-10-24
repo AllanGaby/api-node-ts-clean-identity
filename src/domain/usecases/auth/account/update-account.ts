@@ -2,7 +2,7 @@ import { AccountModel } from '@/domain/models/auth'
 
 export interface UpdateAccountDTO {
   id: string
-  name: string
+  name?: string
   email?: string
   password?: string
   avatarFilePath?: string
