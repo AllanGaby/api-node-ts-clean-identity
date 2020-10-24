@@ -1,5 +1,5 @@
 import { DbShowAccountBySession } from './show-account-by-session'
-import { DecrypterSpy, mockShowAccountBySessionDTO } from '@/data/test'
+import { DecrypterSpy, mockShowAccountBySessionDTO, throwError } from '@/data/test'
 
 interface sutTypes {
   sut: DbShowAccountBySession
@@ -21,5 +21,12 @@ describe('DbShowAccountBySession', () => {
     const showAccountBySession = mockShowAccountBySessionDTO()
     await sut.show(showAccountBySession)
     expect(decrypterSpy.encryptedText).toBe(showAccountBySession.accessToken)
+  })
+
+  test('Should throw if Decrypter throws', async () => {
+    const { sut, decrypterSpy } = makeSut()
+    jest.spyOn(decrypterSpy, 'decrypt').mockImplementationOnce(throwError)
+    const promise = sut.show(mockShowAccountBySessionDTO())
+    await expect(promise).rejects.toThrow()
   })
 })
