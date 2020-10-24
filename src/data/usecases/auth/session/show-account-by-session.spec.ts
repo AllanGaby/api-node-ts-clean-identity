@@ -29,4 +29,11 @@ describe('DbShowAccountBySession', () => {
     const promise = sut.show(mockShowAccountBySessionDTO())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return null if Decrypter return null', async () => {
+    const { sut, decrypterSpy } = makeSut()
+    decrypterSpy.plainText = null
+    const account = await sut.show(mockShowAccountBySessionDTO())
+    expect(account).toBeFalsy()
+  })
 })
