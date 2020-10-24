@@ -1,5 +1,5 @@
 import { DbShowAccountAccessies } from './show-account-accessies'
-import { GetAccountAccessiesByAccountIdRepositorySpy, mockShowAccountAccessiesFilter } from '@/data/test'
+import { GetAccountAccessiesByAccountIdRepositorySpy, mockShowAccountAccessiesFilter, throwError } from '@/data/test'
 
 interface sutTypes {
   sut: DbShowAccountAccessies
@@ -21,5 +21,12 @@ describe('DbShowAccountAccessies', () => {
     const accountId = mockShowAccountAccessiesFilter()
     await sut.show(accountId)
     expect(getAccountAccessiesByAccountIdRepositorySpy.accountId).toBe(accountId.accountId)
+  })
+
+  test('Should throw if GetAccountAccessiesByAccountIdRepository throws', async () => {
+    const { sut, getAccountAccessiesByAccountIdRepositorySpy } = makeSut()
+    jest.spyOn(getAccountAccessiesByAccountIdRepositorySpy, 'getAccountAccessiesByAccountId').mockImplementationOnce(throwError)
+    const promise = sut.show(mockShowAccountAccessiesFilter())
+    await expect(promise).rejects.toThrow()
   })
 })
