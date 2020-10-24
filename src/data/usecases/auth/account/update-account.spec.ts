@@ -100,6 +100,17 @@ describe('DbUpdateAccount', () => {
     expect(updateAccountRepositorySpy.account.password).toBe(hashCreatorSpy.hash)
   })
 
+  test('Should not update name if not change name', async () => {
+    const { sut, hashCreatorSpy, getAccountByIdRepositorySpy, updateAccountRepositorySpy } = makeSut()
+    const updateAccountDTO = mockUpdateAccountDTO()
+    delete updateAccountDTO.name
+    await sut.update(updateAccountDTO)
+    expect(updateAccountRepositorySpy.account.id).toBe(getAccountByIdRepositorySpy.account.id)
+    expect(updateAccountRepositorySpy.account.name).toBe(getAccountByIdRepositorySpy.account.name)
+    expect(updateAccountRepositorySpy.account.email).toBe(updateAccountDTO.email)
+    expect(updateAccountRepositorySpy.account.password).toBe(hashCreatorSpy.hash)
+  })
+
   test('Should throw if UpdateAccountRepository throws', async () => {
     const { sut, updateAccountRepositorySpy } = makeSut()
     jest.spyOn(updateAccountRepositorySpy, 'update').mockImplementationOnce(throwError)
