@@ -70,4 +70,11 @@ describe('DbShowAccountBySession', () => {
     await sut.show(mockShowAccountBySessionDTO())
     expect(getAccountByIdRepositorySpy.accountId).toBe(getSessionByIdRepositorySpy.session.accountId)
   })
+
+  test('Should throw if GetAccountByIdRepository throws', async () => {
+    const { sut, getAccountByIdRepositorySpy } = makeSut()
+    jest.spyOn(getAccountByIdRepositorySpy, 'getAccountById').mockImplementationOnce(throwError)
+    const promise = sut.show(mockShowAccountBySessionDTO())
+    await expect(promise).rejects.toThrow()
+  })
 })
