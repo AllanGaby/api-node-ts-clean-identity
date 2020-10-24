@@ -52,4 +52,11 @@ describe('DbShowAccountBySession', () => {
     const promise = sut.show(mockShowAccountBySessionDTO())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return null if GetSessionByIdRepository return null', async () => {
+    const { sut, getSessionByIdRepositorySpy } = makeSut()
+    getSessionByIdRepositorySpy.session = null
+    const account = await sut.show(mockShowAccountBySessionDTO())
+    expect(account).toBeFalsy()
+  })
 })
