@@ -1,20 +1,23 @@
 import { DbShowAccountBySession } from './show-account-by-session'
-import { DecrypterSpy, mockShowAccountBySessionDTO, throwError, GetSessionByIdRepositorySpy } from '@/data/test'
+import { DecrypterSpy, mockShowAccountBySessionDTO, throwError, GetSessionByIdRepositorySpy, GetAccountByIdRepositorySpy } from '@/data/test'
 
 interface sutTypes {
   sut: DbShowAccountBySession
   decrypterSpy: DecrypterSpy
   getSessionByIdRepositorySpy: GetSessionByIdRepositorySpy
+  getAccountByIdRepositorySpy: GetAccountByIdRepositorySpy
 }
 
 const makeSut = (): sutTypes => {
   const decrypterSpy = new DecrypterSpy()
   const getSessionByIdRepositorySpy = new GetSessionByIdRepositorySpy()
-  const sut = new DbShowAccountBySession(decrypterSpy, getSessionByIdRepositorySpy)
+  const getAccountByIdRepositorySpy = new GetAccountByIdRepositorySpy()
+  const sut = new DbShowAccountBySession(decrypterSpy, getSessionByIdRepositorySpy, getAccountByIdRepositorySpy)
   return {
     sut,
     decrypterSpy,
-    getSessionByIdRepositorySpy
+    getSessionByIdRepositorySpy,
+    getAccountByIdRepositorySpy
   }
 }
 
@@ -34,10 +37,12 @@ describe('DbShowAccountBySession', () => {
   })
 
   test('Should return null if Decrypter return null', async () => {
-    const { sut, decrypterSpy } = makeSut()
+    const { sut, decrypterSpy, getSessionByIdRepositorySpy } = makeSut()
+    const getSessionByIdSpy = jest.spyOn(getSessionByIdRepositorySpy, 'getSessionById')
     decrypterSpy.plainText = null
     const account = await sut.show(mockShowAccountBySessionDTO())
     expect(account).toBeFalsy()
+    expect(getSessionByIdSpy).not.toBeCalled()
   })
 
   test('Should call GetSessionByIdRepository with correct value', async () => {
@@ -58,5 +63,11 @@ describe('DbShowAccountBySession', () => {
     getSessionByIdRepositorySpy.session = null
     const account = await sut.show(mockShowAccountBySessionDTO())
     expect(account).toBeFalsy()
+  })
+
+  test('Should call GetAccountByIdRepository with correct value', async () => {
+    const { sut, getSessionByIdRepositorySpy, getAccountByIdRepositorySpy } = makeSut()
+    await sut.show(mockShowAccountBySessionDTO())
+    expect(getAccountByIdRepositorySpy.accountId).toBe(getSessionByIdRepositorySpy.session.accountId)
   })
 })
