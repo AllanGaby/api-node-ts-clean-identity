@@ -1,17 +1,20 @@
 import { DbShowAccountBySession } from './show-account-by-session'
-import { DecrypterSpy, mockShowAccountBySessionDTO, throwError } from '@/data/test'
+import { DecrypterSpy, mockShowAccountBySessionDTO, throwError, GetSessionByIdRepositorySpy } from '@/data/test'
 
 interface sutTypes {
   sut: DbShowAccountBySession
   decrypterSpy: DecrypterSpy
+  getSessionByIdRepositorySpy: GetSessionByIdRepositorySpy
 }
 
 const makeSut = (): sutTypes => {
   const decrypterSpy = new DecrypterSpy()
-  const sut = new DbShowAccountBySession(decrypterSpy)
+  const getSessionByIdRepositorySpy = new GetSessionByIdRepositorySpy()
+  const sut = new DbShowAccountBySession(decrypterSpy, getSessionByIdRepositorySpy)
   return {
     sut,
-    decrypterSpy
+    decrypterSpy,
+    getSessionByIdRepositorySpy
   }
 }
 
@@ -35,5 +38,11 @@ describe('DbShowAccountBySession', () => {
     decrypterSpy.plainText = null
     const account = await sut.show(mockShowAccountBySessionDTO())
     expect(account).toBeFalsy()
+  })
+
+  test('Should call GetSessionByIdRepository with correct value', async () => {
+    const { sut, decrypterSpy, getSessionByIdRepositorySpy } = makeSut()
+    await sut.show(mockShowAccountBySessionDTO())
+    expect(getSessionByIdRepositorySpy.sessionId).toBe(decrypterSpy.plainText)
   })
 })
