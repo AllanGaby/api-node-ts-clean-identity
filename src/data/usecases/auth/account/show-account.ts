@@ -1,11 +1,11 @@
 import { ShowAccount, ShowAccountFilter } from '@/domain/usecases/auth/account'
 import { AccountModel } from '@/domain/models/auth'
-import { ShowAccountRepository } from '@/data/repositories/auth/account'
+import { GetAccountByIdRepository } from '@/data/repositories/auth/account'
 
 export class DbShowAccount implements ShowAccount {
-  constructor (private readonly showAccountRepository: ShowAccountRepository) {}
+  constructor (private readonly getAccountByIdRepository: GetAccountByIdRepository) {}
 
-  async show (filter: ShowAccountFilter): Promise<AccountModel> {
-    return await this.showAccountRepository.show(filter)
+  async show ({ accountId }: ShowAccountFilter): Promise<AccountModel> {
+    return await this.getAccountByIdRepository.getAccountById(accountId)
   }
 }
