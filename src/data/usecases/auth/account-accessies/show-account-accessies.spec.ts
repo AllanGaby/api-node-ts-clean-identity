@@ -16,7 +16,7 @@ const makeSut = (): sutTypes => {
 }
 
 describe('DbShowAccountAccessies', () => {
-  test('Should call getAccountAccessiesByAccountIdRepositorySpy with correct value', async () => {
+  test('Should call GetAccountAccessiesByAccountIdRepository with correct value', async () => {
     const { sut, getAccountAccessiesByAccountIdRepositorySpy } = makeSut()
     const accountId = mockShowAccountAccessiesFilter()
     await sut.show(accountId)
