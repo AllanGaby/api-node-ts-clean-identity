@@ -81,6 +81,24 @@ describe('DbCreateAccount', () => {
     await expect(promise).rejects.toThrow()
   })
 
+  test('Should call CreateAccountRepository with correct value', async () => {
+    const { sut, createAccountRepositorySpy, hashCreatorSpy } = makeSut()
+    const createAccountParams = mockCreateAccountDTO()
+    await sut.add(createAccountParams)
+    expect(createAccountRepositorySpy.addAccountParams).toEqual({
+      name: createAccountParams.name,
+      email: createAccountParams.email,
+      password: hashCreatorSpy.hash
+    })
+  })
+
+  test('Should return throw if HashCreator throws', async () => {
+    const { sut, createAccountRepositorySpy } = makeSut()
+    jest.spyOn(createAccountRepositorySpy, 'add').mockImplementationOnce(throwError)
+    const promise = sut.add(mockCreateAccountDTO())
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should call SendMailSession with correct values', async () => {
     const { sut, createAccountRepositorySpy, sendMailSessionSpy, mailFilePath } = makeSut()
     await sut.add(mockCreateAccountDTO())
