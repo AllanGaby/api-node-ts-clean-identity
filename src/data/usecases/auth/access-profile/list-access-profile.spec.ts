@@ -1,5 +1,5 @@
 import { DbListAccessProfile } from './list-access-profile'
-import { ListAccessProfileRepositorySpy, mockListAccessProfileFilter } from '@/data/test'
+import { ListAccessProfileRepositorySpy, mockListAccessProfileFilter, throwError } from '@/data/test'
 
 interface sutTypes {
   sut: DbListAccessProfile
@@ -21,5 +21,12 @@ describe('DbListAccessProfile', () => {
     const filter = mockListAccessProfileFilter()
     await sut.list(filter)
     expect(listAccessProfileRepositorySpy.params).toEqual(filter)
+  })
+
+  test('Should throw if ListAccessProfileRepository throws', async () => {
+    const { sut, listAccessProfileRepositorySpy } = makeSut()
+    jest.spyOn(listAccessProfileRepositorySpy, 'listByFilter').mockImplementationOnce(throwError)
+    const promise = sut.list(mockListAccessProfileFilter())
+    await expect(promise).rejects.toThrow()
   })
 })
