@@ -94,10 +94,10 @@ describe('DbUpdateAccount', () => {
     const { sut, hashCreatorSpy, getAccountByIdRepositorySpy, updateAccountRepositorySpy } = makeSut()
     const updateAccountDTO = mockUpdateAccountDTO()
     await sut.update(updateAccountDTO)
-    expect(updateAccountRepositorySpy.account.id).toBe(getAccountByIdRepositorySpy.account.id)
-    expect(updateAccountRepositorySpy.account.name).toBe(updateAccountDTO.name)
-    expect(updateAccountRepositorySpy.account.email).toBe(updateAccountDTO.email)
-    expect(updateAccountRepositorySpy.account.password).toBe(hashCreatorSpy.hash)
+    expect(updateAccountRepositorySpy.params.id).toBe(getAccountByIdRepositorySpy.account.id)
+    expect(updateAccountRepositorySpy.params.name).toBe(updateAccountDTO.name)
+    expect(updateAccountRepositorySpy.params.email).toBe(updateAccountDTO.email)
+    expect(updateAccountRepositorySpy.params.password).toBe(hashCreatorSpy.hash)
   })
 
   test('Should not update name if not change name', async () => {
@@ -105,10 +105,10 @@ describe('DbUpdateAccount', () => {
     const updateAccountDTO = mockUpdateAccountDTO()
     delete updateAccountDTO.name
     await sut.update(updateAccountDTO)
-    expect(updateAccountRepositorySpy.account.id).toBe(getAccountByIdRepositorySpy.account.id)
-    expect(updateAccountRepositorySpy.account.name).toBe(getAccountByIdRepositorySpy.account.name)
-    expect(updateAccountRepositorySpy.account.email).toBe(updateAccountDTO.email)
-    expect(updateAccountRepositorySpy.account.password).toBe(hashCreatorSpy.hash)
+    expect(updateAccountRepositorySpy.params.id).toBe(getAccountByIdRepositorySpy.account.id)
+    expect(updateAccountRepositorySpy.params.name).toBe(getAccountByIdRepositorySpy.account.name)
+    expect(updateAccountRepositorySpy.params.email).toBe(updateAccountDTO.email)
+    expect(updateAccountRepositorySpy.params.password).toBe(hashCreatorSpy.hash)
   })
 
   test('Should throw if UpdateAccountRepository throws', async () => {

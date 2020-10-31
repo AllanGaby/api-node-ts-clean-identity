@@ -97,7 +97,7 @@ describe('DbActiveAccount', () => {
     await sut.active(mockActiveAccountDTO())
     const updatedAccount = getAccountByIdRepositorySpy.account
     updatedAccount.email_valided = true
-    expect(updateAccountRepositorySpy.account).toEqual(updatedAccount)
+    expect(updateAccountRepositorySpy.params).toEqual(updatedAccount)
   })
 
   test('Should throw if UpdateAccountRepository throws', async () => {
@@ -109,13 +109,13 @@ describe('DbActiveAccount', () => {
   })
 
   test('Should return account updated if GetAccountByIdRepository return an account with invalided email', async () => {
-    const { sut, getAccountByIdRepositorySpy } = makeSut()
+    const { sut, updateAccountRepositorySpy, getAccountByIdRepositorySpy } = makeSut()
     getAccountByIdRepositorySpy.account.email_valided = false
     const account = await sut.active(mockActiveAccountDTO())
-    expect(account.id).toBe(getAccountByIdRepositorySpy.account.id)
-    expect(account.name).toBe(getAccountByIdRepositorySpy.account.name)
-    expect(account.email).toBe(getAccountByIdRepositorySpy.account.email)
-    expect(account.email_valided).toBe(getAccountByIdRepositorySpy.account.email_valided)
+    expect(account.id).toBe(updateAccountRepositorySpy.account.id)
+    expect(account.name).toBe(updateAccountRepositorySpy.account.name)
+    expect(account.email).toBe(updateAccountRepositorySpy.account.email)
+    expect(account.email_valided).toBe(updateAccountRepositorySpy.account.email_valided)
   })
 
   test('Should call DeleteSessionRepository with correct value', async () => {

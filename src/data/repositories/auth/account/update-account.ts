@@ -6,6 +6,7 @@ export interface UpdateAccountModel {
   email: string
   password: string
   email_valided: boolean
+  accessProfileId?: string
 }
 
 export interface UpdateAccountRepository {

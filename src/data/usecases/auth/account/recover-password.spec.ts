@@ -100,8 +100,8 @@ describe('DbRecoverPassword', () => {
   test('Should call UpdateAccountRepository with correct value', async () => {
     const { sut, hashCreatorSpy, updateAccountRepositorySpy, getAccountByIdRepositorySpy } = makeSut()
     await sut.recover(mockRecoverPasswordDTO())
-    expect(updateAccountRepositorySpy.account.id).toEqual(getAccountByIdRepositorySpy.account.id)
-    expect(updateAccountRepositorySpy.account.password).toEqual(hashCreatorSpy.hash)
+    expect(updateAccountRepositorySpy.params.id).toEqual(getAccountByIdRepositorySpy.account.id)
+    expect(updateAccountRepositorySpy.params.password).toEqual(hashCreatorSpy.hash)
   })
 
   test('Should throw if UpdateAccountRepository throws', async () => {

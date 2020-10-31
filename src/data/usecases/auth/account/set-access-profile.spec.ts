@@ -1,17 +1,20 @@
 import { DbSetAccessProfile } from './set-access-profile'
-import { GetAccountByIdRepositorySpy, mockSetAccessProfileDTO, throwError } from '@/data/test'
+import { GetAccountByIdRepositorySpy, mockSetAccessProfileDTO, UpdateAccountRepositorySpy, throwError } from '@/data/test'
 
 interface sutTypes {
   sut: DbSetAccessProfile
   getAccountByIdRepositorySpy: GetAccountByIdRepositorySpy
+  updateAccountRepositorySpy: UpdateAccountRepositorySpy
 }
 
 const makeSut = (): sutTypes => {
   const getAccountByIdRepositorySpy = new GetAccountByIdRepositorySpy()
-  const sut = new DbSetAccessProfile(getAccountByIdRepositorySpy)
+  const updateAccountRepositorySpy = new UpdateAccountRepositorySpy()
+  const sut = new DbSetAccessProfile(getAccountByIdRepositorySpy, updateAccountRepositorySpy)
   return {
     sut,
-    getAccountByIdRepositorySpy
+    getAccountByIdRepositorySpy,
+    updateAccountRepositorySpy
   }
 }
 
@@ -35,5 +38,20 @@ describe('DbSetAccessProfile', () => {
     getAccountByIdRepositorySpy.account = null
     const account = await sut.setAccessProfile(mockSetAccessProfileDTO())
     expect(account).toBeFalsy()
+  })
+
+  test('Should call UpdateAccountRepository with correct values', async () => {
+    const { sut, updateAccountRepositorySpy, getAccountByIdRepositorySpy } = makeSut()
+    const { account } = getAccountByIdRepositorySpy
+    const setAccessProfileDTO = mockSetAccessProfileDTO()
+    await sut.setAccessProfile(setAccessProfileDTO)
+    expect(updateAccountRepositorySpy.params).toEqual({
+      id: account.id,
+      name: account.name,
+      email: account.email,
+      password: account.password,
+      email_valided: account.email_valided,
+      accessProfileId: setAccessProfileDTO.accessProfileId
+    })
   })
 })
