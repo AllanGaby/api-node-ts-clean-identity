@@ -6,7 +6,6 @@ export class DbListAccessProfile implements ListAccessProfile {
   constructor (private readonly listAccessProfileRepository: ListAccessProfileRepository) {}
 
   async list (filter: ListAccessProfileFilter): Promise<AccessProfileModel[]> {
-    await this.listAccessProfileRepository.listByFilter(filter)
-    return null
+    return await this.listAccessProfileRepository.listByFilter(filter)
   }
 }
