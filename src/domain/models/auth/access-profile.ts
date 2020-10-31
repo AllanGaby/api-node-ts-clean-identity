@@ -1,5 +1,5 @@
 export interface AccessProfileModel {
-  accessProfileId: string
+  id: string
   title: string
   listAccount: boolean
 }
