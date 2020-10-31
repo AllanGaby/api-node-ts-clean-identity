@@ -54,4 +54,17 @@ describe('DbSetAccessProfile', () => {
       accessProfileId: setAccessProfileDTO.accessProfileId
     })
   })
+
+  test('Should throw if UpdateAccountRepository throws', async () => {
+    const { sut, updateAccountRepositorySpy } = makeSut()
+    jest.spyOn(updateAccountRepositorySpy, 'update').mockImplementationOnce(throwError)
+    const promise = sut.setAccessProfile(mockSetAccessProfileDTO())
+    await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return an updated account if success', async () => {
+    const { sut, updateAccountRepositorySpy } = makeSut()
+    const updatedAccount = await sut.setAccessProfile(mockSetAccessProfileDTO())
+    expect(updatedAccount).toEqual(updateAccountRepositorySpy.account)
+  })
 })
