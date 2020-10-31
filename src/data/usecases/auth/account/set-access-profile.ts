@@ -11,7 +11,7 @@ export class DbSetAccessProfile implements SetAccessProfile {
   async setAccessProfile ({ accountId, accessProfileId }: SetAccessProfileDTO): Promise<AccountModel> {
     const accountById = await this.getAccountByIdRepository.getAccountById(accountId)
     if (accountById) {
-      await this.updateAccountRepository.update({
+      return await this.updateAccountRepository.update({
         id: accountById.id,
         email: accountById.email,
         name: accountById.name,
