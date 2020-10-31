@@ -41,11 +41,19 @@ describe('DbCreateAccessProfile', () => {
     expect(createSpy).not.toBeCalled()
   })
 
-  test('Should call CreateAccessProfileRepositor with correct values', async () => {
+  test('Should call CreateAccessProfileRepository with correct values', async () => {
     const { sut, getAccessProfileByTitleRepositorySpy, createAccessProfileRepositorySpy } = makeSut()
     getAccessProfileByTitleRepositorySpy.accessProfile = null
     const accessProfile = mockCreateAccessProfileDTO()
     await sut.create(accessProfile)
     expect(createAccessProfileRepositorySpy.params).toEqual(accessProfile)
+  })
+
+  test('Should throw if CreateAccessProfileRepository throws', async () => {
+    const { sut, getAccessProfileByTitleRepositorySpy, createAccessProfileRepositorySpy } = makeSut()
+    getAccessProfileByTitleRepositorySpy.accessProfile = null
+    jest.spyOn(createAccessProfileRepositorySpy, 'create').mockImplementationOnce(throwError)
+    const promise = sut.create(mockCreateAccessProfileDTO())
+    await expect(promise).rejects.toThrow()
   })
 })
