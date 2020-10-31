@@ -29,5 +29,8 @@
     "test:staged": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:verbose": "jest --passWithNoTests --runInBand",
     "test:coverage": "yarn test --coverage"
+  },
+  "dependencies": {
+    "validator": "^13.1.17"
   }
 }
