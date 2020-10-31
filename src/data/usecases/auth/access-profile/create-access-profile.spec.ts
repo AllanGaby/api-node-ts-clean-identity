@@ -1,5 +1,5 @@
 import { DbCreateAccessProfile } from './create-access-profile'
-import { GetAccessProfileByTitleRepositorySpy, MockAccessProfileModel } from '@/data/test'
+import { GetAccessProfileByTitleRepositorySpy, MockAccessProfileModel, throwError } from '@/data/test'
 
 interface sutTypes {
   sut: DbCreateAccessProfile
@@ -21,5 +21,12 @@ describe('DbCreateAccessProfile', () => {
     const accessProfile = MockAccessProfileModel()
     await sut.create(accessProfile)
     expect(getAccessProfileByTitleRepositorySpy.title).toBe(accessProfile.title)
+  })
+
+  test('Should throw if GetSessionByIdRepository throws', async () => {
+    const { sut, getAccessProfileByTitleRepositorySpy } = makeSut()
+    jest.spyOn(getAccessProfileByTitleRepositorySpy, 'getAccessProfileByTitle').mockImplementationOnce(throwError)
+    const promise = sut.create(MockAccessProfileModel())
+    await expect(promise).rejects.toThrow()
   })
 })
