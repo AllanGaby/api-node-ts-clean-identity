@@ -1,5 +1,5 @@
 import { DbSetAccessProfile } from './set-access-profile'
-import { GetAccountByIdRepositorySpy, mockSetAccessProfileDTO } from '@/data/test'
+import { GetAccountByIdRepositorySpy, mockSetAccessProfileDTO, throwError } from '@/data/test'
 
 interface sutTypes {
   sut: DbSetAccessProfile
@@ -21,5 +21,19 @@ describe('DbSetAccessProfile', () => {
     const setAccessProfileDTO = mockSetAccessProfileDTO()
     await sut.setAccessProfile(setAccessProfileDTO)
     expect(getAccountByIdRepositorySpy.accountId).toEqual(setAccessProfileDTO.accountId)
+  })
+
+  test('Should throw if GetAccountByIdRepository throws', async () => {
+    const { sut, getAccountByIdRepositorySpy } = makeSut()
+    jest.spyOn(getAccountByIdRepositorySpy, 'getAccountById').mockImplementationOnce(throwError)
+    const promise = sut.setAccessProfile(mockSetAccessProfileDTO())
+    await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return null if GetAccountByIdRepository return null', async () => {
+    const { sut, getAccountByIdRepositorySpy } = makeSut()
+    getAccountByIdRepositorySpy.account = null
+    const account = await sut.setAccessProfile(mockSetAccessProfileDTO())
+    expect(account).toBeFalsy()
   })
 })
