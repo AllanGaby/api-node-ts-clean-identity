@@ -56,4 +56,11 @@ describe('DbCreateAccessProfile', () => {
     const promise = sut.create(mockCreateAccessProfileDTO())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return an AccessProfile if success', async () => {
+    const { sut, getAccessProfileByTitleRepositorySpy, createAccessProfileRepositorySpy } = makeSut()
+    getAccessProfileByTitleRepositorySpy.accessProfile = null
+    const accessProfile = await sut.create(mockCreateAccessProfileDTO())
+    expect(accessProfile).toEqual(createAccessProfileRepositorySpy.accessProfile)
+  })
 })
