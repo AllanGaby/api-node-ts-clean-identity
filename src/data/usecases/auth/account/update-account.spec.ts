@@ -1,5 +1,5 @@
 import { DbUpdateAccount } from './update-account'
-import { GetAccountByIdRepositorySpy, UpdateAccountRepositorySpy } from '@/data/test/auth/mock-account-repository'
+import { GetAccountByIdRepositorySpy, UpdateAccountRepositorySpy } from '@/data/test/auth/account/mock-account-repository'
 import { mockUpdateAccountDTO, SendMailSessionSpy, throwError, UploadFileSpy } from '@/data/test'
 import { HashCreatorSpy } from '@/data/test/mock-criptography'
 import { SessionType } from '@/domain/models/auth'

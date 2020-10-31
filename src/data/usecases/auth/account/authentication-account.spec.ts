@@ -1,6 +1,6 @@
 import { DbAuthenticationAccount } from './authentication-account'
 import { mockAuthenticationAccountDTO, throwError, HashComparerSpy, mockAccountModel, EncrypterSpy, CreateSessionRepositorySpy } from '@/data/test'
-import { GetAccountByEmailRepositorySpy } from '@/data/test/auth/mock-account-repository'
+import { GetAccountByEmailRepositorySpy } from '@/data/test/auth/account/mock-account-repository'
 import { SessionType } from '@/domain/models/auth'
 
 interface sutTypes {

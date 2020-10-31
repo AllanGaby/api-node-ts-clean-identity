@@ -1,13 +1,5 @@
 import { DbCreateAccount } from './create-account'
-import {
-  GetAccountByEmailRepositorySpy,
-  CreateAccountRepositorySpy,
-  mockCreateAccountDTO,
-  mockAccountModel,
-  HashCreatorSpy,
-  throwError,
-  SendMailSessionSpy
-} from '@/data/test'
+import { GetAccountByEmailRepositorySpy, CreateAccountRepositorySpy, mockCreateAccountDTO, mockAccountModel, HashCreatorSpy, throwError, SendMailSessionSpy } from '@/data/test'
 import faker from 'faker'
 import { SessionType } from '@/domain/models/auth'
 
