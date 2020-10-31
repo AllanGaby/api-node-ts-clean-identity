@@ -23,10 +23,16 @@ describe('DbCreateAccessProfile', () => {
     expect(getAccessProfileByTitleRepositorySpy.title).toBe(accessProfile.title)
   })
 
-  test('Should throw if GetSessionByIdRepository throws', async () => {
+  test('Should throw if GetAccessProfileByTitleRepository throws', async () => {
     const { sut, getAccessProfileByTitleRepositorySpy } = makeSut()
     jest.spyOn(getAccessProfileByTitleRepositorySpy, 'getAccessProfileByTitle').mockImplementationOnce(throwError)
     const promise = sut.create(MockAccessProfileModel())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return null if GetAccessProfileByTitleRepository return any AccessProfileModel', async () => {
+    const { sut } = makeSut()
+    const accessProfile = await sut.create(MockAccessProfileModel())
+    expect(accessProfile).toBeFalsy()
   })
 })
