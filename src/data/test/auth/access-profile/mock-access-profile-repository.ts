@@ -1,7 +1,7 @@
 import { AccessProfileModel } from '@/domain/models/auth'
-import { GetAccessProfileByTitleRepository, CreateAccessProfileRepository } from '@/data/repositories/auth/access-profile'
+import { GetAccessProfileByTitleRepository, CreateAccessProfileRepository, ListAccessProfileRepository } from '@/data/repositories/auth/access-profile'
 import { mockAccessProfileModel } from './mock-access-profile'
-import { CreateAccessProfileDTO } from '@/domain/usecases/auth/access-profile'
+import { CreateAccessProfileDTO, ListAccessProfileFilter } from '@/domain/usecases/auth/access-profile'
 
 export class GetAccessProfileByTitleRepositorySpy implements GetAccessProfileByTitleRepository {
   title: string
@@ -20,5 +20,15 @@ export class CreateAccessProfileRepositorySpy implements CreateAccessProfileRepo
   async create (accessProfile: CreateAccessProfileDTO): Promise<AccessProfileModel> {
     this.params = accessProfile
     return this.accessProfile
+  }
+}
+
+export class ListAccessProfileRepositorySpy implements ListAccessProfileRepository {
+  params: ListAccessProfileFilter
+  accessProfileList: AccessProfileModel[]
+
+  async listByFilter (filter: ListAccessProfileFilter): Promise<AccessProfileModel[]> {
+    this.params = filter
+    return this.accessProfileList
   }
 }
