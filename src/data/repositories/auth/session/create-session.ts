@@ -7,5 +7,5 @@ export interface CreateSessionModel {
 }
 
 export interface CreateSessionRepository {
-  add: (data: CreateSessionModel) => Promise<SessionModel>
+  create: (data: CreateSessionModel) => Promise<SessionModel>
 }
