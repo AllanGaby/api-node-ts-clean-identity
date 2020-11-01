@@ -6,12 +6,15 @@ import { CreateAccountModel } from '@/data/repositories/auth/account'
 
 interface sutTypes {
   sut: MemoryAccountRepository
+  createParams: CreateAccountModel
 }
 
 const makeSut = (): sutTypes => {
+  const createParams = mockCreateAccountModel()
   const sut = new MemoryAccountRepository()
   return {
-    sut
+    sut,
+    createParams
   }
 }
 
@@ -28,10 +31,9 @@ const checkCreatedAccountValues = (createdAccount: MemoryAccountModel, params: C
 
 describe('MemoryAccountRepository Create Method', () => {
   test('Should return an account with correct values', async () => {
-    const { sut } = makeSut()
-    const params = mockCreateAccountModel()
-    const createdAccount = await sut.create(params)
-    checkCreatedAccountValues(createdAccount, params)
+    const { sut, createParams } = makeSut()
+    const createdAccount = await sut.create(createParams)
+    checkCreatedAccountValues(createdAccount, createParams)
   })
 })
 
@@ -43,10 +45,24 @@ describe('MemoryAccountRepository GetAccountByEmail Method', () => {
   })
 
   test('Should return an account if account is found', async () => {
+    const { sut, createParams } = makeSut()
+    await sut.create(createParams)
+    const account = await sut.getAccountByEmail(createParams.email)
+    checkCreatedAccountValues(account, createParams)
+  })
+})
+
+describe('MemoryAccountRepository GetAccountById Method', () => {
+  test('Should return null if account not found', async () => {
     const { sut } = makeSut()
-    const params = mockCreateAccountModel()
-    await sut.create(params)
-    const account = await sut.getAccountByEmail(params.email)
-    checkCreatedAccountValues(account, params)
+    const account = await sut.getAccountById(faker.random.uuid())
+    expect(account).toBeFalsy()
+  })
+
+  test('Should return an account if account is found', async () => {
+    const { sut, createParams } = makeSut()
+    const createdAccount = await sut.create(createParams)
+    const account = await sut.getAccountById(createdAccount.id)
+    checkCreatedAccountValues(account, createParams)
   })
 })
