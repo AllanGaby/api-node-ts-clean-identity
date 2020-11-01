@@ -42,9 +42,8 @@ describe('DbRequestRecoverPassword', () => {
   test('Should return null if GetAccountByEmailRepository return null', async () => {
     const { sut, getAccountByEmailRepositorySpy } = makeSut()
     getAccountByEmailRepositorySpy.account = null
-    const email = faker.internet.email()
-    const sendMail = await sut.request({ email })
-    expect(sendMail).toBeFalsy()
+    const promise = sut.request({ email: faker.internet.email() })
+    await expect(promise).rejects.toThrow()
   })
 
   test('Should call SendMailSession with correct values', async () => {

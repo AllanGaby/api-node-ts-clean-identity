@@ -22,7 +22,8 @@ export class DbRequestRecoverPassword implements RequestRecoverPassword {
         mailFilePath: this.mailFilePath
       })
       return true
+    } else {
+      throw new Error('Account not found')
     }
-    return false
   }
 }
