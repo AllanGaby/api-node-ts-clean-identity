@@ -20,6 +20,6 @@ export class DbSetAccessProfile implements SetAccessProfile {
         accessProfileId
       })
     }
-    return null
+    throw new Error('Account not found')
   }
 }

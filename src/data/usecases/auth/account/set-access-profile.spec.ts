@@ -36,8 +36,8 @@ describe('DbSetAccessProfile', () => {
   test('Should return null if GetAccountByIdRepository return null', async () => {
     const { sut, getAccountByIdRepositorySpy } = makeSut()
     getAccountByIdRepositorySpy.account = null
-    const account = await sut.setAccessProfile(mockSetAccessProfileDTO())
-    expect(account).toBeFalsy()
+    const promise = sut.setAccessProfile(mockSetAccessProfileDTO())
+    await expect(promise).rejects.toThrow()
   })
 
   test('Should call UpdateAccountRepository with correct values', async () => {
