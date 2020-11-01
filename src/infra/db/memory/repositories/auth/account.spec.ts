@@ -90,3 +90,27 @@ describe('MemoryAccountRepository Update Method', () => {
     expect(updatedAccount.updated_at).not.toBe(createdAccount.updated_at)
   })
 })
+
+describe('MemoryAccountRepository List Method', () => {
+  test('Should return null if account not found', async () => {
+    const { sut } = makeSut()
+    const list = await sut.list({ name: faker.name.findName(), email: faker.internet.email() })
+    expect(list).toHaveLength(0)
+  })
+
+  test('Should return an account if account is found by name', async () => {
+    const { sut, createParams } = makeSut()
+    const createdAccount = await sut.create(createParams)
+    const list = await sut.list({ name: createParams.name, email: null })
+    expect(list).toHaveLength(1)
+    expect(list[0]).toEqual(createdAccount)
+  })
+
+  test('Should return an account if account is found by email', async () => {
+    const { sut, createParams } = makeSut()
+    const createdAccount = await sut.create(createParams)
+    const list = await sut.list({ name: null, email: createdAccount.email })
+    expect(list).toHaveLength(1)
+    expect(list[0]).toEqual(createdAccount)
+  })
+})
