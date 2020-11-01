@@ -1,6 +1,7 @@
 import { CreateSessionModel } from '@/data/repositories/auth/session'
+import { mockSessionModel } from '@/data/test'
 import { mockCreateSessionModel } from '@/infra/test/db/mock-session'
-import { MemorySessionModel } from '../../models/auth'
+import { MemorySessionModel } from '@/infra/db/memory/models/auth'
 import { MemorySessionRepository } from './session'
 import faker from 'faker'
 
@@ -48,5 +49,27 @@ describe('MemorySessionRepository GetSessionById Method', () => {
     const createdSession = await sut.create(createSessionParams)
     const session = await sut.getSessionById(createdSession.id)
     checkCreatedSession(session, createSessionParams)
+  })
+})
+
+describe('MemorySessionRepository Delete Method', () => {
+  test('Should session list change after delete', async () => {
+    const { sut, createSessionParams } = makeSut()
+    const createdSession = await sut.create(createSessionParams)
+    const beforeSession = await sut.getSessionById(createdSession.id)
+    checkCreatedSession(beforeSession, createSessionParams)
+    await sut.delete(createdSession)
+    const afterSession = await sut.getSessionById(createdSession.id)
+    expect(afterSession).toBeFalsy()
+  })
+
+  test('Should session list not change after delete if session not found', async () => {
+    const { sut } = makeSut()
+    const deletedSession = mockSessionModel()
+    const beforeSession = await sut.getSessionById(deletedSession.id)
+    expect(beforeSession).toBeFalsy()
+    await sut.delete(deletedSession)
+    const afterSession = await sut.getSessionById(deletedSession.id)
+    expect(afterSession).toBeFalsy()
   })
 })
