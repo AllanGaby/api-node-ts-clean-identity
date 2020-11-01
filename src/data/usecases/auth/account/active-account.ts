@@ -13,8 +13,10 @@ export class DbActiveAccount implements ActiveAccount {
 
   async active ({ sessionId }: ActiveAccountDTO): Promise<AccountModel> {
     const session = await this.getSessionByIdRepository.getSessionById(sessionId)
-    if ((session) &&
-        (session.type === SessionType.activeAccount) &&
+    if (!session) {
+      throw new Error('Session not found')
+    }
+    if ((session.type === SessionType.activeAccount) &&
         (session.experied_at > new Date()) &&
         (!session.deleted_at)) {
       const account = await this.getAccountByIdRepository.getAccountById(session.accountId)
@@ -24,7 +26,8 @@ export class DbActiveAccount implements ActiveAccount {
         const updatedAccount = await this.updateAccountRepository.update(account)
         return updatedAccount
       }
+    } else {
+      throw new Error('Invalid Session')
     }
-    return null
   }
 }
