@@ -1,6 +1,7 @@
 import { CompareFieldValidation } from './compare-field-validation'
 import faker from 'faker'
-import { InvalidParamError } from '../errors'
+import { InvalidParamError } from '@/validation/errors'
+import { mockInput } from '@/validation/test/mock-validation'
 
 interface sutTypes {
   sut: CompareFieldValidation
@@ -19,22 +20,17 @@ const makeSut = (): sutTypes => {
   }
 }
 
-const mockCompareInput = (field, compareField, value, compareValue): any => ({
-  [field]: value,
-  [compareField]: compareValue
-})
-
 describe('CompareFieldValidation', () => {
   test('Should return InvalidParamError if different values', () => {
     const { sut, field, compareField } = makeSut()
-    const error = sut.validate(mockCompareInput(field, compareField, faker.random.words(), faker.random.alphaNumeric(20)))
+    const error = sut.validate(mockInput(field, compareField, faker.random.words(), faker.random.alphaNumeric(20)))
     expect(error).toEqual(new InvalidParamError(field))
   })
 
   test('Should return null if same values', () => {
     const { sut, field, compareField } = makeSut()
     const value = faker.random.words()
-    const error = sut.validate(mockCompareInput(field, compareField, value, value))
+    const error = sut.validate(mockInput(field, compareField, value, value))
     expect(error).toBeFalsy()
   })
 })
