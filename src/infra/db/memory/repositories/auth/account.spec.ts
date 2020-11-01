@@ -1,4 +1,4 @@
-import { mockCreateAccountModel } from '@/infra/test/db/mock-account'
+import { mockCreateAccountModel, mockUpdateAccountModel } from '@/infra/test/db/mock-account'
 import { MemoryAccountModel } from '@/infra/db/memory/models/auth'
 import { MemoryAccountRepository } from './account'
 import faker from 'faker'
@@ -64,5 +64,29 @@ describe('MemoryAccountRepository GetAccountById Method', () => {
     const createdAccount = await sut.create(createParams)
     const account = await sut.getAccountById(createdAccount.id)
     checkCreatedAccountValues(account, createParams)
+  })
+})
+
+describe('MemoryAccountRepository Update Method', () => {
+  test('Should return null if account not found', async () => {
+    const { sut } = makeSut()
+    const updateAccount = await sut.update(mockUpdateAccountModel())
+    expect(updateAccount).toBeFalsy()
+  })
+
+  test('Should return an updated account if account if found', async () => {
+    const { sut, createParams } = makeSut()
+    const updateParams = mockUpdateAccountModel()
+    const createdAccount = await sut.create(createParams)
+    updateParams.id = createdAccount.id
+    const updatedAccount = await sut.update(updateParams)
+    expect(updatedAccount.id).toBe(updateParams.id)
+    expect(updatedAccount.name).toBe(updateParams.name)
+    expect(updatedAccount.email).toBe(updateParams.email)
+    expect(updatedAccount.password).toBe(updateParams.password)
+    expect(updatedAccount.email_valided).toBe(updateParams.email_valided)
+    expect(updatedAccount.accessProfileId).toBe(updateParams.accessProfileId)
+    expect(updatedAccount.created_at).toBe(createdAccount.created_at)
+    expect(updatedAccount.updated_at).not.toBe(createdAccount.updated_at)
   })
 })
