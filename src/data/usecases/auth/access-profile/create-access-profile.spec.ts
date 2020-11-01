@@ -21,6 +21,7 @@ const makeSut = (): sutTypes => {
 describe('DbCreateAccessProfile', () => {
   test('Should call GetAccessProfileByTitleRepository with correct title', async () => {
     const { sut, getAccessProfileByTitleRepositorySpy } = makeSut()
+    getAccessProfileByTitleRepositorySpy.accessProfile = null
     const accessProfile = mockCreateAccessProfileDTO()
     await sut.create(accessProfile)
     expect(getAccessProfileByTitleRepositorySpy.title).toBe(accessProfile.title)
@@ -36,8 +37,8 @@ describe('DbCreateAccessProfile', () => {
   test('Should return null if GetAccessProfileByTitleRepository return any AccessProfileModel', async () => {
     const { sut, createAccessProfileRepositorySpy } = makeSut()
     const createSpy = jest.spyOn(createAccessProfileRepositorySpy, 'create')
-    const accessProfile = await sut.create(mockCreateAccessProfileDTO())
-    expect(accessProfile).toBeFalsy()
+    const promise = sut.create(mockCreateAccessProfileDTO())
+    await expect(promise).rejects.toThrow()
     expect(createSpy).not.toBeCalled()
   })
 

@@ -13,6 +13,6 @@ export class DbCreateAccessProfile implements CreateAccessProfile {
     if (!accessProfileByTitle) {
       return await this.createAccessProfileRepository.create(accessProfileDTO)
     }
-    return null
+    throw new Error('The received title is already in use')
   }
 }
