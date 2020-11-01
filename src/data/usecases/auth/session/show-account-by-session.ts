@@ -19,6 +19,6 @@ export class DbShowAccountBySession implements ShowAccountBySession {
         return await this.getAccountByIdRepository.getAccountById(session.accountId)
       }
     }
-    return null
+    throw new Error('Session not found')
   }
 }

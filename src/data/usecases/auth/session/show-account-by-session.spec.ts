@@ -40,8 +40,8 @@ describe('DbShowAccountBySession', () => {
     const { sut, decrypterSpy, getSessionByIdRepositorySpy } = makeSut()
     const getSessionByIdSpy = jest.spyOn(getSessionByIdRepositorySpy, 'getSessionById')
     decrypterSpy.plainText = null
-    const account = await sut.show(mockShowAccountBySessionDTO())
-    expect(account).toBeFalsy()
+    const promise = sut.show(mockShowAccountBySessionDTO())
+    await expect(promise).rejects.toThrow()
     expect(getSessionByIdSpy).not.toBeCalled()
   })
 
@@ -61,8 +61,8 @@ describe('DbShowAccountBySession', () => {
   test('Should return null if GetSessionByIdRepository return null', async () => {
     const { sut, getSessionByIdRepositorySpy } = makeSut()
     getSessionByIdRepositorySpy.session = null
-    const account = await sut.show(mockShowAccountBySessionDTO())
-    expect(account).toBeFalsy()
+    const promise = sut.show(mockShowAccountBySessionDTO())
+    await expect(promise).rejects.toThrow()
   })
 
   test('Should call GetAccountByIdRepository with correct value', async () => {
