@@ -44,30 +44,30 @@ describe('DbRecoverPassword', () => {
   test('Should return null if GetSessionByIdRepository return null', async () => {
     const { sut, getSessionByIdRepositorySpy } = makeSut()
     getSessionByIdRepositorySpy.session = null
-    const account = await sut.recover(mockRecoverPasswordDTO())
-    expect(account).toBe(null)
+    const promise = sut.recover(mockRecoverPasswordDTO())
+    await expect(promise).rejects.toThrow()
   })
 
   test('Should return null if GetSessionByIdRepository return an invalid type session', async () => {
     const { sut, getSessionByIdRepositorySpy } = makeSut()
     getSessionByIdRepositorySpy.session.type = SessionType.activeAccount
-    const account = await sut.recover(mockRecoverPasswordDTO())
-    expect(account).toBe(null)
+    const promise = sut.recover(mockRecoverPasswordDTO())
+    await expect(promise).rejects.toThrow()
   })
 
   test('Should return null if GetSessionByIdRepository return an expired session', async () => {
     const { sut, getSessionByIdRepositorySpy } = makeSut()
     const experiedAt = new Date()
     getSessionByIdRepositorySpy.session.experied_at = new Date(experiedAt.getDate() - 1)
-    const account = await sut.recover(mockRecoverPasswordDTO())
-    expect(account).toBe(null)
+    const promise = sut.recover(mockRecoverPasswordDTO())
+    await expect(promise).rejects.toThrow()
   })
 
   test('Should return null if GetSessionByIdRepository return an deleted session', async () => {
     const { sut, getSessionByIdRepositorySpy } = makeSut()
     getSessionByIdRepositorySpy.session.deleted_at = new Date()
-    const account = await sut.recover(mockRecoverPasswordDTO())
-    expect(account).toBe(null)
+    const promise = sut.recover(mockRecoverPasswordDTO())
+    await expect(promise).rejects.toThrow()
   })
 
   test('Should call GetAccountByIdRepository with correct value', async () => {

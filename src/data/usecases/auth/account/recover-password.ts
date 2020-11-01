@@ -14,14 +14,17 @@ export class DbRecoverPassword implements RecoverPassword {
 
   async recover ({ password, sessionId }: RecoverPasswordDTO): Promise<AccountModel> {
     const session = await this.getSessionByIdRepository.getSessionById(sessionId)
-    if ((session) &&
-        (session.type === SessionType.recoverPassword) &&
+    if (!session) {
+      throw new Error('Session not found')
+    }
+    if ((session.type === SessionType.recoverPassword) &&
         (session.experied_at > new Date()) &&
         (!session.deleted_at)) {
       const account = await this.getAccountByIdRepository.getAccountById(session.accountId)
       account.password = await this.hashCreator.createHash(password)
       return await this.updateAccountRepository.update(account)
+    } else {
+      throw new Error('Invalid Session')
     }
-    return null
   }
 }
