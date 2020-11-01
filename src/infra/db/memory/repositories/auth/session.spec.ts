@@ -2,6 +2,7 @@ import { CreateSessionModel } from '@/data/repositories/auth/session'
 import { mockCreateSessionModel } from '@/infra/test/db/mock-session'
 import { MemorySessionModel } from '../../models/auth'
 import { MemorySessionRepository } from './session'
+import faker from 'faker'
 
 interface sutTypes {
   sut: MemorySessionRepository
@@ -32,5 +33,20 @@ describe('MemorySessionRepository Create Method', () => {
     const { sut, createSessionParams } = makeSut()
     const createdSession = await sut.create(createSessionParams)
     checkCreatedSession(createdSession, createSessionParams)
+  })
+})
+
+describe('MemorySessionRepository GetSessionById Method', () => {
+  test('Should return null if session not found', async () => {
+    const { sut } = makeSut()
+    const session = await sut.getSessionById(faker.random.uuid())
+    expect(session).toBeFalsy()
+  })
+
+  test('Should return a session if session found', async () => {
+    const { sut, createSessionParams } = makeSut()
+    const createdSession = await sut.create(createSessionParams)
+    const session = await sut.getSessionById(createdSession.id)
+    checkCreatedSession(session, createSessionParams)
   })
 })
