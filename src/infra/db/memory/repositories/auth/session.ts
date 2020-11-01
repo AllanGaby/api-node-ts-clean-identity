@@ -1,8 +1,8 @@
 import { MemorySessionModel } from '@/infra/db/memory/models/auth'
-import { CreateSessionModel, CreateSessionRepository } from '@/data/repositories/auth/session'
+import { CreateSessionModel, CreateSessionRepository, GetSessionByIdRepository } from '@/data/repositories/auth/session'
 import faker from 'faker'
 
-export class MemorySessionRepository implements CreateSessionRepository {
+export class MemorySessionRepository implements CreateSessionRepository, GetSessionByIdRepository {
   private readonly sessions: MemorySessionModel[]
 
   constructor () {
@@ -20,5 +20,9 @@ export class MemorySessionRepository implements CreateSessionRepository {
     }
     this.sessions.push(session)
     return session
+  }
+
+  async getSessionById (sessionId: string): Promise<MemorySessionModel> {
+    return this.sessions.find(session => session.id === sessionId)
   }
 }
