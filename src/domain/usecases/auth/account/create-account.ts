@@ -7,5 +7,5 @@ export interface CreateAccountDTO {
 }
 
 export interface CreateAccount {
-  add: (data: CreateAccountDTO) => Promise<SessionModel>
+  create: (data: CreateAccountDTO) => Promise<SessionModel>
 }

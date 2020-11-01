@@ -13,13 +13,13 @@ export class DbCreateAccount implements CreateAccount {
     private readonly mailFilePath: string
   ) {}
 
-  async add ({ name, email, password }: CreateAccountDTO): Promise<SessionModel> {
+  async create ({ name, email, password }: CreateAccountDTO): Promise<SessionModel> {
     const accountByEmail = await this.getAccountByEmailRepository.getAccountByEmail(email)
     if (accountByEmail) {
       throw new Error('The received email is already in use')
     } else {
       const passwordHashed = await this.hashCreator.createHash(password)
-      const account = await this.createAccountRepository.add({
+      const account = await this.createAccountRepository.create({
         name,
         email,
         password: passwordHashed

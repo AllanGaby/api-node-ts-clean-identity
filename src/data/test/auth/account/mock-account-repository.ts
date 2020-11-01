@@ -28,7 +28,7 @@ export class CreateAccountRepositorySpy implements CreateAccountRepository {
   addAccountParams: CreateAccountModel
   account: AccountModel = mockAccountModel()
 
-  async add (data: CreateAccountModel): Promise<AccountModel> {
+  async create (data: CreateAccountModel): Promise<AccountModel> {
     this.addAccountParams = data
     return this.account
   }
