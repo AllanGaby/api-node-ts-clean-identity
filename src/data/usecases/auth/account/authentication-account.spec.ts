@@ -45,8 +45,8 @@ describe('DbAuthenticationAccount', () => {
   test('Should return null if GetSessionByIdRepository return null', async () => {
     const { sut, getAccountByEmailRepositorySpy } = makeSut()
     getAccountByEmailRepositorySpy.account = null
-    const token = await sut.authenticate(mockAuthenticationAccountDTO())
-    expect(token).toBeFalsy()
+    const promise = sut.authenticate(mockAuthenticationAccountDTO())
+    await expect(promise).rejects.toThrow()
   })
 
   test('Should call HashComparer with correct values', async () => {
@@ -69,8 +69,8 @@ describe('DbAuthenticationAccount', () => {
   test('Should return null if HashComparer return false', async () => {
     const { sut, hashComparerSpy } = makeSut()
     hashComparerSpy.isValidHash = false
-    const token = await sut.authenticate(mockAuthenticationAccountDTO())
-    expect(token).toBeFalsy()
+    const promise = sut.authenticate(mockAuthenticationAccountDTO())
+    await expect(promise).rejects.toThrow()
   })
 
   test('Should call CreateSessionRepository with correct value', async () => {

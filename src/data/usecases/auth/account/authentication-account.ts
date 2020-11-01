@@ -28,6 +28,6 @@ export class DbAuthenticationAccount implements AuthenticationAccount {
         return await this.encrypter.encrypt(session.id)
       }
     }
-    return null
+    throw new Error('Account not found')
   }
 }
