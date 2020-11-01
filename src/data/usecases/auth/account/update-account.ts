@@ -57,6 +57,6 @@ export class DbUpdateAccount implements UpdateAccount {
       }
       return updatedAccount
     }
-    return null
+    throw new Error('Account not found')
   }
 }

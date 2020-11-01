@@ -56,8 +56,8 @@ describe('DbUpdateAccount', () => {
   test('Should return null if GetAccountByIdRepostirory return null', async () => {
     const { sut, getAccountByIdRepositorySpy } = makeSut()
     getAccountByIdRepositorySpy.account = null
-    const account = await sut.update(mockUpdateAccountDTO())
-    expect(account).toBeFalsy()
+    const promise = sut.update(mockUpdateAccountDTO())
+    await expect(promise).rejects.toThrow()
   })
 
   test('Should throw if GetAccountByIdRepostirory throws', async () => {
