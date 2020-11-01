@@ -1,0 +1,52 @@
+import { mockCreateAccountModel } from '@/infra/test/db/mock-account'
+import { MemoryAccountModel } from '@/infra/db/memory/models/auth'
+import { MemoryAccountRepository } from './account'
+import faker from 'faker'
+import { CreateAccountModel } from '@/data/repositories/auth/account'
+
+interface sutTypes {
+  sut: MemoryAccountRepository
+}
+
+const makeSut = (): sutTypes => {
+  const sut = new MemoryAccountRepository()
+  return {
+    sut
+  }
+}
+
+const checkCreatedAccountValues = (createdAccount: MemoryAccountModel, params: CreateAccountModel): void => {
+  expect(createdAccount.id).toBeTruthy()
+  expect(createdAccount.name).toBe(params.name)
+  expect(createdAccount.email).toBe(params.email)
+  expect(createdAccount.password).toBe(params.password)
+  expect(createdAccount.email_valided).toBeFalsy()
+  expect(createdAccount.accessProfileId).toBeFalsy()
+  expect(createdAccount.created_at).toBeTruthy()
+  expect(createdAccount.updated_at).toBeTruthy()
+}
+
+describe('MemoryAccountRepository Create Method', () => {
+  test('Should return an account with correct values', async () => {
+    const { sut } = makeSut()
+    const params = mockCreateAccountModel()
+    const createdAccount = await sut.create(params)
+    checkCreatedAccountValues(createdAccount, params)
+  })
+})
+
+describe('MemoryAccountRepository GetAccountByEmail Method', () => {
+  test('Should return null if account not found', async () => {
+    const { sut } = makeSut()
+    const account = await sut.getAccountByEmail(faker.internet.email())
+    expect(account).toBeFalsy()
+  })
+
+  test('Should return an account if account is found', async () => {
+    const { sut } = makeSut()
+    const params = mockCreateAccountModel()
+    await sut.create(params)
+    const account = await sut.getAccountByEmail(params.email)
+    checkCreatedAccountValues(account, params)
+  })
+})
