@@ -1,9 +1,9 @@
-import { GetAccessProfileByTitleRepository, CreateAccessProfileRepository, GetAccessProfileByIdRepository, ListAccessProfileRepository } from '@/data/repositories/auth/access-profile'
-import { CreateAccessProfileDTO, ListAccessProfileFilter } from '@/domain/usecases/auth/access-profile'
+import { GetAccessProfileByTitleRepository, CreateAccessProfileRepository, GetAccessProfileByIdRepository, ListAccessProfileRepository, UpdateAccessProfileRepository } from '@/data/repositories/auth/access-profile'
+import { CreateAccessProfileDTO, ListAccessProfileFilter, UpdateAccessProfileModel } from '@/domain/usecases/auth/access-profile'
 import { AccessProfileModel } from '@/domain/models/auth'
 import faker from 'faker'
 
-export class MemoryAccessProfileRepository implements GetAccessProfileByTitleRepository, CreateAccessProfileRepository, GetAccessProfileByIdRepository, ListAccessProfileRepository {
+export class MemoryAccessProfileRepository implements GetAccessProfileByTitleRepository, CreateAccessProfileRepository, GetAccessProfileByIdRepository, ListAccessProfileRepository, UpdateAccessProfileRepository {
   private readonly accessProfiles: AccessProfileModel[]
 
   constructor () {
@@ -22,7 +22,9 @@ export class MemoryAccessProfileRepository implements GetAccessProfileByTitleRep
     const accessProfile: AccessProfileModel = {
       id: faker.random.uuid(),
       title,
-      listAccount
+      listAccount,
+      created_at: new Date(),
+      updated_at: new Date()
     }
     this.accessProfiles.push(accessProfile)
     return accessProfile
@@ -30,5 +32,18 @@ export class MemoryAccessProfileRepository implements GetAccessProfileByTitleRep
 
   async listByFilter ({ title }: ListAccessProfileFilter): Promise<AccessProfileModel[]> {
     return this.accessProfiles.filter(accessProfile => ((!title) || (accessProfile.title === title)))
+  }
+
+  async update (updateAccessProfileModel: UpdateAccessProfileModel): Promise<AccessProfileModel> {
+    const index = this.accessProfiles.findIndex(accessProfile => accessProfile.id === updateAccessProfileModel.id)
+    if (index >= 0) {
+      this.accessProfiles[index] = {
+        ...this.accessProfiles[index],
+        ...updateAccessProfileModel,
+        updated_at: new Date()
+      }
+      return this.accessProfiles[index]
+    }
+    return null
   }
 }
