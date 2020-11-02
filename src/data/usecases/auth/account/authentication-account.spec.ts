@@ -77,13 +77,13 @@ describe('DbAuthenticationAccount', () => {
     const { sut, createSessionRepositorySpy, getAccountByEmailRepositorySpy } = makeSut()
     const authenticationAccountDTO = mockAuthenticationAccountDTO()
     await sut.authenticate(authenticationAccountDTO)
-    expect(createSessionRepositorySpy.addSessionParams.accountId).toBe(getAccountByEmailRepositorySpy.account.id)
-    expect(createSessionRepositorySpy.addSessionParams.type).toBe(SessionType.authentication)
+    expect(createSessionRepositorySpy.params.accountId).toBe(getAccountByEmailRepositorySpy.account.id)
+    expect(createSessionRepositorySpy.params.type).toBe(SessionType.authentication)
   })
 
   test('Should throw if CreateSessionRepository throws', async () => {
     const { sut, createSessionRepositorySpy } = makeSut()
-    jest.spyOn(createSessionRepositorySpy, 'add').mockImplementationOnce(throwError)
+    jest.spyOn(createSessionRepositorySpy, 'create').mockImplementationOnce(throwError)
     const promise = sut.authenticate(mockAuthenticationAccountDTO())
     await expect(promise).rejects.toThrow()
   })

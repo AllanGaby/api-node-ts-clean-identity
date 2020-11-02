@@ -20,7 +20,7 @@ export class DbAuthenticationAccount implements AuthenticationAccount {
         hashedText: account.password
       })
       if (isCorrectPassword) {
-        const session = await this.createSessionRepository.add({
+        const session = await this.createSessionRepository.create({
           accountId: account.id,
           type: SessionType.authentication,
           experied_at: new Date(new Date().getDate() + 1)

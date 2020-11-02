@@ -1,8 +1,8 @@
 import { mockCreateAccountModel, mockUpdateAccountModel } from '@/infra/test/db/mock-account'
-import { MemoryAccountModel } from '@/infra/db/memory/models/auth'
 import { MemoryAccountRepository } from './account'
 import faker from 'faker'
 import { CreateAccountModel } from '@/data/repositories/auth/account'
+import { AccountModel } from '@/domain/models/auth'
 
 interface sutTypes {
   sut: MemoryAccountRepository
@@ -18,7 +18,7 @@ const makeSut = (): sutTypes => {
   }
 }
 
-const checkCreatedAccountValues = (createdAccount: MemoryAccountModel, params: CreateAccountModel): void => {
+const checkCreatedAccountValues = (createdAccount: AccountModel, params: CreateAccountModel): void => {
   expect(createdAccount.id).toBeTruthy()
   expect(createdAccount.name).toBe(params.name)
   expect(createdAccount.email).toBe(params.email)

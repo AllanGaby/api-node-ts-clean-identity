@@ -28,13 +28,13 @@ describe('DbSendMailSession', () => {
     const { sut, createSessionRepositorySpy } = makeSut()
     const sendMailAccountDTO = mockSendMailSessionDTO(SessionType.activeAccount)
     await sut.sendMail(sendMailAccountDTO)
-    expect(createSessionRepositorySpy.addSessionParams.accountId).toBe(sendMailAccountDTO.accountId)
-    expect(createSessionRepositorySpy.addSessionParams.type).toBe(sendMailAccountDTO.sessionType)
+    expect(createSessionRepositorySpy.params.accountId).toBe(sendMailAccountDTO.accountId)
+    expect(createSessionRepositorySpy.params.type).toBe(sendMailAccountDTO.sessionType)
   })
 
   test('Should throw if CreateSessionRepository throws', async () => {
     const { sut, createSessionRepositorySpy } = makeSut()
-    jest.spyOn(createSessionRepositorySpy, 'add').mockImplementationOnce(throwError)
+    jest.spyOn(createSessionRepositorySpy, 'create').mockImplementationOnce(throwError)
     const promise = sut.sendMail(mockSendMailSessionDTO(SessionType.activeAccount))
     await expect(promise).rejects.toThrow()
   })

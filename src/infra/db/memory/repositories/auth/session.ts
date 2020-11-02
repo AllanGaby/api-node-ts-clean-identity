@@ -1,16 +1,16 @@
-import { MemorySessionModel } from '@/infra/db/memory/models/auth'
 import { CreateSessionModel, CreateSessionRepository, GetSessionByIdRepository, DeleteSessionRepository } from '@/data/repositories/auth/session'
+import { SessionModel } from '@/domain/models/auth'
 import faker from 'faker'
 
 export class MemorySessionRepository implements CreateSessionRepository, GetSessionByIdRepository, DeleteSessionRepository {
-  private readonly sessions: MemorySessionModel[]
+  private readonly sessions: SessionModel[]
 
   constructor () {
     this.sessions = []
   }
 
-  async create (createSession: CreateSessionModel): Promise<MemorySessionModel> {
-    const session: MemorySessionModel = {
+  async create (createSession: CreateSessionModel): Promise<SessionModel> {
+    const session: SessionModel = {
       id: faker.random.uuid(),
       accountId: createSession.accountId,
       type: createSession.type,
@@ -22,11 +22,11 @@ export class MemorySessionRepository implements CreateSessionRepository, GetSess
     return session
   }
 
-  async getSessionById (sessionId: string): Promise<MemorySessionModel> {
+  async getSessionById (sessionId: string): Promise<SessionModel> {
     return this.sessions.find(session => session.id === sessionId)
   }
 
-  async delete (deletedSession: MemorySessionModel): Promise<void> {
+  async delete (deletedSession: SessionModel): Promise<void> {
     const index = this.sessions.findIndex(session => session.id === deletedSession.id)
     if (index >= 0) {
       this.sessions.splice(index)

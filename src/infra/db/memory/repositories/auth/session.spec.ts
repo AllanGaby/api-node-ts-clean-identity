@@ -1,9 +1,9 @@
 import { CreateSessionModel } from '@/data/repositories/auth/session'
 import { mockSessionModel } from '@/data/test'
 import { mockCreateSessionModel } from '@/infra/test/db/mock-session'
-import { MemorySessionModel } from '@/infra/db/memory/models/auth'
 import { MemorySessionRepository } from './session'
 import faker from 'faker'
+import { SessionModel } from '@/domain/models/auth'
 
 interface sutTypes {
   sut: MemorySessionRepository
@@ -19,7 +19,7 @@ const makeSut = (): sutTypes => {
   }
 }
 
-const checkCreatedSession = (createdSession: MemorySessionModel, params: CreateSessionModel): void => {
+const checkCreatedSession = (createdSession: SessionModel, params: CreateSessionModel): void => {
   expect(createdSession.id).toBeTruthy()
   expect(createdSession.accountId).toBe(params.accountId)
   expect(createdSession.type).toBe(params.type)

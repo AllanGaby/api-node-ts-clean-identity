@@ -4,11 +4,11 @@ import { SessionModel } from '@/domain/models/auth'
 import { mockSessionModel } from './mock-session'
 
 export class CreateSessionRepositorySpy implements CreateSessionRepository {
-  addSessionParams: CreateSessionModel
+  params: CreateSessionModel
   session: SessionModel = mockSessionModel()
 
-  async add (data: CreateSessionModel): Promise<SessionModel> {
-    this.addSessionParams = data
+  async create (params: CreateSessionModel): Promise<SessionModel> {
+    this.params = params
     return this.session
   }
 }
