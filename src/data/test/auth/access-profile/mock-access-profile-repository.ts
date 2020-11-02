@@ -1,7 +1,7 @@
 import { AccessProfileModel } from '@/domain/models/auth'
-import { GetAccessProfileByTitleRepository, CreateAccessProfileRepository, ListAccessProfileRepository, GetAccessProfileByIdRepository } from '@/data/repositories/auth/access-profile'
+import { GetAccessProfileByTitleRepository, CreateAccessProfileRepository, ListAccessProfileRepository, GetAccessProfileByIdRepository, UpdateAccessProfileRepository } from '@/data/repositories/auth/access-profile'
 import { mockAccessProfileModel } from './mock-access-profile'
-import { CreateAccessProfileDTO, ListAccessProfileFilter } from '@/domain/usecases/auth/access-profile'
+import { CreateAccessProfileDTO, ListAccessProfileFilter, UpdateAccessProfileModel } from '@/domain/usecases/auth/access-profile'
 
 export class GetAccessProfileByTitleRepositorySpy implements GetAccessProfileByTitleRepository {
   title: string
@@ -38,6 +38,16 @@ export class GetAccessProfileByIdRepositorySpy implements GetAccessProfileByIdRe
   accessProfile: AccessProfileModel = mockAccessProfileModel()
 
   async getAccessProfileById (params: string): Promise<AccessProfileModel> {
+    this.params = params
+    return this.accessProfile
+  }
+}
+
+export class UpdateAccessProfileRepositorySpy implements UpdateAccessProfileRepository {
+  params: UpdateAccessProfileModel
+  accessProfile: AccessProfileModel = mockAccessProfileModel()
+
+  async update (params: UpdateAccessProfileModel): Promise<AccessProfileModel> {
     this.params = params
     return this.accessProfile
   }
