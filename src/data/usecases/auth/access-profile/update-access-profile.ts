@@ -8,7 +8,10 @@ export class DbUpdateAccessProfile implements UpdateAccessProfile {
   ) {}
 
   async update (updateAccessProfileModel: UpdateAccessProfileModel): Promise<AccessProfileModel> {
-    await this.getAccessProfileByIdRepository.getAccessProfileById(updateAccessProfileModel.id)
-    return null
+    const accessProfile = await this.getAccessProfileByIdRepository.getAccessProfileById(updateAccessProfileModel.id)
+    if (accessProfile) {
+      return null
+    }
+    throw new Error('AccessProfile not found')
   }
 }
