@@ -1,9 +1,9 @@
-import { GetAccessProfileByTitleRepository, CreateAccessProfileRepository, GetAccessProfileByIdRepository } from '@/data/repositories/auth/access-profile'
-import { CreateAccessProfileDTO } from '@/domain/usecases/auth/access-profile'
+import { GetAccessProfileByTitleRepository, CreateAccessProfileRepository, GetAccessProfileByIdRepository, ListAccessProfileRepository } from '@/data/repositories/auth/access-profile'
+import { CreateAccessProfileDTO, ListAccessProfileFilter } from '@/domain/usecases/auth/access-profile'
 import { AccessProfileModel } from '@/domain/models/auth'
 import faker from 'faker'
 
-export class MemoryAccessProfileRepository implements GetAccessProfileByTitleRepository, CreateAccessProfileRepository, GetAccessProfileByIdRepository {
+export class MemoryAccessProfileRepository implements GetAccessProfileByTitleRepository, CreateAccessProfileRepository, GetAccessProfileByIdRepository, ListAccessProfileRepository {
   private readonly accessProfiles: AccessProfileModel[]
 
   constructor () {
@@ -26,5 +26,9 @@ export class MemoryAccessProfileRepository implements GetAccessProfileByTitleRep
     }
     this.accessProfiles.push(accessProfile)
     return accessProfile
+  }
+
+  async listByFilter ({ title }: ListAccessProfileFilter): Promise<AccessProfileModel[]> {
+    return this.accessProfiles.filter(accessProfile => ((!title) || (accessProfile.title === title)))
   }
 }
