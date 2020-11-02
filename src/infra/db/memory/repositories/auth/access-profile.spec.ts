@@ -61,3 +61,20 @@ describe('MemoryAccessProfileRepository GetAccessProfileById Method', () => {
     expect(accessProfile).toEqual(createdAccessProfile)
   })
 })
+
+describe('MemoryAccessProfileRepository ListByFilter Method', () => {
+  test('Should return null if AccessProfile not found', async () => {
+    const { sut } = makeSut()
+    const list = await sut.listByFilter({ title: faker.random.words() })
+    expect(list).toHaveLength(0)
+  })
+
+  test('Should return a list of AccessProfile with AccessProfile found', async () => {
+    const { sut, createParams } = makeSut()
+    await sut.create(createParams)
+    await sut.create(createParams)
+    await sut.create(createParams)
+    const list = await sut.listByFilter({ title: createParams.title })
+    expect(list).toHaveLength(3)
+  })
+})
