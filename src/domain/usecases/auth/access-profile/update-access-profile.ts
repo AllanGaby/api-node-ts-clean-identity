@@ -3,7 +3,7 @@ import { AccessProfileModel } from '@/domain/models/auth'
 export interface UpdateAccessProfileModel {
   id: string
   title: string
-  listAccount: boolean
+  list_account: boolean
 }
 
 export interface UpdateAccessProfile {

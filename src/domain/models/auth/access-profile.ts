@@ -1,7 +1,7 @@
 export interface AccessProfileModel {
   id: string
   title: string
-  listAccount: boolean
+  list_account: boolean
   created_at: Date
   updated_at: Date
 }

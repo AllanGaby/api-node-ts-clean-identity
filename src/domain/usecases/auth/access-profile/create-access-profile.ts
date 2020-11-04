@@ -2,7 +2,7 @@ import { AccessProfileModel } from '@/domain/models/auth'
 
 export interface CreateAccessProfileDTO {
   title: string
-  listAccount: boolean
+  list_account: boolean
 }
 
 export interface CreateAccessProfile {

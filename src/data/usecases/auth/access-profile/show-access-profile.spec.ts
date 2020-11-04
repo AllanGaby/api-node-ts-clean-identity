@@ -44,6 +44,6 @@ describe('DbShowAccessProfile', () => {
     const accessProfile = await sut.show(faker.random.uuid())
     expect(accessProfile.id).toBeTruthy()
     expect(accessProfile.title).toEqual(getAccessProfileByIdRepositorySpy.accessProfile.title)
-    expect(accessProfile.listAccount).toEqual(getAccessProfileByIdRepositorySpy.accessProfile.listAccount)
+    expect(accessProfile.list_account).toEqual(getAccessProfileByIdRepositorySpy.accessProfile.list_account)
   })
 })
