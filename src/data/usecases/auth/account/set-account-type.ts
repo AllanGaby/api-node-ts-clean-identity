@@ -1,14 +1,14 @@
-import { SetAccessProfile, SetAccessProfileDTO } from '@/domain/usecases/auth/account'
+import { SetAccountType, SetAccountTypeDTO } from '@/domain/usecases/auth/account'
 import { AccountModel } from '@/domain/models/auth'
 import { GetAccountByIdRepository, UpdateAccountRepository } from '@/data/repositories/auth/account'
 
-export class DbSetAccessProfile implements SetAccessProfile {
+export class DbSetAccountType implements SetAccountType {
   constructor (
     private readonly getAccountByIdRepository: GetAccountByIdRepository,
     private readonly updateAccountRepository: UpdateAccountRepository
   ) {}
 
-  async setAccessProfile ({ accountId, accessProfileId }: SetAccessProfileDTO): Promise<AccountModel> {
+  async setAccountType ({ accountId, accountType }: SetAccountTypeDTO): Promise<AccountModel> {
     const accountById = await this.getAccountByIdRepository.getAccountById(accountId)
     if (accountById) {
       return await this.updateAccountRepository.update({
@@ -17,7 +17,7 @@ export class DbSetAccessProfile implements SetAccessProfile {
         name: accountById.name,
         email_valided: accountById.email_valided,
         password: accountById.password,
-        accessProfileId
+        type: accountType
       })
     }
     throw new Error('Account not found')

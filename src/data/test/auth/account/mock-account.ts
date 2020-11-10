@@ -1,5 +1,5 @@
-import { CreateAccountDTO, UpdateAccountDTO, AuthenticationAccountDTO, ListAccountFilter, ShowAccountFilter, SetAccessProfileDTO } from '@/domain/usecases/auth/account'
-import { AccountModel } from '@/domain/models/auth'
+import { CreateAccountDTO, UpdateAccountDTO, AuthenticationAccountDTO, ListAccountFilter, ShowAccountFilter, SetAccountTypeDTO } from '@/domain/usecases/auth/account'
+import { AccountModel, AccountType } from '@/domain/models/auth'
 import faker from 'faker'
 import path from 'path'
 
@@ -22,6 +22,7 @@ export const mockAccountModel = (): AccountModel => ({
   name: faker.name.findName(),
   email: faker.internet.email(),
   email_valided: true,
+  type: AccountType.student,
   password: faker.random.uuid(),
   created_at: faker.date.past(),
   updated_at: faker.date.past()
@@ -41,7 +42,7 @@ export const mockShowAccountFilter = (): ShowAccountFilter => ({
   accountId: faker.random.uuid()
 })
 
-export const mockSetAccessProfileDTO = (): SetAccessProfileDTO => ({
-  accessProfileId: faker.random.uuid(),
+export const mockSetAccountTypeDTO = (accountType: AccountType = AccountType.student): SetAccountTypeDTO => ({
+  accountType,
   accountId: faker.random.uuid()
 })

@@ -1,4 +1,4 @@
-import { AccountModel } from '@/domain/models/auth'
+import { AccountModel, AccountType } from '@/domain/models/auth'
 
 export interface UpdateAccountModel {
   id: string
@@ -6,7 +6,7 @@ export interface UpdateAccountModel {
   email: string
   password: string
   email_valided: boolean
-  accessProfileId?: string
+  type?: AccountType
 }
 
 export interface UpdateAccountRepository {
