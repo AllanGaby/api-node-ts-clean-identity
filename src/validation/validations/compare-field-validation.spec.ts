@@ -23,7 +23,7 @@ const makeSut = (): sutTypes => {
 describe('CompareFieldValidation', () => {
   test('Should return InvalidParamError if different values', () => {
     const { sut, field, compareField } = makeSut()
-    const error = sut.validate(mockInput(field, compareField, faker.random.words(), faker.random.alphaNumeric(20)))
+    const error = sut.validate(mockInput(field, compareField, faker.internet.email(), faker.internet.url()))
     expect(error).toEqual(new InvalidParamError(field))
   })
 
