@@ -2,7 +2,7 @@ import { AuthenticationAccount, AuthenticationAccountDTO } from '@/domain/usecas
 import { GetAccountByEmailRepository } from '@/data/repositories/auth/account'
 import { CreateSessionRepository } from '@/data/repositories/auth/session'
 import { HashComparer, Encrypter } from '@/data/protocols/criptography'
-import { SessionType } from '@/domain/models/auth'
+import { SessionType, AuthenticationModel } from '@/domain/models/auth'
 
 export class DbAuthenticationAccount implements AuthenticationAccount {
   constructor (
@@ -12,7 +12,7 @@ export class DbAuthenticationAccount implements AuthenticationAccount {
     private readonly encrypter: Encrypter
   ) {}
 
-  async authenticate ({ email, password }: AuthenticationAccountDTO): Promise<string> {
+  async authenticate ({ email, password }: AuthenticationAccountDTO): Promise<AuthenticationModel> {
     const account = await this.getAccountByEmailRepository.getAccountByEmail(email)
     if (account) {
       const isCorrectPassword = await this.hashComparer.compare({
@@ -25,7 +25,11 @@ export class DbAuthenticationAccount implements AuthenticationAccount {
           type: SessionType.authentication,
           experied_at: new Date(new Date().getDate() + 1)
         })
-        return await this.encrypter.encrypt(session.id)
+        const accessToken = await this.encrypter.encrypt(session.id)
+        return {
+          accessToken,
+          accountType: account.type
+        }
       }
     }
     throw new Error('Account not found')

@@ -102,9 +102,12 @@ describe('DbAuthenticationAccount', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should return encrypted token if HashComparer return true', async () => {
-    const { sut, encrypterSpy } = makeSut()
-    const token = await sut.authenticate(mockAuthenticationAccountDTO())
-    expect(token).toBe(encrypterSpy.encryptedText)
+  test('Should return AuthenticationModel if HashComparer return true', async () => {
+    const { sut, encrypterSpy, getAccountByEmailRepositorySpy } = makeSut()
+    const authenticationModel = await sut.authenticate(mockAuthenticationAccountDTO())
+    expect(authenticationModel).toEqual({
+      accessToken: encrypterSpy.encryptedText,
+      accountType: getAccountByEmailRepositorySpy.account.type
+    })
   })
 })
