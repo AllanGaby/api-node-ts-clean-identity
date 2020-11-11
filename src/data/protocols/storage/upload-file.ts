@@ -1,6 +1,6 @@
 export interface UploadFileDTO {
-  sourceFilePath: string
-  destinationFilePath: string
+  sourceFile: string
+  destinationFile: string
 }
 
 export interface UploadFile {
