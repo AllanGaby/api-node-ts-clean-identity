@@ -1,5 +1,5 @@
 import { CreateAccountRepository, CreateAccountModel, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository, UpdateAccountModel, ListAccountRepository, ListAccountRepositoryFilter } from '@/data/repositories/auth/account'
-import { AccountModel } from '@/domain/models/auth'
+import { AccountModel, AccountType } from '@/domain/models/auth'
 import faker from 'faker'
 
 export class MemoryAccountRepository implements CreateAccountRepository, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository, ListAccountRepository {
@@ -16,6 +16,7 @@ export class MemoryAccountRepository implements CreateAccountRepository, GetAcco
       email,
       password,
       email_valided: false,
+      type: AccountType.student,
       created_at: new Date(),
       updated_at: new Date()
     }
