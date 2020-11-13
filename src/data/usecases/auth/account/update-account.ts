@@ -27,8 +27,8 @@ export class DbUpdateAccount implements UpdateAccount {
       if (avatarFilePath) {
         const extFile = path.extname(avatarFilePath)
         await this.uploadFile.upload({
-          sourceFilePath: avatarFilePath,
-          destinationFilePath: `${this.fileDestinationDir}${path.sep}${id}${extFile}`
+          sourceFile: avatarFilePath,
+          destinationFile: `${this.fileDestinationDir}${path.sep}${id}${extFile}`
         })
       }
       const emailValided = email ? false : accountById.email_valided
