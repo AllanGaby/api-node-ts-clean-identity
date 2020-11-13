@@ -153,8 +153,8 @@ describe('DbUpdateAccount', () => {
     await sut.update(updateAccountDTO)
     const extFile = path.extname(updateAccountDTO.avatarFilePath)
     expect(uploadFileSpy.uploadParams).toEqual({
-      sourceFilePath: updateAccountDTO.avatarFilePath,
-      destinationFilePath: `${destinationFileDir}${path.sep}${updateAccountDTO.id}${extFile}`
+      sourceFile: updateAccountDTO.avatarFilePath,
+      destinationFile: `${destinationFileDir}${path.sep}${updateAccountDTO.id}${extFile}`
     })
   })
 
