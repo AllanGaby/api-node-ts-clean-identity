@@ -1,7 +1,7 @@
 import { SessionModel, SessionType } from '@/domain/models/auth'
 
 export interface CreateSessionModel {
-  accountId: string
+  account_id: string
   type: SessionType
   experied_at: Date
 }

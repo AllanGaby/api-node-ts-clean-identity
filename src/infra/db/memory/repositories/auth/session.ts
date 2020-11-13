@@ -12,7 +12,7 @@ export class MemorySessionRepository implements CreateSessionRepository, GetSess
   async create (createSession: CreateSessionModel): Promise<SessionModel> {
     const session: SessionModel = {
       id: faker.random.uuid(),
-      accountId: createSession.accountId,
+      account_id: createSession.account_id,
       type: createSession.type,
       experied_at: createSession.experied_at,
       created_at: new Date(),

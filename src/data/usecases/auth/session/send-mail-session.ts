@@ -12,7 +12,7 @@ export class DbSendMailSession implements SendMailSession {
 
   async sendMail ({ accountId, email, name, subject, mailFilePath, sessionType }: SendMailSessionDTO): Promise<SessionModel> {
     const session = await this.createSessionRepository.create({
-      accountId,
+      account_id: accountId,
       type: sessionType,
       experied_at: new Date(new Date().getDate() + 1)
     })

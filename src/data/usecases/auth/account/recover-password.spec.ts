@@ -73,7 +73,7 @@ describe('DbRecoverPassword', () => {
   test('Should call GetAccountByIdRepository with correct value', async () => {
     const { sut, getSessionByIdRepositorySpy, getAccountByIdRepositorySpy } = makeSut()
     await sut.recover(mockRecoverPasswordDTO())
-    expect(getAccountByIdRepositorySpy.accountId).toBe(getSessionByIdRepositorySpy.session.accountId)
+    expect(getAccountByIdRepositorySpy.accountId).toBe(getSessionByIdRepositorySpy.session.account_id)
   })
 
   test('Should throw if GetAccountByIdRepository throws', async () => {

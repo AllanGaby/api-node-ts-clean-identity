@@ -1,6 +1,6 @@
 import { AccountType } from './account'
 
 export interface AuthenticationModel {
-  accessToken: string
-  accountType: AccountType
+  access_token: string
+  account_type: AccountType
 }

@@ -5,7 +5,7 @@ import faker from 'faker'
 
 export const mockSessionModel = (type: SessionType = SessionType.activeAccount): SessionModel => ({
   id: faker.random.uuid(),
-  accountId: faker.random.uuid(),
+  account_id: faker.random.uuid(),
   type,
   experied_at: faker.date.future(),
   created_at: faker.date.past(),

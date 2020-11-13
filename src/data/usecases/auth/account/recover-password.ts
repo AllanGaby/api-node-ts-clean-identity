@@ -20,7 +20,7 @@ export class DbRecoverPassword implements RecoverPassword {
     if ((session.type === SessionType.recoverPassword) &&
         (session.experied_at > new Date()) &&
         (!session.deleted_at)) {
-      const account = await this.getAccountByIdRepository.getAccountById(session.accountId)
+      const account = await this.getAccountByIdRepository.getAccountById(session.account_id)
       account.password = await this.hashCreator.createHash(password)
       return await this.updateAccountRepository.update(account)
     } else {

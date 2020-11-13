@@ -19,7 +19,7 @@ export class DbActiveAccount implements ActiveAccount {
     if ((session.type === SessionType.activeAccount) &&
         (session.experied_at > new Date()) &&
         (!session.deleted_at)) {
-      const account = await this.getAccountByIdRepository.getAccountById(session.accountId)
+      const account = await this.getAccountByIdRepository.getAccountById(session.account_id)
       if (!account.email_valided) {
         await this.deleteSessionRepository.delete(session)
         account.email_valided = true

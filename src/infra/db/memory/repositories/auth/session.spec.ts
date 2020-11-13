@@ -21,7 +21,7 @@ describe('MemorySessionRepository Create Method', () => {
     const createdSession = await sut.create(createSessionModel)
     expect(createdSession.id).toBeTruthy()
     expect(createdSession.experied_at).toBe(createSessionModel.experied_at)
-    expect(createdSession.accountId).toBe(createSessionModel.accountId)
+    expect(createdSession.account_id).toBe(createSessionModel.account_id)
     expect(createdSession.type).toBe(createSessionModel.type)
   })
 })

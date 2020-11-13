@@ -73,7 +73,7 @@ describe('DbActiveAccount', () => {
     const { sut, getSessionByIdRepositorySpy, getAccountByIdRepositorySpy } = makeSut()
     const activeAccountDTO = mockActiveAccountDTO()
     await sut.active(activeAccountDTO)
-    expect(getAccountByIdRepositorySpy.accountId).toBe(getSessionByIdRepositorySpy.session.accountId)
+    expect(getAccountByIdRepositorySpy.accountId).toBe(getSessionByIdRepositorySpy.session.account_id)
   })
 
   test('Should throw if GetAccountByIdRepository throws', async () => {

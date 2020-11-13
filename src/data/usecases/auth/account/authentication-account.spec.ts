@@ -77,7 +77,7 @@ describe('DbAuthenticationAccount', () => {
     const { sut, createSessionRepositorySpy, getAccountByEmailRepositorySpy } = makeSut()
     const authenticationAccountDTO = mockAuthenticationAccountDTO()
     await sut.authenticate(authenticationAccountDTO)
-    expect(createSessionRepositorySpy.params.accountId).toBe(getAccountByEmailRepositorySpy.account.id)
+    expect(createSessionRepositorySpy.params.account_id).toBe(getAccountByEmailRepositorySpy.account.id)
     expect(createSessionRepositorySpy.params.type).toBe(SessionType.authentication)
   })
 
@@ -106,8 +106,8 @@ describe('DbAuthenticationAccount', () => {
     const { sut, encrypterSpy, getAccountByEmailRepositorySpy } = makeSut()
     const authenticationModel = await sut.authenticate(mockAuthenticationAccountDTO())
     expect(authenticationModel).toEqual({
-      accessToken: encrypterSpy.encryptedText,
-      accountType: getAccountByEmailRepositorySpy.account.type
+      access_token: encrypterSpy.encryptedText,
+      account_type: getAccountByEmailRepositorySpy.account.type
     })
   })
 })

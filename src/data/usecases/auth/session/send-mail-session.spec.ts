@@ -28,7 +28,7 @@ describe('DbSendMailSession', () => {
     const { sut, createSessionRepositorySpy } = makeSut()
     const sendMailAccountDTO = mockSendMailSessionDTO(SessionType.activeAccount)
     await sut.sendMail(sendMailAccountDTO)
-    expect(createSessionRepositorySpy.params.accountId).toBe(sendMailAccountDTO.accountId)
+    expect(createSessionRepositorySpy.params.account_id).toBe(sendMailAccountDTO.accountId)
     expect(createSessionRepositorySpy.params.type).toBe(sendMailAccountDTO.sessionType)
   })
 

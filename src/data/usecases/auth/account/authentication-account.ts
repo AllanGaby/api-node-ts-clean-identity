@@ -21,14 +21,14 @@ export class DbAuthenticationAccount implements AuthenticationAccount {
       })
       if (isCorrectPassword) {
         const session = await this.createSessionRepository.create({
-          accountId: account.id,
+          account_id: account.id,
           type: SessionType.authentication,
           experied_at: new Date(new Date().getDate() + 1)
         })
         const accessToken = await this.encrypter.encrypt(session.id)
         return {
-          accessToken,
-          accountType: account.type
+          access_token: accessToken,
+          account_type: account.type
         }
       }
     }
