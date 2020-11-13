@@ -7,7 +7,7 @@ export enum SessionType {
 export interface SessionModel {
   id: string
   type: SessionType
-  accountId: string
+  account_id: string
   deleted_at?: Date
   experied_at: Date
   created_at: Date

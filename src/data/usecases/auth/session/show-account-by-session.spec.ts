@@ -68,7 +68,7 @@ describe('DbShowAccountBySession', () => {
   test('Should call GetAccountByIdRepository with correct value', async () => {
     const { sut, getSessionByIdRepositorySpy, getAccountByIdRepositorySpy } = makeSut()
     await sut.show(mockShowAccountBySessionDTO())
-    expect(getAccountByIdRepositorySpy.accountId).toBe(getSessionByIdRepositorySpy.session.accountId)
+    expect(getAccountByIdRepositorySpy.accountId).toBe(getSessionByIdRepositorySpy.session.account_id)
   })
 
   test('Should throw if GetAccountByIdRepository throws', async () => {

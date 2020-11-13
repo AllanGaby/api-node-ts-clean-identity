@@ -16,7 +16,7 @@ export class DbShowAccountBySession implements ShowAccountBySession {
     if (sessionId) {
       const session = await this.getSessionByIdRepository.getSessionById(sessionId)
       if (session) {
-        return await this.getAccountByIdRepository.getAccountById(session.accountId)
+        return await this.getAccountByIdRepository.getAccountById(session.account_id)
       }
     }
     throw new Error('Session not found')
