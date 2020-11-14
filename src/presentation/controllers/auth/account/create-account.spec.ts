@@ -12,7 +12,7 @@ interface sutTypes {
 const makeSut = (): sutTypes => {
   const validationCompositeSpy = new ValidationCompositeSpy(undefined)
   const createAccountSpy = new CreateAccountSpy()
-  const sut = new CreateAccountController(validationCompositeSpy)
+  const sut = new CreateAccountController(validationCompositeSpy, createAccountSpy)
   return {
     sut,
     validationCompositeSpy,
@@ -33,5 +33,16 @@ describe('CreateAccountController', () => {
     validationCompositeSpy.error = new Error('Validation error')
     const error = await sut.handle(mockCreateAccountRequest())
     expect(error).toEqual(badRequest(validationCompositeSpy.error))
+  })
+
+  test('Should call CreateAccount usecase with correct values', async () => {
+    const { sut, createAccountSpy } = makeSut()
+    const request = mockCreateAccountRequest()
+    await sut.handle(request)
+    expect(createAccountSpy.params).toEqual({
+      name: request.body.name,
+      email: request.body.email,
+      password: request.body.password
+    })
   })
 })

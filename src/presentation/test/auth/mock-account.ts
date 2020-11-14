@@ -14,11 +14,13 @@ export class CreateAccountSpy implements CreateAccount {
 }
 
 export const mockCreateAccountRequest = (): HttpRequest => {
+  const password = faker.internet.password()
   return {
     body: {
       name: faker.name.findName(),
       email: faker.internet.email(),
-      password: faker.internet.password()
+      password,
+      password_confirmation: password
     }
   }
 }
