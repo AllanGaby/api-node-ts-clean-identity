@@ -1,7 +1,8 @@
 import { ActiveAccountController } from './active-account'
 import { ValidationCompositeSpy } from '@/validation/test'
 import { ActiveAccountSpy, mockActiveAccountRequest } from '@/presentation/test/auth'
-import { badRequest } from '@/presentation/helpers'
+import { badRequest, serverError } from '@/presentation/helpers'
+import { throwError } from '@/data/test'
 
 interface sutTypes {
   sut: ActiveAccountController
@@ -43,5 +44,12 @@ describe('ActiveAccountController', () => {
     expect(activeAccountSpy.params).toEqual({
       sessionId: request.body.sessionId
     })
+  })
+
+  test('Should return ServerError if ActiveAccount usecase throws', async () => {
+    const { sut, activeAccountSpy } = makeSut()
+    jest.spyOn(activeAccountSpy, 'active').mockImplementationOnce(throwError)
+    const result = await sut.handle(mockActiveAccountRequest())
+    expect(result).toEqual(serverError(new Error('')))
   })
 })
