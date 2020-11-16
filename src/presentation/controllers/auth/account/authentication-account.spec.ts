@@ -1,8 +1,9 @@
 import { AuthenticationAccountController } from './authentication-account'
 import { ValidationCompositeSpy } from '@/validation/test'
 import { AuthenticationAccountSpy, mockAuthenticationAccountRequest } from '@/presentation/test/auth'
-import { badRequest, serverError } from '@/presentation/helpers'
+import { badRequest, serverError, unauthorized } from '@/presentation/helpers'
 import { throwError } from '@/data/test'
+import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {
   sut: AuthenticationAccountController
@@ -46,10 +47,17 @@ describe('AuthenticationAccountController', () => {
     })
   })
 
-  test('Should return ServerError if CreateAccount usecase throws', async () => {
+  test('Should return ServerError if AuthenticationAccount usecase throws', async () => {
     const { sut, authenticationAccountSpy } = makeSut()
     jest.spyOn(authenticationAccountSpy, 'authenticate').mockImplementationOnce(throwError)
     const result = await sut.handle(mockAuthenticationAccountRequest())
     expect(result).toEqual(serverError(new Error('')))
+  })
+
+  test('Should return Unauthorized if AuthenticationAccount return InvalidCredentials', async () => {
+    const { sut, authenticationAccountSpy } = makeSut()
+    jest.spyOn(authenticationAccountSpy, 'authenticate').mockImplementationOnce(() => { throw new InvalidCredentialsError() })
+    const result = await sut.handle(mockAuthenticationAccountRequest())
+    expect(result).toEqual(unauthorized(new InvalidCredentialsError()))
   })
 })

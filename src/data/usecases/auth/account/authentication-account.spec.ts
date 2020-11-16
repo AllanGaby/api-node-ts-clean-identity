@@ -2,6 +2,7 @@ import { DbAuthenticationAccount } from './authentication-account'
 import { mockAuthenticationAccountDTO, throwError, HashComparerSpy, mockAccountModel, EncrypterSpy, CreateSessionRepositorySpy } from '@/data/test'
 import { GetAccountByEmailRepositorySpy } from '@/data/test/auth/account/mock-account-repository'
 import { SessionType } from '@/domain/models/auth'
+import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {
   sut: DbAuthenticationAccount
@@ -66,11 +67,11 @@ describe('DbAuthenticationAccount', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should return null if HashComparer return false', async () => {
+  test('Should return InvalidaCredentials if HashComparer return false', async () => {
     const { sut, hashComparerSpy } = makeSut()
     hashComparerSpy.isValidHash = false
     const promise = sut.authenticate(mockAuthenticationAccountDTO())
-    await expect(promise).rejects.toThrow()
+    await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
   test('Should call CreateSessionRepository with correct value', async () => {
