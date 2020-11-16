@@ -12,7 +12,7 @@ interface sutTypes {
 const makeSut = (): sutTypes => {
   const validationCompositeSpy = new ValidationCompositeSpy(null)
   const activeAccountSpy = new ActiveAccountSpy()
-  const sut = new ActiveAccountController(validationCompositeSpy)
+  const sut = new ActiveAccountController(validationCompositeSpy, activeAccountSpy)
 
   return {
     sut,
@@ -34,5 +34,14 @@ describe('ActiveAccountController', () => {
     validationCompositeSpy.error = new Error('Validation error')
     const result = await sut.handle(mockActiveAccountRequest())
     expect(result).toEqual(badRequest(validationCompositeSpy.error))
+  })
+
+  test('Should call ActiveAccount with correct values', async () => {
+    const { sut, activeAccountSpy } = makeSut()
+    const request = mockActiveAccountRequest()
+    await sut.handle(request)
+    expect(activeAccountSpy.params).toEqual({
+      sessionId: request.body.sessionId
+    })
   })
 })
