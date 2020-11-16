@@ -4,6 +4,7 @@ module.exports = {
     '<rootDir>/src/data/usecases/**/*.ts',
     '<rootDir>/src/validation/validations/**/*.ts',
     '<rootDir>/src/infra/**/repositories/**/*.ts',
+    '<rootDir>/src/presentation/**/controllers/**/*.ts',
     '!**/protocols/**',
     '!**/index.ts'
   ],
