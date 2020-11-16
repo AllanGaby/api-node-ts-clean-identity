@@ -1,7 +1,8 @@
 import { AuthenticationAccountController } from './authentication-account'
 import { ValidationCompositeSpy } from '@/validation/test'
 import { AuthenticationAccountSpy, mockAuthenticationAccountRequest } from '@/presentation/test/auth'
-import { badRequest } from '@/presentation/helpers'
+import { badRequest, serverError } from '@/presentation/helpers'
+import { throwError } from '@/data/test'
 
 interface sutTypes {
   sut: AuthenticationAccountController
@@ -43,5 +44,12 @@ describe('AuthenticationAccountController', () => {
       email: request.body.email,
       password: request.body.password
     })
+  })
+
+  test('Should return ServerError if CreateAccount usecase throws', async () => {
+    const { sut, authenticationAccountSpy } = makeSut()
+    jest.spyOn(authenticationAccountSpy, 'authenticate').mockImplementationOnce(throwError)
+    const result = await sut.handle(mockAuthenticationAccountRequest())
+    expect(result).toEqual(serverError(new Error('')))
   })
 })
