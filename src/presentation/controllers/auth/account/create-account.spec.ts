@@ -1,7 +1,9 @@
 import { CreateAccountController } from './create-account'
 import { ValidationCompositeSpy } from '@/validation/test'
 import { CreateAccountSpy, mockCreateAccountRequest } from '@/presentation/test/auth'
-import { badRequest } from '@/presentation/helpers'
+import { badRequest, created, forbidden, serverError } from '@/presentation/helpers'
+import { throwError } from '@/data/test'
+import { EmailInUseError } from '@/data/errors'
 
 interface sutTypes {
   sut: CreateAccountController
@@ -31,8 +33,8 @@ describe('CreateAccountController', () => {
   test('Should return BadRequest if validation is fails', async () => {
     const { sut, validationCompositeSpy } = makeSut()
     validationCompositeSpy.error = new Error('Validation error')
-    const error = await sut.handle(mockCreateAccountRequest())
-    expect(error).toEqual(badRequest(validationCompositeSpy.error))
+    const result = await sut.handle(mockCreateAccountRequest())
+    expect(result).toEqual(badRequest(validationCompositeSpy.error))
   })
 
   test('Should call CreateAccount usecase with correct values', async () => {
@@ -44,5 +46,25 @@ describe('CreateAccountController', () => {
       email: request.body.email,
       password: request.body.password
     })
+  })
+
+  test('Should return ServerError if CreateAccount usecase throws', async () => {
+    const { sut, createAccountSpy } = makeSut()
+    jest.spyOn(createAccountSpy, 'create').mockImplementationOnce(throwError)
+    const result = await sut.handle(mockCreateAccountRequest())
+    expect(result).toEqual(serverError(new Error('')))
+  })
+
+  test('Should return Forbidden if exists other account with same e-mail', async () => {
+    const { sut, createAccountSpy } = makeSut()
+    jest.spyOn(createAccountSpy, 'create').mockImplementationOnce(() => { throw new EmailInUseError() })
+    const error = await sut.handle(mockCreateAccountRequest())
+    expect(error).toEqual(forbidden(new EmailInUseError()))
+  })
+
+  test('Should return Created and correct entity if usecase is succeeds', async () => {
+    const { sut, createAccountSpy } = makeSut()
+    const result = await sut.handle(mockCreateAccountRequest())
+    expect(result).toEqual(created(createAccountSpy.session))
   })
 })

@@ -2,14 +2,15 @@ import { HttpRequest } from '@/presentation/protocols'
 import { CreateAccount, CreateAccountDTO } from '@/domain/usecases/auth/account'
 import { SessionModel } from '@/domain/models/auth'
 import faker from 'faker'
+import { mockSessionModel } from '@/data/test'
 
 export class CreateAccountSpy implements CreateAccount {
-  createdAccount: SessionModel
+  session: SessionModel = mockSessionModel()
   params: CreateAccountDTO
 
   async create (params: CreateAccountDTO): Promise<SessionModel> {
     this.params = params
-    return this.createdAccount
+    return this.session
   }
 }
 
