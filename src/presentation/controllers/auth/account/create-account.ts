@@ -1,7 +1,8 @@
 import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
 import { ValidationComposite } from '@/validation/validations'
-import { badRequest, serverError } from '@/presentation/helpers'
+import { badRequest, created, forbidden, serverError } from '@/presentation/helpers'
 import { CreateAccount } from '@/domain/usecases/auth/account'
+import { EmailInUseError } from '@/data/errors'
 
 export class CreateAccountController implements Controller {
   constructor (
@@ -16,13 +17,18 @@ export class CreateAccountController implements Controller {
         return badRequest(validationErrors)
       }
       const { name, email, password } = request.body
-      await this.createAccount.create({
+      const session = await this.createAccount.create({
         name,
         email,
         password
       })
+      return created(session)
     } catch (error) {
-      return serverError(error)
+      if (error instanceof EmailInUseError) {
+        return forbidden(error)
+      } else {
+        return serverError(error)
+      }
     }
   }
 }
