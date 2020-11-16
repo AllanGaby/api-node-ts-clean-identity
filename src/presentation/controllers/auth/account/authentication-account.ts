@@ -1,7 +1,8 @@
-import { badRequest, serverError } from '@/presentation/helpers'
+import { badRequest, serverError, unauthorized } from '@/presentation/helpers'
 import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
 import { ValidationComposite } from '@/validation/validations'
 import { AuthenticationAccount } from '@/domain/usecases/auth/account'
+import { InvalidCredentialsError } from '@/data/errors'
 
 export class AuthenticationAccountController implements Controller {
   constructor (
@@ -22,6 +23,9 @@ export class AuthenticationAccountController implements Controller {
       })
       return null
     } catch (error) {
+      if (error instanceof InvalidCredentialsError) {
+        return unauthorized(error)
+      }
       return serverError(error)
     }
   }

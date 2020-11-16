@@ -3,6 +3,7 @@ import { GetAccountByEmailRepository } from '@/data/repositories/auth/account'
 import { CreateSessionRepository } from '@/data/repositories/auth/session'
 import { HashComparer, Encrypter } from '@/data/protocols/criptography'
 import { SessionType, AuthenticationModel } from '@/domain/models/auth'
+import { InvalidCredentialsError } from '@/data/errors'
 
 export class DbAuthenticationAccount implements AuthenticationAccount {
   constructor (
@@ -19,17 +20,18 @@ export class DbAuthenticationAccount implements AuthenticationAccount {
         payload: password,
         hashedText: account.password
       })
-      if (isCorrectPassword) {
-        const session = await this.createSessionRepository.create({
-          account_id: account.id,
-          type: SessionType.authentication,
-          experied_at: new Date(new Date().getDate() + 1)
-        })
-        const accessToken = await this.encrypter.encrypt(session.id)
-        return {
-          access_token: accessToken,
-          account_type: account.type
-        }
+      if (!isCorrectPassword) {
+        throw new InvalidCredentialsError()
+      }
+      const session = await this.createSessionRepository.create({
+        account_id: account.id,
+        type: SessionType.authentication,
+        experied_at: new Date(new Date().getDate() + 1)
+      })
+      const accessToken = await this.encrypter.encrypt(session.id)
+      return {
+        access_token: accessToken,
+        account_type: account.type
       }
     }
     throw new Error('Account not found')
