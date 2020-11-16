@@ -2,7 +2,13 @@ import { badRequest, ok, serverError, unauthorized } from '@/presentation/helper
 import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
 import { ValidationComposite } from '@/validation/validations'
 import { AuthenticationAccount } from '@/domain/usecases/auth/account'
+import { AuthenticationModel } from '@/domain/models/auth'
 import { InvalidCredentialsError } from '@/data/errors'
+
+export interface AuthenticationAccountRequest {
+  email: string
+  password: string
+}
 
 export class AuthenticationAccountController implements Controller {
   constructor (
@@ -10,7 +16,7 @@ export class AuthenticationAccountController implements Controller {
     private readonly authenticationAccount: AuthenticationAccount
   ) {}
 
-  async handle (request: HttpRequest): Promise<HttpResponse> {
+  async handle (request: HttpRequest<AuthenticationAccountRequest>): Promise<HttpResponse<AuthenticationModel | Error>> {
     try {
       const validationErrors = this.validations.validate(request.body)
       if (validationErrors) {

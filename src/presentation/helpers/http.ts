@@ -1,31 +1,31 @@
 import { HttpResponse } from '@/presentation/protocols'
 
-export const ok = (data: any): HttpResponse => ({
+export const ok = <T>(data: T): HttpResponse<T> => ({
   statusCode: 200,
   body: data
 })
 
-export const created = (data: any): HttpResponse => ({
+export const created = <T>(data: T): HttpResponse<T> => ({
   statusCode: 201,
   body: data
 })
 
-export const badRequest = (error: Error): HttpResponse => ({
+export const badRequest = (error: Error): HttpResponse<Error> => ({
   body: error,
   statusCode: 400
 })
 
-export const unauthorized = (error: Error): HttpResponse => ({
+export const unauthorized = (error: Error): HttpResponse<Error> => ({
   body: error,
   statusCode: 401
 })
 
-export const forbidden = (error: Error): HttpResponse => ({
+export const forbidden = (error: Error): HttpResponse<Error> => ({
   statusCode: 403,
   body: error
 })
 
-export const serverError = (error: Error): HttpResponse => ({
+export const serverError = (error: Error): HttpResponse<Error> => ({
   statusCode: 500,
   body: error
 })

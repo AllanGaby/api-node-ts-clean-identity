@@ -3,6 +3,7 @@ import { CreateAccount, CreateAccountDTO, UpdateAccount, UpdateAccountDTO, Activ
 import { AccountModel, SessionModel, AuthenticationModel } from '@/domain/models/auth'
 import faker from 'faker'
 import { mockAccountModel, mockAuthenticationModel, mockSessionModel } from '@/data/test'
+import { CreateAccountRequest, ActiveAccountRequest, AuthenticationAccountRequest } from '@/presentation/controllers/auth/account'
 
 export class CreateAccountSpy implements CreateAccount {
   session: SessionModel = mockSessionModel()
@@ -14,7 +15,7 @@ export class CreateAccountSpy implements CreateAccount {
   }
 }
 
-export const mockCreateAccountRequest = (): HttpRequest => {
+export const mockCreateAccountRequest = (): HttpRequest<CreateAccountRequest> => {
   const password = faker.internet.password()
   return {
     body: {
@@ -36,7 +37,7 @@ export class UpdateAccountSpy implements UpdateAccount {
   }
 }
 
-export const mockActiveAccountRequest = (): HttpRequest => ({
+export const mockActiveAccountRequest = (): HttpRequest<ActiveAccountRequest> => ({
   body: {
     sessionId: faker.random.uuid()
   }
@@ -52,7 +53,7 @@ export class ActiveAccountSpy implements ActiveAccount {
   }
 }
 
-export const mockAuthenticationAccountRequest = (): HttpRequest => ({
+export const mockAuthenticationAccountRequest = (): HttpRequest<AuthenticationAccountRequest> => ({
   body: {
     email: faker.internet.email(),
     password: faker.internet.password()
