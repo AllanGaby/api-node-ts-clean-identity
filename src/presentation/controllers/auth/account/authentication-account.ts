@@ -1,4 +1,4 @@
-import { badRequest, serverError, unauthorized } from '@/presentation/helpers'
+import { badRequest, ok, serverError, unauthorized } from '@/presentation/helpers'
 import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
 import { ValidationComposite } from '@/validation/validations'
 import { AuthenticationAccount } from '@/domain/usecases/auth/account'
@@ -17,11 +17,11 @@ export class AuthenticationAccountController implements Controller {
         return badRequest(validationErrors)
       }
       const { email, password } = request.body
-      await this.authenticationAccount.authenticate({
+      const authentication = await this.authenticationAccount.authenticate({
         email,
         password
       })
-      return null
+      return ok(authentication)
     } catch (error) {
       if (error instanceof InvalidCredentialsError) {
         return unauthorized(error)
