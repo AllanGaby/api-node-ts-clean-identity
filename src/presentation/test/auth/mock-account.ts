@@ -1,8 +1,8 @@
 import { HttpRequest } from '@/presentation/protocols'
-import { CreateAccount, CreateAccountDTO } from '@/domain/usecases/auth/account'
-import { SessionModel } from '@/domain/models/auth'
+import { CreateAccount, CreateAccountDTO, UpdateAccount, UpdateAccountDTO, ActiveAccount, ActiveAccountDTO } from '@/domain/usecases/auth/account'
+import { AccountModel, SessionModel } from '@/domain/models/auth'
 import faker from 'faker'
-import { mockSessionModel } from '@/data/test'
+import { mockAccountModel, mockSessionModel } from '@/data/test'
 
 export class CreateAccountSpy implements CreateAccount {
   session: SessionModel = mockSessionModel()
@@ -23,5 +23,31 @@ export const mockCreateAccountRequest = (): HttpRequest => {
       password,
       password_confirmation: password
     }
+  }
+}
+
+export class UpdateAccountSpy implements UpdateAccount {
+  params: UpdateAccountDTO
+  account: AccountModel = mockAccountModel()
+
+  async update (params: UpdateAccountDTO): Promise<AccountModel> {
+    this.params = params
+    return this.account
+  }
+}
+
+export const mockActiveAccountRequest = (): HttpRequest => ({
+  body: {
+    sessionId: faker.random.uuid()
+  }
+})
+
+export class ActiveAccountSpy implements ActiveAccount {
+  params: ActiveAccountDTO
+  account: AccountModel = mockAccountModel()
+
+  async active (params: ActiveAccountDTO): Promise<AccountModel> {
+    this.params = params
+    return this.account
   }
 }
