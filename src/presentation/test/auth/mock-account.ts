@@ -1,8 +1,8 @@
 import { HttpRequest } from '@/presentation/protocols'
-import { CreateAccount, CreateAccountDTO, UpdateAccount, UpdateAccountDTO, ActiveAccount, ActiveAccountDTO, AuthenticationAccount, AuthenticationAccountDTO } from '@/domain/usecases/auth/account'
+import { CreateAccount, CreateAccountDTO, UpdateAccount, UpdateAccountDTO, ActiveAccount, ActiveAccountDTO, AuthenticationAccount, AuthenticationAccountDTO, ListAccount, ListAccountFilter } from '@/domain/usecases/auth/account'
 import { AccountModel, SessionModel, AuthenticationModel } from '@/domain/models/auth'
 import faker from 'faker'
-import { mockAccountModel, mockAuthenticationModel, mockSessionModel } from '@/data/test'
+import { mockAccountModel, mockAuthenticationModel, mockSessionModel, mockListAccountFilter } from '@/data/test'
 import { CreateAccountRequest, ActiveAccountRequest, AuthenticationAccountRequest } from '@/presentation/controllers/auth/account'
 
 export class CreateAccountSpy implements CreateAccount {
@@ -69,3 +69,17 @@ export class AuthenticationAccountSpy implements AuthenticationAccount {
     return this.authentication
   }
 }
+
+export class ListAccountSpy implements ListAccount {
+  params: ListAccountFilter
+  accounts: AccountModel[] = [mockAccountModel(), mockAccountModel()]
+
+  async list (params: ListAccountFilter): Promise<AccountModel[]> {
+    this.params = params
+    return this.accounts
+  }
+}
+
+export const mockListAccountRequest = (): HttpRequest<ListAccountFilter> => ({
+  body: mockListAccountFilter()
+})
