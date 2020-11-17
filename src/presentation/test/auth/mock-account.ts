@@ -1,9 +1,9 @@
 import { HttpRequest } from '@/presentation/protocols'
-import { CreateAccount, CreateAccountDTO, UpdateAccount, UpdateAccountDTO, ActiveAccount, ActiveAccountDTO, AuthenticationAccount, AuthenticationAccountDTO, ListAccount, ListAccountFilter } from '@/domain/usecases/auth/account'
+import { CreateAccount, CreateAccountDTO, UpdateAccount, UpdateAccountDTO, ActiveAccount, ActiveAccountDTO, AuthenticationAccount, AuthenticationAccountDTO, ListAccount, ListAccountFilter, RecoverPassword, RecoverPasswordDTO } from '@/domain/usecases/auth/account'
 import { AccountModel, SessionModel, AuthenticationModel } from '@/domain/models/auth'
 import faker from 'faker'
 import { mockAccountModel, mockAuthenticationModel, mockSessionModel, mockListAccountFilter } from '@/data/test'
-import { CreateAccountRequest, ActiveAccountRequest, AuthenticationAccountRequest } from '@/presentation/controllers/auth/account'
+import { CreateAccountRequest, ActiveAccountRequest, AuthenticationAccountRequest, RecoverPasswordRequest } from '@/presentation/controllers/auth/account'
 
 export class CreateAccountSpy implements CreateAccount {
   session: SessionModel = mockSessionModel()
@@ -83,3 +83,24 @@ export class ListAccountSpy implements ListAccount {
 export const mockListAccountRequest = (): HttpRequest<ListAccountFilter> => ({
   body: mockListAccountFilter()
 })
+
+export class RecoverPasswordSpy implements RecoverPassword {
+  params: RecoverPasswordDTO
+  account: AccountModel = mockAccountModel()
+
+  async recover (params: RecoverPasswordDTO): Promise<AccountModel> {
+    this.params = params
+    return this.account
+  }
+}
+
+export const mockRecoverPasswordRequest = (): HttpRequest<RecoverPasswordRequest> => {
+  const password = faker.internet.password()
+  return {
+    body: {
+      session_id: faker.random.uuid(),
+      password,
+      password_confirmation: password
+    }
+  }
+}
