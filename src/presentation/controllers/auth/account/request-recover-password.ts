@@ -1,7 +1,7 @@
 import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
 import { ValidationComposite } from '@/validation/validations'
 import { RequestRecoverPassword, RequestRecoverPasswordDTO } from '@/domain/usecases/auth/account'
-import { badRequest, serverError } from '@/presentation/helpers'
+import { badRequest, serverError, ok } from '@/presentation/helpers'
 
 export class RequestRecoverPasswordController implements Controller {
   constructor (
@@ -15,6 +15,8 @@ export class RequestRecoverPasswordController implements Controller {
       if (validationErrors) {
         return badRequest(validationErrors)
       }
+      const requestRecover = await this.requestRecoverPassword.request(request.body)
+      return ok(requestRecover)
     } catch (error) {
       return serverError(error)
     }
