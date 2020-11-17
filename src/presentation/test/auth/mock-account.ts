@@ -1,5 +1,5 @@
 import { HttpRequest } from '@/presentation/protocols'
-import { CreateAccount, CreateAccountDTO, UpdateAccount, UpdateAccountDTO, ActiveAccount, ActiveAccountDTO, AuthenticationAccount, AuthenticationAccountDTO, ListAccount, ListAccountFilter, RecoverPassword, RecoverPasswordDTO } from '@/domain/usecases/auth/account'
+import { CreateAccount, CreateAccountDTO, UpdateAccount, UpdateAccountDTO, ActiveAccount, ActiveAccountDTO, AuthenticationAccount, AuthenticationAccountDTO, ListAccount, ListAccountFilter, RecoverPassword, RecoverPasswordDTO, RequestRecoverPassword, RequestRecoverPasswordDTO } from '@/domain/usecases/auth/account'
 import { AccountModel, SessionModel, AuthenticationModel } from '@/domain/models/auth'
 import faker from 'faker'
 import { mockAccountModel, mockAuthenticationModel, mockSessionModel, mockListAccountFilter } from '@/data/test'
@@ -104,3 +104,19 @@ export const mockRecoverPasswordRequest = (): HttpRequest<RecoverPasswordRequest
     }
   }
 }
+
+export class RequestRecoverPasswordSpy implements RequestRecoverPassword {
+  params: RequestRecoverPasswordDTO
+  result: boolean = true
+
+  async request (params: RequestRecoverPasswordDTO): Promise<boolean> {
+    this.params = params
+    return this.result
+  }
+}
+
+export const mockRequestRecoverPasswordRequest = (): HttpRequest<RequestRecoverPasswordDTO> => ({
+  body: {
+    email: faker.internet.email()
+  }
+})
