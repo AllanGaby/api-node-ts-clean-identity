@@ -1,7 +1,7 @@
 import { ListAccountController } from './list-account'
 import { ListAccountSpy, mockListAccountRequest } from '@/presentation/test/auth'
 import { throwError } from '@/data/test'
-import { serverError } from '@/presentation/helpers'
+import { serverError, ok } from '@/presentation/helpers'
 
 interface sutTypes {
   sut: ListAccountController
@@ -30,5 +30,11 @@ describe('ListAccountController', () => {
     jest.spyOn(listAccountSpy, 'list').mockImplementationOnce(throwError)
     const result = await sut.handle(mockListAccountRequest())
     expect(result).toEqual(serverError(new Error('')))
+  })
+
+  test('Should return Ok and correct list entity if ListAccount is succeeds', async () => {
+    const { sut, listAccountSpy } = makeSut()
+    const result = await sut.handle(mockListAccountRequest())
+    expect(result).toEqual(ok(listAccountSpy.accounts))
   })
 })
