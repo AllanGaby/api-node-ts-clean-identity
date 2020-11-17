@@ -1,7 +1,8 @@
 import { RequestRecoverPasswordController } from './request-recover-password'
 import { ValidationCompositeSpy } from '@/validation/test'
 import { RequestRecoverPasswordSpy, mockRequestRecoverPasswordRequest } from '@/presentation/test/auth'
-import { badRequest } from '@/presentation/helpers'
+import { badRequest, serverError, ok } from '@/presentation/helpers'
+import { throwError } from '@/data/test'
 
 interface sutTypes {
   sut: RequestRecoverPasswordController
@@ -33,5 +34,25 @@ describe('RequestRecoverPasswordController', () => {
     validationCompositeSpy.error = new Error('Validations fails')
     const result = await sut.handle(mockRequestRecoverPasswordRequest())
     expect(result).toEqual(badRequest(validationCompositeSpy.error))
+  })
+
+  test('Should call RequestRecoverPassword with correct values', async () => {
+    const { sut, requestRecoverPasswordSpy } = makeSut()
+    const request = mockRequestRecoverPasswordRequest()
+    await sut.handle(request)
+    expect(requestRecoverPasswordSpy.params).toEqual(request.body)
+  })
+
+  test('Should return ServerError if RequestRecoverPassword throws', async () => {
+    const { sut, requestRecoverPasswordSpy } = makeSut()
+    jest.spyOn(requestRecoverPasswordSpy, 'request').mockImplementationOnce(throwError)
+    const result = await sut.handle(mockRequestRecoverPasswordRequest())
+    expect(result).toEqual(serverError(new Error('')))
+  })
+
+  test('Should return Ok if RequestRecoverPassword succeeds', async () => {
+    const { sut, requestRecoverPasswordSpy } = makeSut()
+    const result = await sut.handle(mockRequestRecoverPasswordRequest())
+    expect(result).toEqual(ok(requestRecoverPasswordSpy.result))
   })
 })
