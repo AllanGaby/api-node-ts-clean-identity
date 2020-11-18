@@ -5,7 +5,7 @@ import { AuthenticationAccount, AuthenticationAccountDTO } from '@/domain/usecas
 import { AuthenticationModel } from '@/domain/models/auth'
 import { InvalidCredentialsError } from '@/data/errors'
 
-export class AuthenticationAccountController implements Controller {
+export class AuthenticationAccountController implements Controller<AuthenticationAccountDTO, AuthenticationModel | Error> {
   constructor (
     private readonly validations: ValidationComposite,
     private readonly authenticationAccount: AuthenticationAccount

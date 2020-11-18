@@ -9,7 +9,7 @@ export interface SetAccountTypeRequest {
   account_type: AccountType
 }
 
-export class SetAccountTypeController implements Controller {
+export class SetAccountTypeController implements Controller<SetAccountTypeRequest, AccountModel | Error> {
   constructor (
     private readonly validations: ValidationComposite,
     private readonly setAccountType: SetAccountType

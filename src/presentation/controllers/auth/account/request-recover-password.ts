@@ -3,7 +3,7 @@ import { ValidationComposite } from '@/validation/validations'
 import { RequestRecoverPassword, RequestRecoverPasswordDTO } from '@/domain/usecases/auth/account'
 import { badRequest, serverError, ok } from '@/presentation/helpers'
 
-export class RequestRecoverPasswordController implements Controller {
+export class RequestRecoverPasswordController implements Controller<RequestRecoverPasswordDTO, boolean | Error> {
   constructor (
     private readonly validations: ValidationComposite,
     private readonly requestRecoverPassword: RequestRecoverPassword

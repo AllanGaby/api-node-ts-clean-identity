@@ -8,7 +8,7 @@ export interface ShowAccountRequest {
   account_id: string
 }
 
-export class ShowAccountController implements Controller {
+export class ShowAccountController implements Controller<ShowAccountRequest, AccountModel | Error> {
   constructor (
     private readonly validations: ValidationComposite,
     private readonly showAccount: ShowAccount

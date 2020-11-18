@@ -10,7 +10,7 @@ export interface RecoverPasswordRequest {
   password_confirmation
 }
 
-export class RecoverPasswordController implements Controller {
+export class RecoverPasswordController implements Controller<RecoverPasswordRequest, AccountModel | Error> {
   constructor (
     private readonly validations: ValidationComposite,
     private readonly recoverPassword: RecoverPassword

@@ -12,7 +12,7 @@ export interface CreateAccountRequest {
   password_confirmation: string
 }
 
-export class CreateAccountController implements Controller {
+export class CreateAccountController implements Controller<CreateAccountRequest, SessionModel | Error> {
   constructor (
     private readonly validations: ValidationComposite,
     private readonly createAccount: CreateAccount

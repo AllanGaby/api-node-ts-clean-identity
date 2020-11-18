@@ -3,7 +3,7 @@ import { ListAccount, ListAccountFilter } from '@/domain/usecases/auth/account'
 import { AccountModel } from '@/domain/models/auth'
 import { ok, serverError } from '@/presentation/helpers'
 
-export class ListAccountController implements Controller {
+export class ListAccountController implements Controller<ListAccountFilter, AccountModel[] | Error> {
   constructor (private readonly listAccount: ListAccount) {}
 
   async handle (request: HttpRequest<ListAccountFilter>): Promise<HttpResponse<AccountModel[] | Error>> {

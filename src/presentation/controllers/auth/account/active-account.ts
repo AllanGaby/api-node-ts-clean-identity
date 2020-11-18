@@ -8,7 +8,7 @@ export interface ActiveAccountRequest {
   session_id: string
 }
 
-export class ActiveAccountController implements Controller {
+export class ActiveAccountController implements Controller<ActiveAccountRequest, AccountModel | Error> {
   constructor (
     private readonly validations: ValidationComposite,
     private readonly activeAccount: ActiveAccount

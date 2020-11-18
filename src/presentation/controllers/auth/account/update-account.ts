@@ -13,7 +13,7 @@ export interface UpdateAccountRequest {
   avatar_file_path?: string
 }
 
-export class UpdateAccountController implements Controller {
+export class UpdateAccountController implements Controller<UpdateAccountRequest, AccountModel | Error> {
   constructor (
     private readonly validations: ValidationComposite,
     private readonly updateAccount: UpdateAccount
