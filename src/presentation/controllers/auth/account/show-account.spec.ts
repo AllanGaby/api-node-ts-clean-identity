@@ -21,7 +21,7 @@ const makeSut = (): sutTypes => {
   }
 }
 
-describe('SetAccountTypeController', () => {
+describe('ShowAccountController', () => {
   test('Should call ValidationComposite with correct values', async () => {
     const { sut, validationCompositeSpy } = makeSut()
     const request = mockShowAccountRequest()
@@ -36,14 +36,14 @@ describe('SetAccountTypeController', () => {
     expect(result).toEqual(badRequest(validationCompositeSpy.error))
   })
 
-  test('Should call SetAccountType with correct values', async () => {
+  test('Should call ShowAccount with correct values', async () => {
     const { sut, showAccountSpy } = makeSut()
     const request = mockShowAccountRequest()
     await sut.handle(request)
     expect(showAccountSpy.params).toEqual(request.body)
   })
 
-  test('Should return ServerError if SetAccountType throws', async () => {
+  test('Should return ServerError if ShowAccount throws', async () => {
     const { sut, showAccountSpy } = makeSut()
     jest.spyOn(showAccountSpy, 'show').mockImplementationOnce(throwError)
     const result = await sut.handle(mockShowAccountRequest())

@@ -1,9 +1,9 @@
 import { HttpRequest } from '@/presentation/protocols'
 import { CreateAccount, CreateAccountDTO, UpdateAccount, UpdateAccountDTO, ActiveAccount, ActiveAccountDTO, AuthenticationAccount, AuthenticationAccountDTO, ListAccount, ListAccountFilter, RecoverPassword, RecoverPasswordDTO, RequestRecoverPassword, RequestRecoverPasswordDTO, SetAccountType, SetAccountTypeDTO, ShowAccount, ShowAccountFilter } from '@/domain/usecases/auth/account'
 import { AccountModel, SessionModel, AuthenticationModel, AccountType } from '@/domain/models/auth'
-import faker from 'faker'
 import { mockAccountModel, mockAuthenticationModel, mockSessionModel, mockListAccountFilter } from '@/data/test'
-import { CreateAccountRequest, ActiveAccountRequest, AuthenticationAccountRequest, RecoverPasswordRequest } from '@/presentation/controllers/auth/account'
+import { CreateAccountRequest, ActiveAccountRequest, AuthenticationAccountRequest, RecoverPasswordRequest, UpdateAccountRequest } from '@/presentation/controllers/auth/account'
+import faker from 'faker'
 
 export class CreateAccountSpy implements CreateAccount {
   session: SessionModel = mockSessionModel()
@@ -37,11 +37,19 @@ export class UpdateAccountSpy implements UpdateAccount {
   }
 }
 
-export const mockActiveAccountRequest = (): HttpRequest<ActiveAccountRequest> => ({
-  body: {
-    sessionId: faker.random.uuid()
+export const mockUpdateAccountRequest = (): HttpRequest<UpdateAccountRequest> => {
+  const password = faker.internet.password()
+  return {
+    body: {
+      id: faker.random.uuid(),
+      name: faker.name.findName(),
+      email: faker.internet.email(),
+      avatar_file_path: faker.system.directoryPath() + faker.system.filePath(),
+      password,
+      password_confirmation: password
+    }
   }
-})
+}
 
 export class ActiveAccountSpy implements ActiveAccount {
   params: ActiveAccountDTO
@@ -53,10 +61,9 @@ export class ActiveAccountSpy implements ActiveAccount {
   }
 }
 
-export const mockAuthenticationAccountRequest = (): HttpRequest<AuthenticationAccountRequest> => ({
+export const mockActiveAccountRequest = (): HttpRequest<ActiveAccountRequest> => ({
   body: {
-    email: faker.internet.email(),
-    password: faker.internet.password()
+    sessionId: faker.random.uuid()
   }
 })
 
@@ -69,6 +76,13 @@ export class AuthenticationAccountSpy implements AuthenticationAccount {
     return this.authentication
   }
 }
+
+export const mockAuthenticationAccountRequest = (): HttpRequest<AuthenticationAccountRequest> => ({
+  body: {
+    email: faker.internet.email(),
+    password: faker.internet.password()
+  }
+})
 
 export class ListAccountSpy implements ListAccount {
   params: ListAccountFilter
