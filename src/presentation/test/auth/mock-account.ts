@@ -1,5 +1,5 @@
 import { HttpRequest } from '@/presentation/protocols'
-import { CreateAccount, CreateAccountDTO, UpdateAccount, UpdateAccountDTO, ActiveAccount, ActiveAccountDTO, AuthenticationAccount, AuthenticationAccountDTO, ListAccount, ListAccountFilter, RecoverPassword, RecoverPasswordDTO, RequestRecoverPassword, RequestRecoverPasswordDTO, SetAccountType, SetAccountTypeDTO } from '@/domain/usecases/auth/account'
+import { CreateAccount, CreateAccountDTO, UpdateAccount, UpdateAccountDTO, ActiveAccount, ActiveAccountDTO, AuthenticationAccount, AuthenticationAccountDTO, ListAccount, ListAccountFilter, RecoverPassword, RecoverPasswordDTO, RequestRecoverPassword, RequestRecoverPasswordDTO, SetAccountType, SetAccountTypeDTO, ShowAccount, ShowAccountFilter } from '@/domain/usecases/auth/account'
 import { AccountModel, SessionModel, AuthenticationModel, AccountType } from '@/domain/models/auth'
 import faker from 'faker'
 import { mockAccountModel, mockAuthenticationModel, mockSessionModel, mockListAccountFilter } from '@/data/test'
@@ -135,5 +135,21 @@ export const mockSetAccountTypeRequest = (type: AccountType = AccountType.studen
   body: {
     accountId: faker.random.uuid(),
     accountType: type
+  }
+})
+
+export class ShowAccountSpy implements ShowAccount {
+  params: ShowAccountFilter
+  account: AccountModel = mockAccountModel()
+
+  async show (params: ShowAccountFilter): Promise<AccountModel> {
+    this.params = params
+    return this.account
+  }
+}
+
+export const mockShowAccountRequest = (): HttpRequest<ShowAccountFilter> => ({
+  body: {
+    accountId: faker.random.uuid()
   }
 })
