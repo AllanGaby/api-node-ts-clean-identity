@@ -5,7 +5,7 @@ import { ActiveAccount } from '@/domain/usecases/auth/account'
 import { AccountModel } from '@/domain/models/auth'
 
 export interface ActiveAccountRequest {
-  sessionId: string
+  session_id: string
 }
 
 export class ActiveAccountController implements Controller {
@@ -20,8 +20,7 @@ export class ActiveAccountController implements Controller {
       if (validationErrors) {
         return badRequest(validationErrors)
       }
-      const { sessionId } = request.body
-      const activatedAccount = await this.activeAccount.active({ sessionId })
+      const activatedAccount = await this.activeAccount.active({ sessionId: request.body.session_id })
       return ok(activatedAccount)
     } catch (error) {
       return serverError(error)

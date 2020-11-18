@@ -40,7 +40,10 @@ describe('SetAccountTypeController', () => {
     const { sut, setAccountTypeSpy } = makeSut()
     const request = mockSetAccountTypeRequest()
     await sut.handle(request)
-    expect(setAccountTypeSpy.params).toEqual(request.body)
+    expect(setAccountTypeSpy.params).toEqual({
+      accountId: request.body.account_id,
+      accountType: request.body.account_type
+    })
   })
 
   test('Should return ServerError if SetAccountType throws', async () => {

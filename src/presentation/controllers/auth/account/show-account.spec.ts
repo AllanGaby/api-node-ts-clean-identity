@@ -40,7 +40,9 @@ describe('ShowAccountController', () => {
     const { sut, showAccountSpy } = makeSut()
     const request = mockShowAccountRequest()
     await sut.handle(request)
-    expect(showAccountSpy.params).toEqual(request.body)
+    expect(showAccountSpy.params).toEqual({
+      accountId: request.body.account_id
+    })
   })
 
   test('Should return ServerError if ShowAccount throws', async () => {

@@ -2,7 +2,7 @@ import { HttpRequest } from '@/presentation/protocols'
 import { CreateAccount, CreateAccountDTO, UpdateAccount, UpdateAccountDTO, ActiveAccount, ActiveAccountDTO, AuthenticationAccount, AuthenticationAccountDTO, ListAccount, ListAccountFilter, RecoverPassword, RecoverPasswordDTO, RequestRecoverPassword, RequestRecoverPasswordDTO, SetAccountType, SetAccountTypeDTO, ShowAccount, ShowAccountFilter } from '@/domain/usecases/auth/account'
 import { AccountModel, SessionModel, AuthenticationModel, AccountType } from '@/domain/models/auth'
 import { mockAccountModel, mockAuthenticationModel, mockSessionModel, mockListAccountFilter } from '@/data/test'
-import { CreateAccountRequest, ActiveAccountRequest, AuthenticationAccountRequest, RecoverPasswordRequest, UpdateAccountRequest } from '@/presentation/controllers/auth/account'
+import { CreateAccountRequest, ActiveAccountRequest, RecoverPasswordRequest, UpdateAccountRequest, SetAccountTypeRequest, ShowAccountRequest } from '@/presentation/controllers/auth/account'
 import faker from 'faker'
 
 export class CreateAccountSpy implements CreateAccount {
@@ -63,7 +63,7 @@ export class ActiveAccountSpy implements ActiveAccount {
 
 export const mockActiveAccountRequest = (): HttpRequest<ActiveAccountRequest> => ({
   body: {
-    sessionId: faker.random.uuid()
+    session_id: faker.random.uuid()
   }
 })
 
@@ -77,7 +77,7 @@ export class AuthenticationAccountSpy implements AuthenticationAccount {
   }
 }
 
-export const mockAuthenticationAccountRequest = (): HttpRequest<AuthenticationAccountRequest> => ({
+export const mockAuthenticationAccountRequest = (): HttpRequest<AuthenticationAccountDTO> => ({
   body: {
     email: faker.internet.email(),
     password: faker.internet.password()
@@ -145,10 +145,10 @@ export class SetAccountTypeSpy implements SetAccountType {
   }
 }
 
-export const mockSetAccountTypeRequest = (type: AccountType = AccountType.student): HttpRequest<SetAccountTypeDTO> => ({
+export const mockSetAccountTypeRequest = (type: AccountType = AccountType.student): HttpRequest<SetAccountTypeRequest> => ({
   body: {
-    accountId: faker.random.uuid(),
-    accountType: type
+    account_id: faker.random.uuid(),
+    account_type: type
   }
 })
 
@@ -162,8 +162,8 @@ export class ShowAccountSpy implements ShowAccount {
   }
 }
 
-export const mockShowAccountRequest = (): HttpRequest<ShowAccountFilter> => ({
+export const mockShowAccountRequest = (): HttpRequest<ShowAccountRequest> => ({
   body: {
-    accountId: faker.random.uuid()
+    account_id: faker.random.uuid()
   }
 })

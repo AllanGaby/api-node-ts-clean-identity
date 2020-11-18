@@ -42,7 +42,7 @@ describe('ActiveAccountController', () => {
     const request = mockActiveAccountRequest()
     await sut.handle(request)
     expect(activeAccountSpy.params).toEqual({
-      sessionId: request.body.sessionId
+      sessionId: request.body.session_id
     })
   })
 
