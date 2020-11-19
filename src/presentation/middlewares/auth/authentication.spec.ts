@@ -27,6 +27,12 @@ describe('AuthenticationMiddleware', () => {
     expect(result).toEqual(badRequest(new MissingParamError('x-access-token')))
   })
 
+  test('Should return BadRequest if request headers not found', async () => {
+    const { sut } = makeSut()
+    const result = await sut.handle({})
+    expect(result).toEqual(badRequest(new MissingParamError('x-access-token')))
+  })
+
   test('Should call ShowAccountBySession with correct value', async () => {
     const { sut, showAccountBySessionSpy } = makeSut()
     const request = mockAuthenticationRequest()
