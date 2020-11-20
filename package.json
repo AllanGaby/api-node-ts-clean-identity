@@ -13,6 +13,7 @@
     "@types/jsonwebtoken": "^8.5.0",
     "@types/node": "^14.11.10",
     "@types/nodemailer": "^6.4.0",
+    "@types/supertest": "^2.0.10",
     "@types/typescript": "^2.0.0",
     "@types/validator": "^13.1.0",
     "@typescript-eslint/eslint-plugin": "3",
@@ -27,6 +28,7 @@
     "husky": "^4.3.0",
     "jest": "^26.5.3",
     "lint-staged": "^10.4.2",
+    "supertest": "^6.0.1",
     "ts-jest": "^26.4.1",
     "ts-node-dev": "^1.0.0",
     "typescript": "^4.0.3"
@@ -36,6 +38,8 @@
     "test:staged": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:verbose": "jest --passWithNoTests --runInBand",
     "test:coverage": "yarn test --coverage",
+    "test:integration": "npm test -- --watch -c jest-integration-config.js",
+    "test:unit": "npm test -- --watch -c jest-unit-config.js",
     "dev:server": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/main/http/express/server.ts"
   },
   "dependencies": {

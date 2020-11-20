@@ -9,7 +9,6 @@ export const makeCreateAccountController = (): CreateAccountController => {
       minLengthName: 5,
       minLengthPassword: 6,
       emailValidator: new EmailValidatorAdapter()
-
     }),
     makeDbCreateAccount())
 }
