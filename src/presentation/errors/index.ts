@@ -1,1 +1,1 @@
-export * from './access-denied'
+export * from './access-denied-error'

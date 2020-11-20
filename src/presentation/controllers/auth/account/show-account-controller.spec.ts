@@ -1,4 +1,4 @@
-import { ShowAccountController } from './show-account'
+import { ShowAccountController } from './show-account-controller'
 import { ValidationCompositeSpy } from '@/validation/test'
 import { ShowAccountSpy, mockShowAccountRequest } from '@/presentation/test/auth'
 import { badRequest, serverError, ok } from '@/presentation/helpers'

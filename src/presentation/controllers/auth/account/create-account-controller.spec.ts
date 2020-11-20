@@ -1,4 +1,4 @@
-import { CreateAccountController } from './create-account'
+import { CreateAccountController } from './create-account-controller'
 import { ValidationCompositeSpy } from '@/validation/test'
 import { CreateAccountSpy, mockCreateAccountRequest } from '@/presentation/test/auth'
 import { badRequest, created, forbidden, serverError } from '@/presentation/helpers'

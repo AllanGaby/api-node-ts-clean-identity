@@ -1,4 +1,4 @@
-import { RequestRecoverPasswordController } from './request-recover-password'
+import { RequestRecoverPasswordController } from './request-recover-password-controller'
 import { ValidationCompositeSpy } from '@/validation/test'
 import { RequestRecoverPasswordSpy, mockRequestRecoverPasswordRequest } from '@/presentation/test/auth'
 import { badRequest, serverError, ok } from '@/presentation/helpers'

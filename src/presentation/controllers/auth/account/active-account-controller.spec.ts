@@ -1,4 +1,4 @@
-import { ActiveAccountController } from './active-account'
+import { ActiveAccountController } from './active-account-controller'
 import { ValidationCompositeSpy } from '@/validation/test'
 import { ActiveAccountSpy, mockActiveAccountRequest } from '@/presentation/test/auth'
 import { badRequest, serverError, ok } from '@/presentation/helpers'

@@ -1,4 +1,4 @@
-import { UpdateAccountController } from './update-account'
+import { UpdateAccountController } from './update-account-controller'
 import { ValidationCompositeSpy } from '@/validation/test'
 import { UpdateAccountSpy, mockUpdateAccountRequest } from '@/presentation/test/auth'
 import { badRequest, serverError, ok } from '@/presentation/helpers'

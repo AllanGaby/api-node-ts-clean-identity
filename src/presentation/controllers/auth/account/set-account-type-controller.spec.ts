@@ -1,4 +1,4 @@
-import { SetAccountTypeController } from './set-account-type'
+import { SetAccountTypeController } from './set-account-type-controller'
 import { ValidationCompositeSpy } from '@/validation/test'
 import { SetAccountTypeSpy, mockSetAccountTypeRequest } from '@/presentation/test/auth'
 import { badRequest, serverError, ok } from '@/presentation/helpers'

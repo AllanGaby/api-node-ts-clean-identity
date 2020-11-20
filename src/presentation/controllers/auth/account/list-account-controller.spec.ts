@@ -1,4 +1,4 @@
-import { ListAccountController } from './list-account'
+import { ListAccountController } from './list-account-controller'
 import { ListAccountSpy, mockListAccountRequest } from '@/presentation/test/auth'
 import { throwError } from '@/data/test'
 import { serverError, ok } from '@/presentation/helpers'

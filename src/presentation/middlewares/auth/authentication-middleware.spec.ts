@@ -1,4 +1,4 @@
-import { AuthenticationMiddleware } from './authentication'
+import { AuthenticationMiddleware } from './authentication-middleware'
 import { ShowAccountBySessionSpy, mockAuthenticationRequest, mockAuthenticationFailRequest } from '@/presentation/test/auth'
 import { AccountType } from '@/domain/models/auth'
 import { badRequest, forbidden, serverError, ok } from '@/presentation/helpers'

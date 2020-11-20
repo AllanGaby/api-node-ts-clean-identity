@@ -1,4 +1,4 @@
-import { AuthenticationAccountController } from './authentication-account'
+import { AuthenticationAccountController } from './authentication-account-controller'
 import { ValidationCompositeSpy } from '@/validation/test'
 import { AuthenticationAccountSpy, mockAuthenticationAccountRequest } from '@/presentation/test/auth'
 import { badRequest, serverError, unauthorized, ok } from '@/presentation/helpers'

@@ -1,1 +1,1 @@
-export * from './send-mail-session'
+export * from './send-mail-session-factory'
