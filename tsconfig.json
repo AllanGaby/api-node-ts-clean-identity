@@ -15,5 +15,5 @@
         "experimentalDecorators": true
     },
     "include": ["src"],
-    "exclude": []
+    "exclude": ["**/*.hbs"]
 }
