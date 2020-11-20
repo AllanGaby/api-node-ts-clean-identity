@@ -12,5 +12,5 @@ export const makeDbCreateAccount = (): DbCreateAccount => {
     hasherAdapter,
     acccountRepository,
     sendMailSession,
-    '@/infra/comunication/views/handlebars/auth/create-account.hbs')
+    'src/infra/comunication/views/handlebars/auth/create-account.hbs')
 }
