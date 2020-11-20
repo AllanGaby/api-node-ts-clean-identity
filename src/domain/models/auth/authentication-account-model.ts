@@ -1,4 +1,4 @@
-import { AccountType } from './account'
+import { AccountType } from './account-model'
 
 export interface AuthenticationModel {
   access_token: string

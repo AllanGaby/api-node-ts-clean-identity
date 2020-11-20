@@ -1,6 +1,6 @@
 import { GetAccountByEmailRepository, CreateAccountRepository, CreateAccountModel, UpdateAccountRepository, ListAccountRepository, UpdateAccountModel } from '@/data/repositories/auth/account'
 import { ListAccountFilter } from '@/domain/usecases/auth/account'
-import { GetAccountByIdRepository } from '@/data/repositories/auth/account/get-account-by-id'
+import { GetAccountByIdRepository } from '@/data/repositories/auth/account/get-account-by-id-repository'
 import { AccountModel } from '@/domain/models/auth'
 import { mockAccountModel } from './mock-account'
 

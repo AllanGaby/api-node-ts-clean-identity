@@ -1,2 +1,2 @@
-export * from './account'
-export * from './session'
+export * from './account-repository'
+export * from './session-repository'

@@ -1,4 +1,4 @@
-import { MemorySessionRepository } from './session'
+import { MemorySessionRepository } from './session-repository'
 import { mockCreateSessionModel } from '@/infra/test/db/memory/auth'
 import faker from 'faker'
 import { mockSessionModel } from '@/data/test'

@@ -1,2 +1,2 @@
-export * from './email-in-use'
-export * from './invalid-credentials'
+export * from './email-in-use-error'
+export * from './invalid-credentials-error'

@@ -1,5 +1,4 @@
-import { CreateSessionRepository, CreateSessionModel, GetSessionByIdRepository } from '@/data/repositories/auth/session'
-import { DeleteSessionRepository } from '@/data/repositories/auth/session/delete-session'
+import { CreateSessionRepository, CreateSessionModel, GetSessionByIdRepository, DeleteSessionRepository } from '@/data/repositories/auth/session'
 import { SessionModel } from '@/domain/models/auth'
 import { mockSessionModel } from './mock-session'
 

@@ -1,4 +1,4 @@
-import { MemoryAccountRepository } from './account'
+import { MemoryAccountRepository } from './account-repository'
 import { mockCreateAccountModel } from '@/infra/test/db/memory/auth'
 import faker from 'faker'
 import { AccountType } from '@/domain/models/auth'
