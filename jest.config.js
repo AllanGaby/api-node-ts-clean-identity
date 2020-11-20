@@ -7,7 +7,6 @@ module.exports = {
     '<rootDir>/src/presentation/**/controllers/**/*.ts',
     '<rootDir>/src/presentation/**/middlewares/**/*.ts',
     '<rootDir>/src/main/**/validations/**/*.ts',
-    '!**.hbs',
     '!**/protocols/**',
     '!**/index.ts'
   ],
