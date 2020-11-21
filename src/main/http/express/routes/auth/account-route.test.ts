@@ -6,14 +6,15 @@ describe('Account Routes', () => {
   describe('POST /account', () => {
     test('Should return 200 on create account', async () => {
       const createAccountRequest = mockCreateAccountRequest()
-      const result = await request(app)
+      createAccountRequest.body.email = 'allan.gaby@gmail.com'
+      await request(app)
         .post('/api/account')
         .send(createAccountRequest.body)
-      console.log(result.body)
-      const result2 = await request(app)
+        .expect(201)
+      await request(app)
         .post('/api/account')
         .send(createAccountRequest.body)
-      console.log(result2.body)
+        .expect(403)
     })
   })
 })

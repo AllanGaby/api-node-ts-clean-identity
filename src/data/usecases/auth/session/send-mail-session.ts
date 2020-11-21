@@ -17,7 +17,7 @@ export class DbSendMailSession implements SendMailSession {
       experied_at: new Date(new Date().getDate() + 1)
     })
     const variables = {
-      sessionId: session.id,
+      link: session.id,
       name
     }
     const mailContent = await this.mailTemplateAdapter.parse({
