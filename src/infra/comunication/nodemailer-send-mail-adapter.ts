@@ -1,17 +1,27 @@
 import { SendMailAdapter, SendMailDTO } from '@/data/protocols/comunication/mail'
 import nodemailer, { Transporter } from 'nodemailer'
 
+export interface SMTPConfig {
+  host: string
+  port: number
+  secure: boolean
+  auth: {
+    user: string
+    pass: string
+  }
+}
+
 export class NodemailerSendMailAdapter implements SendMailAdapter {
   private readonly client: Transporter
 
-  constructor () {
+  constructor ({ host, port, secure, auth }: SMTPConfig) {
     this.client = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
-      secure: false,
+      host,
+      port,
+      secure,
       auth: {
-        user: 'sammy.gutmann2@ethereal.email',
-        pass: '6FRHEGTxfJXwt1t5u6'
+        user: auth.user,
+        pass: auth.pass
       }
     })
   }
