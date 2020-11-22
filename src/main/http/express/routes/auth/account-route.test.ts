@@ -6,7 +6,6 @@ describe('Account Routes', () => {
   describe('POST /account', () => {
     test('Should return 200 on create account', async () => {
       const createAccountRequest = mockCreateAccountRequest()
-      createAccountRequest.body.email = 'allan.gaby@gmail.com'
       await request(app)
         .post('/api/account')
         .send(createAccountRequest.body)

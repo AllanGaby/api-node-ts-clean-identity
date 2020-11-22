@@ -17,7 +17,7 @@ export class NodemailerSendMailAdapter implements SendMailAdapter {
   }
 
   async sendMail ({ sender, to, subject, content }: SendMailDTO): Promise<void> {
-    const message = await this.client.sendMail({
+    await this.client.sendMail({
       from: {
         name: sender?.name || 'Identity',
         address: sender?.email || 'contact@identity.com.br'
@@ -29,9 +29,5 @@ export class NodemailerSendMailAdapter implements SendMailAdapter {
       subject,
       html: content
     })
-    console.log(`Message sent: ${message.messageId}`)
-    console.log(`Preview URL: ${nodemailer.getTestMessageUrl(message)}`)
-
-    return message.messageId
   }
 }
