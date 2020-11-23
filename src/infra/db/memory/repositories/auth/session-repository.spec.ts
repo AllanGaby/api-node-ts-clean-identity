@@ -42,7 +42,7 @@ describe('MemorySessionRepository', () => {
     })
   })
 
-  describe('GetSessionById Method', () => {
+  describe('Delete Method', () => {
     test('Should return null if session not found', async () => {
       const { sut } = makeSut()
       const session = mockSessionModel()
@@ -56,11 +56,12 @@ describe('MemorySessionRepository', () => {
     test('Should change session list if session found', async () => {
       const { sut } = makeSut()
       const createdSession = await sut.create(mockCreateSessionModel())
-      const beforeSession = await sut.getSessionById(createdSession.id)
-      expect(beforeSession).toEqual(beforeSession)
-      await sut.delete(beforeSession)
-      const afterSession = await sut.getSessionById(createdSession.id)
-      expect(afterSession).toBeFalsy()
+      const existsSession = await sut.getSessionById(createdSession.id)
+      expect(existsSession).toEqual(createdSession)
+      await sut.delete(existsSession)
+      expect(await sut.getSessionById(createdSession.id)).toBeFalsy()
+      await sut.delete(existsSession)
+      expect(await sut.getSessionById(createdSession.id)).toBeFalsy()
     })
   })
 })
