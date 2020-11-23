@@ -1,6 +1,6 @@
 import app from '@/main/config/express/app'
-import env from '@/main/config/env'
+import { EnvConfig } from '@/main/config/env'
 
-app.listen(env.port, () => {
-  console.log(`🚀 Server started on port ${env.port}!`)
+app.listen(EnvConfig.port, () => {
+  console.log(`🚀 Server started on port ${EnvConfig.port}!`)
 })
