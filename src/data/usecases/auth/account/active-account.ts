@@ -15,7 +15,7 @@ export class DbActiveAccount implements ActiveAccount {
   async active ({ sessionId }: ActiveAccountDTO): Promise<AccountModel> {
     const session = await this.getSessionByIdRepository.getSessionById(sessionId)
     if (!session) {
-      throw new Error('Session not found')
+      throw new InvalidCredentialsError()
     }
     if ((session.type === SessionType.activeAccount) &&
         (session.experied_at > new Date()) &&
