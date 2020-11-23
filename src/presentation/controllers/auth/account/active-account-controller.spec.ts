@@ -27,7 +27,7 @@ describe('ActiveAccountController', () => {
     const { sut, validationCompositeSpy } = makeSut()
     const request = mockActiveAccountRequest()
     await sut.handle(request)
-    expect(validationCompositeSpy.params).toEqual(request.body)
+    expect(validationCompositeSpy.params).toEqual(request.params)
   })
 
   test('Should return BadRequest if validation is fails', async () => {
@@ -42,7 +42,7 @@ describe('ActiveAccountController', () => {
     const request = mockActiveAccountRequest()
     await sut.handle(request)
     expect(activeAccountSpy.params).toEqual({
-      sessionId: request.body.session_id
+      sessionId: request.params.session_id
     })
   })
 

@@ -62,7 +62,7 @@ export class ActiveAccountSpy implements ActiveAccount {
 }
 
 export const mockActiveAccountRequest = (): HttpRequest<ActiveAccountRequest> => ({
-  body: {
+  params: {
     session_id: faker.random.uuid()
   }
 })
