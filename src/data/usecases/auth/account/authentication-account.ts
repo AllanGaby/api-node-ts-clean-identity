@@ -1,6 +1,5 @@
 import { AuthenticationAccount, AuthenticationAccountDTO } from '@/domain/usecases/auth/account'
-import { GetAccountByEmailRepository } from '@/data/repositories/auth/account'
-import { CreateSessionRepository } from '@/data/repositories/auth/session'
+import { GetAccountByEmailRepository, CreateSessionRepository } from '@/data/repositories/auth'
 import { HashComparer, Encrypter } from '@/data/protocols/criptography'
 import { SessionType, AuthenticationModel } from '@/domain/models/auth'
 import { InvalidCredentialsError } from '@/data/errors'

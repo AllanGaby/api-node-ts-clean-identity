@@ -1,7 +1,6 @@
 import { RecoverPassword, RecoverPasswordDTO } from '@/domain/usecases/auth/account'
 import { AccountModel, SessionType } from '@/domain/models/auth'
-import { GetSessionByIdRepository } from '@/data/repositories/auth/session'
-import { GetAccountByIdRepository, UpdateAccountRepository } from '@/data/repositories/auth/account'
+import { GetSessionByIdRepository, GetAccountByIdRepository, UpdateAccountRepository } from '@/data/repositories/auth'
 import { HashCreator } from '@/data/protocols/criptography'
 
 export class DbRecoverPassword implements RecoverPassword {

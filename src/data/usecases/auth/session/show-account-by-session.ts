@@ -1,8 +1,8 @@
 import { AccountModel } from '@/domain/models/auth'
 import { ShowAccountBySession, ShowAccountBySessionDTO } from '@/domain/usecases/auth/session'
 import { Decrypter } from '@/data/protocols/criptography'
-import { GetAccountByIdRepository } from '@/data/repositories/auth/account'
-import { GetSessionByIdRepository } from '@/data/repositories/auth/session'
+import { GetAccountByIdRepository, GetSessionByIdRepository } from '@/data/repositories/auth'
+import { InvalidCredentialsError } from '@/data/errors'
 
 export class DbShowAccountBySession implements ShowAccountBySession {
   constructor (
@@ -19,6 +19,6 @@ export class DbShowAccountBySession implements ShowAccountBySession {
         return await this.getAccountByIdRepository.getAccountById(session.account_id)
       }
     }
-    throw new Error('Session not found')
+    throw new InvalidCredentialsError()
   }
 }
