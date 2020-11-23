@@ -2,6 +2,7 @@ import { ActiveAccount, ActiveAccountDTO } from '@/domain/usecases/auth/account'
 import { AccountModel, SessionType } from '@/domain/models/auth'
 import { GetAccountByIdRepository, UpdateAccountRepository } from '@/data/repositories/auth/account'
 import { GetSessionByIdRepository, DeleteSessionRepository } from '@/data/repositories/auth/session'
+import { InvalidCredentialsError } from '@/data/errors'
 
 export class DbActiveAccount implements ActiveAccount {
   constructor (
@@ -27,7 +28,7 @@ export class DbActiveAccount implements ActiveAccount {
         return updatedAccount
       }
     } else {
-      throw new Error('Invalid Session')
+      throw new InvalidCredentialsError()
     }
   }
 }

@@ -14,7 +14,7 @@ export class DbSendMailSession implements SendMailSession {
     const session = await this.createSessionRepository.create({
       account_id: accountId,
       type: sessionType,
-      experied_at: new Date(new Date().getDate() + 1)
+      experied_at: new Date(new Date().setDate(new Date().getDate() + 1))
     })
     const variables = {
       link: session.id,
