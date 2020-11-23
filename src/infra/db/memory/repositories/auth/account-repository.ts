@@ -4,9 +4,17 @@ import faker from 'faker'
 
 export class MemoryAccountRepository implements CreateAccountRepository, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository, ListAccountRepository {
   private readonly accounts: AccountModel[]
+  private static instance: MemoryAccountRepository
 
-  constructor () {
+  private constructor () {
     this.accounts = []
+  }
+
+  public static getInstance (): MemoryAccountRepository {
+    if (!MemoryAccountRepository.instance) {
+      MemoryAccountRepository.instance = new MemoryAccountRepository()
+    }
+    return MemoryAccountRepository.instance
   }
 
   async create ({ name, email, password }: CreateAccountModel): Promise<AccountModel> {

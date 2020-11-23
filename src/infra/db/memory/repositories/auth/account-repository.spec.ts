@@ -8,7 +8,7 @@ interface sutTypes {
 }
 
 const makeSut = (): sutTypes => {
-  const sut = new MemoryAccountRepository()
+  const sut = MemoryAccountRepository.getInstance()
   return {
     sut
   }

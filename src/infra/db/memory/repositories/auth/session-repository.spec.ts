@@ -8,7 +8,7 @@ interface sutType {
 }
 
 const makeSut = (): sutType => {
-  const sut = new MemorySessionRepository()
+  const sut = MemorySessionRepository.getInstance()
   return {
     sut
   }
@@ -27,7 +27,7 @@ describe('MemorySessionRepository Create Method', () => {
 })
 
 describe('MemorySessionRepository GetSessionById Method', () => {
-  test('Should return null if session not found', async () => {
+  test.only('Should return null if session not found', async () => {
     const { sut } = makeSut()
     const sessionById = await sut.getSessionById(faker.random.uuid())
     expect(sessionById).toBeFalsy()

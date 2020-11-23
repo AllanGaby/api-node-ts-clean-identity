@@ -4,9 +4,17 @@ import faker from 'faker'
 
 export class MemorySessionRepository implements CreateSessionRepository, GetSessionByIdRepository, DeleteSessionRepository {
   private readonly sessions: SessionModel[]
+  private static instance: MemorySessionRepository
 
-  constructor () {
+  private constructor () {
     this.sessions = []
+  }
+
+  public static getInstance (): MemorySessionRepository {
+    if (!MemorySessionRepository.instance) {
+      MemorySessionRepository.instance = new MemorySessionRepository()
+    }
+    return MemorySessionRepository.instance
   }
 
   async create (createSession: CreateSessionModel): Promise<SessionModel> {
@@ -23,7 +31,10 @@ export class MemorySessionRepository implements CreateSessionRepository, GetSess
   }
 
   async getSessionById (sessionId: string): Promise<SessionModel> {
-    return this.sessions.find(session => session.id === sessionId)
+    if (this.sessions.length > 0) {
+      return this.sessions.find(session => session.id === sessionId)
+    }
+    return null
   }
 
   async delete (deletedSession: SessionModel): Promise<void> {

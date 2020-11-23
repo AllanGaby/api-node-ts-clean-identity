@@ -5,7 +5,7 @@ import { makeDbSendMailSession } from '@/main/factories/usecases/auth/memory/ses
 
 export const makeDbCreateAccount = (): DbCreateAccount => {
   const sendMailSession = makeDbSendMailSession()
-  const acccountRepository = new MemoryAccountRepository()
+  const acccountRepository = MemoryAccountRepository.getInstance()
   const hasherAdapter = new BCrypterHasherAdapter(12)
   return new DbCreateAccount(
     acccountRepository,
