@@ -31,16 +31,15 @@ export class MemorySessionRepository implements CreateSessionRepository, GetSess
   }
 
   async getSessionById (sessionId: string): Promise<SessionModel> {
-    if (this.sessions.length > 0) {
-      return this.sessions.find(session => session.id === sessionId)
-    }
-    return null
+    return this.sessions.find(session => session.id === sessionId)
   }
 
   async delete (deletedSession: SessionModel): Promise<void> {
-    const index = this.sessions.findIndex(session => session.id === deletedSession.id)
-    if (index >= 0) {
-      this.sessions.splice(index)
+    if (deletedSession) {
+      const index = this.sessions.findIndex(session => session.id === deletedSession.id)
+      if (index >= 0) {
+        this.sessions.splice(index)
+      }
     }
   }
 }
