@@ -16,11 +16,11 @@ export class ActiveAccountController implements Controller<ActiveAccountRequest,
 
   async handle (request: HttpRequest<ActiveAccountRequest>): Promise<HttpResponse<AccountModel | Error>> {
     try {
-      const validationErrors = this.validations.validate(request.body)
+      const validationErrors = this.validations.validate(request.params)
       if (validationErrors) {
         return badRequest(validationErrors)
       }
-      const activatedAccount = await this.activeAccount.active({ sessionId: request.body.session_id })
+      const activatedAccount = await this.activeAccount.active({ sessionId: request.params.session_id })
       return ok(activatedAccount)
     } catch (error) {
       return serverError(error)
