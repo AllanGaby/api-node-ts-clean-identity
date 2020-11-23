@@ -45,7 +45,7 @@ describe('DbSendMailSession', () => {
     const sendMailAccountDTO = mockSendMailSessionDTO(SessionType.activeAccount)
     await sut.sendMail(sendMailAccountDTO)
     const variables = {
-      sessionId: createSessionRepositorySpy.session.id,
+      link: createSessionRepositorySpy.session.id,
       name: sendMailAccountDTO.name
     }
     expect(mailTemplateAdapterSpy.parseParams).toEqual({
