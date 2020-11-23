@@ -14,7 +14,7 @@ export class DbAuthenticationAccount implements AuthenticationAccount {
 
   async authenticate ({ email, password }: AuthenticationAccountDTO): Promise<AuthenticationModel> {
     const account = await this.getAccountByEmailRepository.getAccountByEmail(email)
-    if (account) {
+    if (account?.email_valided) {
       const isCorrectPassword = await this.hashComparer.compare({
         payload: password,
         hashedText: account.password
@@ -33,6 +33,6 @@ export class DbAuthenticationAccount implements AuthenticationAccount {
         account_type: account.type
       }
     }
-    throw new Error('Account not found')
+    throw new InvalidCredentialsError()
   }
 }
