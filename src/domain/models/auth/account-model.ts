@@ -1,6 +1,6 @@
 export enum AccountType {
-  manager,
-  student
+  manager = 1,
+  student = 2
 }
 
 export interface AccountModel {

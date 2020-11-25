@@ -20,6 +20,8 @@ export class AuthenticationMiddleware implements Middleware<any, AccountModel | 
       const account = await this.ShowAccountBySession.show({
         accessToken
       })
+      console.log(account)
+      console.log(this.accountType)
       if ((account) && (this.accountType.includes(account.type))) {
         return ok(account)
       }
