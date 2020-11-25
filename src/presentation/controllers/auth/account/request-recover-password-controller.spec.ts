@@ -53,6 +53,6 @@ describe('RequestRecoverPasswordController', () => {
   test('Should return Ok if RequestRecoverPassword succeeds', async () => {
     const { sut, requestRecoverPasswordSpy } = makeSut()
     const result = await sut.handle(mockRequestRecoverPasswordRequest())
-    expect(result).toEqual(ok(requestRecoverPasswordSpy.result))
+    expect(result).toEqual(ok(requestRecoverPasswordSpy.session))
   })
 })

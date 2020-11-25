@@ -121,11 +121,11 @@ export const mockRecoverPasswordRequest = (): HttpRequest<RecoverPasswordRequest
 
 export class RequestRecoverPasswordSpy implements RequestRecoverPassword {
   params: RequestRecoverPasswordDTO
-  result: boolean = true
+  session: SessionModel = mockSessionModel()
 
-  async request (params: RequestRecoverPasswordDTO): Promise<boolean> {
+  async request (params: RequestRecoverPasswordDTO): Promise<SessionModel> {
     this.params = params
-    return this.result
+    return this.session
   }
 }
 
