@@ -3,6 +3,7 @@ import { ValidationCompositeSpy } from '@/validation/test'
 import { ActiveAccountSpy, mockActiveAccountRequest } from '@/presentation/test/auth'
 import { badRequest, serverError, ok } from '@/presentation/helpers'
 import { throwError } from '@/data/test'
+import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {
   sut: ActiveAccountController
@@ -51,6 +52,13 @@ describe('ActiveAccountController', () => {
     jest.spyOn(activeAccountSpy, 'active').mockImplementationOnce(throwError)
     const result = await sut.handle(mockActiveAccountRequest())
     expect(result).toEqual(serverError(new Error('')))
+  })
+
+  test('Should return BadRequest if ActiveAccount return InvalidCredentialsError', async () => {
+    const { sut, activeAccountSpy } = makeSut()
+    jest.spyOn(activeAccountSpy, 'active').mockImplementationOnce(() => { throw new InvalidCredentialsError() })
+    const result = await sut.handle(mockActiveAccountRequest())
+    expect(result).toEqual(badRequest(new InvalidCredentialsError()))
   })
 
   test('Should return Ok and correct entity if usecase is succeeds', async () => {
