@@ -65,4 +65,10 @@ describe('DbRequestRecoverPassword', () => {
     const promise = sut.request({ email: faker.internet.email() })
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return a SessionModel if succeeds', async () => {
+    const { sut, sendMailSessionSpy } = makeSut()
+    const session = await sut.request({ email: faker.internet.email() })
+    expect(session).toEqual(sendMailSessionSpy.session)
+  })
 })
