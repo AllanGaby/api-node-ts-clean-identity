@@ -20,12 +20,8 @@ export class AuthenticationMiddleware implements Middleware<any, AccountModel | 
       const account = await this.ShowAccountBySession.show({
         accessToken
       })
-      if (account) {
-        if (!this.accountType) {
-          return ok(account)
-        } else if (this.accountType.includes(account.type)) {
-          return ok(account)
-        }
+      if ((account) && ((!this.accountType) || (this.accountType.includes(account.type)))) {
+        return ok(account)
       }
       return forbidden(new AccessDeniedError())
     } catch (error) {
