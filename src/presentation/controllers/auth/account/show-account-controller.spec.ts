@@ -26,7 +26,7 @@ describe('ShowAccountController', () => {
     const { sut, validationCompositeSpy } = makeSut()
     const request = mockShowAccountRequest()
     await sut.handle(request)
-    expect(validationCompositeSpy.params).toEqual(request.body)
+    expect(validationCompositeSpy.params).toEqual(request.params)
   })
 
   test('Should return BadRequest if validation is fails', async () => {
@@ -41,7 +41,7 @@ describe('ShowAccountController', () => {
     const request = mockShowAccountRequest()
     await sut.handle(request)
     expect(showAccountSpy.params).toEqual({
-      accountId: request.body.account_id
+      accountId: request.params.account_id
     })
   })
 

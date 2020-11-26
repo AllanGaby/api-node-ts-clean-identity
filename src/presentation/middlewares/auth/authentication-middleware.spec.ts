@@ -11,9 +11,9 @@ interface sutTypes {
   showAccountBySessionSpy: ShowAccountBySessionSpy
 }
 
-const makeSut = (accountType: AccountType = AccountType.student): sutTypes => {
+const makeSut = (accountType: AccountType[] = [AccountType.student]): sutTypes => {
   const showAccountBySessionSpy = new ShowAccountBySessionSpy()
-  const sut = new AuthenticationMiddleware(showAccountBySessionSpy, [accountType])
+  const sut = new AuthenticationMiddleware(showAccountBySessionSpy, accountType)
   return {
     sut,
     showAccountBySessionSpy
@@ -57,7 +57,7 @@ describe('AuthenticationMiddleware', () => {
   })
 
   test('Should return Forbidden if account type is different', async () => {
-    const { sut, showAccountBySessionSpy } = makeSut(AccountType.manager)
+    const { sut, showAccountBySessionSpy } = makeSut([AccountType.manager])
     showAccountBySessionSpy.account.type = AccountType.student
     const result = await sut.handle(mockAuthenticationRequest())
     expect(result).toEqual(forbidden(new AccessDeniedError()))
@@ -65,6 +65,12 @@ describe('AuthenticationMiddleware', () => {
 
   test('Should return an Account if succeeds', async () => {
     const { sut, showAccountBySessionSpy } = makeSut()
+    const result = await sut.handle(mockAuthenticationRequest())
+    expect(result).toEqual(ok(showAccountBySessionSpy.account))
+  })
+
+  test('Should return an Account if succeeds without accounttype check', async () => {
+    const { sut, showAccountBySessionSpy } = makeSut(null)
     const result = await sut.handle(mockAuthenticationRequest())
     expect(result).toEqual(ok(showAccountBySessionSpy.account))
   })
