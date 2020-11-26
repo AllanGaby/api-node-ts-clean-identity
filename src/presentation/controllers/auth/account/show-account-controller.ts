@@ -16,11 +16,11 @@ export class ShowAccountController implements Controller<ShowAccountRequest, Acc
 
   async handle (request: HttpRequest<ShowAccountRequest>): Promise<HttpResponse<AccountModel | Error>> {
     try {
-      const validationErrors = this.validations.validate(request.body)
+      const validationErrors = this.validations.validate(request.params)
       if (validationErrors) {
         return badRequest(validationErrors)
       }
-      const account = await this.showAccount.show({ accountId: request.body.account_id })
+      const account = await this.showAccount.show({ accountId: request.params.account_id })
       return ok(account)
     } catch (error) {
       return serverError(error)

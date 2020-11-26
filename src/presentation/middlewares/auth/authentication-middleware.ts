@@ -8,7 +8,7 @@ import { AccessDeniedError } from '@/presentation/errors'
 export class AuthenticationMiddleware implements Middleware<any, AccountModel | Error> {
   constructor (
     private readonly ShowAccountBySession: ShowAccountBySession,
-    private readonly accountType: AccountType[]
+    private readonly accountType: AccountType[] = null
   ) {}
 
   async handle (request: HttpRequest<any>): Promise<HttpResponse<AccountModel | Error>> {
@@ -20,10 +20,12 @@ export class AuthenticationMiddleware implements Middleware<any, AccountModel | 
       const account = await this.ShowAccountBySession.show({
         accessToken
       })
-      console.log(account)
-      console.log(this.accountType)
-      if ((account) && (this.accountType.includes(account.type))) {
-        return ok(account)
+      if (account) {
+        if (!this.accountType) {
+          return ok(account)
+        } else if (this.accountType.includes(account.type)) {
+          return ok(account)
+        }
       }
       return forbidden(new AccessDeniedError())
     } catch (error) {
