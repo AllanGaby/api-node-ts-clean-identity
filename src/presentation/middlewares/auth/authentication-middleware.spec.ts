@@ -13,7 +13,12 @@ interface sutTypes {
 
 const makeSut = (accountType: AccountType[] = [AccountType.student]): sutTypes => {
   const showAccountBySessionSpy = new ShowAccountBySessionSpy()
-  const sut = new AuthenticationMiddleware(showAccountBySessionSpy, accountType)
+  let sut: AuthenticationMiddleware
+  if (!accountType) {
+    sut = new AuthenticationMiddleware(showAccountBySessionSpy)
+  } else {
+    sut = new AuthenticationMiddleware(showAccountBySessionSpy, accountType)
+  }
   return {
     sut,
     showAccountBySessionSpy
