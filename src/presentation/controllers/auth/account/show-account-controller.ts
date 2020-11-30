@@ -5,7 +5,7 @@ import { AccountModel } from '@/domain/models/auth'
 import { badRequest, serverError, ok } from '@/presentation/helpers'
 
 export interface ShowAccountRequest {
-  account_id: string
+  id: string
 }
 
 export class ShowAccountController implements Controller<ShowAccountRequest, AccountModel | Error> {
@@ -16,11 +16,11 @@ export class ShowAccountController implements Controller<ShowAccountRequest, Acc
 
   async handle (request: HttpRequest<ShowAccountRequest>): Promise<HttpResponse<AccountModel | Error>> {
     try {
-      const validationErrors = this.validations.validate(request.params)
+      const validationErrors = this.validations.validate(request.body)
       if (validationErrors) {
         return badRequest(validationErrors)
       }
-      const account = await this.showAccount.show({ accountId: request.params.account_id })
+      const account = await this.showAccount.show({ accountId: request.body.id })
       return ok(account)
     } catch (error) {
       return serverError(error)
