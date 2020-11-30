@@ -1,8 +1,6 @@
-import { Express, Router } from 'express'
-import setupAccountRoutes from '@/main/http/express/routes/auth/account-route'
+import { Express } from 'express'
+import authRouter from '@/main/http/express/routes/auth'
 
 export default (app: Express): void => {
-  const router = Router()
-  app.use('/api', router)
-  setupAccountRoutes(router)
+  app.use('/api/auth', authRouter())
 }
