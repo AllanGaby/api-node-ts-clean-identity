@@ -7,7 +7,7 @@ export default (): Router => {
   const accountRouter = Router()
   accountRouter.post('/', adaptRoute(makeCreateAccountController()))
   accountRouter.post('/password', adaptRoute(makeRequestRecoverPasswordController()))
-  accountRouter.put('/password', adaptMiddleware(makeAuthenticationMiddleware()), adaptRoute(makeRecoverPasswordController()))
+  accountRouter.put('/password', adaptRoute(makeRecoverPasswordController()))
   accountRouter.put('/type', adaptMiddleware(makeManagerAuthenticationMiddleware()), adaptRoute(makeSetAccountTypeController()))
   accountRouter.put('/:session_id', adaptRoute(makeActiveAccountController()))
   accountRouter.get('/', adaptMiddleware(makeAuthenticationMiddleware()), adaptRoute(makeShowAccountController()))
