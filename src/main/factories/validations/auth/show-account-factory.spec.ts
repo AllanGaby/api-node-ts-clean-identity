@@ -8,7 +8,7 @@ describe('makeShowAccountValidation', () => {
   test('Should call ValidationComposite with all validations', () => {
     makeShowAccountValidation()
     const validations: Validation[] = [
-      ...ValidationBuilder.field('account_id').required().build()
+      ...ValidationBuilder.field('id').required().build()
     ]
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })
