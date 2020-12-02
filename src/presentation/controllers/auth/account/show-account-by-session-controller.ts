@@ -4,7 +4,9 @@ import { AccountModel } from '@/domain/models/auth'
 import { serverError, ok } from '@/presentation/helpers'
 
 export interface ShowAccountRequest {
-  id: string
+  account: {
+    id: string
+  }
 }
 
 export class ShowAccountBySessionController implements Controller<ShowAccountRequest, AccountModel | Error> {
@@ -14,7 +16,8 @@ export class ShowAccountBySessionController implements Controller<ShowAccountReq
 
   async handle (request: HttpRequest<ShowAccountRequest>): Promise<HttpResponse<AccountModel | Error>> {
     try {
-      const account = await this.showAccount.show({ accountId: request.body.id })
+      console.log(request.body.account.id)
+      const account = await this.showAccount.show({ accountId: request.body.account.id })
       return ok(account)
     } catch (error) {
       return serverError(error)
