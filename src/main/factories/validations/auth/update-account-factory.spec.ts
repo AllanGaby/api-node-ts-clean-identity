@@ -17,7 +17,6 @@ describe('makeUpdateAccountValidation', () => {
     const config = makeUpdateAccountValidationConfig()
     makeUpdateAccountValidation(config)
     const validations: Validation[] = [
-      ...ValidationBuilder.field('id').required().build(),
       ...ValidationBuilder.field('name').min(config.minLengthName).build(),
       ...ValidationBuilder.field('email').email(config.emailValidator).build(),
       ...ValidationBuilder.field('password').min(config.minLengthPassword).build(),
