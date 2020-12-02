@@ -41,7 +41,9 @@ export const mockUpdateAccountRequest = (): HttpRequest<UpdateAccountRequest> =>
   const password = faker.internet.password()
   return {
     body: {
-      id: faker.random.uuid(),
+      account: {
+        id: faker.random.uuid()
+      },
       name: faker.name.findName(),
       email: faker.internet.email(),
       avatar_file_path: faker.system.directoryPath() + faker.system.filePath(),
@@ -164,7 +166,9 @@ export class ShowAccountSpy implements ShowAccount {
 
 export const mockShowAccountRequest = (): HttpRequest<ShowAccountRequest> => ({
   body: {
-    id: faker.random.uuid()
+    account: {
+      id: faker.random.uuid()
+    }
   }
 })
 

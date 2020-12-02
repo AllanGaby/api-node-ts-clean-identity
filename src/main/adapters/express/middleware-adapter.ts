@@ -1,7 +1,7 @@
 import { Middleware, HttpRequest } from '@/presentation/protocols'
 import { Request, Response, NextFunction } from 'express'
 
-export const adaptMiddleware = (middleware: Middleware<any, any>) => {
+export const adaptMiddleware = (middleware: Middleware<any, any>, returnObjectName: string = 'account') => {
   return async (request: Request, response: Response, next: NextFunction) => {
     const httpRequest: HttpRequest<any> = {
       headers: request.headers
@@ -9,7 +9,7 @@ export const adaptMiddleware = (middleware: Middleware<any, any>) => {
 
     const httpResponse = await middleware.handle(httpRequest)
     if (httpResponse.statusCode === 200) {
-      Object.assign(request.body, httpResponse.body)
+      request.body[returnObjectName] = httpResponse.body
       next()
     } else {
       response.status(httpResponse.statusCode).json({
