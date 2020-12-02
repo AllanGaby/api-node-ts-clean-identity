@@ -23,7 +23,7 @@ describe('ShowAccountBySessionController', () => {
     const request = mockShowAccountRequest()
     await sut.handle(request)
     expect(showAccountSpy.params).toEqual({
-      accountId: request.body.id
+      accountId: request.body.account.id
     })
   })
 
