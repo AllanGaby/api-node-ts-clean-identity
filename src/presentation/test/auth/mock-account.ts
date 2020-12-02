@@ -2,7 +2,7 @@ import { HttpRequest } from '@/presentation/protocols'
 import { CreateAccount, CreateAccountDTO, UpdateAccount, UpdateAccountDTO, ActiveAccount, ActiveAccountDTO, AuthenticationAccount, AuthenticationAccountDTO, ListAccount, ListAccountFilter, RecoverPassword, RecoverPasswordDTO, RequestRecoverPassword, RequestRecoverPasswordDTO, SetAccountType, SetAccountTypeDTO, ShowAccount, ShowAccountFilter } from '@/domain/usecases/auth/account'
 import { AccountModel, SessionModel, AuthenticationModel, AccountType } from '@/domain/models/auth'
 import { mockAccountModel, mockAuthenticationModel, mockSessionModel, mockListAccountFilter } from '@/data/test'
-import { CreateAccountRequest, ActiveAccountRequest, RecoverPasswordRequest, UpdateAccountRequest, SetAccountTypeRequest, ShowAccountRequest } from '@/presentation/controllers/auth/account'
+import { CreateAccountRequest, ActiveAccountRequest, RecoverPasswordRequest, UpdateAccountRequest, SetAccountTypeRequest, ShowAccountRequest, ShowAccountByIdRequest } from '@/presentation/controllers/auth/account'
 import faker from 'faker'
 
 export class CreateAccountSpy implements CreateAccount {
@@ -165,5 +165,11 @@ export class ShowAccountSpy implements ShowAccount {
 export const mockShowAccountRequest = (): HttpRequest<ShowAccountRequest> => ({
   body: {
     id: faker.random.uuid()
+  }
+})
+
+export const mockShowAccountByIdRequest = (): HttpRequest<ShowAccountByIdRequest> => ({
+  params: {
+    account_id: faker.random.uuid()
   }
 })
