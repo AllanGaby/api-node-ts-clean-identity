@@ -5,12 +5,14 @@ import { AccountModel } from '@/domain/models/auth'
 import { badRequest, serverError, ok } from '@/presentation/helpers'
 
 export interface UpdateAccountRequest {
-  id: string
   name?: string
   email?: string
   password?: string
   password_confirmation?: string
   avatar_file_path?: string
+  account: {
+    id: string
+  }
 }
 
 export class UpdateAccountController implements Controller<UpdateAccountRequest, AccountModel | Error> {
@@ -26,7 +28,7 @@ export class UpdateAccountController implements Controller<UpdateAccountRequest,
         return badRequest(validationErrors)
       }
       const account = await this.updateAccount.update({
-        id: request.body.id,
+        id: request.body.account.id,
         name: request.body.name,
         email: request.body.email,
         password: request.body.password,
