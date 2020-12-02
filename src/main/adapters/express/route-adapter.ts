@@ -6,7 +6,8 @@ export const adaptRoute = (controller: Controller<any, any>) => {
     const httpRequest: HttpRequest<any> = {
       body: request.body,
       params: request.params,
-      headers: request.headers
+      headers: request.headers,
+      fileName: request.file.filename
     }
 
     const httpResponse = await controller.handle(httpRequest)
