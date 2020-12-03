@@ -9,7 +9,7 @@ export class EmailFieldValidation implements Validation {
   ) {}
 
   validate (input: any): Error {
-    if (!this.emailValidator.isValid(input[this.field])) {
+    if ((input[this.field]) && (!this.emailValidator.isValid(input[this.field]))) {
       return new InvalidParamError(this.field)
     }
   }
