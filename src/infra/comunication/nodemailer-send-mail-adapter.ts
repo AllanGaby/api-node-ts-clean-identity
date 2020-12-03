@@ -22,6 +22,9 @@ export class NodemailerSendMailAdapter implements SendMailAdapter {
       auth: {
         user: auth.user,
         pass: auth.pass
+      },
+      tls: {
+        rejectUnauthorized: false
       }
     })
   }
