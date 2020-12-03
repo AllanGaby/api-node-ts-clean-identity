@@ -144,14 +144,16 @@ describe('DbUpdateAccount', () => {
   })
 
   test('Should call UploadFile if change AvatarFile', async () => {
-    const { sut, uploadFileSpy } = makeSut()
+    const { sut, uploadFileSpy, updateAccountRepositorySpy } = makeSut()
     const updateAccountDTO = mockUpdateAccountDTO()
-    await sut.update(updateAccountDTO)
-    const extFile = path.extname(updateAccountDTO.avatarFilePath)
+    const avatarExtention = path.extname(updateAccountDTO.avatarFilePath)
+    updateAccountRepositorySpy.account.avatar_extention = avatarExtention
+    const account = await sut.update(updateAccountDTO)
     expect(uploadFileSpy.uploadParams).toEqual({
       sourceFile: updateAccountDTO.avatarFilePath,
-      destinationFile: `${updateAccountDTO.id}${extFile}`
+      destinationFile: `${updateAccountDTO.id}${avatarExtention}`
     })
+    expect(account.avatar_extention).toEqual(avatarExtention)
   })
 
   test('Should return throw if UploadFile throws', async () => {
