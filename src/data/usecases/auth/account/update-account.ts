@@ -13,8 +13,7 @@ export class DbUpdateAccount implements UpdateAccount {
     private readonly updateAccountRepoitory: UpdateAccountRepository,
     private readonly sendMailSession: SendMailSession,
     private readonly mailFilePath: string,
-    private readonly uploadFile: UploadFile,
-    private readonly fileDestinationDir: string
+    private readonly uploadFile: UploadFile
   ) {}
 
   async update ({ id, name, email, password, avatarFilePath }: UpdateAccountDTO): Promise<AccountModel> {
@@ -28,7 +27,7 @@ export class DbUpdateAccount implements UpdateAccount {
         const extFile = path.extname(avatarFilePath)
         await this.uploadFile.upload({
           sourceFile: avatarFilePath,
-          destinationFile: `${this.fileDestinationDir}${path.sep}${id}${extFile}`
+          destinationFile: `${id}${extFile}`
         })
       }
       const emailValided = email ? false : accountById.email_valided
