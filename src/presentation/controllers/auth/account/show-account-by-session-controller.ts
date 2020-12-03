@@ -16,7 +16,6 @@ export class ShowAccountBySessionController implements Controller<ShowAccountReq
 
   async handle (request: HttpRequest<ShowAccountRequest>): Promise<HttpResponse<AccountModel | Error>> {
     try {
-      console.log(request.body.account.id)
       const account = await this.showAccount.show({ accountId: request.body.account.id })
       return ok(account)
     } catch (error) {
