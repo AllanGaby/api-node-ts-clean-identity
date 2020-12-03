@@ -14,7 +14,6 @@ interface sutTypes {
   sendMailSessionSpy: SendMailSessionSpy
   mailFilePath: string
   uploadFileSpy: UploadFileSpy
-  destinationFileDir: string
 }
 
 const makeSut = (): sutTypes => {
@@ -24,15 +23,13 @@ const makeSut = (): sutTypes => {
   const sendMailSessionSpy = new SendMailSessionSpy()
   const mailFilePath = faker.internet.url()
   const uploadFileSpy = new UploadFileSpy()
-  const destinationFileDir = faker.internet.url()
   const sut = new DbUpdateAccount(
     getAccountByIdRepositorySpy,
     hashCreatorSpy,
     updateAccountRepositorySpy,
     sendMailSessionSpy,
     mailFilePath,
-    uploadFileSpy,
-    destinationFileDir)
+    uploadFileSpy)
   return {
     sut,
     getAccountByIdRepositorySpy,
@@ -40,8 +37,7 @@ const makeSut = (): sutTypes => {
     updateAccountRepositorySpy,
     sendMailSessionSpy,
     mailFilePath,
-    uploadFileSpy,
-    destinationFileDir
+    uploadFileSpy
   }
 }
 
@@ -148,13 +144,13 @@ describe('DbUpdateAccount', () => {
   })
 
   test('Should call UploadFile if change AvatarFile', async () => {
-    const { sut, uploadFileSpy, destinationFileDir } = makeSut()
+    const { sut, uploadFileSpy } = makeSut()
     const updateAccountDTO = mockUpdateAccountDTO()
     await sut.update(updateAccountDTO)
     const extFile = path.extname(updateAccountDTO.avatarFilePath)
     expect(uploadFileSpy.uploadParams).toEqual({
       sourceFile: updateAccountDTO.avatarFilePath,
-      destinationFile: `${destinationFileDir}${path.sep}${updateAccountDTO.id}${extFile}`
+      destinationFile: `${updateAccountDTO.id}${extFile}`
     })
   })
 
