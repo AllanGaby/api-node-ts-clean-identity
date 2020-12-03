@@ -10,7 +10,7 @@ export class DbUpdateAccount implements UpdateAccount {
   constructor (
     private readonly getAccountByIdRepository: GetAccountByIdRepository,
     private readonly hashCreator: HashCreator,
-    private readonly updateAccountRepoitory: UpdateAccountRepository,
+    private readonly updateAccountRepository: UpdateAccountRepository,
     private readonly sendMailSession: SendMailSession,
     private readonly mailFilePath: string,
     private readonly uploadFile: UploadFile
@@ -23,11 +23,12 @@ export class DbUpdateAccount implements UpdateAccount {
       if (password) {
         passwordHashed = await this.hashCreator.createHash(password)
       }
+      let avatarExtention = accountById.avatar_extention
       if (avatarFilePath) {
-        const extFile = path.extname(avatarFilePath)
+        avatarExtention = path.extname(avatarFilePath)
         await this.uploadFile.upload({
           sourceFile: avatarFilePath,
-          destinationFile: `${id}${extFile}`
+          destinationFile: `${id}${avatarExtention}`
         })
       }
       const emailValided = email ? false : accountById.email_valided
@@ -37,12 +38,13 @@ export class DbUpdateAccount implements UpdateAccount {
       if (!name) {
         name = accountById.name
       }
-      const updatedAccount = await this.updateAccountRepoitory.update({
+      const updatedAccount = await this.updateAccountRepository.update({
         id: accountById.id,
         email,
         password: passwordHashed,
         name,
-        email_valided: emailValided
+        email_valided: emailValided,
+        avatar_extention: avatarExtention
       })
       if (!emailValided) {
         await this.sendMailSession.sendMail({

@@ -7,6 +7,7 @@ export interface UpdateAccountModel {
   password: string
   email_valided: boolean
   type?: AccountType
+  avatar_extention?: string
 }
 
 export interface UpdateAccountRepository {
