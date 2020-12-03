@@ -6,6 +6,9 @@ export const adaptMiddleware = (middleware: Middleware<any, any>, returnObjectNa
     const httpRequest: HttpRequest<any> = {
       headers: request.headers
     }
+    if (request.file) {
+      httpRequest.fileName = request.file.filename
+    }
 
     const httpResponse = await middleware.handle(httpRequest)
     if (httpResponse.statusCode === 200) {

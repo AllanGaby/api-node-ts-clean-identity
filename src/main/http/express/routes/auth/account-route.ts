@@ -12,7 +12,7 @@ export default (): Router => {
   accountRouter.post('/password', adaptRoute(makeRequestRecoverPasswordController()))
   accountRouter.put('/password', adaptRoute(makeRecoverPasswordController()))
   accountRouter.put('/type', adaptMiddleware(makeManagerAuthenticationMiddleware()), adaptRoute(makeSetAccountTypeController()))
-  accountRouter.put('/', uploadFile.single('avatar_file_path'), adaptMiddleware(makeAuthenticationMiddleware()), adaptRoute(makeUpdateAccountController()))
+  accountRouter.put('/', uploadFile.single('avatar_file_path'), adaptMiddleware(makeAuthenticationMiddleware()), adaptRoute(makeUpdateAccountController(), 'avatar_file_path'))
   accountRouter.put('/:session_id', adaptRoute(makeActiveAccountController()))
   accountRouter.get('/:account_id', adaptMiddleware(makeManagerAuthenticationMiddleware()), adaptRoute(makeShowAccountByIdController()))
   accountRouter.get('/', adaptMiddleware(makeAuthenticationMiddleware()), adaptRoute(makeShowAccountBySessionController()))

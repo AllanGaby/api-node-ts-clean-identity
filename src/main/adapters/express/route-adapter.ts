@@ -1,7 +1,7 @@
 import { Controller, HttpRequest } from '@/presentation/protocols'
 import { Request, Response } from 'express'
 
-export const adaptRoute = (controller: Controller<any, any>) => {
+export const adaptRoute = (controller: Controller<any, any>, fileField: string = 'file') => {
   return async (request: Request, response: Response) => {
     const httpRequest: HttpRequest<any> = {
       body: request.body,
@@ -9,7 +9,7 @@ export const adaptRoute = (controller: Controller<any, any>) => {
       headers: request.headers
     }
     if (request.file) {
-      httpRequest.fileName = request.file.fieldname
+      httpRequest.body[fileField] = request.file.filename
     }
 
     const httpResponse = await controller.handle(httpRequest)
