@@ -1,0 +1,428 @@
+{
+	"info": {
+		"_postman_id": "ca13a885-94ed-4c54-88a7-00f06c8dddc6",
+		"name": "Identity",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Account",
+					"item": [
+						{
+							"name": "Show Account",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "510ed9e5-4269-4fe5-90be-ebd00cc29aed",
+										"exec": [
+											"var response = JSON.parse(responseBody)",
+											"postman.setEnvironmentVariable(\"session_id_to_activate\", response.id)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Allan Gaby\",\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\",\n    \"password_confirmation\": \"{{password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/auth/account",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"account"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Active Account",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f9c1eb9e-1071-4bd3-8a91-2d4a94c387e4",
+										"exec": [
+											"var response = JSON.parse(responseBody)",
+											"postman.setEnvironmentVariable(\"account_id\", response.id)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/auth/account/{{session_id_to_activate}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"account",
+										"{{session_id_to_activate}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Account",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "25062d76-422a-4d5f-b73c-5b8dccd78026",
+										"exec": [
+											"var response = JSON.parse(responseBody)",
+											"postman.setEnvironmentVariable(\"session_id_to_activate\", response.id)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Allan Gaby\",\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\",\n    \"password_confirmation\": \"{{password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/auth/account",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"account"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Request Recover Password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "fc821f91-d659-4b47-84b3-b13f346c3646",
+										"exec": [
+											"var response = JSON.parse(responseBody)",
+											"postman.setEnvironmentVariable(\"session_id_to_recover\", response.id)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"{{email}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/auth/account/password",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"account",
+										"password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Recover Password",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"session_id\": \"{{session_id_to_recover}}\",\n    \"password\": \"{{password}}7\",\n    \"password_confirmation\": \"{{password}}7\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/auth/account/password",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"account",
+										"password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Set Account Type",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{manager_access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"account_id\": \"{{account_id}}\",\n    \"account_type\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/auth/account/type",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"account",
+										"type"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show Account By Id",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{manager_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/api/auth/account/{{account_id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"account",
+										"{{account_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Account",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "x-access-token",
+										"value": "{{access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Allan Gaby Update",
+											"type": "text"
+										},
+										{
+											"key": "avatar_file_path",
+											"type": "file",
+											"src": "/home/allan/Downloads/P_20190822_130442.jpg"
+										},
+										{
+											"key": "email",
+											"value": "{{email}}",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "text"
+										},
+										{
+											"key": "password_confirmation",
+											"value": "{{password}}",
+											"type": "text"
+										}
+									],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/auth/account",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"account"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Session",
+					"item": [
+						{
+							"name": "Authentication",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "cc449551-1789-4300-b88d-c30e9d852591",
+										"exec": [
+											"var response = JSON.parse(responseBody)",
+											"postman.setEnvironmentVariable(\"access_token\", response.access_token)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/auth/session",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"session"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Authentication Manager",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "225a6480-9b83-404e-89e2-99bc2957add2",
+										"exec": [
+											"var response = JSON.parse(responseBody)",
+											"postman.setEnvironmentVariable(\"manager_access_token\", response.access_token)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"{{manager_email}}\",\n    \"password\": \"{{manager_password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/auth/session",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"session"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
