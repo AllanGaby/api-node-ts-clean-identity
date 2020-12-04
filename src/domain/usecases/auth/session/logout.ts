@@ -1,5 +1,5 @@
 export interface LogoutDTO {
-  session_id: string
+  sessionId: string
 }
 
 export interface Logout {
