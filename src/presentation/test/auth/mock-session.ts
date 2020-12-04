@@ -38,7 +38,9 @@ export class LogoutSpy implements Logout {
 
 export const mockLogoutRequest = (): HttpRequest<LogoutRequest> => ({
   body: {
-    sessionId: faker.random.uuid()
+    session: {
+      sessionId: faker.random.uuid()
+    }
   }
 })
 

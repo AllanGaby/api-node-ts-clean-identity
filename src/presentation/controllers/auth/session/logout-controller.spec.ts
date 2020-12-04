@@ -23,7 +23,7 @@ describe('LogoutController', () => {
     const { sut, logoutSpy } = makeSut()
     const request = mockLogoutRequest()
     await sut.handle(request)
-    expect(logoutSpy.params.sessionId).toEqual(request.body.sessionId)
+    expect(logoutSpy.params.sessionId).toEqual(request.body.session.sessionId)
   })
 
   test('Should return ServerError if Logout throws', async () => {

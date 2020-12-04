@@ -100,14 +100,20 @@ describe('AuthenticationMiddleware', () => {
   })
 
   test('Should return an Account if succeeds', async () => {
-    const { sut, showAccountSpy } = makeSut()
+    const { sut, showAccountSpy, showSessionByAccessTokenSpy } = makeSut()
     const result = await sut.handle(mockAuthenticationRequest())
-    expect(result).toEqual(ok(showAccountSpy.account))
+    expect(result).toEqual(ok({
+      accountId: showAccountSpy.account.id,
+      sessionId: showSessionByAccessTokenSpy.session.id
+    }))
   })
 
   test('Should return an Account if succeeds without account type check', async () => {
-    const { sut, showAccountSpy } = makeSut(null)
+    const { sut, showAccountSpy, showSessionByAccessTokenSpy } = makeSut(null)
     const result = await sut.handle(mockAuthenticationRequest())
-    expect(result).toEqual(ok(showAccountSpy.account))
+    expect(result).toEqual(ok({
+      accountId: showAccountSpy.account.id,
+      sessionId: showSessionByAccessTokenSpy.session.id
+    }))
   })
 })

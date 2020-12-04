@@ -4,7 +4,9 @@ import { serverError, noContent, forbidden } from '@/presentation/helpers'
 import { InvalidCredentialsError } from '@/data/errors'
 
 export interface LogoutRequest {
-  sessionId: string
+  session: {
+    sessionId: string
+  }
 }
 
 export class LogoutController implements Controller<LogoutRequest, any | Error> {
@@ -14,7 +16,7 @@ export class LogoutController implements Controller<LogoutRequest, any | Error> 
 
   async handle (request: HttpRequest<LogoutRequest>): Promise<HttpResponse<any | Error>> {
     try {
-      await this.logout.logout({ sessionId: request.body.sessionId })
+      await this.logout.logout({ sessionId: request.body.session.sessionId })
       return noContent()
     } catch (error) {
       if (error instanceof InvalidCredentialsError) {

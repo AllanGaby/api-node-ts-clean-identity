@@ -1,7 +1,7 @@
 import { Middleware, HttpRequest } from '@/presentation/protocols'
 import { Request, Response, NextFunction } from 'express'
 
-export const adaptMiddleware = (middleware: Middleware<any, any>, returnObjectName: string = 'account') => {
+export const adaptAuthenticationMiddleware = (authentication: Middleware<any, any>) => {
   return async (request: Request, response: Response, next: NextFunction) => {
     const httpRequest: HttpRequest<any> = {
       headers: request.headers
@@ -10,9 +10,9 @@ export const adaptMiddleware = (middleware: Middleware<any, any>, returnObjectNa
       httpRequest.fileName = request.file.filename
     }
 
-    const httpResponse = await middleware.handle(httpRequest)
+    const httpResponse = await authentication.handle(httpRequest)
     if (httpResponse.statusCode === 200) {
-      request.body[returnObjectName] = httpResponse.body
+      request.body.session = httpResponse.body
       next()
     } else {
       response.status(httpResponse.statusCode).json({

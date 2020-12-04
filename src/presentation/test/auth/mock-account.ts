@@ -167,8 +167,8 @@ export class ShowAccountSpy implements ShowAccount {
 
 export const mockShowAccountRequest = (): HttpRequest<ShowAccountRequest> => ({
   body: {
-    account: {
-      id: faker.random.uuid()
+    session: {
+      accountId: faker.random.uuid()
     }
   }
 })
