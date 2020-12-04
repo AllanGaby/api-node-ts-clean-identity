@@ -7,7 +7,7 @@ export class DbGetFilenameToAccountAvatar implements GetFilenameToAccountAvatar 
   async getPath ({ accountId }: GetAvatarFilter): Promise<string> {
     const account = await this.getAccountByIdRepository.getAccountById(accountId)
     if (account?.avatar_extention) {
-      return `${account.id}.${account.avatar_extention}`
+      return `${account.id}${account.avatar_extention}`
     }
     return null
   }
