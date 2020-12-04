@@ -31,4 +31,10 @@ describe('MinLengthFieldValidation', () => {
     const error = sut.validate({ [field]: faker.random.alphaNumeric(minLength) })
     expect(error).toBeFalsy()
   })
+
+  test('Should return null if field is null', () => {
+    const { sut, field } = makeSut()
+    const error = sut.validate({ [field]: null })
+    expect(error).toBeFalsy()
+  })
 })
