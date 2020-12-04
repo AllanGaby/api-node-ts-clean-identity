@@ -47,4 +47,11 @@ describe('DbLogout', () => {
     await sut.logout(mockLogoutDTO())
     expect(deleteSessionRepositorySpy.session).toEqual(getSessionByIdRepositorySpy.session)
   })
+
+  test('Should throw if DeleteSessionRepository throws', async () => {
+    const { sut, deleteSessionRepositorySpy } = makeSut()
+    jest.spyOn(deleteSessionRepositorySpy, 'delete').mockImplementationOnce(throwError)
+    const promise = sut.logout(mockLogoutDTO())
+    await expect(promise).rejects.toThrow()
+  })
 })
