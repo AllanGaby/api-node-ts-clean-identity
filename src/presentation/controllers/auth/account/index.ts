@@ -1,6 +1,5 @@
 export * from './create-account-controller'
 export * from './active-account-controller'
-export * from './authentication-account-controller'
 export * from './list-account-controller'
 export * from './recover-password-controller'
 export * from './request-recover-password-controller'
