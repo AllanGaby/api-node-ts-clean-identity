@@ -50,6 +50,6 @@ describe('DbGetFilenameToAccountAvatar', () => {
     const { sut, getAccountByIdRepositorySpy } = makeSut()
     getAccountByIdRepositorySpy.account.avatar_extention = faker.system.filePath()
     const accountAvatar = await sut.getPath(mockGetAvatarFilter())
-    expect(accountAvatar).toEqual(`${getAccountByIdRepositorySpy.account.id}.${getAccountByIdRepositorySpy.account.avatar_extention}`)
+    expect(accountAvatar).toEqual(`${getAccountByIdRepositorySpy.account.id}${getAccountByIdRepositorySpy.account.avatar_extention}`)
   })
 })
