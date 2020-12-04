@@ -18,6 +18,5 @@ export const makeDbUpdateAccount = (): DbUpdateAccount => {
     acccountRepository,
     sendMailSession,
     'src/infra/comunication/views/handlebars/auth/create-account.hbs',
-    localStorage,
-    'uploads')
+    localStorage)
 }

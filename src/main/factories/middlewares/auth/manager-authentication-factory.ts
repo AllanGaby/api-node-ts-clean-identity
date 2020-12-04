@@ -1,7 +1,8 @@
 import { AuthenticationMiddleware } from '@/presentation/middlewares/auth'
-import { makeDbShowAccountBySession } from '@/main/factories/usecases/auth/memory/session'
+import { makeDbShowSessionByAccessToken } from '@/main/factories/usecases/auth/memory/session'
 import { AccountType } from '@/domain/models/auth'
+import { makeDbShowAccount } from '../../usecases/auth/memory/account'
 
 export const makeManagerAuthenticationMiddleware = (): AuthenticationMiddleware => {
-  return new AuthenticationMiddleware(makeDbShowAccountBySession(), [AccountType.manager])
+  return new AuthenticationMiddleware(makeDbShowSessionByAccessToken(), makeDbShowAccount(), [AccountType.manager])
 }
