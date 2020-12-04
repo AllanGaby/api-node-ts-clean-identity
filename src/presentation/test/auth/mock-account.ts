@@ -5,6 +5,7 @@ import { mockAccountModel, mockAuthenticationModel, mockSessionModel, mockListAc
 import { CreateAccountRequest, ActiveAccountRequest, RecoverPasswordRequest, UpdateAccountRequest, SetAccountTypeRequest, ShowAccountRequest, ShowAccountByIdRequest, ShowAvatarAccountRequest } from '@/presentation/controllers/auth/account'
 import faker from 'faker'
 import path from 'path'
+import { Logout, LogoutDTO } from '@/domain/usecases/auth/session'
 
 export class CreateAccountSpy implements CreateAccount {
   session: SessionModel = mockSessionModel()
