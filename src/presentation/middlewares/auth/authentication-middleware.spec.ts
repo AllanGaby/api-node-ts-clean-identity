@@ -1,6 +1,6 @@
 import { AuthenticationMiddleware } from './authentication-middleware'
 import { ShowAccountBySessionSpy, mockAuthenticationRequest, mockAuthenticationFailRequest, ShowSessionByAccessTokenSpy } from '@/presentation/test/auth'
-import { AccountType } from '@/domain/models/auth'
+import { AccountType, SessionType } from '@/domain/models/auth'
 import { badRequest, forbidden, serverError, ok } from '@/presentation/helpers'
 import { MissingParamError } from '@/validation/errors'
 import { throwError } from '@/data/test'
@@ -48,6 +48,27 @@ describe('AuthenticationMiddleware', () => {
     expect(showSessionByAccessTokenSpy.params).toEqual({
       accessToken: request.headers?.['x-access-token']
     })
+  })
+
+  test('Should return ServerError if ShowSessiontByAccessToken throws', async () => {
+    const { sut, showSessionByAccessTokenSpy } = makeSut()
+    jest.spyOn(showSessionByAccessTokenSpy, 'show').mockImplementationOnce(throwError)
+    const result = await sut.handle(mockAuthenticationRequest())
+    expect(result).toEqual(serverError(new Error('')))
+  })
+
+  test('Should return Forbidden if session is not found', async () => {
+    const { sut, showSessionByAccessTokenSpy } = makeSut()
+    showSessionByAccessTokenSpy.session = null
+    const result = await sut.handle(mockAuthenticationRequest())
+    expect(result).toEqual(forbidden(new AccessDeniedError()))
+  })
+
+  test('Should return Forbidden if account type is different of authentication', async () => {
+    const { sut, showSessionByAccessTokenSpy } = makeSut()
+    showSessionByAccessTokenSpy.session.type = SessionType.activeAccount
+    const result = await sut.handle(mockAuthenticationRequest())
+    expect(result).toEqual(forbidden(new AccessDeniedError()))
   })
 
   test('Should call ShowAccountBySession with correct value', async () => {

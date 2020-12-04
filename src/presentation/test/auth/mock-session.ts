@@ -1,5 +1,5 @@
 import { ShowAccountBySession, ShowAccountBySessionDTO, Logout, LogoutDTO, ShowSessionByAccessToken, ShowSessionByAccessTokenDTO } from '@/domain/usecases/auth/session'
-import { AccountModel, SessionModel } from '@/domain/models/auth'
+import { AccountModel, SessionModel, SessionType } from '@/domain/models/auth'
 import { mockAccountModel, mockSessionModel } from '@/data/test'
 import { HttpRequest } from '@/presentation/protocols'
 import { LogoutRequest } from '@/presentation/controllers/auth/session'
@@ -44,7 +44,7 @@ export const mockLogoutRequest = (): HttpRequest<LogoutRequest> => ({
 
 export class ShowSessionByAccessTokenSpy implements ShowSessionByAccessToken {
   params: ShowSessionByAccessTokenDTO
-  session: SessionModel = mockSessionModel()
+  session: SessionModel = mockSessionModel(SessionType.authentication)
 
   async show (params: ShowSessionByAccessTokenDTO): Promise<SessionModel> {
     this.params = params
