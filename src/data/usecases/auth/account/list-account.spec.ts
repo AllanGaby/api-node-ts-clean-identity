@@ -1,5 +1,5 @@
 import { DbListAccount } from './list-account'
-import { ListAccountRepositorySpy, mockAccountModel, mockListAccountFilter, throwError } from '@/data/test'
+import { ListAccountRepositorySpy, mockAccountModel, mockListAccountDTO, throwError } from '@/data/test'
 
 interface sutTypes {
   sut: DbListAccount
@@ -18,7 +18,7 @@ const makeSut = (): sutTypes => {
 describe('DbListAccount', () => {
   test('Should call ListAccountRepository with correct value', async () => {
     const { sut, listAccountRepositorySpy } = makeSut()
-    const filterAccount = mockListAccountFilter()
+    const filterAccount = mockListAccountDTO()
     await sut.list(filterAccount)
     expect(listAccountRepositorySpy.filter).toEqual(filterAccount)
   })
@@ -26,14 +26,14 @@ describe('DbListAccount', () => {
   test('Should throw if ListAccountRepository throws', async () => {
     const { sut, listAccountRepositorySpy } = makeSut()
     jest.spyOn(listAccountRepositorySpy, 'list').mockImplementationOnce(throwError)
-    const promise = sut.list(mockListAccountFilter())
+    const promise = sut.list(mockListAccountDTO())
     await expect(promise).rejects.toThrow()
   })
 
   test('Should return null if ListAccountRepository return null', async () => {
     const { sut, listAccountRepositorySpy } = makeSut()
     listAccountRepositorySpy.listAccount = null
-    const accountList = await sut.list(mockListAccountFilter())
+    const accountList = await sut.list(mockListAccountDTO())
     expect(accountList).toBeFalsy()
   })
 
@@ -43,7 +43,7 @@ describe('DbListAccount', () => {
       mockAccountModel(),
       mockAccountModel()
     ]
-    const accountList = await sut.list(mockListAccountFilter())
+    const accountList = await sut.list(mockListAccountDTO())
     expect(accountList).toHaveLength(2)
   })
 })

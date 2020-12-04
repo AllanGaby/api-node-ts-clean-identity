@@ -1,9 +1,9 @@
 import { AccountModel } from '@/domain/models/auth'
 
-export interface ShowAccountFilter {
+export interface ShowAccountDTO {
   accountId: string
 }
 
 export interface ShowAccount {
-  show: (filter: ShowAccountFilter) => Promise<AccountModel>
+  show: (filter: ShowAccountDTO) => Promise<AccountModel>
 }

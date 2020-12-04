@@ -1,4 +1,4 @@
-import { CreateAccountDTO, UpdateAccountDTO, AuthenticationAccountDTO, ListAccountFilter, ShowAccountFilter, SetAccountTypeDTO, GetAvatarFilter } from '@/domain/usecases/auth/account'
+import { CreateAccountDTO, UpdateAccountDTO, AuthenticationAccountDTO, ListAccountDTO, ShowAccountDTO, SetAccountTypeDTO, GetFilenameToAccountAvatarDTO } from '@/domain/usecases/auth/account'
 import { AccountModel, AccountType, AuthenticationModel } from '@/domain/models/auth'
 import faker from 'faker'
 import path from 'path'
@@ -38,12 +38,12 @@ export const mockAuthenticationModel = (accountType: AccountType = AccountType.s
   account_type: accountType
 })
 
-export const mockListAccountFilter = (): ListAccountFilter => ({
+export const mockListAccountDTO = (): ListAccountDTO => ({
   name: faker.name.findName(),
   email: faker.internet.email()
 })
 
-export const mockShowAccountFilter = (): ShowAccountFilter => ({
+export const mockShowAccountDTO = (): ShowAccountDTO => ({
   accountId: faker.random.uuid()
 })
 
@@ -52,7 +52,7 @@ export const mockSetAccountTypeDTO = (accountType: AccountType = AccountType.stu
   accountId: faker.random.uuid()
 })
 
-export const mockGetAvatarFilter = (): GetAvatarFilter => ({
+export const mockGetFilenameToAccountAvatarDTO = (): GetFilenameToAccountAvatarDTO => ({
   accountId: faker.random.uuid(),
   uploadDir: faker.system.directoryPath()
 })

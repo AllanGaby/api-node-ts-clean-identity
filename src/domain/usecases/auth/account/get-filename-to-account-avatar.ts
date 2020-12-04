@@ -1,10 +1,10 @@
 import { AvatarModel } from '@/domain/models/auth'
 
-export interface GetAvatarFilter {
+export interface GetFilenameToAccountAvatarDTO {
   accountId: string
   uploadDir: string
 }
 
 export interface GetFilenameToAccountAvatar {
-  getPath: (filter: GetAvatarFilter) => Promise<AvatarModel>
+  getPath: (filter: GetFilenameToAccountAvatarDTO) => Promise<AvatarModel>
 }

@@ -1,4 +1,4 @@
-import { CreateAccountRepository, CreateAccountModel, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository, UpdateAccountModel, ListAccountRepository, ListAccountRepositoryFilter } from '@/data/repositories/auth/account'
+import { CreateAccountRepository, CreateAccountModel, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository, UpdateAccountDTO, ListAccountRepository, ListAccountRepositoryDTO } from '@/data/repositories/auth/account'
 import { AccountModel, AccountType } from '@/domain/models/auth'
 import faker from 'faker'
 
@@ -51,7 +51,7 @@ export class MemoryAccountRepository implements CreateAccountRepository, GetAcco
     return this.accounts.find(account => account.id === accountId)
   }
 
-  async update (update: UpdateAccountModel): Promise<AccountModel> {
+  async update (update: UpdateAccountDTO): Promise<AccountModel> {
     const index = this.accounts.findIndex(account => account.id === update.id)
     if (index >= 0) {
       this.accounts[index] = {
@@ -64,7 +64,7 @@ export class MemoryAccountRepository implements CreateAccountRepository, GetAcco
     return null
   }
 
-  async list (filter: ListAccountRepositoryFilter): Promise<AccountModel[]> {
+  async list (filter: ListAccountRepositoryDTO): Promise<AccountModel[]> {
     return this.accounts.filter(account => ((!filter.name) || (account.name === filter.name)) && ((!filter.email) || (account.email === filter.email)))
   }
 }

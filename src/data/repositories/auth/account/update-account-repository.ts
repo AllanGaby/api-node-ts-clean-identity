@@ -1,6 +1,6 @@
 import { AccountModel, AccountType } from '@/domain/models/auth'
 
-export interface UpdateAccountModel {
+export interface UpdateAccountDTO {
   id: string
   name: string
   email: string
@@ -11,5 +11,5 @@ export interface UpdateAccountModel {
 }
 
 export interface UpdateAccountRepository {
-  update: (update: UpdateAccountModel) => Promise<AccountModel>
+  update: (update: UpdateAccountDTO) => Promise<AccountModel>
 }

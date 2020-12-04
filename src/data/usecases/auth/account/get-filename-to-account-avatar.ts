@@ -1,4 +1,4 @@
-import { GetFilenameToAccountAvatar, GetAvatarFilter } from '@/domain/usecases/auth/account'
+import { GetFilenameToAccountAvatar, GetFilenameToAccountAvatarDTO } from '@/domain/usecases/auth/account'
 import { GetAccountByIdRepository } from '@/data/repositories/auth/account'
 import { AvatarModel } from '@/domain/models/auth'
 import path from 'path'
@@ -6,7 +6,7 @@ import path from 'path'
 export class DbGetFilenameToAccountAvatar implements GetFilenameToAccountAvatar {
   constructor (private readonly getAccountByIdRepository: GetAccountByIdRepository) {}
 
-  async getPath ({ accountId, uploadDir }: GetAvatarFilter): Promise<AvatarModel> {
+  async getPath ({ accountId, uploadDir }: GetFilenameToAccountAvatarDTO): Promise<AvatarModel> {
     const account = await this.getAccountByIdRepository.getAccountById(accountId)
     if (account?.avatar_extention) {
       return {

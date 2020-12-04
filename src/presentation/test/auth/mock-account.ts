@@ -1,7 +1,7 @@
 import { HttpRequest } from '@/presentation/protocols'
-import { CreateAccount, CreateAccountDTO, UpdateAccount, UpdateAccountDTO, ActiveAccount, ActiveAccountDTO, AuthenticationAccount, AuthenticationAccountDTO, ListAccount, ListAccountFilter, RecoverPassword, RecoverPasswordDTO, RequestRecoverPassword, RequestRecoverPasswordDTO, SetAccountType, SetAccountTypeDTO, ShowAccount, ShowAccountFilter, GetFilenameToAccountAvatar, GetAvatarFilter } from '@/domain/usecases/auth/account'
+import { CreateAccount, CreateAccountDTO, UpdateAccount, UpdateAccountDTO, ActiveAccount, ActiveAccountDTO, AuthenticationAccount, AuthenticationAccountDTO, ListAccount, ListAccountDTO, RecoverPassword, RecoverPasswordDTO, RequestRecoverPassword, RequestRecoverPasswordDTO, SetAccountType, SetAccountTypeDTO, ShowAccount, ShowAccountDTO, GetFilenameToAccountAvatar, GetFilenameToAccountAvatarDTO } from '@/domain/usecases/auth/account'
 import { AccountModel, SessionModel, AuthenticationModel, AccountType, AvatarModel } from '@/domain/models/auth'
-import { mockAccountModel, mockAuthenticationModel, mockSessionModel, mockListAccountFilter } from '@/data/test'
+import { mockAccountModel, mockAuthenticationModel, mockSessionModel, mockListAccountDTO } from '@/data/test'
 import { CreateAccountRequest, ActiveAccountRequest, RecoverPasswordRequest, UpdateAccountRequest, SetAccountTypeRequest, ShowAccountRequest, ShowAccountByIdRequest, ShowAvatarAccountRequest } from '@/presentation/controllers/auth/account'
 import faker from 'faker'
 import path from 'path'
@@ -88,17 +88,17 @@ export const mockAuthenticationAccountRequest = (): HttpRequest<AuthenticationAc
 })
 
 export class ListAccountSpy implements ListAccount {
-  params: ListAccountFilter
+  params: ListAccountDTO
   accounts: AccountModel[] = [mockAccountModel(), mockAccountModel()]
 
-  async list (params: ListAccountFilter): Promise<AccountModel[]> {
+  async list (params: ListAccountDTO): Promise<AccountModel[]> {
     this.params = params
     return this.accounts
   }
 }
 
-export const mockListAccountRequest = (): HttpRequest<ListAccountFilter> => ({
-  body: mockListAccountFilter()
+export const mockListAccountRequest = (): HttpRequest<ListAccountDTO> => ({
+  body: mockListAccountDTO()
 })
 
 export class RecoverPasswordSpy implements RecoverPassword {
@@ -156,10 +156,10 @@ export const mockSetAccountTypeRequest = (type: AccountType = AccountType.studen
 })
 
 export class ShowAccountSpy implements ShowAccount {
-  params: ShowAccountFilter
+  params: ShowAccountDTO
   account: AccountModel = mockAccountModel()
 
-  async show (params: ShowAccountFilter): Promise<AccountModel> {
+  async show (params: ShowAccountDTO): Promise<AccountModel> {
     this.params = params
     return this.account
   }
@@ -180,12 +180,12 @@ export const mockShowAccountByIdRequest = (): HttpRequest<ShowAccountByIdRequest
 })
 
 export class GetFilenameToAccountAvatarSpy implements GetFilenameToAccountAvatar {
-  params: GetAvatarFilter
+  params: GetFilenameToAccountAvatarDTO
   avatar: AvatarModel = {
     avatar_file_path: `${faker.system.directoryPath()}${path.sep}${faker.system.fileName()}.${faker.system.fileExt(faker.system.mimeType())}`
   }
 
-  async getPath (params: GetAvatarFilter): Promise<AvatarModel> {
+  async getPath (params: GetFilenameToAccountAvatarDTO): Promise<AvatarModel> {
     this.params = params
     return this.avatar
   }
