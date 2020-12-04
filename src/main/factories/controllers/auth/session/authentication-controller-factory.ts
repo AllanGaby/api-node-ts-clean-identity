@@ -1,6 +1,6 @@
-import { AuthenticationAccountController } from '@/presentation/controllers/auth/account'
+import { AuthenticationAccountController } from '@/presentation/controllers/auth/session'
 import { makeAuthenticationAccountValidation } from '@/main/factories/validations/auth'
-import { makeDbAuthenticationAccount } from '@/main/factories/usecases/auth/memory/account'
+import { makeDbAuthenticationAccount } from '@/main/factories/usecases/auth/memory/session'
 import { EmailValidatorAdapter } from '@/infra/validators/email-validator-adapter'
 
 export const makeAuthenticationAccountController = (): AuthenticationAccountController => {
