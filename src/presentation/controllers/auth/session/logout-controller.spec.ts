@@ -1,6 +1,6 @@
 import { LogoutController } from './logout-controller'
 import { LogoutSpy, mockLogoutRequest } from '@/presentation/test/auth'
-import { forbidden, serverError } from '@/presentation/helpers'
+import { forbidden, noContent, serverError } from '@/presentation/helpers'
 import { throwError } from '@/data/test'
 import { InvalidCredentialsError } from '@/data/errors'
 
@@ -38,5 +38,11 @@ describe('LogoutController', () => {
     jest.spyOn(logoutSpy, 'logout').mockImplementationOnce(() => { throw new InvalidCredentialsError() })
     const result = await sut.handle(mockLogoutRequest())
     expect(result).toEqual(forbidden(new InvalidCredentialsError()))
+  })
+
+  test('Should return NoContent if Logount succeeds', async () => {
+    const { sut } = makeSut()
+    const result = await sut.handle(mockLogoutRequest())
+    expect(result).toEqual(noContent())
   })
 })
