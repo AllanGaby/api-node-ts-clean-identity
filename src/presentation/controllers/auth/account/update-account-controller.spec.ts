@@ -41,7 +41,7 @@ describe('UpdateAccountController', () => {
     const request = mockUpdateAccountRequest()
     await sut.handle(request)
     expect(updateAccountSpy.params).toEqual({
-      id: request.body.account.id,
+      id: request.body.session.accountId,
       name: request.body.name,
       email: request.body.email,
       password: request.body.password,

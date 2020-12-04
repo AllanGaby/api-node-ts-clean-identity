@@ -10,8 +10,8 @@ export interface UpdateAccountRequest {
   password?: string
   password_confirmation?: string
   avatar_file_path?: string
-  account: {
-    id: string
+  session: {
+    accountId: string
   }
 }
 
@@ -28,7 +28,7 @@ export class UpdateAccountController implements Controller<UpdateAccountRequest,
         return badRequest(validationErrors)
       }
       const account = await this.updateAccount.update({
-        id: request.body.account.id,
+        id: request.body.session.accountId,
         name: request.body.name,
         email: request.body.email,
         password: request.body.password,

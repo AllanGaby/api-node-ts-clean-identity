@@ -42,8 +42,8 @@ export const mockUpdateAccountRequest = (): HttpRequest<UpdateAccountRequest> =>
   const password = faker.internet.password()
   return {
     body: {
-      account: {
-        id: faker.random.uuid()
+      session: {
+        accountId: faker.random.uuid()
       },
       name: faker.name.findName(),
       email: faker.internet.email(),
@@ -193,8 +193,8 @@ export class GetFilenameToAccountAvatarSpy implements GetFilenameToAccountAvatar
 
 export const mokeGetFilenameToAccountAvatar = (): HttpRequest<ShowAvatarAccountRequest> => ({
   body: {
-    account: {
-      id: faker.random.uuid()
+    session: {
+      accountId: faker.random.uuid()
     }
   }
 })

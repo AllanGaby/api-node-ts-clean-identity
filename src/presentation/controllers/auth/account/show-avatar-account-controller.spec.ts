@@ -27,7 +27,7 @@ describe('ShowAvatarAccountBySessionController', () => {
     const request = mokeGetFilenameToAccountAvatar()
     await sut.handle(request)
     expect(getFilenameToAccountAvatarSpy.params).toEqual({
-      accountId: request.body.account.id,
+      accountId: request.body.session.accountId,
       uploadDir
     })
   })

@@ -4,8 +4,8 @@ import { serverError, ok } from '@/presentation/helpers'
 import { AvatarModel } from '@/domain/models/auth'
 
 export interface ShowAvatarAccountRequest {
-  account: {
-    id: string
+  session: {
+    accountId: string
   }
 }
 
@@ -17,7 +17,7 @@ export class ShowAvatarAccountBySessionController implements Controller<ShowAvat
 
   async handle (request: HttpRequest<ShowAvatarAccountRequest>): Promise<HttpResponse<AvatarModel | Error>> {
     try {
-      const avatarModel = await this.getFilenameToAccountAvatar.getPath({ accountId: request.body.account.id, uploadDir: this.uploadDir })
+      const avatarModel = await this.getFilenameToAccountAvatar.getPath({ accountId: request.body.session.accountId, uploadDir: this.uploadDir })
       return ok(avatarModel)
     } catch (error) {
       return serverError(error)
