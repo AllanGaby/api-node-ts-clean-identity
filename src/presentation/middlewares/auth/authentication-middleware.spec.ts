@@ -1,5 +1,5 @@
 import { AuthenticationMiddleware } from './authentication-middleware'
-import { ShowAccountBySessionSpy, mockAuthenticationRequest, mockAuthenticationFailRequest } from '@/presentation/test/auth'
+import { ShowAccountBySessionSpy, mockAuthenticationRequest, mockAuthenticationFailRequest, ShowSessionByAccessTokenSpy } from '@/presentation/test/auth'
 import { AccountType } from '@/domain/models/auth'
 import { badRequest, forbidden, serverError, ok } from '@/presentation/helpers'
 import { MissingParamError } from '@/validation/errors'
@@ -8,19 +8,22 @@ import { AccessDeniedError } from '@/presentation/errors'
 
 interface sutTypes {
   sut: AuthenticationMiddleware
+  showSessionByAccessTokenSpy: ShowSessionByAccessTokenSpy
   showAccountBySessionSpy: ShowAccountBySessionSpy
 }
 
 const makeSut = (accountType: AccountType[] = [AccountType.student]): sutTypes => {
+  const showSessionByAccessTokenSpy = new ShowSessionByAccessTokenSpy()
   const showAccountBySessionSpy = new ShowAccountBySessionSpy()
   let sut: AuthenticationMiddleware
   if (!accountType) {
-    sut = new AuthenticationMiddleware(showAccountBySessionSpy)
+    sut = new AuthenticationMiddleware(showSessionByAccessTokenSpy, showAccountBySessionSpy)
   } else {
-    sut = new AuthenticationMiddleware(showAccountBySessionSpy, accountType)
+    sut = new AuthenticationMiddleware(showSessionByAccessTokenSpy, showAccountBySessionSpy, accountType)
   }
   return {
     sut,
+    showSessionByAccessTokenSpy,
     showAccountBySessionSpy
   }
 }
@@ -36,6 +39,15 @@ describe('AuthenticationMiddleware', () => {
     const { sut } = makeSut()
     const result = await sut.handle({})
     expect(result).toEqual(badRequest(new MissingParamError('x-access-token')))
+  })
+
+  test('Should call ShowSessiontByAccessToken with correct value', async () => {
+    const { sut, showSessionByAccessTokenSpy } = makeSut()
+    const request = mockAuthenticationRequest()
+    await sut.handle(request)
+    expect(showSessionByAccessTokenSpy.params).toEqual({
+      accessToken: request.headers?.['x-access-token']
+    })
   })
 
   test('Should call ShowAccountBySession with correct value', async () => {
