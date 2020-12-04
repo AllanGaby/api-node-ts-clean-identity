@@ -1,5 +1,5 @@
 import { Middleware, HttpRequest, HttpResponse } from '@/presentation/protocols'
-import { ShowAccountBySession } from '@/domain/usecases/auth/session'
+import { ShowAccountBySession, ShowSessionByAccessToken } from '@/domain/usecases/auth/session'
 import { AccountModel, AccountType } from '@/domain/models/auth'
 import { badRequest, serverError, ok, forbidden } from '@/presentation/helpers'
 import { MissingParamError } from '@/validation/errors'
@@ -7,6 +7,7 @@ import { AccessDeniedError } from '@/presentation/errors'
 
 export class AuthenticationMiddleware implements Middleware<any, AccountModel | Error> {
   constructor (
+    private readonly showSessionByAccessToken: ShowSessionByAccessToken,
     private readonly ShowAccountBySession: ShowAccountBySession,
     private readonly accountType: AccountType[] = null
   ) {}
@@ -17,6 +18,8 @@ export class AuthenticationMiddleware implements Middleware<any, AccountModel | 
       if (!accessToken) {
         return badRequest(new MissingParamError('x-access-token'))
       }
+      await this.showSessionByAccessToken.show({ accessToken })
+
       const account = await this.ShowAccountBySession.show({
         accessToken
       })

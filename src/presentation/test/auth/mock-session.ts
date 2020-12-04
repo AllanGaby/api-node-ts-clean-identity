@@ -1,6 +1,6 @@
-import { ShowAccountBySession, ShowAccountBySessionDTO, Logout, LogoutDTO } from '@/domain/usecases/auth/session'
-import { AccountModel } from '@/domain/models/auth'
-import { mockAccountModel } from '@/data/test'
+import { ShowAccountBySession, ShowAccountBySessionDTO, Logout, LogoutDTO, ShowSessionByAccessToken, ShowSessionByAccessTokenDTO } from '@/domain/usecases/auth/session'
+import { AccountModel, SessionModel } from '@/domain/models/auth'
+import { mockAccountModel, mockSessionModel } from '@/data/test'
 import { HttpRequest } from '@/presentation/protocols'
 import { LogoutRequest } from '@/presentation/controllers/auth/session'
 import faker from 'faker'
@@ -41,3 +41,13 @@ export const mockLogoutRequest = (): HttpRequest<LogoutRequest> => ({
     sessionId: faker.random.uuid()
   }
 })
+
+export class ShowSessionByAccessTokenSpy implements ShowSessionByAccessToken {
+  params: ShowSessionByAccessTokenDTO
+  session: SessionModel = mockSessionModel()
+
+  async show (params: ShowSessionByAccessTokenDTO): Promise<SessionModel> {
+    this.params = params
+    return this.session
+  }
+}
