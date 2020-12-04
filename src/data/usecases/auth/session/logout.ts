@@ -1,3 +1,4 @@
+import { InvalidCredentialsError } from '@/data/errors'
 import { GetSessionByIdRepository } from '@/data/repositories/auth'
 import { Logout, LogoutDTO } from '@/domain/usecases/auth/session'
 
@@ -7,6 +8,9 @@ export class DbLogout implements Logout {
   ) {}
 
   async logout ({ sessionId }: LogoutDTO): Promise<void> {
-    await this.getSessionByIdRepository.getSessionById(sessionId)
+    const session = await this.getSessionByIdRepository.getSessionById(sessionId)
+    if (!session) {
+      throw new InvalidCredentialsError()
+    }
   }
 }
