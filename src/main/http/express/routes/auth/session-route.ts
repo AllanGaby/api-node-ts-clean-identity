@@ -1,5 +1,5 @@
 import { adaptRoute } from '@/main/adapters/express'
-import { makeAuthenticationAccountController } from '@/main/factories/controllers/auth'
+import { makeAuthenticationAccountController } from '@/main/factories/controllers/auth/session'
 import { Router } from 'express'
 
 export default (): Router => {

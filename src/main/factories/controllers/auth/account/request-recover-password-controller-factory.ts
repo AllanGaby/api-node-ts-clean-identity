@@ -1,7 +1,7 @@
 import { RequestRecoverPasswordController } from '@/presentation/controllers/auth/account'
-import { makeRequestRecoverPasswordValidation } from '../../validations/auth'
+import { makeRequestRecoverPasswordValidation } from '@/main/factories/validations/auth'
 import { EmailValidatorAdapter } from '@/infra/validators/email-validator-adapter'
-import { makeDbRequestRecoverPassword } from '../../usecases/auth/memory/account'
+import { makeDbRequestRecoverPassword } from '@/main/factories/usecases/auth/memory/account'
 
 export const makeRequestRecoverPasswordController = (): RequestRecoverPasswordController => {
   const emailValidator = new EmailValidatorAdapter()

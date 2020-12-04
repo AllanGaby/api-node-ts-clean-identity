@@ -1,6 +1,6 @@
 import { RecoverPasswordController } from '@/presentation/controllers/auth/account'
-import { makeDbRecoverPassword } from '../../usecases/auth/memory/account'
-import { makeRecoverPassowrdValidation } from '../../validations/auth'
+import { makeDbRecoverPassword } from '@/main/factories/usecases/auth/memory/account'
+import { makeRecoverPassowrdValidation } from '@/main/factories/validations/auth'
 
 export const makeRecoverPasswordController = (): RecoverPasswordController => {
   return new RecoverPasswordController(

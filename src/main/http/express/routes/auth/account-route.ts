@@ -1,5 +1,5 @@
 import { adaptFileRoute, adaptMiddleware, adaptRoute } from '@/main/adapters/express'
-import { makeCreateAccountController, makeActiveAccountController, makeRequestRecoverPasswordController, makeRecoverPasswordController, makeSetAccountTypeController, makeShowAccountBySessionController, makeUpdateAccountController, makeShowAvatarAccountBySessionController } from '@/main/factories/controllers/auth'
+import { makeCreateAccountController, makeActiveAccountController, makeRequestRecoverPasswordController, makeRecoverPasswordController, makeSetAccountTypeController, makeShowAccountBySessionController, makeUpdateAccountController, makeShowAvatarAccountBySessionController } from '@/main/factories/controllers/auth/account'
 import { makeManagerAuthenticationMiddleware, makeAuthenticationMiddleware } from '@/main/factories/middlewares/auth'
 import { Router } from 'express'
 import multer from 'multer'
