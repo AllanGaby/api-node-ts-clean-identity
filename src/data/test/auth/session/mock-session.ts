@@ -1,5 +1,5 @@
 import { ActiveAccountDTO, RecoverPasswordDTO } from '@/domain/usecases/auth/account'
-import { SendMailSessionDTO, ShowAccountBySessionDTO } from '@/domain/usecases/auth/session'
+import { SendMailSessionDTO, ShowAccountBySessionDTO, LogoutDTO } from '@/domain/usecases/auth/session'
 import { SessionModel, SessionType } from '@/domain/models/auth'
 import faker from 'faker'
 
@@ -32,4 +32,8 @@ export const mockRecoverPasswordDTO = (): RecoverPasswordDTO => ({
 
 export const mockShowAccountBySessionDTO = (): ShowAccountBySessionDTO => ({
   accessToken: faker.random.uuid()
+})
+
+export const mockLogoutDTO = (): LogoutDTO => ({
+  sessionId: faker.random.uuid()
 })

@@ -1,4 +1,4 @@
-import { GetSessionByIdRepository } from '@/data/repositories/auth';
+import { GetSessionByIdRepository } from '@/data/repositories/auth'
 import { Logout, LogoutDTO } from '@/domain/usecases/auth/session'
 
 export class DbLogout implements Logout {
