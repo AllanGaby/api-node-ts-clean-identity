@@ -1,6 +1,7 @@
 import { DbLogout } from './logout'
 import { GetSessionByIdRepositorySpy, mockLogoutDTO } from '@/data/test/auth/session'
 import { throwError } from '@/data/test'
+import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {
   sut: DbLogout
@@ -29,5 +30,12 @@ describe('DbLogout', () => {
     jest.spyOn(getSessionByIdRepositorySpy, 'getSessionById').mockImplementationOnce(throwError)
     const promise = sut.logout(mockLogoutDTO())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return InvalidCredentialsError if session not found', async () => {
+    const { sut, getSessionByIdRepositorySpy } = makeSut()
+    getSessionByIdRepositorySpy.session = null
+    const promise = sut.logout(mockLogoutDTO())
+    await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 })
