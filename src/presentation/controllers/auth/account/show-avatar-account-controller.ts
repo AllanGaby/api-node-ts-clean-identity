@@ -1,7 +1,7 @@
 import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
 import { GetFilenameToAccountAvatar } from '@/domain/usecases/auth/account'
 import { serverError, ok } from '@/presentation/helpers'
-import path from 'path'
+import { AvatarModel } from '@/domain/models/auth'
 
 export interface ShowAvatarAccountRequest {
   account: {
@@ -9,16 +9,16 @@ export interface ShowAvatarAccountRequest {
   }
 }
 
-export class ShowAvatarAccountBySessionController implements Controller<ShowAvatarAccountRequest, string | Error> {
+export class ShowAvatarAccountBySessionController implements Controller<ShowAvatarAccountRequest, AvatarModel | Error> {
   constructor (
     private readonly getFilenameToAccountAvatar: GetFilenameToAccountAvatar,
     private readonly uploadDir: string
   ) {}
 
-  async handle (request: HttpRequest<ShowAvatarAccountRequest>): Promise<HttpResponse<string | Error>> {
+  async handle (request: HttpRequest<ShowAvatarAccountRequest>): Promise<HttpResponse<AvatarModel | Error>> {
     try {
-      const avatarFileName = await this.getFilenameToAccountAvatar.getPath({ accountId: request.body.account.id })
-      return ok(`${this.uploadDir}${path.sep}${avatarFileName}`)
+      const avatarModel = await this.getFilenameToAccountAvatar.getPath({ accountId: request.body.account.id, uploadDir: this.uploadDir })
+      return ok(avatarModel)
     } catch (error) {
       return serverError(error)
     }

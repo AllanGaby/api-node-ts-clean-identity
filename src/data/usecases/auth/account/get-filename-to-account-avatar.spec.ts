@@ -2,6 +2,7 @@ import { DbGetFilenameToAccountAvatar } from './get-filename-to-account-avatar'
 import { GetAccountByIdRepositorySpy, mockGetAvatarFilter } from '@/data/test/auth/account'
 import { throwError } from '@/data/test'
 import faker from 'faker'
+import path from 'path'
 
 interface sutTypes {
   sut: DbGetFilenameToAccountAvatar
@@ -49,7 +50,10 @@ describe('DbGetFilenameToAccountAvatar', () => {
   test('Should return correct avatar file if GetAccountByIdRepository return an account with avatar', async () => {
     const { sut, getAccountByIdRepositorySpy } = makeSut()
     getAccountByIdRepositorySpy.account.avatar_extention = faker.system.filePath()
-    const accountAvatar = await sut.getPath(mockGetAvatarFilter())
-    expect(accountAvatar).toEqual(`${getAccountByIdRepositorySpy.account.id}${getAccountByIdRepositorySpy.account.avatar_extention}`)
+    const filter = mockGetAvatarFilter()
+    const accountAvatar = await sut.getPath(filter)
+    expect(accountAvatar).toEqual({
+      avatar_file_path: `${filter.uploadDir}${path.sep}${getAccountByIdRepositorySpy.account.id}${getAccountByIdRepositorySpy.account.avatar_extention}`
+    })
   })
 })

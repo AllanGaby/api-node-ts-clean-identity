@@ -3,7 +3,6 @@ import { GetFilenameToAccountAvatarSpy, mokeGetFilenameToAccountAvatar } from '@
 import { serverError, ok } from '@/presentation/helpers'
 import { throwError } from '@/data/test'
 import faker from 'faker'
-import path from 'path'
 
 interface sutTypes {
   sut: ShowAvatarAccountBySessionController
@@ -24,11 +23,12 @@ const makeSut = (): sutTypes => {
 
 describe('ShowAvatarAccountBySessionController', () => {
   test('Should call ShowAccount with correct values', async () => {
-    const { sut, getFilenameToAccountAvatarSpy } = makeSut()
+    const { sut, getFilenameToAccountAvatarSpy, uploadDir } = makeSut()
     const request = mokeGetFilenameToAccountAvatar()
     await sut.handle(request)
     expect(getFilenameToAccountAvatarSpy.params).toEqual({
-      accountId: request.body.account.id
+      accountId: request.body.account.id,
+      uploadDir
     })
   })
 
@@ -40,8 +40,8 @@ describe('ShowAvatarAccountBySessionController', () => {
   })
 
   test('Should return ok and account avatar filename if succeeds', async () => {
-    const { sut, getFilenameToAccountAvatarSpy, uploadDir } = makeSut()
+    const { sut, getFilenameToAccountAvatarSpy } = makeSut()
     const result = await sut.handle(mokeGetFilenameToAccountAvatar())
-    expect(result).toEqual(ok(`${uploadDir}${path.sep}${getFilenameToAccountAvatarSpy.avatarFilename}`))
+    expect(result).toEqual(ok(getFilenameToAccountAvatarSpy.avatar))
   })
 })

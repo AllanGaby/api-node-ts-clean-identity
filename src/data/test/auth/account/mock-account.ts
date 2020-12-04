@@ -53,5 +53,6 @@ export const mockSetAccountTypeDTO = (accountType: AccountType = AccountType.stu
 })
 
 export const mockGetAvatarFilter = (): GetAvatarFilter => ({
-  accountId: faker.random.uuid()
+  accountId: faker.random.uuid(),
+  uploadDir: faker.system.directoryPath()
 })
