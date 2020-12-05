@@ -88,7 +88,7 @@ describe('DbActiveAccount', () => {
     getAccountByIdRepositorySpy.account.email_valided = true
     const activeAccountDTO = mockActiveAccountDTO()
     const account = await sut.active(activeAccountDTO)
-    expect(account).toBeFalsy()
+    expect(account).toEqual(getAccountByIdRepositorySpy.account)
   })
 
   test('Should call UpdateAccountRepository with correct value', async () => {
