@@ -5,6 +5,8 @@ import { AccountType, SessionType } from '@/domain/models/auth'
 import { badRequest, serverError, ok, forbidden } from '@/presentation/helpers'
 import { MissingParamError } from '@/validation/errors'
 import { AccessDeniedError } from '@/presentation/errors'
+import { TokenExpiredError } from 'jsonwebtoken'
+import { InvalidCredentialsError } from '@/data/errors'
 
 export interface AuthenticationMiddlewareReponse {
   accountId: string
@@ -25,7 +27,7 @@ export class AuthenticationMiddleware implements Middleware<any, AuthenticationM
         return badRequest(new MissingParamError('x-access-token'))
       }
       const session = await this.showSessionByAccessToken.show({ accessToken })
-      if ((session) && (session.type === SessionType.authentication)) {
+      if ((session) && (session.type === SessionType.authentication) && (session.experied_at > new Date())) {
         const account = await this.showAccount.show({
           accountId: session.account_id
         })
@@ -39,6 +41,9 @@ export class AuthenticationMiddleware implements Middleware<any, AuthenticationM
 
       return forbidden(new AccessDeniedError())
     } catch (error) {
+      if (error instanceof TokenExpiredError) {
+        return forbidden(new InvalidCredentialsError())
+      }
       return serverError(error)
     }
   }
