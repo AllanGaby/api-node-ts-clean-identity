@@ -3,6 +3,7 @@ import { ValidationComposite } from '@/validation/validations'
 import { RecoverPassword } from '@/domain/usecases/auth/account'
 import { AccountModel } from '@/domain/models/auth'
 import { badRequest, ok, serverError } from '@/presentation/helpers'
+import { InvalidCredentialsError } from '@/data/errors'
 
 export interface RecoverPasswordRequest {
   session_id: string
@@ -28,6 +29,9 @@ export class RecoverPasswordController implements Controller<RecoverPasswordRequ
       })
       return ok(account)
     } catch (error) {
+      if (error instanceof InvalidCredentialsError) {
+        return badRequest(error)
+      }
       return serverError(error)
     }
   }

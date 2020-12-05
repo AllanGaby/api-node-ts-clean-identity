@@ -1,6 +1,7 @@
 import { DbRecoverPassword } from './recover-password'
 import { GetSessionByIdRepositorySpy, mockRecoverPasswordDTO, throwError, GetAccountByIdRepositorySpy, mockSessionModel, HashCreatorSpy, UpdateAccountRepositorySpy } from '@/data/test'
 import { SessionType } from '@/domain/models/auth'
+import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {
   sut: DbRecoverPassword
@@ -41,33 +42,33 @@ describe('DbRecoverPassword', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should return null if GetSessionByIdRepository return null', async () => {
+  test('Should return InvalidCredentialsError if GetSessionByIdRepository return null', async () => {
     const { sut, getSessionByIdRepositorySpy } = makeSut()
     getSessionByIdRepositorySpy.session = null
     const promise = sut.recover(mockRecoverPasswordDTO())
-    await expect(promise).rejects.toThrow()
+    await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
-  test('Should return null if GetSessionByIdRepository return an invalid type session', async () => {
+  test('Should return InvalidCredentialsError if GetSessionByIdRepository return an invalid type session', async () => {
     const { sut, getSessionByIdRepositorySpy } = makeSut()
     getSessionByIdRepositorySpy.session.type = SessionType.activeAccount
     const promise = sut.recover(mockRecoverPasswordDTO())
-    await expect(promise).rejects.toThrow()
+    await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
-  test('Should return null if GetSessionByIdRepository return an expired session', async () => {
+  test('Should return InvalidCredentialsError if GetSessionByIdRepository return an expired session', async () => {
     const { sut, getSessionByIdRepositorySpy } = makeSut()
     const experiedAt = new Date()
     getSessionByIdRepositorySpy.session.experied_at = new Date(experiedAt.getDate() - 1)
     const promise = sut.recover(mockRecoverPasswordDTO())
-    await expect(promise).rejects.toThrow()
+    await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
-  test('Should return null if GetSessionByIdRepository return an deleted session', async () => {
+  test('Should return InvalidCredentialsError if GetSessionByIdRepository return an deleted session', async () => {
     const { sut, getSessionByIdRepositorySpy } = makeSut()
     getSessionByIdRepositorySpy.session.deleted_at = new Date()
     const promise = sut.recover(mockRecoverPasswordDTO())
-    await expect(promise).rejects.toThrow()
+    await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
   test('Should call GetAccountByIdRepository with correct value', async () => {
