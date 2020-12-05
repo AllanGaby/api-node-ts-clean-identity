@@ -79,6 +79,18 @@ describe('Account Routes /account', () => {
         })
         .expect(400)
     })
+
+    test('Should return 403 if exists other account with same e-mail', async () => {
+      await request(app)
+        .post('/api/auth/account')
+        .send({
+          name: account.name,
+          email: account.email,
+          password: account.password,
+          password_confirmation: account.password
+        })
+        .expect(403)
+    })
   })
 
   describe('PUT /:session_id - Active Account', () => {
