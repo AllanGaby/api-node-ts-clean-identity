@@ -1,6 +1,7 @@
 import { DbActiveAccount } from './active-account'
 import { mockActiveAccountDTO, throwError, GetSessionByIdRepositorySpy, DeleteSessionRepositorySpy, GetAccountByIdRepositorySpy, UpdateAccountRepositorySpy } from '@/data/test'
 import { SessionType } from '@/domain/models/auth'
+import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {
   sut: DbActiveAccount
@@ -81,6 +82,13 @@ describe('DbActiveAccount', () => {
     jest.spyOn(getAccountByIdRepositorySpy, 'getAccountById').mockImplementationOnce(throwError)
     const promise = sut.active(mockActiveAccountDTO())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return InvalidCredentialError if GetAccountByIdRepository return an account with valided email', async () => {
+    const { sut, getAccountByIdRepositorySpy } = makeSut()
+    getAccountByIdRepositorySpy.account = null
+    const promise = sut.active(mockActiveAccountDTO())
+    await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
   test('Should return null if GetAccountByIdRepository return an account with valided email', async () => {
