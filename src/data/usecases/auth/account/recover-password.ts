@@ -2,6 +2,7 @@ import { RecoverPassword, RecoverPasswordDTO } from '@/domain/usecases/auth/acco
 import { AccountModel, SessionType } from '@/domain/models/auth'
 import { GetSessionByIdRepository, GetAccountByIdRepository, UpdateAccountRepository } from '@/data/repositories/auth'
 import { HashCreator } from '@/data/protocols/criptography'
+import { InvalidCredentialsError } from '@/data/errors'
 
 export class DbRecoverPassword implements RecoverPassword {
   constructor (
@@ -14,7 +15,7 @@ export class DbRecoverPassword implements RecoverPassword {
   async recover ({ password, sessionId }: RecoverPasswordDTO): Promise<AccountModel> {
     const session = await this.getSessionByIdRepository.getSessionById(sessionId)
     if (!session) {
-      throw new Error('Session not found')
+      throw new InvalidCredentialsError()
     }
     if ((session.type === SessionType.recoverPassword) &&
         (session.experied_at > new Date()) &&
@@ -22,8 +23,7 @@ export class DbRecoverPassword implements RecoverPassword {
       const account = await this.getAccountByIdRepository.getAccountById(session.account_id)
       account.password = await this.hashCreator.createHash(password)
       return await this.updateAccountRepository.update(account)
-    } else {
-      throw new Error('Invalid Session')
     }
+    throw new InvalidCredentialsError()
   }
 }
