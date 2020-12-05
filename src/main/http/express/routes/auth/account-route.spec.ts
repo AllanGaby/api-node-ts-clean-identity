@@ -132,5 +132,65 @@ describe('Account Routes /account', () => {
         })
         .expect(400)
     })
+
+    test('Should return 400 if e-mail not is provide', async () => {
+      await request(app)
+        .post('/api/auth/account/password')
+        .expect(400)
+    })
+  })
+
+  describe('PUT /password - Recover password', () => {
+    beforeEach(async () => {
+      session = await sessionRepository.create({
+        account_id: account.id,
+        experied_at: faker.date.future(),
+        type: SessionType.recoverPassword
+      })
+    })
+
+    test('Should return 200 on recover password', async () => {
+      const password = faker.internet.password()
+      await request(app)
+        .put('/api/auth/account/password')
+        .send({
+          session_id: session.id,
+          password,
+          password_confirmation: password
+        })
+        .expect(200)
+    })
+
+    test('Should return 400 if session not found', async () => {
+      const password = faker.internet.password()
+      await request(app)
+        .put('/api/auth/account/password')
+        .send({
+          session_id: faker.random.uuid(),
+          password,
+          password_confirmation: password
+        })
+        .expect(400)
+    })
+
+    test('Should return 400 if password not provide', async () => {
+      await request(app)
+        .put('/api/auth/account/password')
+        .send({
+          session_id: session.id
+        })
+        .expect(400)
+    })
+
+    test('Should return 400 if password confirmation is different of password', async () => {
+      await request(app)
+        .put('/api/auth/account/password')
+        .send({
+          session_id: session.id,
+          password: faker.internet.password(),
+          password_confirmation: faker.random.uuid()
+        })
+        .expect(400)
+    })
   })
 })
