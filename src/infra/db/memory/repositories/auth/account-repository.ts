@@ -32,10 +32,6 @@ export class MemoryAccountRepository implements CreateAccountRepository, GetAcco
     this.accounts[0].email_valided = true
   }
 
-  public static dropInstance (): void {
-    MemoryAccountRepository.instance = null
-  }
-
   public static getInstance (): MemoryAccountRepository {
     if (!MemoryAccountRepository.instance) {
       MemoryAccountRepository.instance = new MemoryAccountRepository()

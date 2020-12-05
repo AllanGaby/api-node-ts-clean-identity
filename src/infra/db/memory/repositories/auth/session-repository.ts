@@ -10,10 +10,6 @@ export class MemorySessionRepository implements CreateSessionRepository, GetSess
     this.sessions = []
   }
 
-  public static dropInstance (): void {
-    MemorySessionRepository.instance = null
-  }
-
   public static getInstance (): MemorySessionRepository {
     if (!MemorySessionRepository.instance) {
       MemorySessionRepository.instance = new MemorySessionRepository()
