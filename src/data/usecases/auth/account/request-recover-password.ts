@@ -2,6 +2,7 @@ import { RequestRecoverPassword, RequestRecoverPasswordDTO } from '@/domain/usec
 import { SendMailSession } from '@/domain/usecases/auth/session'
 import { GetAccountByEmailRepository } from '@/data/repositories/auth/account'
 import { SessionModel, SessionType } from '@/domain/models/auth'
+import { AccountNotFoundError } from '@/data/errors'
 
 export class DbRequestRecoverPassword implements RequestRecoverPassword {
   constructor (
@@ -21,8 +22,7 @@ export class DbRequestRecoverPassword implements RequestRecoverPassword {
         subject: `[Identity] - ${accountByEmail.name}, recupere sua senha agora`,
         mailFilePath: this.mailFilePath
       })
-    } else {
-      throw new Error('Account not found')
     }
+    throw new AccountNotFoundError()
   }
 }

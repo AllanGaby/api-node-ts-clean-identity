@@ -3,6 +3,7 @@ import { ValidationComposite } from '@/validation/validations'
 import { RequestRecoverPassword, RequestRecoverPasswordDTO } from '@/domain/usecases/auth/account'
 import { badRequest, serverError, ok } from '@/presentation/helpers'
 import { SessionModel } from '@/domain/models/auth'
+import { AccountNotFoundError } from '@/data/errors'
 
 export class RequestRecoverPasswordController implements Controller<RequestRecoverPasswordDTO, SessionModel | Error> {
   constructor (
@@ -19,6 +20,9 @@ export class RequestRecoverPasswordController implements Controller<RequestRecov
       const requestRecover = await this.requestRecoverPassword.request(request.body)
       return ok(requestRecover)
     } catch (error) {
+      if (error instanceof AccountNotFoundError) {
+        return badRequest(error)
+      }
       return serverError(error)
     }
   }
