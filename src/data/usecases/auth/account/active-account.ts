@@ -17,14 +17,16 @@ export class DbActiveAccount implements ActiveAccount {
       throw new InvalidCredentialsError()
     }
     if ((session.type === SessionType.activeAccount) &&
-        (session.experied_at > new Date()) &&
-        (!session.deleted_at)) {
+    (session.experied_at > new Date()) &&
+    (!session.deleted_at)) {
       const account = await this.getAccountByIdRepository.getAccountById(session.account_id)
-      if (!account.email_valided) {
-        await this.deleteSessionRepository.delete(session)
+      await this.deleteSessionRepository.delete(session)
+      if (!account?.email_valided) {
         account.email_valided = true
         const updatedAccount = await this.updateAccountRepository.update(account)
         return updatedAccount
+      } else {
+        return account
       }
     } else {
       throw new InvalidCredentialsError()
