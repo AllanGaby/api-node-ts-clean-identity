@@ -7,24 +7,20 @@ import { AccountModel, SessionModel, SessionType } from '@/domain/models/auth'
 let account: AccountModel
 let session: SessionModel
 let sessionRepository: MemorySessionRepository
+let accountRepository: MemoryAccountRepository
 
-describe('Account Routes', () => {
+describe('Account Routes /account', () => {
   beforeAll(async () => {
-    const accountRepository = MemoryAccountRepository.getInstance()
+    accountRepository = MemoryAccountRepository.getInstance()
     sessionRepository = MemorySessionRepository.getInstance()
     account = await accountRepository.create({
       name: faker.name.findName(),
       email: faker.internet.email(),
       password: faker.internet.password()
     })
-    session = await sessionRepository.create({
-      account_id: account.id,
-      experied_at: faker.date.future(),
-      type: SessionType.activeAccount
-    })
   })
 
-  describe('POST - Create Account', () => {
+  describe('POST / - Create Account', () => {
     test('Should return 201 on account created', async () => {
       const password = faker.internet.password()
       await request(app)
@@ -85,7 +81,15 @@ describe('Account Routes', () => {
     })
   })
 
-  describe('PUT - Active Account', () => {
+  describe('PUT /:session_id - Active Account', () => {
+    beforeEach(async () => {
+      session = await sessionRepository.create({
+        account_id: account.id,
+        experied_at: faker.date.future(),
+        type: SessionType.activeAccount
+      })
+    })
+
     test('Should return 200 on active account', async () => {
       await request(app)
         .put(`/api/auth/account/${session.id}`)
@@ -107,6 +111,17 @@ describe('Account Routes', () => {
       await request(app)
         .put(`/api/auth/account/${faker.random.uuid()}`)
         .expect(400)
+    })
+  })
+
+  describe('POST /password - Request recover password', () => {
+    test('Should return 200 on request password', async () => {
+      await request(app)
+        .post('/api/auth/account/password')
+        .send({
+          email: account.email
+        })
+        .expect(200)
     })
   })
 })
