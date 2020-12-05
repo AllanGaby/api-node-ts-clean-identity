@@ -123,5 +123,14 @@ describe('Account Routes /account', () => {
         })
         .expect(200)
     })
+
+    test('Should return 400 if account not found', async () => {
+      await request(app)
+        .post('/api/auth/account/password')
+        .send({
+          email: faker.internet.email()
+        })
+        .expect(400)
+    })
   })
 })
