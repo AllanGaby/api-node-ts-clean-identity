@@ -5,6 +5,9 @@ import { MemoryAccountRepository, MemorySessionRepository } from '@/infra/db/mem
 import { AccountModel, SessionModel, SessionType } from '@/domain/models/auth'
 import { JWTEncrypterAdapter } from '@/infra/criptografy'
 import { EnvConfig } from '@/main/config/env'
+import uploadConfig from '@/main/config/multer/config'
+import fs from 'fs'
+import path from 'path'
 
 let account: AccountModel
 let session: SessionModel
@@ -22,6 +25,17 @@ describe('Account Routes /account', () => {
       email: faker.internet.email(),
       password: faker.internet.password()
     })
+    const sourceFile = `${uploadConfig.uploadDirectory}${path.sep}profile.png`
+    const destinationFile = `${uploadConfig.uploadDirectory}${path.sep}${account.id}.png`
+    await fs.promises.copyFile(sourceFile, destinationFile)
+    await accountRepository.update({
+      ...account,
+      avatar_extention: '.png'
+    })
+  })
+
+  afterAll(async () => {
+    await fs.promises.unlink(`${uploadConfig.uploadDirectory}${path.sep}${account.id}.png`)
   })
 
   beforeEach(async () => {
@@ -312,6 +326,49 @@ describe('Account Routes /account', () => {
         .send({
           name: `${account.name} Updated`
         })
+        .expect(403)
+    })
+  })
+
+  describe('GET /avatar - Show Avatar Account', () => {
+    test('Should return 200 if access token is valid', async () => {
+      await request(app)
+        .get('/api/auth/account/avatar')
+        .set('x-access-token', accessToken)
+        .responseType('blob')
+        .expect(200)
+    })
+
+    test('Should return 400 if access token not provide', async () => {
+      await request(app)
+        .get('/api/auth/account/avatar')
+        .expect(400)
+    })
+
+    test('Should return 403 if access token is invalid', async () => {
+      encrypter = new JWTEncrypterAdapter(EnvConfig.jwtSecret, -1)
+      session = await sessionRepository.create({
+        account_id: account.id,
+        experied_at: faker.date.past(),
+        type: SessionType.authentication
+      })
+      accessToken = await encrypter.encrypt(session.id)
+      await request(app)
+        .get('/api/auth/account/avatar')
+        .set('x-access-token', accessToken)
+        .expect(403)
+    })
+
+    test('Should return 401 if session is expired', async () => {
+      session = await sessionRepository.create({
+        account_id: account.id,
+        experied_at: faker.date.past(),
+        type: SessionType.authentication
+      })
+      accessToken = await encrypter.encrypt(session.id)
+      await request(app)
+        .get('/api/auth/account/avatar')
+        .set('x-access-token', accessToken)
         .expect(403)
     })
   })

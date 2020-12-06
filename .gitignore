@@ -5,3 +5,4 @@ temp/*
 !temp/.gitkeep
 uploads/*
 !uploads/.gitkeep
+!uploads/profile.png
