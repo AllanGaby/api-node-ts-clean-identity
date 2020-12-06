@@ -1,18 +1,24 @@
 import app from '@/main/config/express/app'
 import request from 'supertest'
 import faker from 'faker'
-import { MemoryAccountRepository } from '@/infra/db/memory/repositories/auth'
-import { BCrypterHasherAdapter } from '@/infra/criptografy'
-import { AccountModel } from '@/domain/models/auth'
+import { MemoryAccountRepository, MemorySessionRepository } from '@/infra/db/memory/repositories/auth'
+import { BCrypterHasherAdapter, JWTEncrypterAdapter } from '@/infra/criptografy'
+import { AccountModel, SessionModel, SessionType } from '@/domain/models/auth'
+import { EnvConfig } from '@/main/config/env'
 
 let account: AccountModel
+let session: SessionModel
 let accountRepository: MemoryAccountRepository
+let sessionRepository: MemorySessionRepository
 let hasher: BCrypterHasherAdapter
+let encrypter: JWTEncrypterAdapter
 let password: string
+let accessToken: string
 
 describe('Session Routes /session', () => {
   beforeAll(async () => {
     accountRepository = MemoryAccountRepository.getInstance()
+    sessionRepository = MemorySessionRepository.getInstance()
     hasher = new BCrypterHasherAdapter(12)
     password = faker.internet.password()
     account = await accountRepository.create({
@@ -24,6 +30,16 @@ describe('Session Routes /session', () => {
       ...account,
       email_valided: true
     })
+  })
+
+  beforeEach(async () => {
+    encrypter = new JWTEncrypterAdapter(EnvConfig.jwtSecret, 1)
+    session = await sessionRepository.create({
+      account_id: account.id,
+      experied_at: faker.date.future(),
+      type: SessionType.authentication
+    })
+    accessToken = await encrypter.encrypt(session.id)
   })
 
   describe('POST / - Authentication', () => {
@@ -83,6 +99,48 @@ describe('Session Routes /session', () => {
           email: account.email
         })
         .expect(400)
+    })
+  })
+
+  describe('DELETE / - Logout', () => {
+    test('Should return 204 if logout is succeeds', async () => {
+      await request(app)
+        .delete('/api/auth/session')
+        .set('x-access-token', accessToken)
+        .expect(204)
+    })
+
+    test('Should return 400 if access token not provide', async () => {
+      await request(app)
+        .delete('/api/auth/session')
+        .expect(400)
+    })
+
+    test('Should return 403 if access token is invalid', async () => {
+      encrypter = new JWTEncrypterAdapter(EnvConfig.jwtSecret, -1)
+      session = await sessionRepository.create({
+        account_id: account.id,
+        experied_at: faker.date.past(),
+        type: SessionType.authentication
+      })
+      accessToken = await encrypter.encrypt(session.id)
+      await request(app)
+        .delete('/api/auth/session')
+        .set('x-access-token', accessToken)
+        .expect(403)
+    })
+
+    test('Should return 401 if session is expired', async () => {
+      session = await sessionRepository.create({
+        account_id: account.id,
+        experied_at: faker.date.past(),
+        type: SessionType.authentication
+      })
+      accessToken = await encrypter.encrypt(session.id)
+      await request(app)
+        .delete('/api/auth/session')
+        .set('x-access-token', accessToken)
+        .expect(403)
     })
   })
 })
