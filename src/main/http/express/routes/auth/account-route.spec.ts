@@ -261,4 +261,58 @@ describe('Account Routes /account', () => {
         .expect(403)
     })
   })
+
+  describe('PUT / - Update Account', () => {
+    test('Should return 200 if account is updated', async () => {
+      await request(app)
+        .put('/api/auth/account')
+        .set('x-access-token', accessToken)
+        .send({
+          name: `${account.name} Updated`
+        })
+        .expect(200)
+    })
+
+    test('Should return 400 if access token not provide', async () => {
+      await request(app)
+        .put('/api/auth/account')
+        .send({
+          name: `${account.name} Updated`
+        })
+        .expect(400)
+    })
+
+    test('Should return 403 if access token is invalid', async () => {
+      encrypter = new JWTEncrypterAdapter(EnvConfig.jwtSecret, -1)
+      session = await sessionRepository.create({
+        account_id: account.id,
+        experied_at: faker.date.past(),
+        type: SessionType.authentication
+      })
+      accessToken = await encrypter.encrypt(session.id)
+      await request(app)
+        .put('/api/auth/account')
+        .set('x-access-token', accessToken)
+        .send({
+          name: `${account.name} Updated`
+        })
+        .expect(403)
+    })
+
+    test('Should return 401 if session is expired', async () => {
+      session = await sessionRepository.create({
+        account_id: account.id,
+        experied_at: faker.date.past(),
+        type: SessionType.authentication
+      })
+      accessToken = await encrypter.encrypt(session.id)
+      await request(app)
+        .put('/api/auth/account')
+        .set('x-access-token', accessToken)
+        .send({
+          name: `${account.name} Updated`
+        })
+        .expect(403)
+    })
+  })
 })
