@@ -35,12 +35,12 @@
     "typescript": "^4.0.3"
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand --no-cache",
     "test:staged": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:verbose": "jest --passWithNoTests --runInBand",
     "test:coverage": "yarn test --coverage",
-    "test:integration": "npm test -- --watch -c jest-integration-config.js",
-    "test:unit": "npm test -- --watch -c jest-unit-config.js",
+    "test:integration": "yarn test -- --watch -c jest-integration-config.js",
+    "test:unit": "yarn test -- --watch -c jest-unit-config.js",
     "dev:server": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/main/http/express/server.ts"
   },
   "dependencies": {
