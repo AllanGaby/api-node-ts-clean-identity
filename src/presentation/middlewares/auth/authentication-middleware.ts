@@ -2,7 +2,7 @@ import { Middleware, HttpRequest, HttpResponse } from '@/presentation/protocols'
 import { ShowSessionByAccessToken } from '@/domain/usecases/auth/session'
 import { ShowAccount } from '@/domain/usecases/auth/account'
 import { AccountType, SessionType } from '@/domain/models/auth'
-import { badRequest, serverError, ok, forbidden } from '@/presentation/helpers'
+import { badRequest, serverError, ok, forbidden, unauthorized } from '@/presentation/helpers'
 import { MissingParamError } from '@/validation/errors'
 import { AccessDeniedError } from '@/presentation/errors'
 import { TokenExpiredError } from 'jsonwebtoken'
@@ -39,7 +39,7 @@ export class AuthenticationMiddleware implements Middleware<any, AuthenticationM
         }
       }
 
-      return forbidden(new AccessDeniedError())
+      return unauthorized(new AccessDeniedError())
     } catch (error) {
       if (error instanceof TokenExpiredError) {
         return forbidden(new InvalidCredentialsError())

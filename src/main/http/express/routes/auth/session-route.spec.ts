@@ -140,7 +140,7 @@ describe('Session Routes /session', () => {
       await request(app)
         .delete('/api/auth/session')
         .set('x-access-token', accessToken)
-        .expect(403)
+        .expect(401)
     })
   })
 })

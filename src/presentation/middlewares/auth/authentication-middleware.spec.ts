@@ -1,7 +1,7 @@
 import { AuthenticationMiddleware } from './authentication-middleware'
 import { ShowAccountSpy, mockAuthenticationRequest, mockAuthenticationFailRequest, ShowSessionByAccessTokenSpy } from '@/presentation/test/auth'
 import { AccountType, SessionType } from '@/domain/models/auth'
-import { badRequest, forbidden, serverError, ok } from '@/presentation/helpers'
+import { badRequest, serverError, ok, unauthorized } from '@/presentation/helpers'
 import { MissingParamError } from '@/validation/errors'
 import { throwError } from '@/data/test'
 import { AccessDeniedError } from '@/presentation/errors'
@@ -61,14 +61,14 @@ describe('AuthenticationMiddleware', () => {
     const { sut, showSessionByAccessTokenSpy } = makeSut()
     showSessionByAccessTokenSpy.session = null
     const result = await sut.handle(mockAuthenticationRequest())
-    expect(result).toEqual(forbidden(new AccessDeniedError()))
+    expect(result).toEqual(unauthorized(new AccessDeniedError()))
   })
 
   test('Should return Forbidden if account type is different of authentication', async () => {
     const { sut, showSessionByAccessTokenSpy } = makeSut()
     showSessionByAccessTokenSpy.session.type = SessionType.activeAccount
     const result = await sut.handle(mockAuthenticationRequest())
-    expect(result).toEqual(forbidden(new AccessDeniedError()))
+    expect(result).toEqual(unauthorized(new AccessDeniedError()))
   })
 
   test('Should call ShowAccount with correct value', async () => {
@@ -89,14 +89,14 @@ describe('AuthenticationMiddleware', () => {
     const { sut, showAccountSpy } = makeSut()
     showAccountSpy.account = null
     const result = await sut.handle(mockAuthenticationRequest())
-    expect(result).toEqual(forbidden(new AccessDeniedError()))
+    expect(result).toEqual(unauthorized(new AccessDeniedError()))
   })
 
   test('Should return Forbidden if account type is different', async () => {
     const { sut, showAccountSpy } = makeSut([AccountType.manager])
     showAccountSpy.account.type = AccountType.student
     const result = await sut.handle(mockAuthenticationRequest())
-    expect(result).toEqual(forbidden(new AccessDeniedError()))
+    expect(result).toEqual(unauthorized(new AccessDeniedError()))
   })
 
   test('Should return an Account if succeeds', async () => {
