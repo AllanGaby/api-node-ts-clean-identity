@@ -40,11 +40,14 @@ describe('DbGetFilenameToAccountAvatar', () => {
     expect(accountAvatar).toBeFalsy()
   })
 
-  test('Should return null if GetAccountByIdRepository if account without avatar', async () => {
+  test('Should return default profile if GetAccountByIdRepository if account without avatar', async () => {
     const { sut, getAccountByIdRepositorySpy } = makeSut()
     getAccountByIdRepositorySpy.account.avatar_extention = null
-    const accountAvatar = await sut.getPath(mockGetFilenameToAccountAvatarDTO())
-    expect(accountAvatar).toBeFalsy()
+    const filter = mockGetFilenameToAccountAvatarDTO()
+    const accountAvatar = await sut.getPath(filter)
+    expect(accountAvatar).toEqual({
+      avatar_file_path: `${filter.uploadDir}${path.sep}profile.png`
+    })
   })
 
   test('Should return correct avatar file if GetAccountByIdRepository return an account with avatar', async () => {
