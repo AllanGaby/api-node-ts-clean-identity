@@ -22,10 +22,10 @@ export class AuthenticationMiddleware implements Middleware<any, AuthenticationM
 
   async handle (request: HttpRequest<any>): Promise<HttpResponse<AuthenticationMiddlewareReponse | Error>> {
     try {
-      const accessToken = request.headers?.['x-access-token']
-      if (!accessToken) {
+      if ((!request.headers) || (!request.headers['x-access-token'])) {
         return badRequest(new MissingParamError('x-access-token'))
       }
+      const accessToken = request.headers['x-access-token']
       const session = await this.showSessionByAccessToken.show({ accessToken })
       if ((session) && (session.type === SessionType.authentication) && (session.experied_at > new Date())) {
         const account = await this.showAccount.show({

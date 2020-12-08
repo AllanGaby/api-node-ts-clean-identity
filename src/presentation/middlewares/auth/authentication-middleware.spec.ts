@@ -46,7 +46,7 @@ describe('AuthenticationMiddleware', () => {
     const request = mockAuthenticationRequest()
     await sut.handle(request)
     expect(showSessionByAccessTokenSpy.params).toEqual({
-      accessToken: request.headers?.['x-access-token']
+      accessToken: request.headers['x-access-token']
     })
   })
 

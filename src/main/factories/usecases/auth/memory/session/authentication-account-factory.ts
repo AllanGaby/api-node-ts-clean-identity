@@ -1,4 +1,4 @@
-import { DbAuthenticationAccount } from '@/data/usecases/auth/account'
+import { DbAuthenticationAccount } from '@/data/usecases/auth/session'
 import { MemoryAccountRepository, MemorySessionRepository } from '@/infra/db/memory/repositories/auth'
 import { BCrypterHasherAdapter, JWTEncrypterAdapter } from '@/infra/criptografy'
 import { EnvConfig } from '@/main/config/env'

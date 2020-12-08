@@ -8,7 +8,7 @@ export class MinLengthFieldValidation implements Validation {
 
   validate (input: any): Error {
     const value = input[this.field] as string
-    if (value?.length < this.minLength) {
+    if ((value) && (value.length < this.minLength)) {
       return new InvalidParamError(this.field)
     }
   }

@@ -32,8 +32,8 @@ export class NodemailerSendMailAdapter implements SendMailAdapter {
   async sendMail ({ sender, to, subject, content }: SendMailDTO): Promise<void> {
     await this.client.sendMail({
       from: {
-        name: sender?.name || 'Identity',
-        address: sender?.email || 'contact@identity.com.br'
+        name: sender ? sender.name : 'Identity',
+        address: sender ? sender.email : 'contact@identity.com.br'
       },
       to: {
         name: to.name,
