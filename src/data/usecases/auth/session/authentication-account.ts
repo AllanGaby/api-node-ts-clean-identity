@@ -14,7 +14,7 @@ export class DbAuthenticationAccount implements AuthenticationAccount {
 
   async authenticate ({ email, password }: AuthenticationAccountDTO): Promise<AuthenticationModel> {
     const account = await this.getAccountByEmailRepository.getAccountByEmail(email)
-    if (account?.email_valided) {
+    if ((account) && (account.email_valided)) {
       const isCorrectPassword = await this.hashComparer.compare({
         payload: password,
         hashedText: account.password

@@ -1,7 +1,6 @@
 export * from './create-account'
 export * from './active-account'
 export * from './update-account'
-export * from './authentication-account'
 export * from './request-recover-password'
 export * from './recover-password'
 export * from './list-account'
