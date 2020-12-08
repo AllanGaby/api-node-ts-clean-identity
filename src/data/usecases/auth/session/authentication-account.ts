@@ -25,7 +25,7 @@ export class DbAuthenticationAccount implements AuthenticationAccount {
       const session = await this.createSessionRepository.create({
         account_id: account.id,
         type: SessionType.authentication,
-        experied_at: new Date(new Date().getDate() + 1)
+        experied_at: new Date(new Date().setDate(new Date().getDate() + 1))
       })
       const accessToken = await this.encrypter.encrypt(session.id)
       return {
