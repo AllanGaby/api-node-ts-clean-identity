@@ -42,6 +42,15 @@ describe('DbLogout', () => {
     await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
+  test('Should return InvalidCredentialsError if session id is undefined', async () => {
+    const { sut, getSessionByIdRepositorySpy } = makeSut()
+    getSessionByIdRepositorySpy.session = null
+    const request = mockLogoutDTO()
+    request.sessionId = undefined
+    const promise = sut.logout(request)
+    await expect(promise).rejects.toThrow(new InvalidCredentialsError())
+  })
+
   test('Should call DeleteSessionRepository with correct value', async () => {
     const { sut, getSessionByIdRepositorySpy, deleteSessionRepositorySpy } = makeSut()
     await sut.logout(mockLogoutDTO())
