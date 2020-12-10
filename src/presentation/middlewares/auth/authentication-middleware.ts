@@ -41,7 +41,7 @@ export class AuthenticationMiddleware implements Middleware<any, AuthenticationM
 
       return unauthorized(new AccessDeniedError())
     } catch (error) {
-      if (error instanceof TokenExpiredError) {
+      if ((error instanceof TokenExpiredError) || (error instanceof InvalidCredentialsError)) {
         return forbidden(new InvalidCredentialsError())
       }
       return serverError(error)

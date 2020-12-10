@@ -9,11 +9,14 @@ export class DbLogout implements Logout {
   ) {}
 
   async logout ({ sessionId }: LogoutDTO): Promise<void> {
+    if (!sessionId) {
+      throw new InvalidCredentialsError()
+    }
     const session = await this.getSessionByIdRepository.getSessionById(sessionId)
     if (!session) {
       throw new InvalidCredentialsError()
     } else {
-      this.deleteSessionRepository.delete(session)
+      await this.deleteSessionRepository.delete(session)
     }
   }
 }
