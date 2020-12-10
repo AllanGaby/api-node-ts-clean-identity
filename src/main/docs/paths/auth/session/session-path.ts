@@ -33,5 +33,21 @@ export const authenticationPath = {
         $ref: '#/components/serverError'
       }
     }
+  },
+  delete: {
+    tags: ['Authentication'],
+    summary: 'Method to logout session account',
+    responses: {
+      204: {
+        description: 'Success',
+        $ref: '#/components/noContent'
+      },
+      403: {
+        $ref: '#/components/forbidden'
+      },
+      500: {
+        $ref: '#/components/serverError'
+      }
+    }
   }
 }

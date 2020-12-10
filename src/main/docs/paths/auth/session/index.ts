@@ -1,1 +1,1 @@
-export * from './authentication-path'
+export * from './session-path'
