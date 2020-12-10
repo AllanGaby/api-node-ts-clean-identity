@@ -1,4 +1,4 @@
-export const createAccountPath = {
+export const accountPath = {
   post: {
     tags: ['Account'],
     summary: 'Method to create user account',

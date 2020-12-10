@@ -1,4 +1,4 @@
-import { authenticationRequestSchema, authenticationResponseSchema, createAccountRequestSchema, sessionModelSchema } from '@/main/docs/schemas/auth'
+import { authenticationRequestSchema, authenticationResponseSchema, createAccountRequestSchema, sessionModelSchema, accountModelSchema } from '@/main/docs/schemas/auth'
 import { errorSchema } from '@/main/docs/schemas/utils'
 
 export default {
@@ -6,5 +6,6 @@ export default {
   authenticationResponse: authenticationResponseSchema,
   error: errorSchema,
   createAccountRequest: createAccountRequestSchema,
-  sessionModel: sessionModelSchema
+  sessionModel: sessionModelSchema,
+  accountModel: accountModelSchema
 }

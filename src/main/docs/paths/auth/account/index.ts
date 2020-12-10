@@ -1,1 +1,2 @@
-export * from './create-account-path'
+export * from './active-account-path'
+export * from './account-path'
