@@ -35,6 +35,9 @@ export const authenticationPath = {
     }
   },
   delete: {
+    security: [{
+      apiKeyAuth: []
+    }],
     tags: ['Authentication'],
     summary: 'Method to logout session account',
     responses: {
