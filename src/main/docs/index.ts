@@ -13,9 +13,6 @@ export default {
     url: '/api',
     description: 'Identity API'
   }],
-  tags: [{
-    name: 'Authentication'
-  }],
   paths,
   schemas,
   components
