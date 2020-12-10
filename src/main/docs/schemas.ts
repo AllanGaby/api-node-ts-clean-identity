@@ -1,8 +1,10 @@
-import { authenticationRequestSchema, authenticationResponseSchema } from '@/main/docs/schemas/auth'
+import { authenticationRequestSchema, authenticationResponseSchema, createAccountRequestSchema, sessionModelSchema } from '@/main/docs/schemas/auth'
 import { errorSchema } from '@/main/docs/schemas/utils'
 
 export default {
   authenticationRequest: authenticationRequestSchema,
   authenticationResponse: authenticationResponseSchema,
-  error: errorSchema
+  error: errorSchema,
+  createAccountRequest: createAccountRequestSchema,
+  sessionModel: sessionModelSchema
 }
