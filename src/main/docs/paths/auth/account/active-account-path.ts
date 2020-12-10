@@ -3,7 +3,7 @@ export const activeAccountPath = {
     tags: ['Account'],
     summary: 'Method to active user account',
     parameters: [{
-      id: 'path',
+      in: 'path',
       name: 'session_id',
       description: 'Session id to active account sended to account e-mail',
       required: true,
