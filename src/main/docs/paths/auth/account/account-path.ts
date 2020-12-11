@@ -37,6 +37,47 @@ export const accountPath = {
       }
     }
   },
+  put: {
+    tags: ['Account'],
+    summary: 'Method to update user account',
+    security: [{
+      apiKeyAuth: []
+    }],
+    requestBody: {
+      required: true,
+      content: {
+        'multipart/form-data': {
+          schema: {
+            $ref: '#/schemas/updateAccountRequest'
+          }
+        }
+      }
+    },
+    responses: {
+      200: {
+        description: 'Account updated',
+        content: {
+          'application/json': {
+            schema: {
+              $ref: '#/schemas/accountModel'
+            }
+          }
+        }
+      },
+      400: {
+        $ref: '#/components/badRequest'
+      },
+      401: {
+        $ref: '#/components/unauthorized'
+      },
+      403: {
+        $ref: '#/components/forbidden'
+      },
+      500: {
+        $ref: '#/components/serverError'
+      }
+    }
+  },
   get: {
     tags: ['Account'],
     summary: 'Method to show user account',
