@@ -1,6 +1,6 @@
 export class AccountNotFoundError extends Error {
   constructor () {
-    super('Account not fould')
+    super('Account not found')
     this.name = 'AccountNotFoundError'
   }
 }

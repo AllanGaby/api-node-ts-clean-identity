@@ -17,7 +17,7 @@ const makeSut = (): sutTypes => {
 }
 
 describe('RequiredFieldValidation', () => {
-  test('Should return MissingParamError if required field not fould', () => {
+  test('Should return MissingParamError if required field not found', () => {
     const { sut, field } = makeSut()
     const error = sut.validate({ invalidField: faker.random.words() })
     expect(error).toEqual(new MissingParamError(field))
