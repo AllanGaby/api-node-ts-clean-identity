@@ -1,4 +1,4 @@
-import { accountModelSchema, createAccountRequestSchema, requestRecoverPasswordSchema } from './account'
+import { accountModelSchema, createAccountRequestSchema, recoverPasswordSchema, requestRecoverPasswordSchema } from './account'
 import { authenticationRequestSchema, authenticationResponseSchema, sessionModelSchema } from './session'
 
 export default {
@@ -7,5 +7,6 @@ export default {
   createAccountRequest: createAccountRequestSchema,
   sessionModel: sessionModelSchema,
   accountModel: accountModelSchema,
-  requestRecoverPassword: requestRecoverPasswordSchema
+  requestRecoverPassword: requestRecoverPasswordSchema,
+  recoverPassword: recoverPasswordSchema
 }

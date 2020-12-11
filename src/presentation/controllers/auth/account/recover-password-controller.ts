@@ -8,7 +8,7 @@ import { InvalidCredentialsError } from '@/data/errors'
 export interface RecoverPasswordRequest {
   session_id: string
   password: string
-  password_confirmation
+  password_confirmation: string
 }
 
 export class RecoverPasswordController implements Controller<RecoverPasswordRequest, AccountModel | Error> {
