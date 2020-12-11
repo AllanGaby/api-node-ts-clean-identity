@@ -36,5 +36,36 @@ export const accountPath = {
         $ref: '#/components/serverError'
       }
     }
+  },
+  get: {
+    tags: ['Account'],
+    summary: 'Method to show user account',
+    security: [{
+      apiKeyAuth: []
+    }],
+    responses: {
+      200: {
+        description: 'Show user account',
+        content: {
+          'application/json': {
+            schema: {
+              $ref: '#/schemas/accountModel'
+            }
+          }
+        }
+      },
+      400: {
+        $ref: '#/components/badRequest'
+      },
+      401: {
+        $ref: '#/components/unauthorized'
+      },
+      403: {
+        $ref: '#/components/forbidden'
+      },
+      500: {
+        $ref: '#/components/serverError'
+      }
+    }
   }
 }
