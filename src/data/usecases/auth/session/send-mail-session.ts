@@ -1,13 +1,12 @@
 import { SendMailSession, SendMailSessionDTO } from '@/domain/usecases/auth/session'
+import { SendMail } from '@/domain/usecases/utils'
 import { SessionModel } from '@/domain/models/auth'
 import { CreateSessionRepository } from '@/data/repositories/auth/session'
-import { MailTemplateAdapter, SendMailAdapter } from '@/data/protocols/comunication/mail'
 
 export class DbSendMailSession implements SendMailSession {
   constructor (
     private readonly createSessionRepository: CreateSessionRepository,
-    private readonly mailTemplateAdapter: MailTemplateAdapter,
-    private readonly sendMailAdapter: SendMailAdapter
+    private readonly sendMailUseCase: SendMail
   ) {}
 
   async sendMail ({ accountId, email, name, subject, mailFilePath, sessionType }: SendMailSessionDTO): Promise<SessionModel> {
@@ -20,17 +19,14 @@ export class DbSendMailSession implements SendMailSession {
       link: session.id,
       name
     }
-    const mailContent = await this.mailTemplateAdapter.parse({
-      filePath: mailFilePath,
-      variables
-    })
-    await this.sendMailAdapter.sendMail({
+    this.sendMailUseCase.sendMail({
+      subject,
+      templateFileName: mailFilePath,
       to: {
         name,
         email
       },
-      subject,
-      content: mailContent
+      variables
     })
     return session
   }
