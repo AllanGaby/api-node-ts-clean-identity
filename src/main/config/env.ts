@@ -2,12 +2,14 @@ import { SMTPConfig } from '@/infra/comunication'
 
 export interface Env {
   port: string | number
+  urlRabbitMQ: string
   jwtSecret: string
   smtpConfig: SMTPConfig
 }
 
 export const EnvConfig: Env = ({
   port: process.env.PORT || 3333,
+  urlRabbitMQ: process.env.URL_RABBITMQ || 'amqp://localhost:5672',
   jwtSecret: process.env.JWT_SECRET || '01c383ef-b869-43f6-a60a-7b0c1b161d3b',
   smtpConfig: {
     host: process.env.SMTP_HOST || 'smtp.ethereal.email',
