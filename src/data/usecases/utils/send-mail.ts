@@ -1,4 +1,4 @@
-import { SendMail, SendMailDTO } from '@/domain/usecases/utils'
+import { SendMail, SendMailDTO, SendMailVariables } from '@/domain/usecases/utils'
 import { SendToQueue } from '@/data/protocols/message-queue'
 
 export class DbSendMail implements SendMail {
@@ -8,6 +8,6 @@ export class DbSendMail implements SendMail {
   ) {}
 
   async sendMail (data: SendMailDTO): Promise<void> {
-    this.sendToQueue.sendToQueue(this.queueName, data.variables)
+    this.sendToQueue.sendToQueue<SendMailVariables>(this.queueName, data.variables)
   }
 }
