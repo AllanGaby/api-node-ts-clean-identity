@@ -2,10 +2,15 @@ import { SendMailSession, SendMailSessionDTO } from '@/domain/usecases/auth/sess
 import { SendMail } from '@/domain/usecases/utils'
 import { SessionModel } from '@/domain/models/auth'
 import { CreateSessionRepository } from '@/data/repositories/auth/session'
+import { ConsumeQueue, SendToQueue } from '@/data/protocols/message-queue'
+import { ConsumeMessage } from 'amqplib'
 
 export class DbSendMailSession implements SendMailSession {
   constructor (
     private readonly createSessionRepository: CreateSessionRepository,
+    private readonly queueName: string,
+    private readonly sendToQueue: SendToQueue,
+    private readonly consumeQueue: ConsumeQueue,
     private readonly sendMailUseCase: SendMail
   ) {}
 
@@ -19,7 +24,7 @@ export class DbSendMailSession implements SendMailSession {
       link: session.id,
       name
     }
-    this.sendMailUseCase.sendMail({
+    this.sendToQueue.sendToQueue(this.queueName, {
       subject,
       templateFileName: mailFilePath,
       to: {
@@ -27,6 +32,10 @@ export class DbSendMailSession implements SendMailSession {
         email
       },
       variables
+    })
+    this.consumeQueue.consume(this.queueName, (params: ConsumeMessage) => {
+      const sendMailDTO = JSON.parse(params.content.toString())
+      this.sendMailUseCase.sendMail(sendMailDTO)
     })
     return session
   }
