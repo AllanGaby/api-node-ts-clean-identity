@@ -1,47 +1,59 @@
 import { DbSendMail } from './send-mail'
-import { SendToQueueSpy, ConsumeQueueSpy, mockSendMailDTO, throwError } from '@/data/test'
+import { MailTemplateAdapterSpy, SendMailAdapterSpy, mockSendMailDTO, throwError } from '@/data/test'
 import faker from 'faker'
 
 interface sutTypes {
   sut: DbSendMail
-  queueName: string
-  sendToQueueSpy: SendToQueueSpy
-  consumeQueueSpy: ConsumeQueueSpy
+  mailTemplateAdapterSpy: MailTemplateAdapterSpy
+  sendMailAdapterSpy: SendMailAdapterSpy
 }
 
 const makeSut = (): sutTypes => {
-  const queueName = faker.database.column()
-  const sendToQueueSpy = new SendToQueueSpy()
-  const consumeQueueSpy = new ConsumeQueueSpy()
-  const sut = new DbSendMail(queueName, sendToQueueSpy, consumeQueueSpy)
+  const mailTemplateAdapterSpy = new MailTemplateAdapterSpy()
+  const sendMailAdapterSpy = new SendMailAdapterSpy()
+  const sut = new DbSendMail(mailTemplateAdapterSpy, sendMailAdapterSpy)
   return {
     sut,
-    queueName,
-    sendToQueueSpy,
-    consumeQueueSpy
+    mailTemplateAdapterSpy,
+    sendMailAdapterSpy
   }
 }
 
 describe('DbSendMail', () => {
-  test('Should call SendToQueue with correct values', async () => {
-    const { sut, queueName, sendToQueueSpy } = makeSut()
+  test('Should call MailTemplateAdapter with correct values', async () => {
+    const { sut, mailTemplateAdapterSpy } = makeSut()
     const request = mockSendMailDTO()
     await sut.sendMail(request)
-    expect(sendToQueueSpy.queueName).toEqual(queueName)
-    expect(sendToQueueSpy.params).toEqual(request.variables)
+    expect(mailTemplateAdapterSpy.parseParams).toEqual({
+      filePath: request.templateFileName,
+      variables: request.variables
+    })
   })
 
-  test('Should throw if SendToQueue throws', async () => {
-    const { sut, sendToQueueSpy } = makeSut()
-    jest.spyOn(sendToQueueSpy, 'sendToQueue').mockImplementationOnce(throwError)
+  test('Should return throw if MailTemplateAdapter throws', async () => {
+    const { sut, mailTemplateAdapterSpy } = makeSut()
+    jest.spyOn(mailTemplateAdapterSpy, 'parse').mockImplementationOnce(throwError)
     const promise = sut.sendMail(mockSendMailDTO())
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should call ConsumeQueue with correct values', async () => {
-    const { sut, queueName, consumeQueueSpy } = makeSut()
+  test('Should call SendMailAdapter with correct values', async () => {
+    const { sut, mailTemplateAdapterSpy, sendMailAdapterSpy } = makeSut()
+    mailTemplateAdapterSpy.mailParsed = faker.random.words()
     const request = mockSendMailDTO()
     await sut.sendMail(request)
-    expect(consumeQueueSpy.queueName).toEqual(queueName)
+    expect(sendMailAdapterSpy.sendMailParams).toEqual({
+      to: request.to,
+      sender: request.sender,
+      subject: request.subject,
+      content: mailTemplateAdapterSpy.mailParsed
+    })
+  })
+
+  test('Should return throw if SendMailAdapter throws', async () => {
+    const { sut, sendMailAdapterSpy } = makeSut()
+    jest.spyOn(sendMailAdapterSpy, 'sendMail').mockImplementationOnce(throwError)
+    const promise = sut.sendMail(mockSendMailDTO())
+    await expect(promise).rejects.toThrow()
   })
 })
