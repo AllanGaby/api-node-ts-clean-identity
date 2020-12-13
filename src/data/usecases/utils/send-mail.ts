@@ -10,6 +10,6 @@ export class DbSendMail implements SendMail {
 
   async sendMail (data: SendMailDTO): Promise<void> {
     this.sendToQueue.sendToQueue<SendMailVariables>(this.queueName, data.variables)
-    this.consumeQueue.consume(this.queueName, () => {})
+    this.consumeQueue.consume<SendMailVariables>(this.queueName, (data: SendMailVariables) => {})
   }
 }
