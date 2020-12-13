@@ -1,15 +1,22 @@
-import { SendMail, SendMailDTO, SendMailVariables } from '@/domain/usecases/utils'
-import { SendToQueue, ConsumeQueue } from '@/data/protocols/message-queue'
+import { SendMail, SendMailDTO } from '@/domain/usecases/utils'
+import { MailTemplateAdapter, SendMailAdapter } from '@/data/protocols/comunication/mail'
 
 export class DbSendMail implements SendMail {
   constructor (
-    private readonly queueName: string,
-    private readonly sendToQueue: SendToQueue,
-    private readonly consumeQueue: ConsumeQueue
+    private readonly mailTemplateAdapter: MailTemplateAdapter,
+    private readonly sendMailAdapter: SendMailAdapter
   ) {}
 
-  async sendMail (data: SendMailDTO): Promise<void> {
-    this.sendToQueue.sendToQueue<SendMailVariables>(this.queueName, data.variables)
-    this.consumeQueue.consume<SendMailVariables>(this.queueName, (data: SendMailVariables) => {})
+  async sendMail ({ templateFileName, variables, sender, to, subject }: SendMailDTO): Promise<void> {
+    const mailContent = await this.mailTemplateAdapter.parse({
+      filePath: templateFileName,
+      variables
+    })
+    await this.sendMailAdapter.sendMail({
+      sender,
+      to,
+      subject,
+      content: mailContent
+    })
   }
 }
