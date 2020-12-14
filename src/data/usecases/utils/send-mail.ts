@@ -1,7 +1,8 @@
 import { SendMail, SendMailDTO } from '@/domain/usecases/utils'
 import { MailTemplateAdapter, SendMailAdapter } from '@/data/protocols/comunication/mail'
+import { ExecuteQueue } from '@/data/protocols/message-queue'
 
-export class DbSendMail implements SendMail {
+export class DbSendMail implements SendMail, ExecuteQueue {
   constructor (
     private readonly mailTemplateAdapter: MailTemplateAdapter,
     private readonly sendMailAdapter: SendMailAdapter
@@ -18,5 +19,9 @@ export class DbSendMail implements SendMail {
       subject,
       content: mailContent
     })
+  }
+
+  async execute (data: SendMailDTO): Promise<void> {
+    return await this.sendMail(data)
   }
 }

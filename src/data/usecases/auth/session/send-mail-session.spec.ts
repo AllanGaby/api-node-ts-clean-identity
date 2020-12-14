@@ -1,4 +1,4 @@
-import { CreateSessionRepositorySpy, mockSendMailSessionDTO, SendMailSpy, SendToQueueSpy, ConsumeQueueSpy, throwError } from '@/data/test'
+import { CreateSessionRepositorySpy, mockSendMailSessionDTO, SendMailSpy, SendToQueueSpy, ConsumeQueueSpy, ExecuteQueueSpy, throwError } from '@/data/test'
 import { SessionType } from '@/domain/models/auth'
 import { DbSendMailSession } from './send-mail-session'
 import faker from 'faker'
@@ -9,7 +9,7 @@ interface sutTypes {
   queueName: string
   sendToQueueSpy: SendToQueueSpy
   consumeQueueSpy: ConsumeQueueSpy
-  sendMailSpy: SendMailSpy
+  executeQueueSpy: ExecuteQueueSpy
 }
 
 const makeSut = (): sutTypes => {
@@ -17,15 +17,15 @@ const makeSut = (): sutTypes => {
   const queueName = faker.database.column()
   const sendToQueueSpy = new SendToQueueSpy()
   const consumeQueueSpy = new ConsumeQueueSpy()
-  const sendMailSpy = new SendMailSpy()
-  const sut = new DbSendMailSession(createSessionRepositorySpy, queueName, sendToQueueSpy, consumeQueueSpy, sendMailSpy)
+  const executeQueueSpy = new ExecuteQueueSpy()
+  const sut = new DbSendMailSession(createSessionRepositorySpy, queueName, sendToQueueSpy, consumeQueueSpy, executeQueueSpy)
   return {
     sut,
     createSessionRepositorySpy,
     queueName,
     sendToQueueSpy,
     consumeQueueSpy,
-    sendMailSpy
+    executeQueueSpy
   }
 }
 
@@ -73,9 +73,9 @@ describe('DbSendMailSession', () => {
   })
 
   test('Should call ConsumeQueue with correct value', async () => {
-    const { sut, consumeQueueSpy, queueName } = makeSut()
+    const { sut, consumeQueueSpy, queueName, executeQueueSpy } = makeSut()
     await sut.sendMail(mockSendMailSessionDTO(SessionType.activeAccount))
     expect(consumeQueueSpy.queueName).toBe(queueName)
-    expect(consumeQueueSpy.callback).toEqual(expect.any(Function))
+    expect(consumeQueueSpy.executor).toEqual(executeQueueSpy)
   })
 })

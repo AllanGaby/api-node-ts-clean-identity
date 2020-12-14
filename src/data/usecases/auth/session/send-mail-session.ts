@@ -1,8 +1,7 @@
 import { SendMailSession, SendMailSessionDTO } from '@/domain/usecases/auth/session'
-import { SendMail } from '@/domain/usecases/utils'
 import { SessionModel } from '@/domain/models/auth'
 import { CreateSessionRepository } from '@/data/repositories/auth/session'
-import { ConsumeQueue, SendToQueue } from '@/data/protocols/message-queue'
+import { ConsumeQueue, SendToQueue, ExecuteQueue } from '@/data/protocols/message-queue'
 
 export class DbSendMailSession implements SendMailSession {
   constructor (
@@ -10,7 +9,7 @@ export class DbSendMailSession implements SendMailSession {
     private readonly queueName: string,
     private readonly sendToQueue: SendToQueue,
     private readonly consumeQueue: ConsumeQueue,
-    private readonly sendMailUseCase: SendMail
+    private readonly sendMailByMessageQueue: ExecuteQueue
   ) {}
 
   async sendMail ({ accountId, email, name, subject, mailFilePath, sessionType }: SendMailSessionDTO): Promise<SessionModel> {
@@ -32,7 +31,7 @@ export class DbSendMailSession implements SendMailSession {
       },
       variables
     })
-    this.consumeQueue.consume(this.queueName, this.sendMailUseCase.sendMail)
+    this.consumeQueue.consume(this.queueName, this.sendMailByMessageQueue)
     return session
   }
 }
