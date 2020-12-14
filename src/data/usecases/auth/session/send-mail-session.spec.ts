@@ -76,5 +76,6 @@ describe('DbSendMailSession', () => {
     const { sut, consumeQueueSpy, queueName } = makeSut()
     await sut.sendMail(mockSendMailSessionDTO(SessionType.activeAccount))
     expect(consumeQueueSpy.queueName).toBe(queueName)
+    expect(consumeQueueSpy.callback).toEqual(expect.any(Function))
   })
 })

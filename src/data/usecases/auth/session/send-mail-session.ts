@@ -3,7 +3,6 @@ import { SendMail } from '@/domain/usecases/utils'
 import { SessionModel } from '@/domain/models/auth'
 import { CreateSessionRepository } from '@/data/repositories/auth/session'
 import { ConsumeQueue, SendToQueue } from '@/data/protocols/message-queue'
-import { ConsumeMessage } from 'amqplib'
 
 export class DbSendMailSession implements SendMailSession {
   constructor (
@@ -33,10 +32,7 @@ export class DbSendMailSession implements SendMailSession {
       },
       variables
     })
-    this.consumeQueue.consume(this.queueName, (params: ConsumeMessage) => {
-      const sendMailDTO = JSON.parse(params.content.toString())
-      this.sendMailUseCase.sendMail(sendMailDTO)
-    })
+    this.consumeQueue.consume(this.queueName, this.sendMailUseCase.sendMail)
     return session
   }
 }
