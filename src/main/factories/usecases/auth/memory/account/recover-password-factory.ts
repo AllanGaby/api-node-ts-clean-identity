@@ -10,5 +10,6 @@ export const makeDbRecoverPassword = (): DbRecoverPassword => {
     sessionRepository,
     accountRepository,
     hasher,
-    accountRepository)
+    accountRepository,
+    sessionRepository)
 }
