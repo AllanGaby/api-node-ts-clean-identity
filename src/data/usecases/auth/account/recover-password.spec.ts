@@ -1,5 +1,5 @@
 import { DbRecoverPassword } from './recover-password'
-import { GetSessionByIdRepositorySpy, mockRecoverPasswordDTO, throwError, GetAccountByIdRepositorySpy, mockSessionModel, HashCreatorSpy, UpdateAccountRepositorySpy } from '@/data/test'
+import { GetSessionByIdRepositorySpy, mockRecoverPasswordDTO, throwError, GetAccountByIdRepositorySpy, mockSessionModel, HashCreatorSpy, UpdateAccountRepositorySpy, DeleteSessionByAccountIdRepositorySpy } from '@/data/test'
 import { SessionType } from '@/domain/models/auth'
 import { InvalidCredentialsError } from '@/data/errors'
 
@@ -9,6 +9,7 @@ interface sutTypes {
   getAccountByIdRepositorySpy: GetAccountByIdRepositorySpy
   hashCreatorSpy: HashCreatorSpy
   updateAccountRepositorySpy: UpdateAccountRepositorySpy
+  deleteSessionByAccountIdRepositorySpy: DeleteSessionByAccountIdRepositorySpy
 }
 
 const makeSut = (): sutTypes => {
@@ -17,13 +18,15 @@ const makeSut = (): sutTypes => {
   const getAccountByIdRepositorySpy = new GetAccountByIdRepositorySpy()
   const hashCreatorSpy = new HashCreatorSpy()
   const updateAccountRepositorySpy = new UpdateAccountRepositorySpy()
-  const sut = new DbRecoverPassword(getSessionByIdRepositorySpy, getAccountByIdRepositorySpy, hashCreatorSpy, updateAccountRepositorySpy)
+  const deleteSessionByAccountIdRepositorySpy = new DeleteSessionByAccountIdRepositorySpy()
+  const sut = new DbRecoverPassword(getSessionByIdRepositorySpy, getAccountByIdRepositorySpy, hashCreatorSpy, updateAccountRepositorySpy, deleteSessionByAccountIdRepositorySpy)
   return {
     sut,
     getSessionByIdRepositorySpy,
     getAccountByIdRepositorySpy,
     hashCreatorSpy,
-    updateAccountRepositorySpy
+    updateAccountRepositorySpy,
+    deleteSessionByAccountIdRepositorySpy
   }
 }
 
@@ -108,6 +111,19 @@ describe('DbRecoverPassword', () => {
   test('Should throw if UpdateAccountRepository throws', async () => {
     const { sut, updateAccountRepositorySpy } = makeSut()
     jest.spyOn(updateAccountRepositorySpy, 'update').mockImplementationOnce(throwError)
+    const promise = sut.recover(mockRecoverPasswordDTO())
+    await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call DeleteSessionByAccountId with correct value', async () => {
+    const { sut, getSessionByIdRepositorySpy, deleteSessionByAccountIdRepositorySpy } = makeSut()
+    await sut.recover(mockRecoverPasswordDTO())
+    expect(deleteSessionByAccountIdRepositorySpy.accountId).toEqual(getSessionByIdRepositorySpy.session.account_id)
+  })
+
+  test('Should throw if DeleteSessionByAccountId throws', async () => {
+    const { sut, deleteSessionByAccountIdRepositorySpy } = makeSut()
+    jest.spyOn(deleteSessionByAccountIdRepositorySpy, 'deleteByAccountId').mockImplementationOnce(throwError)
     const promise = sut.recover(mockRecoverPasswordDTO())
     await expect(promise).rejects.toThrow()
   })

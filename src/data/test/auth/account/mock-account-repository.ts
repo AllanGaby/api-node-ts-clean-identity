@@ -1,6 +1,5 @@
-import { GetAccountByEmailRepository, CreateAccountRepository, CreateAccountModel, UpdateAccountRepository, ListAccountRepository, UpdateAccountDTO } from '@/data/repositories/auth/account'
+import { GetAccountByEmailRepository, CreateAccountRepository, CreateAccountModel, UpdateAccountRepository, ListAccountRepository, UpdateAccountDTO, GetAccountByIdRepository, DeleteSessionByAccountIdRepository } from '@/data/repositories/auth'
 import { ListAccountDTO } from '@/domain/usecases/auth/account'
-import { GetAccountByIdRepository } from '@/data/repositories/auth/account/get-account-by-id-repository'
 import { AccountModel } from '@/domain/models/auth'
 import { mockAccountModel } from './mock-account'
 
@@ -51,5 +50,13 @@ export class ListAccountRepositorySpy implements ListAccountRepository {
   async list (filter: ListAccountDTO): Promise<AccountModel[]> {
     this.filter = filter
     return this.listAccount
+  }
+}
+
+export class DeleteSessionByAccountIdRepositorySpy implements DeleteSessionByAccountIdRepository {
+  accountId: string
+
+  async deleteByAccountId (accountId: string): Promise<void> {
+    this.accountId = accountId
   }
 }
