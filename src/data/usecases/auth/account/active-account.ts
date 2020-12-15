@@ -1,6 +1,6 @@
 import { ActiveAccount, ActiveAccountDTO } from '@/domain/usecases/auth/account'
 import { AccountModel, SessionType } from '@/domain/models/auth'
-import { GetAccountByIdRepository, UpdateAccountRepository, GetSessionByIdRepository, DeleteSessionRepository } from '@/data/repositories/auth'
+import { GetAccountByIdRepository, UpdateAccountRepository, GetSessionByIdRepository, DeleteSessionByIdRepository } from '@/data/repositories/auth'
 import { InvalidCredentialsError } from '@/data/errors'
 
 export class DbActiveAccount implements ActiveAccount {
@@ -8,7 +8,7 @@ export class DbActiveAccount implements ActiveAccount {
     private readonly getSessionByIdRepository: GetSessionByIdRepository,
     private readonly getAccountByIdRepository: GetAccountByIdRepository,
     private readonly updateAccountRepository: UpdateAccountRepository,
-    private readonly deleteSessionRepository: DeleteSessionRepository
+    private readonly deleteSessionByIdRepository: DeleteSessionByIdRepository
   ) {}
 
   async active ({ sessionId }: ActiveAccountDTO): Promise<AccountModel> {
@@ -20,7 +20,7 @@ export class DbActiveAccount implements ActiveAccount {
     (session.experied_at > new Date()) &&
     (!session.deleted_at)) {
       const account = await this.getAccountByIdRepository.getAccountById(session.account_id)
-      await this.deleteSessionRepository.delete(session)
+      this.deleteSessionByIdRepository.deleteById(session.id)
       if (account) {
         if (!account.email_valided) {
           account.email_valided = true

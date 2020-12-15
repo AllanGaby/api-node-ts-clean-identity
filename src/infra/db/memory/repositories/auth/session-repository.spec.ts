@@ -34,6 +34,12 @@ describe('MemorySessionRepository', () => {
       expect(sessionById).toBeFalsy()
     })
 
+    test('Should return null if sessionId is undefined', async () => {
+      const { sut } = makeSut()
+      const sessionById = await sut.getSessionById(undefined)
+      expect(sessionById).toBeFalsy()
+    })
+
     test('Should return an session with correct id', async () => {
       const { sut } = makeSut()
       const createdSession = await sut.create(mockCreateSessionModel())
@@ -42,15 +48,23 @@ describe('MemorySessionRepository', () => {
     })
   })
 
-  describe('Delete Method', () => {
+  describe('DeleteById Method', () => {
     test('Should return null if session not found', async () => {
       const { sut } = makeSut()
       const session = mockSessionModel()
-      const beforeSession = await sut.getSessionById(session.id)
+      const sessionId = session.id
+      const beforeSession = await sut.getSessionById(sessionId)
       expect(beforeSession).toBeFalsy()
-      await sut.delete(beforeSession)
-      const afterSession = await sut.getSessionById(session.id)
+      await sut.deleteById(sessionId)
+      const afterSession = await sut.getSessionById(sessionId)
       expect(afterSession).toBeFalsy()
+    })
+
+    test('Should return null if sessionId is undefined', async () => {
+      const { sut } = makeSut()
+      await sut.deleteById(undefined)
+      const session = await sut.getSessionById(undefined)
+      expect(session).toBeFalsy()
     })
 
     test('Should change session list if session found', async () => {
@@ -58,9 +72,9 @@ describe('MemorySessionRepository', () => {
       const createdSession = await sut.create(mockCreateSessionModel())
       const existsSession = await sut.getSessionById(createdSession.id)
       expect(existsSession).toEqual(createdSession)
-      await sut.delete(existsSession)
+      await sut.deleteById(existsSession.id)
       expect(await sut.getSessionById(createdSession.id)).toBeFalsy()
-      await sut.delete(existsSession)
+      await sut.deleteById(existsSession.id)
       expect(await sut.getSessionById(createdSession.id)).toBeFalsy()
     })
   })

@@ -1,22 +1,22 @@
 import { DbLogout } from './logout'
-import { GetSessionByIdRepositorySpy, DeleteSessionRepositorySpy, mockLogoutDTO } from '@/data/test/auth/session'
+import { GetSessionByIdRepositorySpy, DeleteSessionByIdRepositorySpy, mockLogoutDTO } from '@/data/test/auth/session'
 import { throwError } from '@/data/test'
 import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {
   sut: DbLogout
   getSessionByIdRepositorySpy: GetSessionByIdRepositorySpy
-  deleteSessionRepositorySpy: DeleteSessionRepositorySpy
+  deleteSessionByIdRepositorySpy: DeleteSessionByIdRepositorySpy
 }
 
 const makeSut = (): sutTypes => {
   const getSessionByIdRepositorySpy = new GetSessionByIdRepositorySpy()
-  const deleteSessionRepositorySpy = new DeleteSessionRepositorySpy()
-  const sut = new DbLogout(getSessionByIdRepositorySpy, deleteSessionRepositorySpy)
+  const deleteSessionByIdRepositorySpy = new DeleteSessionByIdRepositorySpy()
+  const sut = new DbLogout(getSessionByIdRepositorySpy, deleteSessionByIdRepositorySpy)
   return {
     sut,
     getSessionByIdRepositorySpy,
-    deleteSessionRepositorySpy
+    deleteSessionByIdRepositorySpy
   }
 }
 
@@ -51,15 +51,15 @@ describe('DbLogout', () => {
     await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
-  test('Should call DeleteSessionRepository with correct value', async () => {
-    const { sut, getSessionByIdRepositorySpy, deleteSessionRepositorySpy } = makeSut()
+  test('Should call DeleteSessionByIdRepository with correct value', async () => {
+    const { sut, getSessionByIdRepositorySpy, deleteSessionByIdRepositorySpy } = makeSut()
     await sut.logout(mockLogoutDTO())
-    expect(deleteSessionRepositorySpy.session).toEqual(getSessionByIdRepositorySpy.session)
+    expect(deleteSessionByIdRepositorySpy.sessionId).toEqual(getSessionByIdRepositorySpy.session.id)
   })
 
   test('Should throw if DeleteSessionRepository throws', async () => {
-    const { sut, deleteSessionRepositorySpy } = makeSut()
-    jest.spyOn(deleteSessionRepositorySpy, 'delete').mockImplementationOnce(throwError)
+    const { sut, deleteSessionByIdRepositorySpy } = makeSut()
+    jest.spyOn(deleteSessionByIdRepositorySpy, 'deleteById').mockImplementationOnce(throwError)
     const promise = sut.logout(mockLogoutDTO())
     await expect(promise).rejects.toThrow()
   })
