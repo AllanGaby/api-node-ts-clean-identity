@@ -1,12 +1,13 @@
 import { DbUpdateAccount } from '@/data/usecases/auth/account'
 import { BCrypterHasherAdapter } from '@/infra/criptografy'
-import { MemoryAccountRepository } from '@/infra/db/memory/repositories/auth'
+import { MemoryAccountRepository, MemorySessionRepository } from '@/infra/db/memory/repositories/auth'
 import { makeDbSendMailSession } from '../session'
 import { LocalStorage } from '@/infra/storage'
 
 export const makeDbUpdateAccount = (): DbUpdateAccount => {
   const sendMailSession = makeDbSendMailSession()
   const acccountRepository = MemoryAccountRepository.getInstance()
+  const sessionRepository = MemorySessionRepository.getInstance()
   const hasherAdapter = new BCrypterHasherAdapter(12)
   const localStorage = new LocalStorage({
     temporaryDir: 'temp',
@@ -18,5 +19,6 @@ export const makeDbUpdateAccount = (): DbUpdateAccount => {
     acccountRepository,
     sendMailSession,
     'src/infra/comunication/views/handlebars/auth/create-account.hbs',
-    localStorage)
+    localStorage,
+    sessionRepository)
 }

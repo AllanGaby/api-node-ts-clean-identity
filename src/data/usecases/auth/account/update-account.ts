@@ -1,6 +1,6 @@
 import { HashCreator } from '@/data/protocols/criptography'
 import { UploadFile } from '@/data/protocols/storage'
-import { GetAccountByIdRepository, UpdateAccountRepository } from '@/data/repositories/auth/account'
+import { GetAccountByIdRepository, UpdateAccountRepository, DeleteSessionByAccountIdRepository } from '@/data/repositories/auth'
 import { AccountModel, SessionType } from '@/domain/models/auth'
 import { UpdateAccount, UpdateAccountDTO } from '@/domain/usecases/auth/account'
 import { SendMailSession } from '@/domain/usecases/auth/session'
@@ -13,7 +13,8 @@ export class DbUpdateAccount implements UpdateAccount {
     private readonly updateAccountRepository: UpdateAccountRepository,
     private readonly sendMailSession: SendMailSession,
     private readonly mailFilePath: string,
-    private readonly uploadFile: UploadFile
+    private readonly uploadFile: UploadFile,
+    private readonly deleteSessionByAccountId: DeleteSessionByAccountIdRepository
   ) {}
 
   async update ({ id, name, email, password, avatarFilePath }: UpdateAccountDTO): Promise<AccountModel> {
@@ -22,6 +23,7 @@ export class DbUpdateAccount implements UpdateAccount {
       let passwordHashed = accountById.password
       if (password) {
         passwordHashed = await this.hashCreator.createHash(password)
+        await this.deleteSessionByAccountId.deleteByAccountId(id)
       }
       let avatarExtention = accountById.avatar_extention
       if (avatarFilePath) {
