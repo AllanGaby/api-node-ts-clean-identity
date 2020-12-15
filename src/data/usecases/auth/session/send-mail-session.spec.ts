@@ -1,4 +1,4 @@
-import { CreateSessionRepositorySpy, mockSendMailSessionDTO, SendMailSpy, SendToQueueSpy, ConsumeQueueSpy, ExecuteQueueSpy, throwError } from '@/data/test'
+import { CreateSessionRepositorySpy, mockSendMailSessionDTO, SendToQueueSpy, ConsumeQueueSpy, ExecuteQueueSpy, throwError } from '@/data/test'
 import { SessionType } from '@/domain/models/auth'
 import { DbSendMailSession } from './send-mail-session'
 import faker from 'faker'
