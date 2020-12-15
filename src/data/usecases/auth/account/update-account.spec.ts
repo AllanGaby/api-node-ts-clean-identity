@@ -1,5 +1,5 @@
 import { DbUpdateAccount } from './update-account'
-import { GetAccountByIdRepositorySpy, UpdateAccountRepositorySpy } from '@/data/test/auth/account/mock-account-repository'
+import { DeleteSessionByAccountIdRepositorySpy, GetAccountByIdRepositorySpy, UpdateAccountRepositorySpy } from '@/data/test/auth/account/mock-account-repository'
 import { mockUpdateAccountDTO, SendMailSessionSpy, throwError, UploadFileSpy } from '@/data/test'
 import { HashCreatorSpy } from '@/data/test/mock-criptography'
 import { SessionType } from '@/domain/models/auth'
@@ -14,6 +14,7 @@ interface sutTypes {
   sendMailSessionSpy: SendMailSessionSpy
   mailFilePath: string
   uploadFileSpy: UploadFileSpy
+  deleteSessionByAccountIdSpy: DeleteSessionByAccountIdRepositorySpy
 }
 
 const makeSut = (): sutTypes => {
@@ -23,13 +24,15 @@ const makeSut = (): sutTypes => {
   const sendMailSessionSpy = new SendMailSessionSpy()
   const mailFilePath = faker.internet.url()
   const uploadFileSpy = new UploadFileSpy()
+  const deleteSessionByAccountIdSpy = new DeleteSessionByAccountIdRepositorySpy()
   const sut = new DbUpdateAccount(
     getAccountByIdRepositorySpy,
     hashCreatorSpy,
     updateAccountRepositorySpy,
     sendMailSessionSpy,
     mailFilePath,
-    uploadFileSpy)
+    uploadFileSpy,
+    deleteSessionByAccountIdSpy)
   return {
     sut,
     getAccountByIdRepositorySpy,
@@ -37,7 +40,8 @@ const makeSut = (): sutTypes => {
     updateAccountRepositorySpy,
     sendMailSessionSpy,
     mailFilePath,
-    uploadFileSpy
+    uploadFileSpy,
+    deleteSessionByAccountIdSpy
   }
 }
 
@@ -64,12 +68,14 @@ describe('DbUpdateAccount', () => {
   })
 
   test('Should not call HashCreator if not change password', async () => {
-    const { sut, hashCreatorSpy } = makeSut()
+    const { sut, hashCreatorSpy, deleteSessionByAccountIdSpy } = makeSut()
     const createHashSpy = jest.spyOn(hashCreatorSpy, 'createHash')
+    const deleteByAccountIdSpy = jest.spyOn(deleteSessionByAccountIdSpy, 'deleteByAccountId')
     const updateAccountDTO = mockUpdateAccountDTO()
     delete updateAccountDTO.password
     await sut.update(updateAccountDTO)
     expect(createHashSpy).not.toBeCalled()
+    expect(deleteByAccountIdSpy).not.toBeCalled()
   })
 
   test('Should throw if HashCreator throws', async () => {
@@ -170,5 +176,28 @@ describe('DbUpdateAccount', () => {
     delete updateAccountDTO.avatarFilePath
     await sut.update(updateAccountDTO)
     expect(uploadSpy).not.toBeCalled()
+  })
+
+  test('Should not call DeleteSessionByAccountId if not change password', async () => {
+    const { sut, deleteSessionByAccountIdSpy } = makeSut()
+    const deleteByAccountIdSpy = jest.spyOn(deleteSessionByAccountIdSpy, 'deleteByAccountId')
+    const updateAccountDTO = mockUpdateAccountDTO()
+    delete updateAccountDTO.password
+    await sut.update(updateAccountDTO)
+    expect(deleteByAccountIdSpy).not.toBeCalled()
+  })
+
+  test('Should call DeleteSessionByAccountId with correct value', async () => {
+    const { sut, deleteSessionByAccountIdSpy } = makeSut()
+    const updateAccountDTO = mockUpdateAccountDTO()
+    await sut.update(updateAccountDTO)
+    expect(deleteSessionByAccountIdSpy.accountId).toEqual(updateAccountDTO.id)
+  })
+
+  test('Should return throw if DeleteSessionByAccountId throws', async () => {
+    const { sut, deleteSessionByAccountIdSpy } = makeSut()
+    jest.spyOn(deleteSessionByAccountIdSpy, 'deleteByAccountId').mockImplementationOnce(throwError)
+    const promise = sut.update(mockUpdateAccountDTO())
+    await expect(promise).rejects.toThrow()
   })
 })
