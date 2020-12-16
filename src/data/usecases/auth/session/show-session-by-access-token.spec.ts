@@ -1,5 +1,5 @@
 import { DbShowSessionByAccessToken } from './show-session-by-access-token'
-import { DecrypterSpy, mockShowSessionByAccessTokenDTO, throwError, GetSessionByIdRepositorySpy, CacheCreateSpy, CacheRecoverSpy } from '@/data/test'
+import { DecrypterSpy, mockShowSessionByAccessTokenDTO, throwError, GetSessionByIdRepositorySpy, CacheCreateSpy, CacheRecoverSpy, mockSessionModel } from '@/data/test'
 import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {
@@ -79,5 +79,21 @@ describe('DbShowSessionByAccessToken', () => {
     const { sut, cacheRecoverSpy, decrypterSpy } = makeSut()
     await sut.show(mockShowSessionByAccessTokenDTO())
     expect(cacheRecoverSpy.key).toEqual(`session-authentication:${decrypterSpy.plainText}`)
+  })
+
+  test('Should throw if CacheRecover throws', async () => {
+    const { sut, cacheRecoverSpy } = makeSut()
+    jest.spyOn(cacheRecoverSpy, 'recover').mockImplementationOnce(throwError)
+    const promise = sut.show(mockShowSessionByAccessTokenDTO())
+    await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return a session if CacheRecover return a session', async () => {
+    const { sut, cacheRecoverSpy, getSessionByIdRepositorySpy } = makeSut()
+    const sessionByIdSpy = jest.spyOn(getSessionByIdRepositorySpy, 'getSessionById')
+    cacheRecoverSpy.result = mockSessionModel()
+    const session = await sut.show(mockShowSessionByAccessTokenDTO())
+    expect(sessionByIdSpy).not.toBeCalled()
+    expect(session).toEqual(cacheRecoverSpy.result)
   })
 })
