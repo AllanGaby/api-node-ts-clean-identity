@@ -15,7 +15,10 @@ export class DbShowSessionByAccessToken implements ShowSessionByAccessToken {
 
   async show ({ accessToken }: ShowSessionByAccessTokenDTO): Promise<SessionModel> {
     const sessionId = await this.decrypter.decrypt(accessToken)
-    await this.cacheRecover.recover(`session-authentication:${sessionId}`)
+    const session = await this.cacheRecover.recover(`session-authentication:${sessionId}`)
+    if (session) {
+      return session
+    }
     if (sessionId) {
       const session = await this.getSessionByIdRepository.getSessionById(sessionId)
       if (session) {
