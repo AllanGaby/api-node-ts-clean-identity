@@ -96,4 +96,17 @@ describe('DbShowSessionByAccessToken', () => {
     expect(sessionByIdSpy).not.toBeCalled()
     expect(session).toEqual(cacheRecoverSpy.result)
   })
+
+  test('Should call CacheCreate with correct value', async () => {
+    const { sut, cacheCreateSpy, getSessionByIdRepositorySpy } = makeSut()
+    await sut.show(mockShowSessionByAccessTokenDTO())
+    expect(cacheCreateSpy.key).toEqual(`session-authentication:${getSessionByIdRepositorySpy.session.id}`)
+  })
+
+  test('Should throw if CacheRecover throws', async () => {
+    const { sut, cacheCreateSpy } = makeSut()
+    jest.spyOn(cacheCreateSpy, 'create').mockImplementationOnce(throwError)
+    const promise = sut.show(mockShowSessionByAccessTokenDTO())
+    await expect(promise).rejects.toThrow()
+  })
 })
