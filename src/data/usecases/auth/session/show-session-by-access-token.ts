@@ -22,6 +22,7 @@ export class DbShowSessionByAccessToken implements ShowSessionByAccessToken {
     if (sessionId) {
       const session = await this.getSessionByIdRepository.getSessionById(sessionId)
       if (session) {
+        await this.cacheCreate.create(`session-authentication:${session.id}`, session)
         return session
       }
     }
