@@ -1,21 +1,27 @@
 import { DbShowSessionByAccessToken } from './show-session-by-access-token'
-import { DecrypterSpy, mockShowSessionByAccessTokenDTO, throwError, GetSessionByIdRepositorySpy } from '@/data/test'
+import { DecrypterSpy, mockShowSessionByAccessTokenDTO, throwError, GetSessionByIdRepositorySpy, CacheCreateSpy, CacheRecoverSpy } from '@/data/test'
 import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {
   sut: DbShowSessionByAccessToken
   decrypterSpy: DecrypterSpy
   getSessionByIdRepositorySpy: GetSessionByIdRepositorySpy
+  cacheRecoverSpy: CacheRecoverSpy
+  cacheCreateSpy: CacheCreateSpy
 }
 
 const makeSut = (): sutTypes => {
   const decrypterSpy = new DecrypterSpy()
   const getSessionByIdRepositorySpy = new GetSessionByIdRepositorySpy()
-  const sut = new DbShowSessionByAccessToken(decrypterSpy, getSessionByIdRepositorySpy)
+  const cacheRecoverSpy = new CacheRecoverSpy()
+  const cacheCreateSpy = new CacheCreateSpy()
+  const sut = new DbShowSessionByAccessToken(decrypterSpy, getSessionByIdRepositorySpy, cacheRecoverSpy, cacheCreateSpy)
   return {
     sut,
     decrypterSpy,
-    getSessionByIdRepositorySpy
+    getSessionByIdRepositorySpy,
+    cacheRecoverSpy,
+    cacheCreateSpy
   }
 }
 
@@ -67,5 +73,11 @@ describe('DbShowSessionByAccessToken', () => {
     const { sut, getSessionByIdRepositorySpy } = makeSut()
     const session = await sut.show(mockShowSessionByAccessTokenDTO())
     expect(session).toEqual(getSessionByIdRepositorySpy.session)
+  })
+
+  test('Should call CacheRecover with correct value', async () => {
+    const { sut, cacheRecoverSpy, decrypterSpy } = makeSut()
+    await sut.show(mockShowSessionByAccessTokenDTO())
+    expect(cacheRecoverSpy.key).toEqual(`session-authentication:${decrypterSpy.plainText}`)
   })
 })
