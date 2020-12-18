@@ -3,6 +3,7 @@ import { BCrypterHasherAdapter } from '@/infra/criptografy'
 import { MemoryAccountRepository, MemorySessionRepository } from '@/infra/db/memory/repositories/auth'
 import { makeDbSendMailSession } from '../session'
 import { LocalStorage } from '@/infra/storage'
+import { EnvConfig } from '@/main/config/env'
 
 export const makeDbUpdateAccount = (): DbUpdateAccount => {
   const sendMailSession = makeDbSendMailSession()
@@ -18,7 +19,7 @@ export const makeDbUpdateAccount = (): DbUpdateAccount => {
     hasherAdapter,
     acccountRepository,
     sendMailSession,
-    'src/infra/comunication/views/handlebars/auth/create-account.hbs',
+    `${EnvConfig.baseDir}/infra/comunication/views/handlebars/auth/create-account.hbs`,
     localStorage,
     sessionRepository)
 }

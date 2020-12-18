@@ -6,10 +6,13 @@ services:
     working_dir: /usr/src/api-node-ts-clean-identity
     restart: always
     command: bash -c "npm install --only=prod && npm run debug"
+    environment:
+      - BASEDIR=./dist
     volumes:
       - ./dist/:/usr/src/api-node-ts-clean-identity/dist/
       - ./temp/:/usr/src/api-node-ts-clean-identity/temp/
       - ./uploads/:/usr/src/api-node-ts-clean-identity/uploads/
+      - ./src/infra/comunication/views/:/usr/src/api-node-ts-clean-identity/dist/infra/comunication/views/
       - ./package.json:/usr/src/api-node-ts-clean-identity/package.json
     ports:
       - "3333:3333"

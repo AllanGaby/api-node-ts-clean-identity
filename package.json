@@ -46,7 +46,7 @@
     "build": "rimraf dist && tsc -p tsconfig-build.json",
     "build:start": "node dist/main/http/express/server.js",
     "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/http/express/server.js",
-    "up": "yarn run build && docker-compose up",
+    "up": "yarn run build && docker-compose up --remove-orphans -d",
     "down": "docker-compose down"    
   },
   "dependencies": {
