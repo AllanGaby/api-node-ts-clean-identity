@@ -4,7 +4,7 @@ Projeto criado para praticar os conhecimentos adquiridos no treinamento do profe
 
 > ## Features / Casos de uso
 ### Conta de usuário (Account)
-* [Cadastro (CreateAccount)]()
+* [Cadastro (CreateAccount)](./requirements/auth/account/create.md)
 * [Atualização (UpdateAccount)]()
 * [Usuário logado (ShowAccount)]()
 * [Ativar conta (ActiveAccount)]()
