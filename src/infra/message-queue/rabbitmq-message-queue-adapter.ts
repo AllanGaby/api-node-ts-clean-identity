@@ -6,7 +6,6 @@ export class RabbitMQMessageQueueAdapter implements SendToQueue, ConsumeQueue {
 
   private readonly getChannel = async (): Promise<Channel> => {
     const connection = await connect(this.url)
-    console.log(this.url)
     return await connection.createChannel()
   }
 

@@ -6,3 +6,4 @@ temp/*
 uploads/*
 !uploads/.gitkeep
 !uploads/profile.png
+data

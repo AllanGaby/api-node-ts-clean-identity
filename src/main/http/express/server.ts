@@ -1,8 +1,10 @@
 import 'module-alias/register'
-import app from '@/main/config/express/app'
 import { EnvConfig } from '@/main/config/env'
-import '@/infra/db/typeorm'
+import { createTypeOrmConnection } from '@/infra/db/typeorm/connections'
 
-app.listen(EnvConfig.port, () => {
-  console.log(`🚀 Server started on port ${EnvConfig.port}!`)
-})
+createTypeOrmConnection().then(async () => {
+  const app = (await import('@/main/config/express/app')).default
+  app.listen(EnvConfig.port, () => {
+    console.log(`🚀 Server started on port ${EnvConfig.port}!`)
+  })
+}).catch(console.error)
