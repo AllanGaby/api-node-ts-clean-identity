@@ -1,7 +1,7 @@
 import { AccountModel, AccountType } from './../../../../domain/models/auth'
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
-@Entity('account')
+@Entity('accounts')
 export class Account implements AccountModel {
   @PrimaryGeneratedColumn('uuid')
   id: string
