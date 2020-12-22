@@ -1,17 +1,19 @@
-{
-    "type": "postgres",
-    "host": "localhost",
-    "port": 5432,
-    "username": "postgres",
-    "password": "masterkey",
-    "database": "identity",
-    "entities": [
-        "./src/infra/db/typeorm/models/*.ts"
-    ],
-    "migrations": [
-        "./src/infra/db/typeorm/migrations/*.ts"
-    ],
-    "cli": {
-        "migrationsDir": "./src/infra/db/typeorm/migrations"
-    }    
-}
+[
+    {
+        "type": "postgres",
+        "host": "localhost",
+        "port": 5432,
+        "username": "postgres",
+        "password": "masterkey",
+        "database": "identity",
+        "entities": [
+            "./src/infra/db/typeorm/models/*.ts"
+        ],
+        "migrations": [
+            "./src/infra/db/typeorm/migrations/*.ts"
+        ],
+        "cli": {
+            "migrationsDir": "./src/infra/db/typeorm/migrations"
+        }
+    }
+]
