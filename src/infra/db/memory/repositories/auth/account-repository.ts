@@ -23,13 +23,6 @@ export class MemoryAccountRepository implements CreateAccountRepository, GetAcco
 
   private constructor () {
     this.accounts = []
-    this.includeAccount({
-      name: 'Developer',
-      email: 'developer@identity.com',
-      password: '$2b$12$ICG0NwCRaVL.r12lhzV.ROT38fLbJ5kvg.AOJ5wxtxKvWDEhnKKE6'
-    })
-    this.accounts[0].type = AccountType.manager
-    this.accounts[0].email_valided = true
   }
 
   public static getInstance (): MemoryAccountRepository {
