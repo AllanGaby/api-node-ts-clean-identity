@@ -5,6 +5,7 @@ import { closeConnection, truncateTables } from '@/infra/test/db/typeorm'
 import { createTypeOrmConnection } from '@/infra/db/typeorm/connections'
 import { AccountType } from '@/domain/models/auth'
 import faker from 'faker'
+import { mockCreateAccountModel } from '@/infra/test/db/memory/auth'
 
 let connection: Connection
 
@@ -53,6 +54,14 @@ describe('AccountRepositoryTypeORM', () => {
       const { sut } = makeSut()
       const accountByEmail = await sut.getAccountByEmail(faker.internet.email())
       expect(accountByEmail).toBeFalsy()
+    })
+
+    test('Should return an account with correct email', async () => {
+      const { sut } = makeSut()
+      const createAccountModel = mockCreateAccountModel()
+      await sut.create(createAccountModel)
+      const accountByEmail = await sut.getAccountByEmail(createAccountModel.email)
+      expect(accountByEmail.email).toBe(createAccountModel.email)
     })
   })
 })
