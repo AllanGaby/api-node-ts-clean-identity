@@ -1,8 +1,8 @@
 import { Session } from '@/infra/db/typeorm/models'
-import { CreateSessionRepository, CreateSessionModel, GetSessionByIdRepository } from '@/data/repositories/auth'
+import { CreateSessionRepository, CreateSessionModel, GetSessionByIdRepository, DeleteSessionByIdRepository } from '@/data/repositories/auth'
 import { getRepository, Repository } from 'typeorm'
 
-export class SessionRepositoryTypeORM implements CreateSessionRepository, GetSessionByIdRepository {
+export class SessionRepositoryTypeORM implements CreateSessionRepository, GetSessionByIdRepository, DeleteSessionByIdRepository {
   private readonly sessionRepositoryTypeOrm: Repository<Session>
 
   constructor () {
@@ -11,7 +11,8 @@ export class SessionRepositoryTypeORM implements CreateSessionRepository, GetSes
 
   async create (data: CreateSessionModel): Promise<Session> {
     const createdSession = this.sessionRepositoryTypeOrm.create({
-      ...data
+      ...data,
+      deleted_at: null
     })
     await this.sessionRepositoryTypeOrm.save(createdSession)
     return createdSession
@@ -22,5 +23,14 @@ export class SessionRepositoryTypeORM implements CreateSessionRepository, GetSes
       return undefined
     }
     return await this.sessionRepositoryTypeOrm.findOne(id)
+  }
+
+  async deleteById (id: string): Promise<void> {
+    if (id) {
+      const session = await this.sessionRepositoryTypeOrm.findOne(id)
+      if (session) {
+        await this.sessionRepositoryTypeOrm.remove(session)
+      }
+    }
   }
 }
