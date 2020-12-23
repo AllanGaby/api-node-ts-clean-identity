@@ -11,7 +11,7 @@ interface sutTypes {
 }
 
 const makeSut = (): sutTypes => {
-  const sut = new SessionRepositoryTypeORM()
+  const sut = SessionRepositoryTypeORM.getInstance()
   return {
     sut
   }
@@ -25,7 +25,7 @@ let accountRepository: AccountRepositoryTypeORM
 describe('MemorySessionRepository', () => {
   beforeAll(async () => {
     connection = await createTypeOrmConnection()
-    accountRepository = new AccountRepositoryTypeORM()
+    accountRepository = AccountRepositoryTypeORM.getInstance()
   })
 
   beforeEach(async () => {

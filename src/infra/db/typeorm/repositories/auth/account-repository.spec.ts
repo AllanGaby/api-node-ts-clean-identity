@@ -14,7 +14,7 @@ interface sutType {
 }
 
 const makeSut = (): sutType => {
-  const sut = new AccountRepositoryTypeORM()
+  const sut = AccountRepositoryTypeORM.getInstance()
   return {
     sut
   }

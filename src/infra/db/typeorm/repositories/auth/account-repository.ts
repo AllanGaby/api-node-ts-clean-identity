@@ -5,9 +5,17 @@ import { AccountType } from '@/domain/models/auth'
 
 export class AccountRepositoryTypeORM implements CreateAccountRepository, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository, ListAccountRepository {
   private readonly accountRepositoryTypeOrm: Repository<Account>
+  private static instance: AccountRepositoryTypeORM
 
-  constructor () {
+  private constructor () {
     this.accountRepositoryTypeOrm = getRepository<Account>(Account)
+  }
+
+  public static getInstance (): AccountRepositoryTypeORM {
+    if (!AccountRepositoryTypeORM.instance) {
+      AccountRepositoryTypeORM.instance = new AccountRepositoryTypeORM()
+    }
+    return AccountRepositoryTypeORM.instance
   }
 
   async create (data: CreateAccountModel): Promise<Account> {

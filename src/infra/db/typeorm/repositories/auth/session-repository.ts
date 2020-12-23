@@ -4,9 +4,17 @@ import { getRepository, Repository } from 'typeorm'
 
 export class SessionRepositoryTypeORM implements CreateSessionRepository, GetSessionByIdRepository, DeleteSessionByIdRepository, GetSessionByAccountIdRepository, DeleteSessionByAccountIdRepository {
   private readonly sessionRepositoryTypeOrm: Repository<Session>
+  private static instance: SessionRepositoryTypeORM
 
-  constructor () {
+  private constructor () {
     this.sessionRepositoryTypeOrm = getRepository<Session>(Session)
+  }
+
+  public static getInstance (): SessionRepositoryTypeORM {
+    if (!SessionRepositoryTypeORM.instance) {
+      SessionRepositoryTypeORM.instance = new SessionRepositoryTypeORM()
+    }
+    return SessionRepositoryTypeORM.instance
   }
 
   async create (data: CreateSessionModel): Promise<Session> {
