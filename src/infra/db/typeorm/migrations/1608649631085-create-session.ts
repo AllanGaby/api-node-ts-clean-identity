@@ -23,6 +23,7 @@ export class createSession1608649631085 implements MigrationInterface {
           },
           {
             name: 'deleted_at',
+            isNullable: true,
             type: 'timestamp with time zone'
           },
           {
