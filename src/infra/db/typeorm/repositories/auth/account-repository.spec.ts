@@ -4,6 +4,7 @@ import { mockCreateAccountDTO } from '@/data/test/auth'
 import { closeConnection, truncateTables } from '@/infra/test/db/typeorm'
 import { createTypeOrmConnection } from '@/infra/db/typeorm/connections'
 import { AccountType } from '@/domain/models/auth'
+import faker from 'faker'
 
 let connection: Connection
 
@@ -44,6 +45,14 @@ describe('AccountRepositoryTypeORM', () => {
       expect(createdAccount.type).toBe(AccountType.student)
       expect(createdAccount.created_at).toBeTruthy()
       expect(createdAccount.updated_at).toBeTruthy()
+    })
+  })
+
+  describe('GetAccountByEmail Method', () => {
+    test('Should return null if account not found', async () => {
+      const { sut } = makeSut()
+      const accountByEmail = await sut.getAccountByEmail(faker.internet.email())
+      expect(accountByEmail).toBeFalsy()
     })
   })
 })
