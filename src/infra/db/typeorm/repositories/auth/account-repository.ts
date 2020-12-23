@@ -1,9 +1,9 @@
 import { Account } from '@/infra/db/typeorm/models'
-import { CreateAccountRepository, CreateAccountModel } from '@/data/repositories/auth'
+import { CreateAccountRepository, CreateAccountModel, GetAccountByEmailRepository } from '@/data/repositories/auth'
 import { getRepository, Repository } from 'typeorm'
 import { AccountType } from '@/domain/models/auth'
 
-export class AccountRepositoryTypeORM implements CreateAccountRepository {
+export class AccountRepositoryTypeORM implements CreateAccountRepository, GetAccountByEmailRepository {
   private readonly accountRepositoryTypeOrm: Repository<Account>
 
   constructor () {
@@ -18,5 +18,9 @@ export class AccountRepositoryTypeORM implements CreateAccountRepository {
     })
     await this.accountRepositoryTypeOrm.save(createdAccount)
     return createdAccount
+  }
+
+  async getAccountByEmail (email: string): Promise<Account> {
+    return null
   }
 }
