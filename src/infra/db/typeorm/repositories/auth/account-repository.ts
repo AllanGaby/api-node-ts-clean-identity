@@ -14,7 +14,8 @@ export class AccountRepositoryTypeORM implements CreateAccountRepository, GetAcc
     const createdAccount = this.accountRepositoryTypeOrm.create({
       ...data,
       type: AccountType.student,
-      email_valided: false
+      email_valided: false,
+      avatar_extention: null
     })
     await this.accountRepositoryTypeOrm.save(createdAccount)
     return createdAccount
@@ -49,7 +50,27 @@ export class AccountRepositoryTypeORM implements CreateAccountRepository, GetAcc
     return updatedAccount
   }
 
-  async list (filter: ListAccountRepositoryDTO): Promise<Account[]> {
+  async list ({ name, email }: ListAccountRepositoryDTO): Promise<Account[]> {
+    if ((name) && (email)) {
+      return await this.accountRepositoryTypeOrm.find({
+        where: {
+          name,
+          email
+        }
+      })
+    } else if (name) {
+      return await this.accountRepositoryTypeOrm.find({
+        where: {
+          name
+        }
+      })
+    } else if (email) {
+      return await this.accountRepositoryTypeOrm.find({
+        where: {
+          email
+        }
+      })
+    }
     return []
   }
 }
