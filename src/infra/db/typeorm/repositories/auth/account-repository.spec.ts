@@ -64,4 +64,19 @@ describe('AccountRepositoryTypeORM', () => {
       expect(accountByEmail.email).toBe(createAccountModel.email)
     })
   })
+
+  describe('GetAccountById Method', () => {
+    test('Should return null if account not found', async () => {
+      const { sut } = makeSut()
+      const accountByEmail = await sut.getAccountByEmail(faker.internet.email())
+      expect(accountByEmail).toBeFalsy()
+    })
+
+    test('Should return an account with correct id', async () => {
+      const { sut } = makeSut()
+      const createdAccount = await sut.create(mockCreateAccountModel())
+      const accountById = await sut.getAccountById(createdAccount.id)
+      expect(accountById.id).toBe(createdAccount.id)
+    })
+  })
 })
