@@ -5,7 +5,7 @@ import { closeConnection, truncateTables } from '@/infra/test/db/typeorm'
 import { createTypeOrmConnection } from '@/infra/db/typeorm/connections'
 import { AccountType } from '@/domain/models/auth'
 import faker from 'faker'
-import { mockCreateAccountModel } from '@/infra/test/db/memory/auth'
+import { mockCreateAccountModel, mockUpdateAccountDTO } from '@/infra/test/db/auth'
 
 let connection: Connection
 
@@ -77,6 +77,36 @@ describe('AccountRepositoryTypeORM', () => {
       const createdAccount = await sut.create(mockCreateAccountModel())
       const accountById = await sut.getAccountById(createdAccount.id)
       expect(accountById.id).toBe(createdAccount.id)
+    })
+  })
+
+  describe('Update Method', () => {
+    test('Should return null if account not found', async () => {
+      const { sut } = makeSut()
+      const updatedAccount = await sut.update({
+        id: faker.random.uuid(),
+        name: faker.name.findName(),
+        email: faker.internet.email(),
+        email_valided: true,
+        password: faker.internet.password(),
+        type: AccountType.student
+      })
+      expect(updatedAccount).toBeFalsy()
+    })
+
+    test('Should return an updated account if acccount is found', async () => {
+      const { sut } = makeSut()
+      const createdAccount = await sut.create(mockCreateAccountModel())
+      const params = mockUpdateAccountDTO()
+      params.id = createdAccount.id
+      const updatedAccount = await sut.update(params)
+      expect(updatedAccount.id).toBe(createdAccount.id)
+      expect(updatedAccount.name).not.toBe(createdAccount.name)
+      expect(updatedAccount.email).not.toBe(createdAccount.email)
+      expect(updatedAccount.password).not.toBe(createdAccount.password)
+      expect(updatedAccount.name).toBe(params.name)
+      expect(updatedAccount.email).toBe(params.email)
+      expect(updatedAccount.password).toBe(params.password)
     })
   })
 })
