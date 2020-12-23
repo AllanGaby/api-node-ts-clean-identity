@@ -4,7 +4,7 @@
     "emitDecoratorMetadata": true,
     "outDir": "dist",
     "module": "commonjs",
-    "target": "es2020",
+    "target": "es2017",
     "esModuleInterop": true,
     "sourceMap": true,
     "rootDir": "src",

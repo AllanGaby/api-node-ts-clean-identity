@@ -5,7 +5,7 @@
         "port": 5432,
         "username": "postgres",
         "password": "masterkey",
-        "database": "identity",
+        "database": "identity_tests",
         "entities": [
             "./src/infra/db/typeorm/models/*.ts"
         ],

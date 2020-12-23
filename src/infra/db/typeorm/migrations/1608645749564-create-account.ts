@@ -31,7 +31,14 @@ export class createAccount1608645749564 implements MigrationInterface {
           },
           {
             name: 'type',
-            type: 'smallint'
+            type: 'enum',
+            enum: ['1', '2'],
+            enumName: 'account_types'
+          },
+          {
+            name: 'avatar_extention',
+            isNullable: true,
+            type: 'varchar'
           },
           {
             name: 'created_at',
