@@ -1,7 +1,7 @@
 import { DbCreateAccount } from '@/data/usecases/auth/account'
 import { MemoryAccountRepository } from '@/infra/db/memory/repositories/auth'
 import { BCrypterHasherAdapter } from '@/infra/criptografy'
-import { makeDbSendMailSession } from '@/main/factories/usecases/auth/memory/session'
+import { makeDbSendMailSession } from '@/main/factories/usecases/auth/session'
 import { EnvConfig } from '@/main/config/env'
 
 export const makeDbCreateAccount = (): DbCreateAccount => {

@@ -1,6 +1,6 @@
 import { DbRequestRecoverPassword } from '@/data/usecases/auth/account'
 import { MemoryAccountRepository } from '@/infra/db/memory/repositories/auth'
-import { makeDbSendMailSession } from '@/main/factories/usecases/auth/memory/session'
+import { makeDbSendMailSession } from '@/main/factories/usecases/auth/session'
 
 export const makeDbRequestRecoverPassword = (): DbRequestRecoverPassword => {
   const accountRepository = MemoryAccountRepository.getInstance()
