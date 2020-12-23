@@ -135,12 +135,5 @@ describe('MemoryAccountRepository', () => {
       expect(accountByEmail).toHaveLength(1)
       expect(accountByEmail[0]).toEqual(createdAccount)
     })
-
-    test('Should return an account with correct id', async () => {
-      const { sut } = makeSut()
-      const createdAccount = await sut.create(mockCreateAccountModel())
-      const accountById = await sut.getAccountById(createdAccount.id)
-      expect(accountById.id).toBe(createdAccount.id)
-    })
   })
 })
