@@ -1,9 +1,9 @@
 import { Account } from '@/infra/db/typeorm/models'
-import { CreateAccountRepository, CreateAccountModel, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository, UpdateAccountDTO } from '@/data/repositories/auth'
+import { CreateAccountRepository, CreateAccountModel, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository, UpdateAccountDTO, ListAccountRepository, ListAccountRepositoryDTO } from '@/data/repositories/auth'
 import { getRepository, Repository } from 'typeorm'
 import { AccountType } from '@/domain/models/auth'
 
-export class AccountRepositoryTypeORM implements CreateAccountRepository, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository {
+export class AccountRepositoryTypeORM implements CreateAccountRepository, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository, ListAccountRepository {
   private readonly accountRepositoryTypeOrm: Repository<Account>
 
   constructor () {
@@ -47,5 +47,9 @@ export class AccountRepositoryTypeORM implements CreateAccountRepository, GetAcc
     }
     await this.accountRepositoryTypeOrm.save(updatedAccount)
     return updatedAccount
+  }
+
+  async list (filter: ListAccountRepositoryDTO): Promise<Account[]> {
+    return []
   }
 }
