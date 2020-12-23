@@ -21,6 +21,10 @@ export class AccountRepositoryTypeORM implements CreateAccountRepository, GetAcc
   }
 
   async getAccountByEmail (email: string): Promise<Account> {
-    return null
+    return await this.accountRepositoryTypeOrm.findOne({
+      where: {
+        email
+      }
+    })
   }
 }
