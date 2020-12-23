@@ -109,4 +109,24 @@ describe('AccountRepositoryTypeORM', () => {
       expect(updatedAccount.password).toBe(params.password)
     })
   })
+
+  describe('List Method', () => {
+    test('Should return null if account not found by name', async () => {
+      const { sut } = makeSut()
+      const accountByName = await sut.list({
+        name: faker.name.findName(),
+        email: null
+      })
+      expect(accountByName).toHaveLength(0)
+    })
+
+    test('Should return null if account not found by email', async () => {
+      const { sut } = makeSut()
+      const accountByName = await sut.list({
+        email: faker.internet.email(),
+        name: null
+      })
+      expect(accountByName).toHaveLength(0)
+    })
+  })
 })
