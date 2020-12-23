@@ -163,5 +163,14 @@ describe('AccountRepositoryTypeORM', () => {
       expect(accountByEmail[0].name).toEqual(createdAccount.name)
       expect(accountByEmail[0].email).toEqual(createdAccount.email)
     })
+
+    test('Should return null if account filter not provide', async () => {
+      const { sut } = makeSut()
+      const accountByName = await sut.list({
+        name: null,
+        email: null
+      })
+      expect(accountByName).toHaveLength(0)
+    })
   })
 })
