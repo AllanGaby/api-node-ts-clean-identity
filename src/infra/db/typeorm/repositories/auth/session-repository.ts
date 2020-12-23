@@ -1,8 +1,8 @@
 import { Session } from '@/infra/db/typeorm/models'
-import { CreateSessionRepository, CreateSessionModel } from '@/data/repositories/auth'
+import { CreateSessionRepository, CreateSessionModel, GetSessionByIdRepository } from '@/data/repositories/auth'
 import { getRepository, Repository } from 'typeorm'
 
-export class SessionRepositoryTypeORM implements CreateSessionRepository {
+export class SessionRepositoryTypeORM implements CreateSessionRepository, GetSessionByIdRepository {
   private readonly sessionRepositoryTypeOrm: Repository<Session>
 
   constructor () {
@@ -15,5 +15,12 @@ export class SessionRepositoryTypeORM implements CreateSessionRepository {
     })
     await this.sessionRepositoryTypeOrm.save(createdSession)
     return createdSession
+  }
+
+  async getSessionById (id: string): Promise<Session> {
+    if (!id) {
+      return undefined
+    }
+    return await this.sessionRepositoryTypeOrm.findOne(id)
   }
 }
