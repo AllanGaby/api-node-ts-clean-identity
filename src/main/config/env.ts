@@ -1,10 +1,17 @@
 import { SMTPConfig } from '@/infra/comunication'
 
+export interface User {
+  name: string
+  email: string
+  password: string
+}
+
 export interface Env {
   port: string | number
   baseDir: string
   urlRabbitMQ: string
   jwtSecret: string
+  manager: User
   smtpConfig: SMTPConfig
 }
 
@@ -13,6 +20,11 @@ export const EnvConfig: Env = ({
   urlRabbitMQ: process.env.URL_RABBITMQ || 'amqp://identity:masterkey@localhost:5672',
   baseDir: process.env.BASEDIR || 'src',
   jwtSecret: process.env.JWT_SECRET || '01c383ef-b869-43f6-a60a-7b0c1b161d3b',
+  manager: {
+    name: process.env.MANAGER_USER_NAME || 'identity',
+    email: process.env.MANAGER_USER_EMAIL || 'manager@identity.com',
+    password: process.env.MANAGER_USER_PASSWORD || 'masterkey'
+  },
   smtpConfig: {
     host: process.env.SMTP_HOST || 'smtp.ethereal.email',
     port: Number(process.env.SMTP_PORT) || 587,
