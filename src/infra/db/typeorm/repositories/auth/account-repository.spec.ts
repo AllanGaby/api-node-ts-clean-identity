@@ -2,7 +2,7 @@ import { AccountRepositoryTypeORM } from './account-repository'
 import { Connection } from 'typeorm'
 import { mockCreateAccountDTO } from '@/data/test/auth'
 import { closeConnection, truncateTables } from '@/infra/test/db/typeorm'
-import { CreateTypeOrmConnection } from '@/infra/db/typeorm/connections'
+import { createTypeOrmConnection } from '@/infra/db/typeorm/connections'
 import { AccountType } from '@/domain/models/auth'
 import faker from 'faker'
 import { mockCreateAccountModel, mockUpdateAccountDTO } from '@/infra/test/db/auth'
@@ -22,7 +22,7 @@ const makeSut = (): sutType => {
 
 describe('AccountRepositoryTypeORM', () => {
   beforeAll(async () => {
-    connection = await CreateTypeOrmConnection.getConnection()
+    connection = await createTypeOrmConnection()
   })
 
   beforeEach(async () => {

@@ -1,7 +1,7 @@
 import { mockCreateSessionModel, mockCreateAccountModel } from '@/infra/test/db/auth'
 import { closeConnection, truncateTables } from '@/infra/test/db/typeorm'
 import { Connection } from 'typeorm'
-import { CreateTypeOrmConnection } from '@/infra/db/typeorm/connections'
+import { createTypeOrmConnection } from '@/infra/db/typeorm/connections'
 import { Account, Session } from '@/infra/db/typeorm/models'
 import { AccountRepositoryTypeORM, SessionRepositoryTypeORM } from './'
 import faker from 'faker'
@@ -24,7 +24,7 @@ let accountRepository: AccountRepositoryTypeORM
 
 describe('MemorySessionRepository', () => {
   beforeAll(async () => {
-    connection = await CreateTypeOrmConnection.getConnection()
+    connection = await createTypeOrmConnection()
     accountRepository = AccountRepositoryTypeORM.getInstance()
   })
 
