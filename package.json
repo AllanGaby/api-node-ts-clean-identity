@@ -41,7 +41,7 @@
     "test:ci": "yarn test  --coverage",
     "test:integration": "yarn test -- --watch -c jest-integration-config.js",
     "test:unit": "yarn test -- --watch -c jest-unit-config.js",
-    "dev:server": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules src/main/http/express/server.ts",
+    "dev:server": "ts-node-dev --inspect --transpile-only --watch --ignore-watch node_modules src/main/http/express/server.ts",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
