@@ -1,12 +1,13 @@
 import { DbShowSessionByAccessToken } from '@/data/usecases/auth/session'
 import { JWTEncrypterAdapter } from '@/infra/criptografy'
-import { MemorySessionRepository } from '@/infra/db/memory/repositories/auth'
 import { EnvConfig } from '@/main/config/env'
 import { MemoryCacheAdapter } from '@/infra/cache'
+import { AuthRepositoriesFactory } from '@/main/factories/repositories'
 
 export const makeDbShowSessionByAccessToken = (): DbShowSessionByAccessToken => {
+  const authRepositoriesFactory = new AuthRepositoriesFactory(EnvConfig.repositoryType)
   const encrypterAdapter = new JWTEncrypterAdapter(EnvConfig.jwtSecret, 1)
-  const sessionRepository = MemorySessionRepository.getInstance()
+  const sessionRepository = authRepositoriesFactory.getSessionRepository()
   const cacheAdapter = new MemoryCacheAdapter()
   return new DbShowSessionByAccessToken(encrypterAdapter, sessionRepository, cacheAdapter, cacheAdapter)
 }
