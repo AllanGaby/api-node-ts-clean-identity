@@ -1,4 +1,4 @@
 export enum RepositoryTypes {
-  TypeOrm,
-  Memory
+  TypeOrm = 'TypeORM',
+  Memory = 'Memory'
 }

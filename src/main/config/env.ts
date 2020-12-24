@@ -1,4 +1,5 @@
 import { SMTPConfig } from '@/infra/comunication'
+import { RepositoryTypes } from '@/main/factories/repositories'
 
 export interface User {
   name: string
@@ -9,6 +10,7 @@ export interface User {
 export interface Env {
   port: string | number
   baseDir: string
+  repositoryType: RepositoryTypes
   urlRabbitMQ: string
   jwtSecret: string
   manager: User
@@ -19,6 +21,7 @@ export const EnvConfig: Env = ({
   port: process.env.PORT || 3333,
   urlRabbitMQ: process.env.URL_RABBITMQ || 'amqp://identity:masterkey@localhost:5672',
   baseDir: process.env.BASEDIR || 'src',
+  repositoryType: process.env.REPOSITORY_TYPE as RepositoryTypes || RepositoryTypes.Memory,
   jwtSecret: process.env.JWT_SECRET || '01c383ef-b869-43f6-a60a-7b0c1b161d3b',
   manager: {
     name: process.env.MANAGER_USER_NAME || 'identity',
