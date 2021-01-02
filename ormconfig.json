@@ -6,12 +6,14 @@
         "port": 5432,
         "username": "postgres",
         "password": "masterkey",
-        "database": "identity_tests",
+        "database": "identity",
         "entities": [
-            "./src/infra/db/typeorm/models/*.ts"
+            "./src/infra/db/typeorm/models/*.ts",
+            "./dist/infra/db/typeorm/models/*.js"
         ],
         "migrations": [
-            "./src/infra/db/typeorm/migrations/*.ts"
+            "./src/infra/db/typeorm/migrations/*.ts",
+            "./dist/infra/db/typeorm/migrations/*.js"
         ],
         "cli": {
             "migrationsDir": "./src/infra/db/typeorm/migrations"
