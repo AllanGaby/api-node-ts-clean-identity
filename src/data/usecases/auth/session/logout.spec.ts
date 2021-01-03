@@ -17,7 +17,7 @@ const makeSut = (): sutTypes => {
   const deleteSessionByIdRepositorySpy = new DeleteSessionByIdRepositorySpy()
   const cacheRecoverSpy = new CacheRecoverSpy()
   const cacheRemoveSpy = new CacheRemoveSpy()
-  const sut = new DbLogout(getSessionByIdRepositorySpy, deleteSessionByIdRepositorySpy, cacheRecoverSpy)
+  const sut = new DbLogout(getSessionByIdRepositorySpy, deleteSessionByIdRepositorySpy, cacheRecoverSpy, cacheRemoveSpy)
   return {
     sut,
     getSessionByIdRepositorySpy,
@@ -90,6 +90,20 @@ describe('DbLogout', () => {
   test('Should throw if DeleteSessionRepository throws', async () => {
     const { sut, deleteSessionByIdRepositorySpy } = makeSut()
     jest.spyOn(deleteSessionByIdRepositorySpy, 'deleteById').mockImplementationOnce(throwError)
+    const promise = sut.logout(mockLogoutDTO())
+    await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call CacheRemove with correct value', async () => {
+    const { sut, cacheRecoverSpy, cacheRemoveSpy } = makeSut()
+    const request = mockLogoutDTO()
+    await sut.logout(request)
+    expect(cacheRemoveSpy.key).toEqual(cacheRecoverSpy.key)    
+  })
+
+  test('Should throw if CacheRemove throws', async () => {
+    const { sut, cacheRemoveSpy } = makeSut()
+    jest.spyOn(cacheRemoveSpy, 'remove').mockImplementationOnce(throwError)
     const promise = sut.logout(mockLogoutDTO())
     await expect(promise).rejects.toThrow()
   })
