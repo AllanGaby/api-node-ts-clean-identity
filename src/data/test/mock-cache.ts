@@ -1,4 +1,4 @@
-import { CacheCreate, CacheRecover, CacheRemove } from '@/data/protocols/cache'
+import { CacheCreate, CacheRecover, CacheRemove, CacheRemoveByPrefix } from '@/data/protocols/cache'
 
 export class CacheCreateSpy implements CacheCreate {
   key: string
@@ -25,5 +25,13 @@ export class CacheRemoveSpy implements CacheRemove {
 
   async remove(key: string): Promise<void> {
     this.key = key
+  }
+}
+
+export class CacheRemoveByPrefixSpy implements CacheRemoveByPrefix {
+  prefix: string
+
+  async removeByPrefix(prefix: string): Promise<void> {
+    this.prefix = prefix
   }
 }

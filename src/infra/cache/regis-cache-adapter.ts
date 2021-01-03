@@ -1,8 +1,8 @@
 import { EnvConfig } from '@/main/config/env'
 import Redis, { Redis as RedisClient } from 'ioredis'
-import { CacheCreate, CacheRecover, CacheRemove } from '@/data/protocols/cache'
+import { CacheCreate, CacheRecover, CacheRemove, CacheRemoveByPrefix } from '@/data/protocols/cache'
 
-export class RedisCacheAdapter implements CacheCreate, CacheRecover, CacheRemove {
+export class RedisCacheAdapter implements CacheCreate, CacheRecover, CacheRemove, CacheRemoveByPrefix {
   private readonly client: RedisClient
 
   constructor () {
@@ -23,5 +23,13 @@ export class RedisCacheAdapter implements CacheCreate, CacheRecover, CacheRemove
 
   async remove (key: string): Promise<void> {
     await this.client.del(key)
+  }
+
+  async removeByPrefix (prefix: string): Promise<void> {
+    const keys = await this.client.keys(`${prefix}:*`)
+
+    const pipeline = this.client.pipeline()
+    keys.forEach(key => pipeline.del(key))
+    await pipeline.exec()
   }
 }

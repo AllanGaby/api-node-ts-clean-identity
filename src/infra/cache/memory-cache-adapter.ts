@@ -1,10 +1,10 @@
-import { CacheCreate, CacheRecover, CacheRemove } from '@/data/protocols/cache'
+import { CacheCreate, CacheRecover, CacheRemove, CacheRemoveByPrefix } from '@/data/protocols/cache'
 
 interface RecordsType {
   [key: string]: string
 }
 
-export class MemoryCacheAdapter implements CacheCreate, CacheRecover, CacheRemove {
+export class MemoryCacheAdapter implements CacheCreate, CacheRecover, CacheRemove, CacheRemoveByPrefix {
   records: RecordsType
 
   constructor () {
@@ -25,5 +25,15 @@ export class MemoryCacheAdapter implements CacheCreate, CacheRecover, CacheRemov
 
   async remove (key: string): Promise<void> {
     this.records[key] = undefined
+  }
+
+  async removeByPrefix (prefix: string): Promise<void> {
+    const keys = Object.keys(this.records)
+
+    keys.forEach(key => {
+      if (key.startsWith(prefix)) {
+        this.records[key] = undefined
+      }
+    })
   }
 }
