@@ -27,7 +27,7 @@ export class AuthenticationMiddleware implements Middleware<any, AuthenticationM
       }
       const accessToken = request.headers['x-access-token']
       const session = await this.showSessionByAccessToken.show({ accessToken })
-      if ((session) && (session.type === SessionType.authentication) && (session.experied_at > new Date())) {
+      if ((session) && (session.type === SessionType.authentication) && (new Date(session.experied_at) > new Date())) {
         const account = await this.showAccount.show({
           accountId: session.account_id
         })

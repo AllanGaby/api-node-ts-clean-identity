@@ -1,5 +1,6 @@
 import { SMTPConfig } from '@/infra/comunication'
 import { RepositoryTypes } from '@/main/factories/repositories'
+import { RedisOptions } from 'ioredis'
 
 export interface User {
   name: string
@@ -15,6 +16,7 @@ export interface Env {
   jwtSecret: string
   manager: User
   smtpConfig: SMTPConfig
+  redisConfig: RedisOptions
 }
 
 export const EnvConfig: Env = ({
@@ -36,5 +38,10 @@ export const EnvConfig: Env = ({
       user: process.env.SMTP_USER || 'sammy.gutmann2@ethereal.email',
       pass: process.env.SMTP_PASS || '6FRHEGTxfJXwt1t5u6'
     }
+  },
+  redisConfig: {
+    host: process.env.REDIS_HOST || 'localhost',
+    port: Number(process.env.REDIS_PORT) || 6379,
+    password: process.env.REDIS_PASSWORD || undefined
   }
 })
