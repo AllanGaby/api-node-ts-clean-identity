@@ -1,6 +1,7 @@
 import { SMTPConfig } from '@/infra/comunication'
 import { RepositoryTypes } from '@/main/factories/repositories'
 import { RedisOptions } from 'ioredis'
+import { CacheTypes } from '@/infra/cache'
 
 export interface User {
   name: string
@@ -12,6 +13,7 @@ export interface Env {
   port: string | number
   baseDir: string
   repositoryType: RepositoryTypes
+  cacheType: CacheTypes
   urlRabbitMQ: string
   jwtSecret: string
   manager: User
@@ -24,6 +26,7 @@ export const EnvConfig: Env = ({
   urlRabbitMQ: process.env.URL_RABBITMQ || 'amqp://identity:masterkey@localhost:5672',
   baseDir: process.env.BASEDIR || 'src',
   repositoryType: process.env.REPOSITORY_TYPE as RepositoryTypes || RepositoryTypes.TypeOrm,
+  cacheType: process.env.CACHE_TYPE as CacheTypes || CacheTypes.Redis,
   jwtSecret: process.env.JWT_SECRET || '01c383ef-b869-43f6-a60a-7b0c1b161d3b',
   manager: {
     name: process.env.MANAGER_USER_NAME || 'identity',
