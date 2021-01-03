@@ -7,5 +7,5 @@ export const makeDbLogout = (): DbLogout => {
   const authRepositoriesFactory = new AuthRepositoriesFactory(EnvConfig.repositoryType)
   const sessionRepository = authRepositoriesFactory.getSessionRepository()
   const cacheAdapter = new MemoryCacheAdapter()
-  return new DbLogout(sessionRepository, sessionRepository, cacheAdapter)
+  return new DbLogout(sessionRepository, sessionRepository, cacheAdapter, cacheAdapter)
 }
