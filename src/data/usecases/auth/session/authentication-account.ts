@@ -1,12 +1,13 @@
 import { AuthenticationAccount, AuthenticationAccountDTO } from '@/domain/usecases/auth/account'
 import { GetAccountByEmailRepository, CreateSessionRepository } from '@/data/repositories/auth'
 import { HashComparer, Encrypter } from '@/data/protocols/criptography'
-import { SessionType, AuthenticationModel } from '@/domain/models/auth'
+import { SessionType, AuthenticationModel, AccountModel } from '@/domain/models/auth'
 import { InvalidCredentialsError } from '@/data/errors'
-import { CacheCreate } from '@/data/protocols/cache'
+import { CacheCreate, CacheRecover } from '@/data/protocols/cache'
 
 export class DbAuthenticationAccount implements AuthenticationAccount {
   constructor (
+    private readonly cacheRecover: CacheRecover,
     private readonly getAccountByEmailRepository: GetAccountByEmailRepository,
     private readonly hashComparer: HashComparer,
     private readonly cacheCreate: CacheCreate,
@@ -15,7 +16,13 @@ export class DbAuthenticationAccount implements AuthenticationAccount {
   ) {}
 
   async authenticate ({ email, password }: AuthenticationAccountDTO): Promise<AuthenticationModel> {
-    const account = await this.getAccountByEmailRepository.getAccountByEmail(email)
+    const cacheKey = `account:${email}`
+    let account: AccountModel
+    account = await this.cacheRecover.recover<AccountModel>(cacheKey)
+    let existsAccountInCache = Boolean(account)
+    if(!existsAccountInCache){
+      account = await this.getAccountByEmailRepository.getAccountByEmail(email)
+    }
     if ((account) && (account.email_valided)) {
       const isCorrectPassword = await this.hashComparer.compare({
         payload: password,
@@ -24,7 +31,9 @@ export class DbAuthenticationAccount implements AuthenticationAccount {
       if (!isCorrectPassword) {
         throw new InvalidCredentialsError()
       }
-      await this.cacheCreate.create(`account:${account.email}`, account)
+      if(!existsAccountInCache){
+        await this.cacheCreate.create(cacheKey, account)
+      }
       const session = await this.createSessionRepository.create({
         account_id: account.id,
         type: SessionType.authentication,

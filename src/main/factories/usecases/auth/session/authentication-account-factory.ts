@@ -10,5 +10,5 @@ export const makeDbAuthenticationAccount = (): DbAuthenticationAccount => {
   const cacheAdapter = CacheFactory.getCacheAdapter(EnvConfig.cacheType)
   const hasherAdapter = new BCrypterHasherAdapter(12)
   const encrypter = new JWTEncrypterAdapter(EnvConfig.jwtSecret, 1)
-  return new DbAuthenticationAccount(accountRepository, hasherAdapter, cacheAdapter, sessionRepository, encrypter)
+  return new DbAuthenticationAccount(cacheAdapter, accountRepository, hasherAdapter, cacheAdapter, sessionRepository, encrypter)
 }
