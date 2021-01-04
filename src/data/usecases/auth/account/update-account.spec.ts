@@ -1,6 +1,6 @@
 import { DbUpdateAccount } from './update-account'
 import { DeleteSessionByAccountIdRepositorySpy, GetAccountByIdRepositorySpy, UpdateAccountRepositorySpy } from '@/data/test/auth/account/mock-account-repository'
-import { CacheRemoveByPrefixSpy, mockUpdateAccountDTO, SendMailSessionSpy, throwError, UploadFileSpy } from '@/data/test'
+import { CacheRemoveByPrefixSpy, CacheRemoveSpy, mockUpdateAccountDTO, SendMailSessionSpy, throwError, UploadFileSpy } from '@/data/test'
 import { HashCreatorSpy } from '@/data/test/mock-criptography'
 import { SessionType } from '@/domain/models/auth'
 import faker from 'faker'
@@ -15,7 +15,8 @@ interface sutTypes {
   mailFilePath: string
   uploadFileSpy: UploadFileSpy
   deleteSessionByAccountIdSpy: DeleteSessionByAccountIdRepositorySpy
-  cacheRemoveByPrefixSpy: CacheRemoveByPrefixSpy
+  cacheRemoveByPrefixSpy: CacheRemoveByPrefixSpy,
+  cacheRemoveSpy: CacheRemoveSpy
 }
 
 const makeSut = (): sutTypes => {
@@ -27,6 +28,7 @@ const makeSut = (): sutTypes => {
   const uploadFileSpy = new UploadFileSpy()
   const deleteSessionByAccountIdSpy = new DeleteSessionByAccountIdRepositorySpy()
   const cacheRemoveByPrefixSpy = new CacheRemoveByPrefixSpy()
+  const cacheRemoveSpy = new CacheRemoveSpy()
   const sut = new DbUpdateAccount(
     getAccountByIdRepositorySpy,
     hashCreatorSpy,
@@ -35,7 +37,8 @@ const makeSut = (): sutTypes => {
     mailFilePath,
     uploadFileSpy,
     deleteSessionByAccountIdSpy,
-    cacheRemoveByPrefixSpy)
+    cacheRemoveByPrefixSpy,
+    cacheRemoveSpy)
   return {
     sut,
     getAccountByIdRepositorySpy,
@@ -45,7 +48,8 @@ const makeSut = (): sutTypes => {
     mailFilePath,
     uploadFileSpy,
     deleteSessionByAccountIdSpy,
-    cacheRemoveByPrefixSpy
+    cacheRemoveByPrefixSpy,
+    cacheRemoveSpy
   }
 }
 
@@ -182,6 +186,19 @@ describe('DbUpdateAccount', () => {
     expect(uploadSpy).not.toBeCalled()
   })
 
+  test('Should call CacheRemove with correct value', async () => {
+    const { sut, cacheRemoveSpy, updateAccountRepositorySpy } = makeSut()
+    await sut.update(mockUpdateAccountDTO())
+    expect(cacheRemoveSpy.key).toBe(`account:${updateAccountRepositorySpy.account.email}`)
+  })
+
+  test('Should return throw if CacheRemove throws', async () => {
+    const { sut, cacheRemoveSpy } = makeSut()
+    jest.spyOn(cacheRemoveSpy, 'remove').mockImplementationOnce(throwError)
+    const promise = sut.update(mockUpdateAccountDTO())
+    await expect(promise).rejects.toThrow()
+  })  
+
   test('Should not call DeleteSessionByAccountId and CacheRemoveByPrefix if not change password', async () => {
     const { sut, deleteSessionByAccountIdSpy, cacheRemoveByPrefixSpy } = makeSut()
     const deleteByAccountIdSpy = jest.spyOn(deleteSessionByAccountIdSpy, 'deleteByAccountId')
@@ -205,7 +222,7 @@ describe('DbUpdateAccount', () => {
     jest.spyOn(cacheRemoveByPrefixSpy, 'removeByPrefix').mockImplementationOnce(throwError)
     const promise = sut.update(mockUpdateAccountDTO())
     await expect(promise).rejects.toThrow()
-  })    
+  })
 
   test('Should call DeleteSessionByAccountId with correct value', async () => {
     const { sut, deleteSessionByAccountIdSpy } = makeSut()
