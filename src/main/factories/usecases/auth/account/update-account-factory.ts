@@ -4,6 +4,7 @@ import { makeDbSendMailSession } from '@/main/factories/usecases/auth/session'
 import { LocalStorage } from '@/infra/storage'
 import { EnvConfig } from '@/main/config/env'
 import { AuthRepositoriesFactory } from '@/main/factories/repositories'
+import { CacheFactory } from '@/infra/cache'
 
 export const makeDbUpdateAccount = (): DbUpdateAccount => {
   const sendMailSession = makeDbSendMailSession()
@@ -22,5 +23,6 @@ export const makeDbUpdateAccount = (): DbUpdateAccount => {
     sendMailSession,
     `${EnvConfig.baseDir}/infra/comunication/views/handlebars/auth/create-account.hbs`,
     localStorage,
-    sessionRepository)
+    sessionRepository,
+    CacheFactory.getCacheAdapter(EnvConfig.cacheType))
 }

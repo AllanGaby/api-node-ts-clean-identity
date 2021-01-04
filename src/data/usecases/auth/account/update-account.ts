@@ -1,3 +1,4 @@
+import { CacheRemoveByPrefix } from '@/data/protocols/cache'
 import { HashCreator } from '@/data/protocols/criptography'
 import { UploadFile } from '@/data/protocols/storage'
 import { GetAccountByIdRepository, UpdateAccountRepository, DeleteSessionByAccountIdRepository } from '@/data/repositories/auth'
@@ -14,7 +15,8 @@ export class DbUpdateAccount implements UpdateAccount {
     private readonly sendMailSession: SendMailSession,
     private readonly mailFilePath: string,
     private readonly uploadFile: UploadFile,
-    private readonly deleteSessionByAccountId: DeleteSessionByAccountIdRepository
+    private readonly deleteSessionByAccountId: DeleteSessionByAccountIdRepository,
+    private readonly cacheRemoveByPrefix: CacheRemoveByPrefix
   ) {}
 
   async update ({ id, name, email, password, avatarFilePath }: UpdateAccountDTO): Promise<AccountModel> {
@@ -23,6 +25,7 @@ export class DbUpdateAccount implements UpdateAccount {
       let passwordHashed = accountById.password
       if (password) {
         passwordHashed = await this.hashCreator.createHash(password)
+        await this.cacheRemoveByPrefix.removeByPrefix(`session-authentication:${id}`)
         await this.deleteSessionByAccountId.deleteByAccountId(id)
       }
       let avatarExtention = accountById.avatar_extention
