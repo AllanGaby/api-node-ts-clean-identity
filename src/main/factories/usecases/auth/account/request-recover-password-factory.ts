@@ -1,11 +1,10 @@
 import { DbRequestRecoverPassword } from '@/data/usecases/auth/account'
+import { RepositoryFactory } from '@/infra/db'
 import { EnvConfig } from '@/main/config/env'
-import { AuthRepositoriesFactory } from '@/main/factories/repositories'
 import { makeDbSendMailSession } from '@/main/factories/usecases/auth/session'
 
 export const makeDbRequestRecoverPassword = (): DbRequestRecoverPassword => {
-  const authRepositoriesFactory = new AuthRepositoriesFactory(EnvConfig.repositoryType)
-  const accountRepository = authRepositoriesFactory.getAccountRepository()
+  const accountRepository = RepositoryFactory.getAccountRepository(EnvConfig.repositoryType)
   return new DbRequestRecoverPassword(
     accountRepository,
     makeDbSendMailSession(),

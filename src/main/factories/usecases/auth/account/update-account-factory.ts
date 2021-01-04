@@ -3,14 +3,13 @@ import { BCrypterHasherAdapter } from '@/infra/criptografy'
 import { makeDbSendMailSession } from '@/main/factories/usecases/auth/session'
 import { LocalStorage } from '@/infra/storage'
 import { EnvConfig } from '@/main/config/env'
-import { AuthRepositoriesFactory } from '@/main/factories/repositories'
+import { RepositoryFactory } from '@/infra/db'
 import { CacheFactory } from '@/infra/cache'
 
 export const makeDbUpdateAccount = (): DbUpdateAccount => {
   const sendMailSession = makeDbSendMailSession()
-  const authRepositoriesFactory = new AuthRepositoriesFactory(EnvConfig.repositoryType)
-  const acccountRepository = authRepositoriesFactory.getAccountRepository()
-  const sessionRepository = authRepositoriesFactory.getSessionRepository()
+  const acccountRepository = RepositoryFactory.getAccountRepository(EnvConfig.repositoryType)
+  const sessionRepository = RepositoryFactory.getSessionRepository(EnvConfig.repositoryType)
   const hasherAdapter = new BCrypterHasherAdapter(12)
   const localStorage = new LocalStorage({
     temporaryDir: 'temp',

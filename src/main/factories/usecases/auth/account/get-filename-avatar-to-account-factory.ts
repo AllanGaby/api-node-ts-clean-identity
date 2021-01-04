@@ -1,9 +1,7 @@
 import { DbGetFilenameToAccountAvatar } from '@/data/usecases/auth/account'
-import { AuthRepositoriesFactory } from '@/main/factories/repositories'
 import { EnvConfig } from '@/main/config/env'
+import { RepositoryFactory } from '@/infra/db'
 
 export const makeDbGetFilenameToAccountAvatar = (): DbGetFilenameToAccountAvatar => {
-  const authRepositoriesFactory = new AuthRepositoriesFactory(EnvConfig.repositoryType)
-  const accountRepository = authRepositoriesFactory.getAccountRepository()
-  return new DbGetFilenameToAccountAvatar(accountRepository)
+  return new DbGetFilenameToAccountAvatar(RepositoryFactory.getAccountRepository(EnvConfig.repositoryType))
 }

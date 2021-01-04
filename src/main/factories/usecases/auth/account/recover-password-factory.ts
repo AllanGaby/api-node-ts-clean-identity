@@ -1,12 +1,11 @@
 import { DbRecoverPassword } from '@/data/usecases/auth/account/recover-password'
 import { BCrypterHasherAdapter } from '@/infra/criptografy'
-import { AuthRepositoriesFactory } from '@/main/factories/repositories'
 import { EnvConfig } from '@/main/config/env'
+import { RepositoryFactory } from '@/infra/db'
 
 export const makeDbRecoverPassword = (): DbRecoverPassword => {
-  const authRepositoriesFactory = new AuthRepositoriesFactory(EnvConfig.repositoryType)
-  const accountRepository = authRepositoriesFactory.getAccountRepository()
-  const sessionRepository = authRepositoriesFactory.getSessionRepository()
+  const accountRepository = RepositoryFactory.getAccountRepository(EnvConfig.repositoryType)
+  const sessionRepository = RepositoryFactory.getSessionRepository(EnvConfig.repositoryType)
   const hasher = new BCrypterHasherAdapter(12)
   return new DbRecoverPassword(
     sessionRepository,

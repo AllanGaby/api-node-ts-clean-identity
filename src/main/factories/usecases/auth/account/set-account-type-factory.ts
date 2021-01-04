@@ -1,9 +1,8 @@
 import { DbSetAccountType } from '@/data/usecases/auth/account'
+import { RepositoryFactory } from '@/infra/db'
 import { EnvConfig } from '@/main/config/env'
-import { AuthRepositoriesFactory } from '@/main/factories/repositories'
 
 export const makeDbSetAccountType = (): DbSetAccountType => {
-  const authRepositoriesFactory = new AuthRepositoriesFactory(EnvConfig.repositoryType)
-  const accountRepository = authRepositoriesFactory.getAccountRepository()
+  const accountRepository = RepositoryFactory.getAccountRepository(EnvConfig.repositoryType)
   return new DbSetAccountType(accountRepository, accountRepository)
 }

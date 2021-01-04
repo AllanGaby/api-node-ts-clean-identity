@@ -1,5 +1,5 @@
 import { SMTPConfig } from '@/infra/comunication'
-import { RepositoryTypes } from '@/main/factories/repositories'
+import { RepositoryTypes } from '@/infra/db'
 import { RedisOptions } from 'ioredis'
 import { CacheTypes } from '@/infra/cache'
 
