@@ -10,34 +10,34 @@ interface sutTypes {
   sut: DbUpdateAccount
   getAccountByIdRepositorySpy: GetAccountByIdRepositorySpy
   hashCreatorSpy: HashCreatorSpy
+  deleteSessionByAccountIdSpy: DeleteSessionByAccountIdRepositorySpy
+  cacheRemoveByPrefixSpy: CacheRemoveByPrefixSpy,  
+  uploadFileSpy: UploadFileSpy  
   updateAccountRepositorySpy: UpdateAccountRepositorySpy
   sendMailSessionSpy: SendMailSessionSpy
   mailFilePath: string
-  uploadFileSpy: UploadFileSpy
-  deleteSessionByAccountIdSpy: DeleteSessionByAccountIdRepositorySpy
-  cacheRemoveByPrefixSpy: CacheRemoveByPrefixSpy,
   cacheRemoveSpy: CacheRemoveSpy
 }
 
 const makeSut = (): sutTypes => {
   const hashCreatorSpy = new HashCreatorSpy()
   const getAccountByIdRepositorySpy = new GetAccountByIdRepositorySpy()
+  const deleteSessionByAccountIdSpy = new DeleteSessionByAccountIdRepositorySpy()
+  const cacheRemoveByPrefixSpy = new CacheRemoveByPrefixSpy()  
+  const uploadFileSpy = new UploadFileSpy()  
   const updateAccountRepositorySpy = new UpdateAccountRepositorySpy()
   const sendMailSessionSpy = new SendMailSessionSpy()
   const mailFilePath = faker.internet.url()
-  const uploadFileSpy = new UploadFileSpy()
-  const deleteSessionByAccountIdSpy = new DeleteSessionByAccountIdRepositorySpy()
-  const cacheRemoveByPrefixSpy = new CacheRemoveByPrefixSpy()
   const cacheRemoveSpy = new CacheRemoveSpy()
   const sut = new DbUpdateAccount(
     getAccountByIdRepositorySpy,
     hashCreatorSpy,
+    deleteSessionByAccountIdSpy,
+    cacheRemoveByPrefixSpy,    
+    uploadFileSpy,    
     updateAccountRepositorySpy,
     sendMailSessionSpy,
     mailFilePath,
-    uploadFileSpy,
-    deleteSessionByAccountIdSpy,
-    cacheRemoveByPrefixSpy,
     cacheRemoveSpy)
   return {
     sut,

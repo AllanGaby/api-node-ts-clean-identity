@@ -11,12 +11,12 @@ export class DbUpdateAccount implements UpdateAccount {
   constructor (
     private readonly getAccountByIdRepository: GetAccountByIdRepository,
     private readonly hashCreator: HashCreator,
+    private readonly deleteSessionByAccountId: DeleteSessionByAccountIdRepository,
+    private readonly cacheRemoveByPrefix: CacheRemoveByPrefix,    
+    private readonly uploadFile: UploadFile,    
     private readonly updateAccountRepository: UpdateAccountRepository,
     private readonly sendMailSession: SendMailSession,
     private readonly mailFilePath: string,
-    private readonly uploadFile: UploadFile,
-    private readonly deleteSessionByAccountId: DeleteSessionByAccountIdRepository,
-    private readonly cacheRemoveByPrefix: CacheRemoveByPrefix,
     private readonly cacheRemove: CacheRemove
   ) {}
 

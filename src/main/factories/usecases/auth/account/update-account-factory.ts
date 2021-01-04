@@ -20,11 +20,11 @@ export const makeDbUpdateAccount = (): DbUpdateAccount => {
   return new DbUpdateAccount(
     acccountRepository,
     hasherAdapter,
+    sessionRepository,
+    cacheAdapter,
+    localStorage,
     acccountRepository,
     sendMailSession,
     `${EnvConfig.baseDir}/infra/comunication/views/handlebars/auth/create-account.hbs`,
-    localStorage,
-    sessionRepository,
-    cacheAdapter,
     cacheAdapter)
 }
