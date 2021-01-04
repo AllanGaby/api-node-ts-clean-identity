@@ -3,11 +3,13 @@ import { GetAccountByEmailRepository, CreateSessionRepository } from '@/data/rep
 import { HashComparer, Encrypter } from '@/data/protocols/criptography'
 import { SessionType, AuthenticationModel } from '@/domain/models/auth'
 import { InvalidCredentialsError } from '@/data/errors'
+import { CacheCreate } from '@/data/protocols/cache'
 
 export class DbAuthenticationAccount implements AuthenticationAccount {
   constructor (
     private readonly getAccountByEmailRepository: GetAccountByEmailRepository,
     private readonly hashComparer: HashComparer,
+    private readonly cacheCreate: CacheCreate,
     private readonly createSessionRepository: CreateSessionRepository,
     private readonly encrypter: Encrypter
   ) {}
@@ -22,6 +24,7 @@ export class DbAuthenticationAccount implements AuthenticationAccount {
       if (!isCorrectPassword) {
         throw new InvalidCredentialsError()
       }
+      await this.cacheCreate.create(`account:${account.email}`, account)
       const session = await this.createSessionRepository.create({
         account_id: account.id,
         type: SessionType.authentication,
