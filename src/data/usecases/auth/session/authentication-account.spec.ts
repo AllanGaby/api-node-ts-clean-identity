@@ -1,11 +1,12 @@
 import { DbAuthenticationAccount } from './authentication-account'
-import { mockAuthenticationAccountDTO, throwError, HashComparerSpy, mockAccountModel, EncrypterSpy, CreateSessionRepositorySpy, CacheCreateSpy } from '@/data/test'
+import { mockAuthenticationAccountDTO, throwError, HashComparerSpy, mockAccountModel, EncrypterSpy, CreateSessionRepositorySpy, CacheCreateSpy, CacheRecoverSpy } from '@/data/test'
 import { GetAccountByEmailRepositorySpy } from '@/data/test/auth/account/mock-account-repository'
 import { SessionType } from '@/domain/models/auth'
 import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {
   sut: DbAuthenticationAccount
+  cacheRecoverSpy: CacheRecoverSpy
   getAccountByEmailRepositorySpy: GetAccountByEmailRepositorySpy
   hashComparerSpy: HashComparerSpy
   cacheCreateSpy: CacheCreateSpy
@@ -14,15 +15,17 @@ interface sutTypes {
 }
 
 const makeSut = (): sutTypes => {
+  const cacheRecoverSpy = new CacheRecoverSpy()
   const getAccountByEmailRepositorySpy = new GetAccountByEmailRepositorySpy()
   getAccountByEmailRepositorySpy.account = mockAccountModel()
   const hashComparerSpy = new HashComparerSpy()
   const cacheCreateSpy = new CacheCreateSpy()
   const createSessionRepositorySpy = new CreateSessionRepositorySpy()
   const encrypterSpy = new EncrypterSpy()
-  const sut = new DbAuthenticationAccount(getAccountByEmailRepositorySpy, hashComparerSpy, cacheCreateSpy, createSessionRepositorySpy, encrypterSpy)
+  const sut = new DbAuthenticationAccount(cacheRecoverSpy, getAccountByEmailRepositorySpy, hashComparerSpy, cacheCreateSpy, createSessionRepositorySpy, encrypterSpy)
   return {
     sut,
+    cacheRecoverSpy,
     getAccountByEmailRepositorySpy,
     hashComparerSpy,
     cacheCreateSpy,
@@ -32,6 +35,28 @@ const makeSut = (): sutTypes => {
 }
 
 describe('DbAuthenticationAccount', () => {
+  test('Should call CacheRecover with correct value', async () => {
+    const { sut, cacheRecoverSpy } = makeSut()
+    const authenticationAccountDTO = mockAuthenticationAccountDTO()
+    await sut.authenticate(authenticationAccountDTO)    
+    expect(cacheRecoverSpy.key).toBe(`account:${authenticationAccountDTO.email}`)
+  })
+
+  test('Should throw if CacheRecover throws', async () => {
+    const { sut, cacheRecoverSpy } = makeSut()
+    jest.spyOn(cacheRecoverSpy, 'recover').mockImplementationOnce(throwError)
+    const promise = sut.authenticate(mockAuthenticationAccountDTO())
+    await expect(promise).rejects.toThrow()
+  })  
+
+  test('Should not call GetAccountByEmailRepository if CacheRecover return a account', async () => {
+    const { sut, cacheRecoverSpy, getAccountByEmailRepositorySpy } = makeSut()
+    cacheRecoverSpy.result = getAccountByEmailRepositorySpy.account
+    const getAccountByEmailSpy = jest.spyOn(getAccountByEmailRepositorySpy, 'getAccountByEmail') 
+    await sut.authenticate(mockAuthenticationAccountDTO())    
+    expect(getAccountByEmailSpy).not.toBeCalled()
+  })
+
   test('Should call GetAccountByEmailRepository with correct values', async () => {
     const { sut, getAccountByEmailRepositorySpy } = makeSut()
     const authenticationAccountDTO = mockAuthenticationAccountDTO()
@@ -77,10 +102,19 @@ describe('DbAuthenticationAccount', () => {
     await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
+  test('Should not call CacheCreate if exists Account with e-mail in Cache', async () => {
+    const { sut, cacheRecoverSpy, getAccountByEmailRepositorySpy, cacheCreateSpy } = makeSut()
+    cacheRecoverSpy.result = getAccountByEmailRepositorySpy.account
+    const createCacheSpy = jest.spyOn(cacheCreateSpy, 'create') 
+    await sut.authenticate(mockAuthenticationAccountDTO())    
+    expect(createCacheSpy).not.toBeCalled()    
+  })
+
   test('Should call CacheCreate with correct value', async () => {
     const { sut, cacheCreateSpy, getAccountByEmailRepositorySpy } = makeSut()
-    await sut.authenticate(mockAuthenticationAccountDTO())
-    expect(cacheCreateSpy.key).toBe(`account:${getAccountByEmailRepositorySpy.account.email}`)
+    const authenticationAccountDTO = mockAuthenticationAccountDTO()
+    await sut.authenticate(authenticationAccountDTO)        
+    expect(cacheCreateSpy.key).toBe(`account:${authenticationAccountDTO.email}`)
     expect(cacheCreateSpy.record).toBe(getAccountByEmailRepositorySpy.account)
   })
 
