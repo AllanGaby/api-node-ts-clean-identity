@@ -1,4 +1,4 @@
-import { CacheRemoveByPrefix } from '@/data/protocols/cache'
+import { CacheRemoveByPrefix, CacheRemove } from '@/data/protocols/cache'
 import { HashCreator } from '@/data/protocols/criptography'
 import { UploadFile } from '@/data/protocols/storage'
 import { GetAccountByIdRepository, UpdateAccountRepository, DeleteSessionByAccountIdRepository } from '@/data/repositories/auth'
@@ -16,7 +16,8 @@ export class DbUpdateAccount implements UpdateAccount {
     private readonly mailFilePath: string,
     private readonly uploadFile: UploadFile,
     private readonly deleteSessionByAccountId: DeleteSessionByAccountIdRepository,
-    private readonly cacheRemoveByPrefix: CacheRemoveByPrefix
+    private readonly cacheRemoveByPrefix: CacheRemoveByPrefix,
+    private readonly cacheRemove: CacheRemove
   ) {}
 
   async update ({ id, name, email, password, avatarFilePath }: UpdateAccountDTO): Promise<AccountModel> {
@@ -61,6 +62,7 @@ export class DbUpdateAccount implements UpdateAccount {
           sessionType: SessionType.activeAccount
         })
       }
+      await this.cacheRemove.remove(`account:${updatedAccount.email}`)
       return updatedAccount
     }
     throw new Error('Account not found')

@@ -16,6 +16,7 @@ export const makeDbUpdateAccount = (): DbUpdateAccount => {
     temporaryDir: 'temp',
     uploadDir: 'uploads'
   })
+  const cacheAdapter = CacheFactory.getCacheAdapter(EnvConfig.cacheType)
   return new DbUpdateAccount(
     acccountRepository,
     hasherAdapter,
@@ -24,5 +25,6 @@ export const makeDbUpdateAccount = (): DbUpdateAccount => {
     `${EnvConfig.baseDir}/infra/comunication/views/handlebars/auth/create-account.hbs`,
     localStorage,
     sessionRepository,
-    CacheFactory.getCacheAdapter(EnvConfig.cacheType))
+    cacheAdapter,
+    cacheAdapter)
 }
