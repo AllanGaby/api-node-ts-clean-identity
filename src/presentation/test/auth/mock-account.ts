@@ -2,7 +2,7 @@ import { HttpRequest } from '@/presentation/protocols'
 import { CreateAccountUseCase, CreateAccountDTO, UpdateAccountUseCase, UpdateAccountDTO, ActiveAccountUseCase, ActiveAccountDTO, RecoverPasswordUseCase, RecoverPasswordDTO, RequestRecoverPasswordUseCase, RequestRecoverPasswordDTO, ShowAccountUseCase, ShowAccountDTO, GetFilenameToAccountAvatarUseCase, GetFilenameToAccountAvatarDTO } from '@/domain/usecases/auth/account'
 import { AccountModel, SessionModel, AvatarModel } from '@/domain/models/auth'
 import { mockAccountModel, mockSessionModel } from '@/data/test'
-import { CreateAccountRequest, ActiveAccountRequest, RecoverPasswordRequest, UpdateAccountRequest, ShowAccountRequest, ShowAccountByIdRequest, ShowAvatarAccountRequest } from '@/presentation/controllers/auth/account'
+import { CreateAccountRequest, ActiveAccountRequest, RecoverPasswordRequest, UpdateAccountRequest, ShowAccountRequest, ShowAvatarAccountRequest } from '@/presentation/controllers/auth/account'
 import faker from 'faker'
 import path from 'path'
 
@@ -122,12 +122,6 @@ export const mockShowAccountRequest = (): HttpRequest<ShowAccountRequest> => ({
     session: {
       accountId: faker.random.uuid()
     }
-  }
-})
-
-export const mockShowAccountByIdRequest = (): HttpRequest<ShowAccountByIdRequest> => ({
-  params: {
-    account_id: faker.random.uuid()
   }
 })
 
