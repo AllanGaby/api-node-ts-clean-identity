@@ -15,16 +15,17 @@ export interface AuthenticationMiddlewareReponse {
 
 export class AuthenticationMiddleware implements Middleware<any, AuthenticationMiddlewareReponse | Error> {
   constructor (
+    private readonly tokenName: string,
     private readonly showSessionByAccessToken: ShowSessionByAccessToken,
     private readonly showAccount: ShowAccount
   ) {}
 
   async handle (request: HttpRequest<any>): Promise<HttpResponse<AuthenticationMiddlewareReponse | Error>> {
     try {
-      if ((!request.headers) || (!request.headers['x-access-token'])) {
-        return badRequest(new MissingParamError('x-access-token'))
+      if ((!request.headers) || (!request.headers[this.tokenName])) {
+        return badRequest(new MissingParamError(this.tokenName))
       }
-      const accessToken = request.headers['x-access-token']
+      const accessToken = request.headers[this.tokenName]
       const session = await this.showSessionByAccessToken.show({ accessToken })
       if ((session) && (session.type === SessionType.authentication) && (new Date(session.experied_at) > new Date())) {
         const account = await this.showAccount.show({

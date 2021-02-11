@@ -16,7 +16,8 @@ export interface Env {
   cacheType: CacheTypes
   urlRabbitMQ: string
   jwtSecret: string
-  manager: User
+  tokenName: string
+  default: User
   smtpConfig: SMTPConfig
   redisConfig: RedisOptions
 }
@@ -28,10 +29,11 @@ export const EnvConfig: Env = ({
   repositoryType: process.env.REPOSITORY_TYPE as RepositoryTypes || RepositoryTypes.TypeOrm,
   cacheType: process.env.CACHE_TYPE as CacheTypes || CacheTypes.Redis,
   jwtSecret: process.env.JWT_SECRET || '01c383ef-b869-43f6-a60a-7b0c1b161d3b',
-  manager: {
-    name: process.env.MANAGER_USER_NAME || 'identity',
-    email: process.env.MANAGER_USER_EMAIL || 'manager@identity.com',
-    password: process.env.MANAGER_USER_PASSWORD || 'masterkey'
+  tokenName: process.env.AUTH_TOKEN_NAME || 'x-access-token',
+  default: {
+    name: process.env.DEFAULT_USER_NAME || 'identity',
+    email: process.env.DEFAULT_USER_EMAIL || 'identity@identity.com',
+    password: process.env.DEFAULT_USER_PASSWORD || 'masterkey'
   },
   smtpConfig: {
     host: process.env.SMTP_HOST || 'smtp.ethereal.email',

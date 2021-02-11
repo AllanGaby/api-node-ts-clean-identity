@@ -21,9 +21,9 @@ export const mockAuthenticationFailRequest = (): HttpRequest<any> => ({
   }
 })
 
-export const mockAuthenticationRequest = (): HttpRequest<any> => ({
+export const mockAuthenticationRequest = (tokenName: string): HttpRequest<any> => ({
   headers: {
-    'x-access-token': faker.random.uuid()
+    [tokenName]: faker.random.uuid()
   }
 })
 

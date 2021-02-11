@@ -1,10 +1,10 @@
 import app from '@/main/config/express/app'
-import request from 'supertest'
-import faker from 'faker'
 import { MemoryAccountRepository, MemorySessionRepository } from '@/infra/db/memory/repositories/auth'
 import { BCrypterHasherAdapter, JWTEncrypterAdapter } from '@/infra/criptografy'
 import { AccountModel, SessionModel, SessionType } from '@/domain/models/auth'
 import { EnvConfig } from '@/main/config/env'
+import request from 'supertest'
+import faker from 'faker'
 
 let account: AccountModel
 let session: SessionModel
@@ -106,7 +106,7 @@ describe('Session Routes /session', () => {
     test('Should return 204 if logout is succeeds', async () => {
       await request(app)
         .delete('/api/auth/session')
-        .set('x-access-token', accessToken)
+        .set(EnvConfig.tokenName, accessToken)
         .expect(204)
     })
 
@@ -126,7 +126,7 @@ describe('Session Routes /session', () => {
       accessToken = await encrypter.encrypt(session.id)
       await request(app)
         .delete('/api/auth/session')
-        .set('x-access-token', accessToken)
+        .set(EnvConfig.tokenName, accessToken)
         .expect(403)
     })
 
@@ -139,7 +139,7 @@ describe('Session Routes /session', () => {
       accessToken = await encrypter.encrypt(session.id)
       await request(app)
         .delete('/api/auth/session')
-        .set('x-access-token', accessToken)
+        .set(EnvConfig.tokenName, accessToken)
         .expect(401)
     })
   })

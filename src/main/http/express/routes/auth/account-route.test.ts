@@ -1,11 +1,11 @@
 import app from '@/main/config/express/app'
-import request from 'supertest'
-import faker from 'faker'
 import { MemoryAccountRepository, MemorySessionRepository } from '@/infra/db/memory/repositories/auth'
 import { AccountModel, SessionModel, SessionType } from '@/domain/models/auth'
 import { JWTEncrypterAdapter } from '@/infra/criptografy'
 import { EnvConfig } from '@/main/config/env'
 import uploadConfig from '@/main/config/multer/config'
+import request from 'supertest'
+import faker from 'faker'
 import fs from 'fs'
 import path from 'path'
 
@@ -238,7 +238,7 @@ describe('Account Routes /account', () => {
     test('Should return 200 if access token is valid', async () => {
       await request(app)
         .get('/api/auth/account')
-        .set('x-access-token', accessToken)
+        .set(EnvConfig.tokenName, accessToken)
         .expect(200)
     })
 
@@ -258,7 +258,7 @@ describe('Account Routes /account', () => {
       accessToken = await encrypter.encrypt(session.id)
       await request(app)
         .get('/api/auth/account')
-        .set('x-access-token', accessToken)
+        .set(EnvConfig.tokenName, accessToken)
         .expect(403)
     })
 
@@ -271,7 +271,7 @@ describe('Account Routes /account', () => {
       accessToken = await encrypter.encrypt(session.id)
       await request(app)
         .get('/api/auth/account')
-        .set('x-access-token', accessToken)
+        .set(EnvConfig.tokenName, accessToken)
         .expect(401)
     })
   })
@@ -280,7 +280,7 @@ describe('Account Routes /account', () => {
     test('Should return 200 if account is updated', async () => {
       await request(app)
         .put('/api/auth/account')
-        .set('x-access-token', accessToken)
+        .set(EnvConfig.tokenName, accessToken)
         .send({
           name: `${account.name} Updated`
         })
@@ -306,7 +306,7 @@ describe('Account Routes /account', () => {
       accessToken = await encrypter.encrypt(session.id)
       await request(app)
         .put('/api/auth/account')
-        .set('x-access-token', accessToken)
+        .set(EnvConfig.tokenName, accessToken)
         .send({
           name: `${account.name} Updated`
         })
@@ -322,7 +322,7 @@ describe('Account Routes /account', () => {
       accessToken = await encrypter.encrypt(session.id)
       await request(app)
         .put('/api/auth/account')
-        .set('x-access-token', accessToken)
+        .set(EnvConfig.tokenName, accessToken)
         .send({
           name: `${account.name} Updated`
         })
@@ -334,7 +334,7 @@ describe('Account Routes /account', () => {
     test('Should return 200 if access token is valid', async () => {
       await request(app)
         .get('/api/auth/account/avatar')
-        .set('x-access-token', accessToken)
+        .set(EnvConfig.tokenName, accessToken)
         .responseType('blob')
         .expect(200)
     })
@@ -355,7 +355,7 @@ describe('Account Routes /account', () => {
       accessToken = await encrypter.encrypt(session.id)
       await request(app)
         .get('/api/auth/account/avatar')
-        .set('x-access-token', accessToken)
+        .set(EnvConfig.tokenName, accessToken)
         .expect(403)
     })
 
@@ -368,7 +368,7 @@ describe('Account Routes /account', () => {
       accessToken = await encrypter.encrypt(session.id)
       await request(app)
         .get('/api/auth/account/avatar')
-        .set('x-access-token', accessToken)
+        .set(EnvConfig.tokenName, accessToken)
         .expect(401)
     })
   })
