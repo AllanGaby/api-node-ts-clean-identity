@@ -1,10 +1,10 @@
-import { DbRecoverPassword } from './recover-password-use-case'
+import { DbRecoverPasswordUseCase } from './recover-password-use-case'
 import { GetSessionByIdRepositorySpy, mockRecoverPasswordDTO, throwError, GetAccountByIdRepositorySpy, mockSessionModel, HashCreatorSpy, UpdateAccountRepositorySpy, DeleteSessionByAccountIdRepositorySpy } from '@/data/test'
 import { SessionType } from '@/domain/models/auth'
 import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {
-  sut: DbRecoverPassword
+  sut: DbRecoverPasswordUseCase
   getSessionByIdRepositorySpy: GetSessionByIdRepositorySpy
   getAccountByIdRepositorySpy: GetAccountByIdRepositorySpy
   hashCreatorSpy: HashCreatorSpy
@@ -19,7 +19,7 @@ const makeSut = (): sutTypes => {
   const hashCreatorSpy = new HashCreatorSpy()
   const updateAccountRepositorySpy = new UpdateAccountRepositorySpy()
   const deleteSessionByAccountIdRepositorySpy = new DeleteSessionByAccountIdRepositorySpy()
-  const sut = new DbRecoverPassword(getSessionByIdRepositorySpy, getAccountByIdRepositorySpy, hashCreatorSpy, updateAccountRepositorySpy, deleteSessionByAccountIdRepositorySpy)
+  const sut = new DbRecoverPasswordUseCase(getSessionByIdRepositorySpy, getAccountByIdRepositorySpy, hashCreatorSpy, updateAccountRepositorySpy, deleteSessionByAccountIdRepositorySpy)
   return {
     sut,
     getSessionByIdRepositorySpy,
@@ -30,7 +30,7 @@ const makeSut = (): sutTypes => {
   }
 }
 
-describe('DbRecoverPassword', () => {
+describe('DbRecoverPasswordUseCase', () => {
   test('Should call GetSessionByIdRepository with correct value', async () => {
     const { sut, getSessionByIdRepositorySpy } = makeSut()
     const recoverPasswordDTO = mockRecoverPasswordDTO()

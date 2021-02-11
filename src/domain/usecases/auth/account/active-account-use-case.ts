@@ -4,6 +4,6 @@ export interface ActiveAccountDTO {
   sessionId: string
 }
 
-export interface ActiveAccount {
+export interface ActiveAccountUseCase {
   active: (data: ActiveAccountDTO) => Promise<AccountModel>
 }

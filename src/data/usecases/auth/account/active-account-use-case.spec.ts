@@ -1,10 +1,10 @@
-import { DbActiveAccount } from './active-account-use-case'
+import { DbActiveAccountUseCase } from './active-account-use-case'
 import { mockActiveAccountDTO, throwError, GetSessionByIdRepositorySpy, DeleteSessionByIdRepositorySpy, GetAccountByIdRepositorySpy, UpdateAccountRepositorySpy } from '@/data/test'
 import { SessionType } from '@/domain/models/auth'
 import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {
-  sut: DbActiveAccount
+  sut: DbActiveAccountUseCase
   getSessionByIdRepositorySpy: GetSessionByIdRepositorySpy
   getAccountByIdRepositorySpy: GetAccountByIdRepositorySpy
   updateAccountRepositorySpy: UpdateAccountRepositorySpy
@@ -16,7 +16,7 @@ const makeSut = (): sutTypes => {
   const getAccountByIdRepositorySpy = new GetAccountByIdRepositorySpy()
   const updateAccountRepositorySpy = new UpdateAccountRepositorySpy()
   const deleteSessionByIdRepositorySpy = new DeleteSessionByIdRepositorySpy()
-  const sut = new DbActiveAccount(getSessionByIdRepositorySpy, getAccountByIdRepositorySpy, updateAccountRepositorySpy, deleteSessionByIdRepositorySpy)
+  const sut = new DbActiveAccountUseCase(getSessionByIdRepositorySpy, getAccountByIdRepositorySpy, updateAccountRepositorySpy, deleteSessionByIdRepositorySpy)
   return {
     sut,
     getSessionByIdRepositorySpy,
@@ -26,7 +26,7 @@ const makeSut = (): sutTypes => {
   }
 }
 
-describe('DbActiveAccount', () => {
+describe('DbActiveAccountUseCase', () => {
   test('Should call GetSessionByIdRepository with correct values', async () => {
     const { sut, getSessionByIdRepositorySpy } = makeSut()
     const activeAccountDTO = mockActiveAccountDTO()

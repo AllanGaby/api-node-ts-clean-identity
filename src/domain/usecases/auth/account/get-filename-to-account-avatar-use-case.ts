@@ -5,6 +5,6 @@ export interface GetFilenameToAccountAvatarDTO {
   uploadDir: string
 }
 
-export interface GetFilenameToAccountAvatar {
+export interface GetFilenameToAccountAvatarUseCase {
   getPath: (filter: GetFilenameToAccountAvatarDTO) => Promise<AvatarModel>
 }

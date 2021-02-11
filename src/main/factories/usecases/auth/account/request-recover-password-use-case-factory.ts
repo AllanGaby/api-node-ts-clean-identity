@@ -1,12 +1,13 @@
-import { DbRequestRecoverPassword } from '@/data/usecases/auth/account'
+import { DbRequestRecoverPasswordUseCase } from '@/data/usecases/auth/account'
+import { RequestRecoverPasswordUseCase } from '@/domain/usecases/auth/account'
 import { RepositoryFactory } from '@/infra/db'
 import { EnvConfig } from '@/main/config/env'
-import { makeDbSendMailSession } from '@/main/factories/usecases/auth/session'
+import { makeSendMailSessionUseCase } from '@/main/factories/usecases/auth/session'
 
-export const makeDbRequestRecoverPassword = (): DbRequestRecoverPassword => {
+export const makeRequestRecoverPasswordUseCase = (): RequestRecoverPasswordUseCase => {
   const accountRepository = RepositoryFactory.getAccountRepository(EnvConfig.repositoryType)
-  return new DbRequestRecoverPassword(
+  return new DbRequestRecoverPasswordUseCase(
     accountRepository,
-    makeDbSendMailSession(),
+    makeSendMailSessionUseCase(),
     'src/infra/comunication/views/handlebars/auth/recover-password.hbs')
 }

@@ -1,6 +1,6 @@
 import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
 import { ValidationComposite } from '@/validation/validations'
-import { RecoverPassword } from '@/domain/usecases/auth/account'
+import { RecoverPasswordUseCase } from '@/domain/usecases/auth/account'
 import { AccountModel } from '@/domain/models/auth'
 import { badRequest, ok, serverError } from '@/presentation/helpers'
 import { InvalidCredentialsError } from '@/data/errors'
@@ -14,7 +14,7 @@ export interface RecoverPasswordRequest {
 export class RecoverPasswordController implements Controller<RecoverPasswordRequest, AccountModel | Error> {
   constructor (
     private readonly validations: ValidationComposite,
-    private readonly recoverPassword: RecoverPassword
+    private readonly recoverPassword: RecoverPasswordUseCase
   ) {}
 
   async handle (request: HttpRequest<RecoverPasswordRequest>): Promise<HttpResponse<AccountModel | Error>> {

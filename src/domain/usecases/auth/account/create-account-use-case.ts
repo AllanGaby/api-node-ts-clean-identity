@@ -6,6 +6,6 @@ export interface CreateAccountDTO {
   password: string
 }
 
-export interface CreateAccount {
+export interface CreateAccountUseCase {
   create: (data: CreateAccountDTO) => Promise<SessionModel>
 }

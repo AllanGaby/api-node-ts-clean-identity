@@ -1,11 +1,11 @@
-import { DbAuthenticationAccount } from './authentication-account-use-case'
+import { DbAuthenticationAccountUseCase } from './authentication-account-use-case'
 import { mockAuthenticationAccountDTO, throwError, HashComparerSpy, mockAccountModel, EncrypterSpy, CreateSessionRepositorySpy, CacheCreateSpy, CacheRecoverSpy } from '@/data/test'
 import { GetAccountByEmailRepositorySpy } from '@/data/test/auth/account/mock-account-repository'
 import { SessionType } from '@/domain/models/auth'
 import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {
-  sut: DbAuthenticationAccount
+  sut: DbAuthenticationAccountUseCase
   cacheRecoverSpy: CacheRecoverSpy
   getAccountByEmailRepositorySpy: GetAccountByEmailRepositorySpy
   hashComparerSpy: HashComparerSpy
@@ -22,7 +22,7 @@ const makeSut = (): sutTypes => {
   const cacheCreateSpy = new CacheCreateSpy()
   const createSessionRepositorySpy = new CreateSessionRepositorySpy()
   const encrypterSpy = new EncrypterSpy()
-  const sut = new DbAuthenticationAccount(cacheRecoverSpy, getAccountByEmailRepositorySpy, hashComparerSpy, cacheCreateSpy, createSessionRepositorySpy, encrypterSpy)
+  const sut = new DbAuthenticationAccountUseCase(cacheRecoverSpy, getAccountByEmailRepositorySpy, hashComparerSpy, cacheCreateSpy, createSessionRepositorySpy, encrypterSpy)
   return {
     sut,
     cacheRecoverSpy,
@@ -34,7 +34,7 @@ const makeSut = (): sutTypes => {
   }
 }
 
-describe('DbAuthenticationAccount', () => {
+describe('DbAuthenticationAccountUseCase', () => {
   test('Should call CacheRecover with correct value', async () => {
     const { sut, cacheRecoverSpy } = makeSut()
     const authenticationAccountDTO = mockAuthenticationAccountDTO()

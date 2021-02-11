@@ -1,6 +1,6 @@
 import { Middleware, HttpRequest, HttpResponse } from '@/presentation/protocols'
-import { ShowSessionByAccessToken } from '@/domain/usecases/auth/session'
-import { ShowAccount } from '@/domain/usecases/auth/account'
+import { ShowSessionByAccessTokenUseCase } from '@/domain/usecases/auth/session'
+import { ShowAccountUseCase } from '@/domain/usecases/auth/account'
 import { SessionType } from '@/domain/models/auth'
 import { badRequest, serverError, ok, forbidden, unauthorized } from '@/presentation/helpers'
 import { MissingParamError } from '@/validation/errors'
@@ -16,8 +16,8 @@ export interface AuthenticationMiddlewareReponse {
 export class AuthenticationMiddleware implements Middleware<any, AuthenticationMiddlewareReponse | Error> {
   constructor (
     private readonly tokenName: string,
-    private readonly showSessionByAccessToken: ShowSessionByAccessToken,
-    private readonly showAccount: ShowAccount
+    private readonly showSessionByAccessToken: ShowSessionByAccessTokenUseCase,
+    private readonly showAccount: ShowAccountUseCase
   ) {}
 
   async handle (request: HttpRequest<any>): Promise<HttpResponse<AuthenticationMiddlewareReponse | Error>> {

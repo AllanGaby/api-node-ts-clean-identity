@@ -4,6 +4,6 @@ export interface ShowAccountDTO {
   accountId: string
 }
 
-export interface ShowAccount {
+export interface ShowAccountUseCase {
   show: (filter: ShowAccountDTO) => Promise<AccountModel>
 }

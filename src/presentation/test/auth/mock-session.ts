@@ -1,11 +1,11 @@
-import { ShowAccountBySession, ShowAccountBySessionDTO, Logout, LogoutDTO, ShowSessionByAccessToken, ShowSessionByAccessTokenDTO, AuthenticationAccount, AuthenticationAccountDTO } from '@/domain/usecases/auth/session'
+import { ShowAccountBySessionUseCase, ShowAccountBySessionDTO, LogoutUseCase, LogoutDTO, ShowSessionByAccessTokenUseCase, ShowSessionByAccessTokenDTO, AuthenticationAccountUseCase, AuthenticationAccountDTO } from '@/domain/usecases/auth/session'
 import { AccountModel, AuthenticationModel, SessionModel, SessionType } from '@/domain/models/auth'
 import { mockAccountModel, mockAuthenticationModel, mockSessionModel } from '@/data/test'
 import { HttpRequest } from '@/presentation/protocols'
 import { LogoutRequest } from '@/presentation/controllers/auth/session'
 import faker from 'faker'
 
-export class ShowAccountBySessionSpy implements ShowAccountBySession {
+export class ShowAccountBySessionSpy implements ShowAccountBySessionUseCase {
   params: ShowAccountBySessionDTO
   account: AccountModel = mockAccountModel()
 
@@ -27,7 +27,7 @@ export const mockAuthenticationRequest = (tokenName: string): HttpRequest<any> =
   }
 })
 
-export class LogoutSpy implements Logout {
+export class LogoutSpy implements LogoutUseCase {
   params: LogoutDTO
   error: Error = null
 
@@ -44,7 +44,7 @@ export const mockLogoutRequest = (): HttpRequest<LogoutRequest> => ({
   }
 })
 
-export class ShowSessionByAccessTokenSpy implements ShowSessionByAccessToken {
+export class ShowSessionByAccessTokenSpy implements ShowSessionByAccessTokenUseCase {
   params: ShowSessionByAccessTokenDTO
   session: SessionModel = mockSessionModel(SessionType.authentication)
 
@@ -54,7 +54,7 @@ export class ShowSessionByAccessTokenSpy implements ShowSessionByAccessToken {
   }
 }
 
-export class AuthenticationAccountSpy implements AuthenticationAccount {
+export class AuthenticationAccountSpy implements AuthenticationAccountUseCase {
   params: AuthenticationAccountDTO
   authentication: AuthenticationModel = mockAuthenticationModel()
 

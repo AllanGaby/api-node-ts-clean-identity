@@ -5,6 +5,6 @@ export interface AuthenticationAccountDTO {
   password: string
 }
 
-export interface AuthenticationAccount {
+export interface AuthenticationAccountUseCase {
   authenticate: (data: AuthenticationAccountDTO) => Promise<AuthenticationModel>
 }

@@ -1,6 +1,6 @@
 import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
 import { ValidationComposite } from '@/validation/validations'
-import { UpdateAccount } from '@/domain/usecases/auth/account'
+import { UpdateAccountUseCase } from '@/domain/usecases/auth/account'
 import { AccountModel } from '@/domain/models/auth'
 import { badRequest, serverError, ok } from '@/presentation/helpers'
 
@@ -18,7 +18,7 @@ export interface UpdateAccountRequest {
 export class UpdateAccountController implements Controller<UpdateAccountRequest, AccountModel | Error> {
   constructor (
     private readonly validations: ValidationComposite,
-    private readonly updateAccount: UpdateAccount
+    private readonly updateAccount: UpdateAccountUseCase
   ) {}
 
   async handle (request: HttpRequest<UpdateAccountRequest>): Promise<HttpResponse<AccountModel | Error>> {

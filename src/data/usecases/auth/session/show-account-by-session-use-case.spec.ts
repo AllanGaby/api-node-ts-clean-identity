@@ -1,8 +1,8 @@
-import { DbShowAccountBySession } from './show-account-by-session-use-case'
+import { DbShowAccountBySessionUseCase } from './show-account-by-session-use-case'
 import { DecrypterSpy, mockShowAccountBySessionDTO, throwError, GetSessionByIdRepositorySpy, GetAccountByIdRepositorySpy } from '@/data/test'
 
 interface sutTypes {
-  sut: DbShowAccountBySession
+  sut: DbShowAccountBySessionUseCase
   decrypterSpy: DecrypterSpy
   getSessionByIdRepositorySpy: GetSessionByIdRepositorySpy
   getAccountByIdRepositorySpy: GetAccountByIdRepositorySpy
@@ -12,7 +12,7 @@ const makeSut = (): sutTypes => {
   const decrypterSpy = new DecrypterSpy()
   const getSessionByIdRepositorySpy = new GetSessionByIdRepositorySpy()
   const getAccountByIdRepositorySpy = new GetAccountByIdRepositorySpy()
-  const sut = new DbShowAccountBySession(decrypterSpy, getSessionByIdRepositorySpy, getAccountByIdRepositorySpy)
+  const sut = new DbShowAccountBySessionUseCase(decrypterSpy, getSessionByIdRepositorySpy, getAccountByIdRepositorySpy)
   return {
     sut,
     decrypterSpy,
@@ -21,7 +21,7 @@ const makeSut = (): sutTypes => {
   }
 }
 
-describe('DbShowAccountBySession', () => {
+describe('DbShowAccountBySessionUseCase', () => {
   test('Should call Decrypter with correct value', async () => {
     const { sut, decrypterSpy } = makeSut()
     const showAccountBySession = mockShowAccountBySessionDTO()

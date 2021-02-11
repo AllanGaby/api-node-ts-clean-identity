@@ -1,9 +1,9 @@
-import { ActiveAccount, ActiveAccountDTO } from '@/domain/usecases/auth/account'
+import { ActiveAccountUseCase, ActiveAccountDTO } from '@/domain/usecases/auth/account'
 import { AccountModel, SessionType } from '@/domain/models/auth'
 import { GetAccountByIdRepository, UpdateAccountRepository, GetSessionByIdRepository, DeleteSessionByIdRepository } from '@/data/repositories/auth'
 import { InvalidCredentialsError } from '@/data/errors'
 
-export class DbActiveAccount implements ActiveAccount {
+export class DbActiveAccountUseCase implements ActiveAccountUseCase {
   constructor (
     private readonly getSessionByIdRepository: GetSessionByIdRepository,
     private readonly getAccountByIdRepository: GetAccountByIdRepository,

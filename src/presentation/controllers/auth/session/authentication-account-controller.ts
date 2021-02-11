@@ -1,14 +1,14 @@
 import { badRequest, ok, serverError, unauthorized } from '@/presentation/helpers'
 import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
 import { ValidationComposite } from '@/validation/validations'
-import { AuthenticationAccount, AuthenticationAccountDTO } from '@/domain/usecases/auth/session'
+import { AuthenticationAccountUseCase, AuthenticationAccountDTO } from '@/domain/usecases/auth/session'
 import { AuthenticationModel } from '@/domain/models/auth'
 import { InvalidCredentialsError } from '@/data/errors'
 
 export class AuthenticationAccountController implements Controller<AuthenticationAccountDTO, AuthenticationModel | Error> {
   constructor (
     private readonly validations: ValidationComposite,
-    private readonly authenticationAccount: AuthenticationAccount
+    private readonly authenticationAccount: AuthenticationAccountUseCase
   ) {}
 
   async handle (request: HttpRequest<AuthenticationAccountDTO>): Promise<HttpResponse<AuthenticationModel | Error>> {

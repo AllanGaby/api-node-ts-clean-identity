@@ -1,16 +1,16 @@
-import { CreateAccount, CreateAccountDTO } from '@/domain/usecases/auth/account'
-import { SendMailSession } from '@/domain/usecases/auth/session'
+import { CreateAccountUseCase, CreateAccountDTO } from '@/domain/usecases/auth/account'
+import { SendMailSessionUseCase } from '@/domain/usecases/auth/session'
 import { SessionModel, SessionType } from '@/domain/models/auth'
 import { GetAccountByEmailRepository, CreateAccountRepository } from '@/data/repositories/auth/account'
 import { HashCreator } from '@/data/protocols/criptography'
 import { EmailInUseError } from '@/data/errors'
 
-export class DbCreateAccount implements CreateAccount {
+export class DbCreateAccountUseCase implements CreateAccountUseCase {
   constructor (
     private readonly getAccountByEmailRepository: GetAccountByEmailRepository,
     private readonly hashCreator: HashCreator,
     private readonly createAccountRepository: CreateAccountRepository,
-    private readonly sendMailSession: SendMailSession,
+    private readonly sendMailSession: SendMailSessionUseCase,
     private readonly mailFilePath: string
   ) {}
 

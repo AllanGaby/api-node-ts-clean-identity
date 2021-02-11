@@ -1,5 +1,5 @@
 import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
-import { GetFilenameToAccountAvatar } from '@/domain/usecases/auth/account'
+import { GetFilenameToAccountAvatarUseCase } from '@/domain/usecases/auth/account'
 import { serverError, ok } from '@/presentation/helpers'
 import { AvatarModel } from '@/domain/models/auth'
 
@@ -11,7 +11,7 @@ export interface ShowAvatarAccountRequest {
 
 export class ShowAvatarAccountBySessionController implements Controller<ShowAvatarAccountRequest, AvatarModel | Error> {
   constructor (
-    private readonly getFilenameToAccountAvatar: GetFilenameToAccountAvatar,
+    private readonly getFilenameToAccountAvatar: GetFilenameToAccountAvatarUseCase,
     private readonly uploadDir: string
   ) {}
 

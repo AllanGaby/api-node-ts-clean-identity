@@ -1,10 +1,10 @@
-import { DbSendMailSession } from './send-mail-session-use-case'
+import { DbSendMailSessionUseCase } from './send-mail-session-use-case'
 import { CreateSessionRepositorySpy, mockSendMailSessionDTO, SendToQueueSpy, ConsumeQueueSpy, ExecuteQueueSpy, throwError } from '@/data/test'
 import { SessionType } from '@/domain/models/auth'
 import faker from 'faker'
 
 interface sutTypes {
-  sut: DbSendMailSession
+  sut: DbSendMailSessionUseCase
   createSessionRepositorySpy: CreateSessionRepositorySpy
   queueName: string
   sendToQueueSpy: SendToQueueSpy
@@ -18,7 +18,7 @@ const makeSut = (): sutTypes => {
   const sendToQueueSpy = new SendToQueueSpy()
   const consumeQueueSpy = new ConsumeQueueSpy()
   const executeQueueSpy = new ExecuteQueueSpy()
-  const sut = new DbSendMailSession(createSessionRepositorySpy, queueName, sendToQueueSpy, consumeQueueSpy, executeQueueSpy)
+  const sut = new DbSendMailSessionUseCase(createSessionRepositorySpy, queueName, sendToQueueSpy, consumeQueueSpy, executeQueueSpy)
   return {
     sut,
     createSessionRepositorySpy,
@@ -29,7 +29,7 @@ const makeSut = (): sutTypes => {
   }
 }
 
-describe('DbSendMailSession', () => {
+describe('DbSendMailSessionUseCase', () => {
   test('Should call CreateSessionRepository with correct value', async () => {
     const { sut, createSessionRepositorySpy } = makeSut()
     const sendMailAccountDTO = mockSendMailSessionDTO(SessionType.activeAccount)

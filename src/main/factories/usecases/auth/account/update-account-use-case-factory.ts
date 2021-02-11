@@ -1,13 +1,14 @@
-import { DbUpdateAccount } from '@/data/usecases/auth/account'
+import { UpdateAccountUseCase } from '@/domain/usecases/auth/account'
+import { DbUpdateAccountUseCase } from '@/data/usecases/auth/account'
 import { BCrypterHasherAdapter } from '@/infra/criptografy'
-import { makeDbSendMailSession } from '@/main/factories/usecases/auth/session'
+import { makeSendMailSessionUseCase } from '@/main/factories/usecases/auth/session'
 import { LocalStorage } from '@/infra/storage'
 import { EnvConfig } from '@/main/config/env'
 import { RepositoryFactory } from '@/infra/db'
 import { CacheFactory } from '@/infra/cache'
 
-export const makeDbUpdateAccount = (): DbUpdateAccount => {
-  const sendMailSession = makeDbSendMailSession()
+export const makeUpdateAccountUseCase = (): UpdateAccountUseCase => {
+  const sendMailSession = makeSendMailSessionUseCase()
   const acccountRepository = RepositoryFactory.getAccountRepository(EnvConfig.repositoryType)
   const sessionRepository = RepositoryFactory.getSessionRepository(EnvConfig.repositoryType)
   const hasherAdapter = new BCrypterHasherAdapter(12)
@@ -16,7 +17,7 @@ export const makeDbUpdateAccount = (): DbUpdateAccount => {
     uploadDir: 'uploads'
   })
   const cacheAdapter = CacheFactory.getCacheAdapter(EnvConfig.cacheType)
-  return new DbUpdateAccount(
+  return new DbUpdateAccountUseCase(
     acccountRepository,
     hasherAdapter,
     sessionRepository,

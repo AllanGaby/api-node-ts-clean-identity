@@ -1,12 +1,12 @@
 import { HttpRequest } from '@/presentation/protocols'
-import { CreateAccount, CreateAccountDTO, UpdateAccount, UpdateAccountDTO, ActiveAccount, ActiveAccountDTO, RecoverPassword, RecoverPasswordDTO, RequestRecoverPassword, RequestRecoverPasswordDTO, ShowAccount, ShowAccountDTO, GetFilenameToAccountAvatar, GetFilenameToAccountAvatarDTO } from '@/domain/usecases/auth/account'
+import { CreateAccountUseCase, CreateAccountDTO, UpdateAccountUseCase, UpdateAccountDTO, ActiveAccountUseCase, ActiveAccountDTO, RecoverPasswordUseCase, RecoverPasswordDTO, RequestRecoverPasswordUseCase, RequestRecoverPasswordDTO, ShowAccountUseCase, ShowAccountDTO, GetFilenameToAccountAvatarUseCase, GetFilenameToAccountAvatarDTO } from '@/domain/usecases/auth/account'
 import { AccountModel, SessionModel, AvatarModel } from '@/domain/models/auth'
 import { mockAccountModel, mockSessionModel } from '@/data/test'
 import { CreateAccountRequest, ActiveAccountRequest, RecoverPasswordRequest, UpdateAccountRequest, ShowAccountRequest, ShowAccountByIdRequest, ShowAvatarAccountRequest } from '@/presentation/controllers/auth/account'
 import faker from 'faker'
 import path from 'path'
 
-export class CreateAccountSpy implements CreateAccount {
+export class CreateAccountSpy implements CreateAccountUseCase {
   session: SessionModel = mockSessionModel()
   params: CreateAccountDTO
 
@@ -28,7 +28,7 @@ export const mockCreateAccountRequest = (): HttpRequest<CreateAccountRequest> =>
   }
 }
 
-export class UpdateAccountSpy implements UpdateAccount {
+export class UpdateAccountSpy implements UpdateAccountUseCase {
   params: UpdateAccountDTO
   account: AccountModel = mockAccountModel()
 
@@ -54,7 +54,7 @@ export const mockUpdateAccountRequest = (): HttpRequest<UpdateAccountRequest> =>
   }
 }
 
-export class ActiveAccountSpy implements ActiveAccount {
+export class ActiveAccountSpy implements ActiveAccountUseCase {
   params: ActiveAccountDTO
   account: AccountModel = mockAccountModel()
 
@@ -70,7 +70,7 @@ export const mockActiveAccountRequest = (): HttpRequest<ActiveAccountRequest> =>
   }
 })
 
-export class RecoverPasswordSpy implements RecoverPassword {
+export class RecoverPasswordSpy implements RecoverPasswordUseCase {
   params: RecoverPasswordDTO
   account: AccountModel = mockAccountModel()
 
@@ -91,7 +91,7 @@ export const mockRecoverPasswordRequest = (): HttpRequest<RecoverPasswordRequest
   }
 }
 
-export class RequestRecoverPasswordSpy implements RequestRecoverPassword {
+export class RequestRecoverPasswordSpy implements RequestRecoverPasswordUseCase {
   params: RequestRecoverPasswordDTO
   session: SessionModel = mockSessionModel()
 
@@ -107,7 +107,7 @@ export const mockRequestRecoverPasswordRequest = (): HttpRequest<RequestRecoverP
   }
 })
 
-export class ShowAccountSpy implements ShowAccount {
+export class ShowAccountSpy implements ShowAccountUseCase {
   params: ShowAccountDTO
   account: AccountModel = mockAccountModel()
 
@@ -131,7 +131,7 @@ export const mockShowAccountByIdRequest = (): HttpRequest<ShowAccountByIdRequest
   }
 })
 
-export class GetFilenameToAccountAvatarSpy implements GetFilenameToAccountAvatar {
+export class GetFilenameToAccountAvatarSpy implements GetFilenameToAccountAvatarUseCase {
   params: GetFilenameToAccountAvatarDTO
   avatar: AvatarModel = {
     avatar_file_path: `${faker.system.directoryPath()}${path.sep}${faker.system.fileName()}.${faker.system.fileExt(faker.system.mimeType())}`

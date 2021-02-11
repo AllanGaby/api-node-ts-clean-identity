@@ -1,11 +1,11 @@
-import { DbLogout } from './logout-use-case'
+import { DbLogoutUseCase } from './logout-use-case'
 import { GetSessionByIdRepositorySpy, DeleteSessionByIdRepositorySpy, mockLogoutDTO, mockSessionModel } from '@/data/test/auth/session'
 import { CacheRecoverSpy, CacheRemoveSpy } from '@/data/test'
 import { throwError } from '@/data/test'
 import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {
-  sut: DbLogout
+  sut: DbLogoutUseCase
   getSessionByIdRepositorySpy: GetSessionByIdRepositorySpy
   deleteSessionByIdRepositorySpy: DeleteSessionByIdRepositorySpy
   cacheRecoverSpy: CacheRecoverSpy
@@ -17,7 +17,7 @@ const makeSut = (): sutTypes => {
   const deleteSessionByIdRepositorySpy = new DeleteSessionByIdRepositorySpy()
   const cacheRecoverSpy = new CacheRecoverSpy()
   const cacheRemoveSpy = new CacheRemoveSpy()
-  const sut = new DbLogout(getSessionByIdRepositorySpy, deleteSessionByIdRepositorySpy, cacheRecoverSpy, cacheRemoveSpy)
+  const sut = new DbLogoutUseCase(getSessionByIdRepositorySpy, deleteSessionByIdRepositorySpy, cacheRecoverSpy, cacheRemoveSpy)
   return {
     sut,
     getSessionByIdRepositorySpy,
@@ -27,7 +27,7 @@ const makeSut = (): sutTypes => {
   }
 }
 
-describe('DbLogout', () => {
+describe('DbLogoutUseCase', () => {
   test('Should call CacheRecover with correct value', async () => {
     const { sut, cacheRecoverSpy } = makeSut()
     const request = mockLogoutDTO()

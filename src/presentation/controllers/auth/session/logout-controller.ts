@@ -1,5 +1,5 @@
 import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
-import { Logout } from '@/domain/usecases/auth/session'
+import { LogoutUseCase } from '@/domain/usecases/auth/session'
 import { serverError, noContent, forbidden } from '@/presentation/helpers'
 import { InvalidCredentialsError } from '@/data/errors'
 
@@ -11,7 +11,7 @@ export interface LogoutRequest {
 
 export class LogoutController implements Controller<LogoutRequest, any | Error> {
   constructor (
-    private readonly logout: Logout
+    private readonly logout: LogoutUseCase
   ) {}
 
   async handle (request: HttpRequest<LogoutRequest>): Promise<HttpResponse<any | Error>> {

@@ -1,9 +1,9 @@
-import { GetFilenameToAccountAvatar, GetFilenameToAccountAvatarDTO } from '@/domain/usecases/auth/account'
+import { GetFilenameToAccountAvatarUseCase, GetFilenameToAccountAvatarDTO } from '@/domain/usecases/auth/account'
 import { GetAccountByIdRepository } from '@/data/repositories/auth/account'
 import { AvatarModel } from '@/domain/models/auth'
 import path from 'path'
 
-export class DbGetFilenameToAccountAvatar implements GetFilenameToAccountAvatar {
+export class DbGetFilenameToAccountAvatarUseCase implements GetFilenameToAccountAvatarUseCase {
   constructor (private readonly getAccountByIdRepository: GetAccountByIdRepository) {}
 
   async getPath ({ accountId, uploadDir }: GetFilenameToAccountAvatarDTO): Promise<AvatarModel> {

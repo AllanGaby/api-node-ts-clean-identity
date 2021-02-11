@@ -1,9 +1,9 @@
-import { SendMailSession, SendMailSessionDTO } from '@/domain/usecases/auth/session'
+import { SendMailSessionUseCase, SendMailSessionDTO } from '@/domain/usecases/auth/session'
 import { SessionModel } from '@/domain/models/auth'
 import { CreateSessionRepository } from '@/data/repositories/auth/session'
 import { ConsumeQueue, SendToQueue, ExecuteQueue } from '@/data/protocols/message-queue'
 
-export class DbSendMailSession implements SendMailSession {
+export class DbSendMailSessionUseCase implements SendMailSessionUseCase {
   constructor (
     private readonly createSessionRepository: CreateSessionRepository,
     private readonly queueName: string,

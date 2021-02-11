@@ -1,4 +1,4 @@
-import { DbUpdateAccount } from './update-account-use-case'
+import { DbUpdateAccountUseCase } from './update-account-use-case'
 import { DeleteSessionByAccountIdRepositorySpy, GetAccountByIdRepositorySpy, UpdateAccountRepositorySpy } from '@/data/test/auth/account/mock-account-repository'
 import { CacheRemoveByPrefixSpy, CacheRemoveSpy, mockUpdateAccountDTO, SendMailSessionSpy, throwError, UploadFileSpy } from '@/data/test'
 import { HashCreatorSpy } from '@/data/test/mock-criptography'
@@ -7,7 +7,7 @@ import faker from 'faker'
 import path from 'path'
 
 interface sutTypes {
-  sut: DbUpdateAccount
+  sut: DbUpdateAccountUseCase
   getAccountByIdRepositorySpy: GetAccountByIdRepositorySpy
   hashCreatorSpy: HashCreatorSpy
   deleteSessionByAccountIdSpy: DeleteSessionByAccountIdRepositorySpy
@@ -29,7 +29,7 @@ const makeSut = (): sutTypes => {
   const sendMailSessionSpy = new SendMailSessionSpy()
   const mailFilePath = faker.internet.url()
   const cacheRemoveSpy = new CacheRemoveSpy()
-  const sut = new DbUpdateAccount(
+  const sut = new DbUpdateAccountUseCase(
     getAccountByIdRepositorySpy,
     hashCreatorSpy,
     deleteSessionByAccountIdSpy,
@@ -53,7 +53,7 @@ const makeSut = (): sutTypes => {
   }
 }
 
-describe('DbUpdateAccount', () => {
+describe('DbUpdateAccountUseCase', () => {
   test('Should call GetAccountByIdRepostirory with correct values', async () => {
     const { sut, getAccountByIdRepositorySpy } = makeSut()
     const updateAccountDTO = mockUpdateAccountDTO()

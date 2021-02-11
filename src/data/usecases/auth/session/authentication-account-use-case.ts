@@ -1,11 +1,11 @@
-import { AuthenticationAccount, AuthenticationAccountDTO } from '@/domain/usecases/auth/session'
+import { AuthenticationAccountUseCase, AuthenticationAccountDTO } from '@/domain/usecases/auth/session'
 import { GetAccountByEmailRepository, CreateSessionRepository } from '@/data/repositories/auth'
 import { HashComparer, Encrypter } from '@/data/protocols/criptography'
 import { SessionType, AuthenticationModel, AccountModel } from '@/domain/models/auth'
 import { InvalidCredentialsError } from '@/data/errors'
 import { CacheCreate, CacheRecover } from '@/data/protocols/cache'
 
-export class DbAuthenticationAccount implements AuthenticationAccount {
+export class DbAuthenticationAccountUseCase implements AuthenticationAccountUseCase {
   constructor (
     private readonly cacheRecover: CacheRecover,
     private readonly getAccountByEmailRepository: GetAccountByEmailRepository,

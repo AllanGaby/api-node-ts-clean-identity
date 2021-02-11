@@ -1,13 +1,13 @@
-import { RequestRecoverPassword, RequestRecoverPasswordDTO } from '@/domain/usecases/auth/account'
-import { SendMailSession } from '@/domain/usecases/auth/session'
+import { RequestRecoverPasswordUseCase, RequestRecoverPasswordDTO } from '@/domain/usecases/auth/account'
+import { SendMailSessionUseCase } from '@/domain/usecases/auth/session'
 import { GetAccountByEmailRepository } from '@/data/repositories/auth/account'
 import { SessionModel, SessionType } from '@/domain/models/auth'
 import { AccountNotFoundError } from '@/data/errors'
 
-export class DbRequestRecoverPassword implements RequestRecoverPassword {
+export class DbRequestRecoverPasswordUseCase implements RequestRecoverPasswordUseCase {
   constructor (
     private readonly getAccountByEmailRepository: GetAccountByEmailRepository,
-    private readonly sendMailSession: SendMailSession,
+    private readonly sendMailSession: SendMailSessionUseCase,
     private readonly mailFilePath: string
   ) {}
 

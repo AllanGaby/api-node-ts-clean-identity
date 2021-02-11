@@ -1,5 +1,5 @@
 import { makeUpdateAccountValidation } from '@/main/factories/validations/auth'
-import { makeDbUpdateAccount } from '@/main/factories/usecases/auth/account'
+import { makeUpdateAccountUseCase } from '@/main/factories/usecases/auth/account'
 import { UpdateAccountController } from '@/presentation/controllers/auth/account'
 import { EmailValidatorAdapter } from '@/infra/validators/email-validator-adapter'
 
@@ -10,5 +10,5 @@ export const makeUpdateAccountController = (): UpdateAccountController => {
       minLengthPassword: 6,
       emailValidator: new EmailValidatorAdapter()
     }),
-    makeDbUpdateAccount())
+    makeUpdateAccountUseCase())
 }

@@ -1,10 +1,10 @@
 import { InvalidCredentialsError } from '@/data/errors'
 import { DeleteSessionByIdRepository, GetSessionByIdRepository } from '@/data/repositories/auth'
 import { CacheRecover, CacheRemove } from '@/data/protocols/cache'
-import { Logout, LogoutDTO } from '@/domain/usecases/auth/session'
+import { LogoutUseCase, LogoutDTO } from '@/domain/usecases/auth/session'
 import { SessionModel } from '@/domain/models/auth'
 
-export class DbLogout implements Logout {
+export class DbLogoutUseCase implements LogoutUseCase {
   constructor(
     private readonly getSessionByIdRepository: GetSessionByIdRepository,
     private readonly deleteSessionByIdRepository: DeleteSessionByIdRepository,

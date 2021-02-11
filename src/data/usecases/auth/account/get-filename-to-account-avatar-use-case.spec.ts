@@ -1,24 +1,24 @@
-import { DbGetFilenameToAccountAvatar } from './get-filename-to-account-avatar-use-case'
+import { DbGetFilenameToAccountAvatarUseCase } from './get-filename-to-account-avatar-use-case'
 import { GetAccountByIdRepositorySpy, mockGetFilenameToAccountAvatarDTO } from '@/data/test/auth/account'
 import { throwError } from '@/data/test'
 import faker from 'faker'
 import path from 'path'
 
 interface sutTypes {
-  sut: DbGetFilenameToAccountAvatar
+  sut: DbGetFilenameToAccountAvatarUseCase
   getAccountByIdRepositorySpy: GetAccountByIdRepositorySpy
 }
 
 const makeSut = (): sutTypes => {
   const getAccountByIdRepositorySpy = new GetAccountByIdRepositorySpy()
-  const sut = new DbGetFilenameToAccountAvatar(getAccountByIdRepositorySpy)
+  const sut = new DbGetFilenameToAccountAvatarUseCase(getAccountByIdRepositorySpy)
   return {
     sut,
     getAccountByIdRepositorySpy
   }
 }
 
-describe('DbGetFilenameToAccountAvatar', () => {
+describe('DbGetFilenameToAccountAvatarUseCase', () => {
   test('Should call GetAccountByIdRepository with correct value', async () => {
     const { sut, getAccountByIdRepositorySpy } = makeSut()
     const filter = mockGetFilenameToAccountAvatarDTO()

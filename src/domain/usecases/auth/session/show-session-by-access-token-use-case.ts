@@ -4,6 +4,6 @@ export interface ShowSessionByAccessTokenDTO {
   accessToken: string
 }
 
-export interface ShowSessionByAccessToken {
+export interface ShowSessionByAccessTokenUseCase {
   show: (filter: ShowSessionByAccessTokenDTO) => Promise<SessionModel>
 }

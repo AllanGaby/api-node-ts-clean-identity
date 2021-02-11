@@ -1,4 +1,4 @@
-import { SendMailContact, SendMailVariables, SendMailDTO, SendMail } from '@/domain/usecases/utils'
+import { SendMailContact, SendMailVariables, SendMailDTO, SendMailUseCase } from '@/domain/usecases/utils'
 import faker from 'faker'
 
 export const mockSendMailContact = (): SendMailContact => ({
@@ -20,7 +20,7 @@ export const mockSendMailDTO = (): SendMailDTO => ({
   sender: mockSendMailContact()
 })
 
-export class SendMailSpy implements SendMail {
+export class SendMailSpy implements SendMailUseCase {
   params: SendMailDTO
 
   async sendMail (params: SendMailDTO): Promise<void> {

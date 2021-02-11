@@ -1,10 +1,10 @@
-import { RecoverPassword, RecoverPasswordDTO } from '@/domain/usecases/auth/account'
+import { RecoverPasswordUseCase, RecoverPasswordDTO } from '@/domain/usecases/auth/account'
 import { AccountModel, SessionType } from '@/domain/models/auth'
 import { GetSessionByIdRepository, GetAccountByIdRepository, UpdateAccountRepository, DeleteSessionByAccountIdRepository } from '@/data/repositories/auth'
 import { HashCreator } from '@/data/protocols/criptography'
 import { InvalidCredentialsError } from '@/data/errors'
 
-export class DbRecoverPassword implements RecoverPassword {
+export class DbRecoverPasswordUseCase implements RecoverPasswordUseCase {
   constructor (
     private readonly getSessionByIdRepository: GetSessionByIdRepository,
     private readonly getAccountByIdRepository: GetAccountByIdRepository,

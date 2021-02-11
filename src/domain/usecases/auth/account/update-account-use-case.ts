@@ -8,6 +8,6 @@ export interface UpdateAccountDTO {
   avatarFilePath?: string
 }
 
-export interface UpdateAccount {
+export interface UpdateAccountUseCase {
   update: (data: UpdateAccountDTO) => Promise<AccountModel>
 }

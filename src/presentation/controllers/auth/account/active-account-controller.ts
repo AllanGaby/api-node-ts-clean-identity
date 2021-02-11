@@ -1,7 +1,7 @@
 import { badRequest, ok, serverError } from '@/presentation/helpers'
 import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
 import { ValidationComposite } from '@/validation/validations'
-import { ActiveAccount } from '@/domain/usecases/auth/account'
+import { ActiveAccountUseCase } from '@/domain/usecases/auth/account'
 import { AccountModel } from '@/domain/models/auth'
 import { InvalidCredentialsError } from '@/data/errors'
 
@@ -12,7 +12,7 @@ export interface ActiveAccountRequest {
 export class ActiveAccountController implements Controller<any, AccountModel | Error> {
   constructor (
     private readonly validations: ValidationComposite,
-    private readonly activeAccount: ActiveAccount
+    private readonly activeAccount: ActiveAccountUseCase
   ) {}
 
   async handle (request: HttpRequest<any>): Promise<HttpResponse<AccountModel | Error>> {

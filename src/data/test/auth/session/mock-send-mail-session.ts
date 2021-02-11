@@ -1,8 +1,8 @@
-import { SendMailSession, SendMailSessionDTO } from '@/domain/usecases/auth/session'
+import { SendMailSessionUseCase, SendMailSessionDTO } from '@/domain/usecases/auth/session'
 import { SessionModel } from '@/domain/models/auth'
 import { mockSessionModel } from './mock-session'
 
-export class SendMailSessionSpy implements SendMailSession {
+export class SendMailSessionSpy implements SendMailSessionUseCase {
   sendMailParams: SendMailSessionDTO
   session: SessionModel = mockSessionModel()
 

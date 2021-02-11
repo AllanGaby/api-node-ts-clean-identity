@@ -15,6 +15,6 @@ export interface SendMailDTO {
   subject: string
 }
 
-export interface SendMail {
+export interface SendMailUseCase {
   sendMail: (data: SendMailDTO) => Promise<void>
 }

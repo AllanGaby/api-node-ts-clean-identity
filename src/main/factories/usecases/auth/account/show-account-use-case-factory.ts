@@ -1,7 +1,8 @@
-import { DbShowAccount } from '@/data/usecases/auth/account'
+import { ShowAccountUseCase } from '@/domain/usecases/auth/account'
+import { DbShowAccountUseCase } from '@/data/usecases/auth/account'
 import { RepositoryFactory } from '@/infra/db'
 import { EnvConfig } from '@/main/config/env'
 
-export const makeDbShowAccount = (): DbShowAccount => {
-  return new DbShowAccount(RepositoryFactory.getAccountRepository(EnvConfig.repositoryType))
+export const makeShowAccountUseCase = (): ShowAccountUseCase => {
+  return new DbShowAccountUseCase(RepositoryFactory.getAccountRepository(EnvConfig.repositoryType))
 }

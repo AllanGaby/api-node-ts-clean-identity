@@ -5,6 +5,6 @@ export interface RecoverPasswordDTO {
   password: string
 }
 
-export interface RecoverPassword {
+export interface RecoverPasswordUseCase {
   recover: (data: RecoverPasswordDTO) => Promise<AccountModel>
 }

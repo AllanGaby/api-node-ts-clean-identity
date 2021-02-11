@@ -1,6 +1,6 @@
 import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
 import { ValidationComposite } from '@/validation/validations'
-import { ShowAccount } from '@/domain/usecases/auth/account'
+import { ShowAccountUseCase } from '@/domain/usecases/auth/account'
 import { AccountModel } from '@/domain/models/auth'
 import { badRequest, serverError, ok } from '@/presentation/helpers'
 
@@ -11,7 +11,7 @@ export interface ShowAccountByIdRequest {
 export class ShowAccountByIdController implements Controller<ShowAccountByIdRequest, AccountModel | Error> {
   constructor (
     private readonly validations: ValidationComposite,
-    private readonly showAccount: ShowAccount
+    private readonly showAccount: ShowAccountUseCase
   ) {}
 
   async handle (request: HttpRequest<ShowAccountByIdRequest>): Promise<HttpResponse<AccountModel | Error>> {

@@ -1,10 +1,10 @@
-import { DbRequestRecoverPassword } from './request-recover-password-use-case'
+import { DbRequestRecoverPasswordUseCase } from './request-recover-password-use-case'
 import { GetAccountByEmailRepositorySpy, throwError, mockAccountModel, SendMailSessionSpy } from '@/data/test'
 import { SessionType } from '@/domain/models/auth'
 import faker from 'faker'
 
 interface sutTypes {
-  sut: DbRequestRecoverPassword
+  sut: DbRequestRecoverPasswordUseCase
   getAccountByEmailRepositorySpy: GetAccountByEmailRepositorySpy
   sendMailSessionSpy: SendMailSessionSpy
   mailFilePath: string
@@ -15,7 +15,7 @@ const makeSut = (): sutTypes => {
   getAccountByEmailRepositorySpy.account = mockAccountModel()
   const sendMailSessionSpy = new SendMailSessionSpy()
   const mailFilePath = faker.internet.url()
-  const sut = new DbRequestRecoverPassword(getAccountByEmailRepositorySpy, sendMailSessionSpy, mailFilePath)
+  const sut = new DbRequestRecoverPasswordUseCase(getAccountByEmailRepositorySpy, sendMailSessionSpy, mailFilePath)
   return {
     sut,
     getAccountByEmailRepositorySpy,
@@ -24,7 +24,7 @@ const makeSut = (): sutTypes => {
   }
 }
 
-describe('DbRequestRecoverPassword', () => {
+describe('DbRequestRecoverPasswordUseCase', () => {
   test('Should call GetAccountByEmailRepository with correct value', async () => {
     const { sut, getAccountByEmailRepositorySpy } = makeSut()
     const email = faker.internet.email()

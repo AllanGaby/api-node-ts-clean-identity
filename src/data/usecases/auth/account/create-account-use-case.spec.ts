@@ -1,10 +1,10 @@
-import { DbCreateAccount } from './create-account-use-case'
+import { DbCreateAccountUseCase } from './create-account-use-case'
 import { GetAccountByEmailRepositorySpy, CreateAccountRepositorySpy, mockCreateAccountDTO, mockAccountModel, HashCreatorSpy, throwError, SendMailSessionSpy } from '@/data/test'
 import faker from 'faker'
 import { SessionType } from '@/domain/models/auth'
 
 interface sutTypes {
-  sut: DbCreateAccount
+  sut: DbCreateAccountUseCase
   getAccountByEmailRepositorySpy: GetAccountByEmailRepositorySpy
   hashCreatorSpy: HashCreatorSpy
   createAccountRepositorySpy: CreateAccountRepositorySpy
@@ -19,7 +19,7 @@ const makeSut = (): sutTypes => {
   const sendMailSessionSpy = new SendMailSessionSpy()
   const mailFilePath = faker.internet.url()
   const sut =
-    new DbCreateAccount(
+    new DbCreateAccountUseCase(
       getAccountByEmailRepositorySpy,
       hashCreatorSpy,
       createAccountRepositorySpy,
@@ -35,7 +35,7 @@ const makeSut = (): sutTypes => {
   }
 }
 
-describe('DbCreateAccount', () => {
+describe('DbCreateAccountUseCase', () => {
   test('Should call GetAccountByEmailRepository with correct value', async () => {
     const { sut, getAccountByEmailRepositorySpy } = makeSut()
     const createAccountParams = mockCreateAccountDTO()

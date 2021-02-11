@@ -1,6 +1,6 @@
 import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
 import { ValidationComposite } from '@/validation/validations'
-import { RequestRecoverPassword, RequestRecoverPasswordDTO } from '@/domain/usecases/auth/account'
+import { RequestRecoverPasswordUseCase, RequestRecoverPasswordDTO } from '@/domain/usecases/auth/account'
 import { badRequest, serverError, ok } from '@/presentation/helpers'
 import { SessionModel } from '@/domain/models/auth'
 import { AccountNotFoundError } from '@/data/errors'
@@ -8,7 +8,7 @@ import { AccountNotFoundError } from '@/data/errors'
 export class RequestRecoverPasswordController implements Controller<RequestRecoverPasswordDTO, SessionModel | Error> {
   constructor (
     private readonly validations: ValidationComposite,
-    private readonly requestRecoverPassword: RequestRecoverPassword
+    private readonly requestRecoverPassword: RequestRecoverPasswordUseCase
   ) {}
 
   async handle (request: HttpRequest<RequestRecoverPasswordDTO>): Promise<HttpResponse<SessionModel | Error>> {

@@ -1,5 +1,5 @@
 import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
-import { ShowAccount } from '@/domain/usecases/auth/account'
+import { ShowAccountUseCase } from '@/domain/usecases/auth/account'
 import { AccountModel } from '@/domain/models/auth'
 import { serverError, ok } from '@/presentation/helpers'
 
@@ -11,7 +11,7 @@ export interface ShowAccountRequest {
 
 export class ShowAccountBySessionController implements Controller<ShowAccountRequest, AccountModel | Error> {
   constructor (
-    private readonly showAccount: ShowAccount
+    private readonly showAccount: ShowAccountUseCase
   ) {}
 
   async handle (request: HttpRequest<ShowAccountRequest>): Promise<HttpResponse<AccountModel | Error>> {

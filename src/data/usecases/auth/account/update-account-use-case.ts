@@ -3,11 +3,11 @@ import { HashCreator } from '@/data/protocols/criptography'
 import { UploadFile } from '@/data/protocols/storage'
 import { GetAccountByIdRepository, UpdateAccountRepository, DeleteSessionByAccountIdRepository } from '@/data/repositories/auth'
 import { AccountModel, SessionType } from '@/domain/models/auth'
-import { UpdateAccount, UpdateAccountDTO } from '@/domain/usecases/auth/account'
-import { SendMailSession } from '@/domain/usecases/auth/session'
+import { UpdateAccountUseCase, UpdateAccountDTO } from '@/domain/usecases/auth/account'
+import { SendMailSessionUseCase } from '@/domain/usecases/auth/session'
 import path from 'path'
 
-export class DbUpdateAccount implements UpdateAccount {
+export class DbUpdateAccountUseCase implements UpdateAccountUseCase {
   constructor (
     private readonly getAccountByIdRepository: GetAccountByIdRepository,
     private readonly hashCreator: HashCreator,
@@ -15,7 +15,7 @@ export class DbUpdateAccount implements UpdateAccount {
     private readonly cacheRemoveByPrefix: CacheRemoveByPrefix,    
     private readonly uploadFile: UploadFile,    
     private readonly updateAccountRepository: UpdateAccountRepository,
-    private readonly sendMailSession: SendMailSession,
+    private readonly sendMailSession: SendMailSessionUseCase,
     private readonly mailFilePath: string,
     private readonly cacheRemove: CacheRemove
   ) {}

@@ -4,6 +4,6 @@ export interface RequestRecoverPasswordDTO {
   email: string
 }
 
-export interface RequestRecoverPassword {
+export interface RequestRecoverPasswordUseCase {
   request: (data: RequestRecoverPasswordDTO) => Promise<SessionModel>
 }

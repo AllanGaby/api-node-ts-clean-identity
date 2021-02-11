@@ -9,6 +9,6 @@ export interface SendMailSessionDTO {
   mailFilePath: string
 }
 
-export interface SendMailSession {
+export interface SendMailSessionUseCase {
   sendMail: (data: SendMailSessionDTO) => Promise<SessionModel>
 }

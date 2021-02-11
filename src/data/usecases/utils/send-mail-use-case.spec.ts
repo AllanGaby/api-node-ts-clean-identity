@@ -1,9 +1,9 @@
-import { DbSendMail } from './send-mail'
+import { DbSendMailUseCase } from './send-mail-use-case'
 import { MailTemplateAdapterSpy, SendMailAdapterSpy, mockSendMailDTO, throwError } from '@/data/test'
 import faker from 'faker'
 
 interface sutTypes {
-  sut: DbSendMail
+  sut: DbSendMailUseCase
   mailTemplateAdapterSpy: MailTemplateAdapterSpy
   sendMailAdapterSpy: SendMailAdapterSpy
 }
@@ -11,7 +11,7 @@ interface sutTypes {
 const makeSut = (): sutTypes => {
   const mailTemplateAdapterSpy = new MailTemplateAdapterSpy()
   const sendMailAdapterSpy = new SendMailAdapterSpy()
-  const sut = new DbSendMail(mailTemplateAdapterSpy, sendMailAdapterSpy)
+  const sut = new DbSendMailUseCase(mailTemplateAdapterSpy, sendMailAdapterSpy)
   return {
     sut,
     mailTemplateAdapterSpy,
@@ -19,7 +19,7 @@ const makeSut = (): sutTypes => {
   }
 }
 
-describe('DbSendMail', () => {
+describe('DbSendMailUseCase', () => {
   describe('SendMail', () => {
     test('Should call MailTemplateAdapter with correct values', async () => {
       const { sut, mailTemplateAdapterSpy } = makeSut()

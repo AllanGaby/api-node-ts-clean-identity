@@ -1,7 +1,7 @@
 import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
 import { ValidationComposite } from '@/validation/validations'
 import { badRequest, created, forbidden, serverError } from '@/presentation/helpers'
-import { CreateAccount } from '@/domain/usecases/auth/account'
+import { CreateAccountUseCase } from '@/domain/usecases/auth/account'
 import { EmailInUseError } from '@/data/errors'
 import { SessionModel } from '@/domain/models/auth'
 
@@ -15,7 +15,7 @@ export interface CreateAccountRequest {
 export class CreateAccountController implements Controller<CreateAccountRequest, SessionModel | Error> {
   constructor (
     private readonly validations: ValidationComposite,
-    private readonly createAccount: CreateAccount
+    private readonly createAccount: CreateAccountUseCase
   ) {}
 
   async handle (request: HttpRequest<CreateAccountRequest>): Promise<HttpResponse<SessionModel | Error>> {

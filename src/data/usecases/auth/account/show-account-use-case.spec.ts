@@ -1,21 +1,21 @@
-import { DbShowAccount } from './show-account-use-case'
+import { DbShowAccountUseCase } from './show-account-use-case'
 import { mockAccountModel, GetAccountByIdRepositorySpy, mockShowAccountDTO, throwError } from '@/data/test'
 
 interface sutTypes {
-  sut: DbShowAccount
+  sut: DbShowAccountUseCase
   getAccountByIdRepositorySpy: GetAccountByIdRepositorySpy
 }
 
 const makeSut = (): sutTypes => {
   const getAccountByIdRepositorySpy = new GetAccountByIdRepositorySpy()
-  const sut = new DbShowAccount(getAccountByIdRepositorySpy)
+  const sut = new DbShowAccountUseCase(getAccountByIdRepositorySpy)
   return {
     sut,
     getAccountByIdRepositorySpy
   }
 }
 
-describe('DbShowAccount', () => {
+describe('DbShowAccountUseCase', () => {
   test('Should call GetAccountByIdRepository with correct value', async () => {
     const { sut, getAccountByIdRepositorySpy } = makeSut()
     const showAccountFilter = mockShowAccountDTO()

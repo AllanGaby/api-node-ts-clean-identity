@@ -1,11 +1,11 @@
 import { SessionModel } from '@/domain/models/auth'
-import { ShowSessionByAccessToken, ShowSessionByAccessTokenDTO } from '@/domain/usecases/auth/session'
+import { ShowSessionByAccessTokenUseCase, ShowSessionByAccessTokenDTO } from '@/domain/usecases/auth/session'
 import { Decrypter } from '@/data/protocols/criptography'
 import { GetSessionByIdRepository } from '@/data/repositories/auth'
 import { InvalidCredentialsError } from '@/data/errors'
 import { CacheCreate, CacheRecover } from '@/data/protocols/cache'
 
-export class DbShowSessionByAccessToken implements ShowSessionByAccessToken {
+export class DbShowSessionByAccessTokenUseCase implements ShowSessionByAccessTokenUseCase {
   constructor (
     private readonly decrypter: Decrypter,
     private readonly getSessionByIdRepository: GetSessionByIdRepository,

@@ -1,10 +1,10 @@
 import { AccountModel } from '@/domain/models/auth'
-import { ShowAccountBySession, ShowAccountBySessionDTO } from '@/domain/usecases/auth/session'
+import { ShowAccountBySessionUseCase, ShowAccountBySessionDTO } from '@/domain/usecases/auth/session'
 import { Decrypter } from '@/data/protocols/criptography'
 import { GetAccountByIdRepository, GetSessionByIdRepository } from '@/data/repositories/auth'
 import { InvalidCredentialsError } from '@/data/errors'
 
-export class DbShowAccountBySession implements ShowAccountBySession {
+export class DbShowAccountBySessionUseCase implements ShowAccountBySessionUseCase {
   constructor (
     private readonly decrypter: Decrypter,
     private readonly getSessionByIdRepository: GetSessionByIdRepository,

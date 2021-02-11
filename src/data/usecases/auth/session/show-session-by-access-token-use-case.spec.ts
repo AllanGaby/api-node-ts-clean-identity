@@ -1,9 +1,9 @@
-import { DbShowSessionByAccessToken } from './show-session-by-access-token-use-case'
+import { DbShowSessionByAccessTokenUseCase } from './show-session-by-access-token-use-case'
 import { DecrypterSpy, mockShowSessionByAccessTokenDTO, throwError, GetSessionByIdRepositorySpy, CacheCreateSpy, CacheRecoverSpy, mockSessionModel } from '@/data/test'
 import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {
-  sut: DbShowSessionByAccessToken
+  sut: DbShowSessionByAccessTokenUseCase
   decrypterSpy: DecrypterSpy
   getSessionByIdRepositorySpy: GetSessionByIdRepositorySpy
   cacheRecoverSpy: CacheRecoverSpy
@@ -15,7 +15,7 @@ const makeSut = (): sutTypes => {
   const getSessionByIdRepositorySpy = new GetSessionByIdRepositorySpy()
   const cacheRecoverSpy = new CacheRecoverSpy()
   const cacheCreateSpy = new CacheCreateSpy()
-  const sut = new DbShowSessionByAccessToken(decrypterSpy, getSessionByIdRepositorySpy, cacheRecoverSpy, cacheCreateSpy)
+  const sut = new DbShowSessionByAccessTokenUseCase(decrypterSpy, getSessionByIdRepositorySpy, cacheRecoverSpy, cacheCreateSpy)
   return {
     sut,
     decrypterSpy,
@@ -25,7 +25,7 @@ const makeSut = (): sutTypes => {
   }
 }
 
-describe('DbShowSessionByAccessToken', () => {
+describe('DbShowSessionByAccessTokenUseCase', () => {
   test('Should call Decrypter with correct value', async () => {
     const { sut, decrypterSpy } = makeSut()
     const showAccountBySession = mockShowSessionByAccessTokenDTO()

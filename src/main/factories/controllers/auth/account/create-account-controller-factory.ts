@@ -1,6 +1,6 @@
 import { CreateAccountController } from '@/presentation/controllers/auth/account'
 import { makeCreateAccountValidation } from '@/main/factories/validations/auth'
-import { makeDbCreateAccount } from '@/main/factories/usecases/auth/account'
+import { makeCreateAccountUseCase } from '@/main/factories/usecases/auth/account'
 import { EmailValidatorAdapter } from '@/infra/validators/email-validator-adapter'
 
 export const makeCreateAccountController = (): CreateAccountController => {
@@ -10,5 +10,5 @@ export const makeCreateAccountController = (): CreateAccountController => {
       minLengthPassword: 6,
       emailValidator: new EmailValidatorAdapter()
     }),
-    makeDbCreateAccount())
+    makeCreateAccountUseCase())
 }
