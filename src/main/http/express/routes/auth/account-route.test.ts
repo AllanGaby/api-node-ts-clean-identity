@@ -4,6 +4,7 @@ import { AccountModel, SessionModel, SessionType } from '@/domain/models/auth'
 import { JWTEncrypterAdapter } from '@/infra/criptografy'
 import { EnvConfig } from '@/main/config/env'
 import uploadConfig from '@/main/config/multer/config'
+import { HttpStatusCode } from '@/presentation/protocols'
 import request from 'supertest'
 import faker from 'faker'
 import fs from 'fs'
@@ -49,7 +50,7 @@ describe('Account Routes /account', () => {
   })
 
   describe('POST / - Create Account', () => {
-    test('Should return 201 on account created', async () => {
+    test('Should return created status code on account created', async () => {
       const password = faker.internet.password()
       await request(app)
         .post('/api/auth/account')
@@ -59,10 +60,10 @@ describe('Account Routes /account', () => {
           password,
           password_confirmation: password
         })
-        .expect(201)
+        .expect(HttpStatusCode.created)
     })
 
-    test('Should return 400 if account is without name', async () => {
+    test('Should return badRequest status code if account is without name', async () => {
       const password = faker.internet.password()
       await request(app)
         .post('/api/auth/account')
@@ -71,10 +72,10 @@ describe('Account Routes /account', () => {
           password,
           password_confirmation: password
         })
-        .expect(400)
+        .expect(HttpStatusCode.badRequest)
     })
 
-    test('Should return 400 if account is without e-mail', async () => {
+    test('Should return badRequest status code if account is without e-mail', async () => {
       const password = faker.internet.password()
       await request(app)
         .post('/api/auth/account')
@@ -83,20 +84,20 @@ describe('Account Routes /account', () => {
           password,
           password_confirmation: password
         })
-        .expect(400)
+        .expect(HttpStatusCode.badRequest)
     })
 
-    test('Should return 400 if account is without password', async () => {
+    test('Should return badRequest status code if account is without password', async () => {
       await request(app)
         .post('/api/auth/account')
         .send({
           name: faker.name.findName(),
           email: faker.internet.email()
         })
-        .expect(400)
+        .expect(HttpStatusCode.badRequest)
     })
 
-    test('Should return 400 if account password_confirmation is different of password', async () => {
+    test('Should return badRequest status code if account password_confirmation is different of password', async () => {
       await request(app)
         .post('/api/auth/account')
         .send({
@@ -105,10 +106,10 @@ describe('Account Routes /account', () => {
           password: faker.internet.password(),
           password_confirmation: faker.random.uuid()
         })
-        .expect(400)
+        .expect(HttpStatusCode.badRequest)
     })
 
-    test('Should return 403 if exists other account with same e-mail', async () => {
+    test('Should return forbidden status code if exists other account with same e-mail', async () => {
       await request(app)
         .post('/api/auth/account')
         .send({
@@ -117,7 +118,7 @@ describe('Account Routes /account', () => {
           password: account.password,
           password_confirmation: account.password
         })
-        .expect(403)
+        .expect(HttpStatusCode.forbidden)
     })
   })
 
@@ -130,13 +131,13 @@ describe('Account Routes /account', () => {
       })
     })
 
-    test('Should return 200 on active account', async () => {
+    test('Should return ok status code on active account', async () => {
       await request(app)
         .put(`/api/auth/account/${session.id}`)
-        .expect(200)
+        .expect(HttpStatusCode.ok)
     })
 
-    test('Should return 400 if session is invalid', async () => {
+    test('Should return badRequest status code if session is invalid', async () => {
       session = await sessionRepository.create({
         account_id: account.id,
         experied_at: faker.date.future(),
@@ -144,39 +145,39 @@ describe('Account Routes /account', () => {
       })
       await request(app)
         .put(`/api/auth/account/${session.id}`)
-        .expect(400)
+        .expect(HttpStatusCode.badRequest)
     })
 
-    test('Should return 400 if session not found', async () => {
+    test('Should return badRequest status code if session not found', async () => {
       await request(app)
         .put(`/api/auth/account/${faker.random.uuid()}`)
-        .expect(400)
+        .expect(HttpStatusCode.badRequest)
     })
   })
 
   describe('POST /password - Request recover password', () => {
-    test('Should return 200 on request password', async () => {
+    test('Should return ok status code on request password', async () => {
       await request(app)
         .post('/api/auth/account/password')
         .send({
           email: account.email
         })
-        .expect(200)
+        .expect(HttpStatusCode.ok)
     })
 
-    test('Should return 400 if account not found', async () => {
+    test('Should return badRequest status code if account not found', async () => {
       await request(app)
         .post('/api/auth/account/password')
         .send({
           email: faker.internet.email()
         })
-        .expect(400)
+        .expect(HttpStatusCode.badRequest)
     })
 
-    test('Should return 400 if e-mail not is provide', async () => {
+    test('Should return badRequest status code if e-mail not is provide', async () => {
       await request(app)
         .post('/api/auth/account/password')
-        .expect(400)
+        .expect(HttpStatusCode.badRequest)
     })
   })
 
@@ -189,7 +190,7 @@ describe('Account Routes /account', () => {
       })
     })
 
-    test('Should return 200 on recover password', async () => {
+    test('Should return ok status code on recover password', async () => {
       const password = faker.internet.password()
       await request(app)
         .put('/api/auth/account/password')
@@ -198,10 +199,10 @@ describe('Account Routes /account', () => {
           password,
           password_confirmation: password
         })
-        .expect(200)
+        .expect(HttpStatusCode.ok)
     })
 
-    test('Should return 400 if session not found', async () => {
+    test('Should return badRequest status code if session not found', async () => {
       const password = faker.internet.password()
       await request(app)
         .put('/api/auth/account/password')
@@ -210,19 +211,19 @@ describe('Account Routes /account', () => {
           password,
           password_confirmation: password
         })
-        .expect(400)
+        .expect(HttpStatusCode.badRequest)
     })
 
-    test('Should return 400 if password not provide', async () => {
+    test('Should return badRequest status code if password not provide', async () => {
       await request(app)
         .put('/api/auth/account/password')
         .send({
           session_id: session.id
         })
-        .expect(400)
+        .expect(HttpStatusCode.badRequest)
     })
 
-    test('Should return 400 if password confirmation is different of password', async () => {
+    test('Should return badRequest status code if password confirmation is different of password', async () => {
       await request(app)
         .put('/api/auth/account/password')
         .send({
@@ -230,25 +231,25 @@ describe('Account Routes /account', () => {
           password: faker.internet.password(),
           password_confirmation: faker.random.uuid()
         })
-        .expect(400)
+        .expect(HttpStatusCode.badRequest)
     })
   })
 
   describe('GET / - Show Account', () => {
-    test('Should return 200 if access token is valid', async () => {
+    test('Should return ok status code if access token is valid', async () => {
       await request(app)
         .get('/api/auth/account')
         .set(EnvConfig.tokenName, accessToken)
-        .expect(200)
+        .expect(HttpStatusCode.ok)
     })
 
-    test('Should return 400 irecoverPasswordf access token not provide', async () => {
+    test('Should return badRequest status code irecoverPasswordf access token not provide', async () => {
       await request(app)
         .get('/api/auth/account')
-        .expect(400)
+        .expect(HttpStatusCode.badRequest)
     })
 
-    test('Should return 403 if access token is invalid', async () => {
+    test('Should return forbidden status code if access token is invalid', async () => {
       encrypter = new JWTEncrypterAdapter(EnvConfig.jwtSecret, -1)
       session = await sessionRepository.create({
         account_id: account.id,
@@ -259,10 +260,10 @@ describe('Account Routes /account', () => {
       await request(app)
         .get('/api/auth/account')
         .set(EnvConfig.tokenName, accessToken)
-        .expect(403)
+        .expect(HttpStatusCode.forbidden)
     })
 
-    test('Should return 401 if session is expired', async () => {
+    test('Should return unauthorized status code if session is expired', async () => {
       session = await sessionRepository.create({
         account_id: account.id,
         experied_at: faker.date.past(),
@@ -272,31 +273,31 @@ describe('Account Routes /account', () => {
       await request(app)
         .get('/api/auth/account')
         .set(EnvConfig.tokenName, accessToken)
-        .expect(401)
+        .expect(HttpStatusCode.unauthorized)
     })
   })
 
   describe('PUT / - Update Account', () => {
-    test('Should return 200 if account is updated', async () => {
+    test('Should return ok status code if account is updated', async () => {
       await request(app)
         .put('/api/auth/account')
         .set(EnvConfig.tokenName, accessToken)
         .send({
           name: `${account.name} Updated`
         })
-        .expect(200)
+        .expect(HttpStatusCode.ok)
     })
 
-    test('Should return 400 if access token not provide', async () => {
+    test('Should return badRequest status code if access token not provide', async () => {
       await request(app)
         .put('/api/auth/account')
         .send({
           name: `${account.name} Updated`
         })
-        .expect(400)
+        .expect(HttpStatusCode.badRequest)
     })
 
-    test('Should return 403 if access token is invalid', async () => {
+    test('Should return forbidden status code if access token is invalid', async () => {
       encrypter = new JWTEncrypterAdapter(EnvConfig.jwtSecret, -1)
       session = await sessionRepository.create({
         account_id: account.id,
@@ -310,10 +311,10 @@ describe('Account Routes /account', () => {
         .send({
           name: `${account.name} Updated`
         })
-        .expect(403)
+        .expect(HttpStatusCode.forbidden)
     })
 
-    test('Should return 401 if session is expired', async () => {
+    test('Should return unauthorized status code if session is expired', async () => {
       session = await sessionRepository.create({
         account_id: account.id,
         experied_at: faker.date.past(),
@@ -326,26 +327,26 @@ describe('Account Routes /account', () => {
         .send({
           name: `${account.name} Updated`
         })
-        .expect(401)
+        .expect(HttpStatusCode.unauthorized)
     })
   })
 
   describe('GET /avatar - Show Avatar Account', () => {
-    test('Should return 200 if access token is valid', async () => {
+    test('Should return ok status code if access token is valid', async () => {
       await request(app)
         .get('/api/auth/account/avatar')
         .set(EnvConfig.tokenName, accessToken)
         .responseType('blob')
-        .expect(200)
+        .expect(HttpStatusCode.ok)
     })
 
-    test('Should return 400 if access token not provide', async () => {
+    test('Should return badRequest status code if access token not provide', async () => {
       await request(app)
         .get('/api/auth/account/avatar')
-        .expect(400)
+        .expect(HttpStatusCode.badRequest)
     })
 
-    test('Should return 403 if access token is invalid', async () => {
+    test('Should return forbidden status code if access token is invalid', async () => {
       encrypter = new JWTEncrypterAdapter(EnvConfig.jwtSecret, -1)
       session = await sessionRepository.create({
         account_id: account.id,
@@ -356,10 +357,10 @@ describe('Account Routes /account', () => {
       await request(app)
         .get('/api/auth/account/avatar')
         .set(EnvConfig.tokenName, accessToken)
-        .expect(403)
+        .expect(HttpStatusCode.forbidden)
     })
 
-    test('Should return 401 if session is expired', async () => {
+    test('Should return unauthorized status code if session is expired', async () => {
       session = await sessionRepository.create({
         account_id: account.id,
         experied_at: faker.date.past(),
@@ -369,7 +370,7 @@ describe('Account Routes /account', () => {
       await request(app)
         .get('/api/auth/account/avatar')
         .set(EnvConfig.tokenName, accessToken)
-        .expect(401)
+        .expect(HttpStatusCode.unauthorized)
     })
   })
 })
