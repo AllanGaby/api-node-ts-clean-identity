@@ -1,4 +1,4 @@
-import { DbActiveAccount } from './active-account'
+import { DbActiveAccount } from './active-account-use-case'
 import { mockActiveAccountDTO, throwError, GetSessionByIdRepositorySpy, DeleteSessionByIdRepositorySpy, GetAccountByIdRepositorySpy, UpdateAccountRepositorySpy } from '@/data/test'
 import { SessionType } from '@/domain/models/auth'
 import { InvalidCredentialsError } from '@/data/errors'

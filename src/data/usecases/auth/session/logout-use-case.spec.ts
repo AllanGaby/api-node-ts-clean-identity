@@ -1,4 +1,4 @@
-import { DbLogout } from './logout'
+import { DbLogout } from './logout-use-case'
 import { GetSessionByIdRepositorySpy, DeleteSessionByIdRepositorySpy, mockLogoutDTO, mockSessionModel } from '@/data/test/auth/session'
 import { CacheRecoverSpy, CacheRemoveSpy } from '@/data/test'
 import { throwError } from '@/data/test'

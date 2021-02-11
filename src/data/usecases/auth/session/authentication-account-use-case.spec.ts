@@ -1,4 +1,4 @@
-import { DbAuthenticationAccount } from './authentication-account'
+import { DbAuthenticationAccount } from './authentication-account-use-case'
 import { mockAuthenticationAccountDTO, throwError, HashComparerSpy, mockAccountModel, EncrypterSpy, CreateSessionRepositorySpy, CacheCreateSpy, CacheRecoverSpy } from '@/data/test'
 import { GetAccountByEmailRepositorySpy } from '@/data/test/auth/account/mock-account-repository'
 import { SessionType } from '@/domain/models/auth'

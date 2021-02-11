@@ -1,4 +1,4 @@
-import { DbRecoverPassword } from './recover-password'
+import { DbRecoverPassword } from './recover-password-use-case'
 import { GetSessionByIdRepositorySpy, mockRecoverPasswordDTO, throwError, GetAccountByIdRepositorySpy, mockSessionModel, HashCreatorSpy, UpdateAccountRepositorySpy, DeleteSessionByAccountIdRepositorySpy } from '@/data/test'
 import { SessionType } from '@/domain/models/auth'
 import { InvalidCredentialsError } from '@/data/errors'

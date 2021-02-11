@@ -1,4 +1,4 @@
-import { DbRecoverPassword } from '@/data/usecases/auth/account/recover-password'
+import { DbRecoverPassword } from '@/data/usecases/auth/account'
 import { BCrypterHasherAdapter } from '@/infra/criptografy'
 import { EnvConfig } from '@/main/config/env'
 import { RepositoryFactory } from '@/infra/db'

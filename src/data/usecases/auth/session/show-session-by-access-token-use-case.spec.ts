@@ -1,4 +1,4 @@
-import { DbShowSessionByAccessToken } from './show-session-by-access-token'
+import { DbShowSessionByAccessToken } from './show-session-by-access-token-use-case'
 import { DecrypterSpy, mockShowSessionByAccessTokenDTO, throwError, GetSessionByIdRepositorySpy, CacheCreateSpy, CacheRecoverSpy, mockSessionModel } from '@/data/test'
 import { InvalidCredentialsError } from '@/data/errors'
 

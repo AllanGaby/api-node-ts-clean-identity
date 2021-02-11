@@ -1,6 +1,6 @@
+import { DbSendMailSession } from './send-mail-session-use-case'
 import { CreateSessionRepositorySpy, mockSendMailSessionDTO, SendToQueueSpy, ConsumeQueueSpy, ExecuteQueueSpy, throwError } from '@/data/test'
 import { SessionType } from '@/domain/models/auth'
-import { DbSendMailSession } from './send-mail-session'
 import faker from 'faker'
 
 interface sutTypes {

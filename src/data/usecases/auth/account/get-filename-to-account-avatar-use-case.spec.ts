@@ -1,4 +1,4 @@
-import { DbGetFilenameToAccountAvatar } from './get-filename-to-account-avatar'
+import { DbGetFilenameToAccountAvatar } from './get-filename-to-account-avatar-use-case'
 import { GetAccountByIdRepositorySpy, mockGetFilenameToAccountAvatarDTO } from '@/data/test/auth/account'
 import { throwError } from '@/data/test'
 import faker from 'faker'

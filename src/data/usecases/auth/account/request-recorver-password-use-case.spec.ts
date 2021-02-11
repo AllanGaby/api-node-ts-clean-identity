@@ -1,7 +1,7 @@
+import { DbRequestRecoverPassword } from './request-recover-password-use-case'
 import { GetAccountByEmailRepositorySpy, throwError, mockAccountModel, SendMailSessionSpy } from '@/data/test'
-import { DbRequestRecoverPassword } from './request-recover-password'
-import faker from 'faker'
 import { SessionType } from '@/domain/models/auth'
+import faker from 'faker'
 
 interface sutTypes {
   sut: DbRequestRecoverPassword
