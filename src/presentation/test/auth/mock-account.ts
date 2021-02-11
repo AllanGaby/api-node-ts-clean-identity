@@ -1,7 +1,7 @@
 import { HttpRequest } from '@/presentation/protocols'
-import { CreateAccount, CreateAccountDTO, UpdateAccount, UpdateAccountDTO, ActiveAccount, ActiveAccountDTO, AuthenticationAccount, AuthenticationAccountDTO, ListAccount, ListAccountDTO, RecoverPassword, RecoverPasswordDTO, RequestRecoverPassword, RequestRecoverPasswordDTO, ShowAccount, ShowAccountDTO, GetFilenameToAccountAvatar, GetFilenameToAccountAvatarDTO } from '@/domain/usecases/auth/account'
-import { AccountModel, SessionModel, AuthenticationModel, AvatarModel } from '@/domain/models/auth'
-import { mockAccountModel, mockAuthenticationModel, mockSessionModel, mockListAccountDTO } from '@/data/test'
+import { CreateAccount, CreateAccountDTO, UpdateAccount, UpdateAccountDTO, ActiveAccount, ActiveAccountDTO, ListAccount, ListAccountDTO, RecoverPassword, RecoverPasswordDTO, RequestRecoverPassword, RequestRecoverPasswordDTO, ShowAccount, ShowAccountDTO, GetFilenameToAccountAvatar, GetFilenameToAccountAvatarDTO } from '@/domain/usecases/auth/account'
+import { AccountModel, SessionModel, AvatarModel } from '@/domain/models/auth'
+import { mockAccountModel, mockSessionModel, mockListAccountDTO } from '@/data/test'
 import { CreateAccountRequest, ActiveAccountRequest, RecoverPasswordRequest, UpdateAccountRequest, ShowAccountRequest, ShowAccountByIdRequest, ShowAvatarAccountRequest } from '@/presentation/controllers/auth/account'
 import faker from 'faker'
 import path from 'path'
@@ -67,23 +67,6 @@ export class ActiveAccountSpy implements ActiveAccount {
 export const mockActiveAccountRequest = (): HttpRequest<ActiveAccountRequest> => ({
   params: {
     session_id: faker.random.uuid()
-  }
-})
-
-export class AuthenticationAccountSpy implements AuthenticationAccount {
-  params: AuthenticationAccountDTO
-  authentication: AuthenticationModel = mockAuthenticationModel()
-
-  async authenticate (params: AuthenticationAccountDTO): Promise<AuthenticationModel> {
-    this.params = params
-    return this.authentication
-  }
-}
-
-export const mockAuthenticationAccountRequest = (): HttpRequest<AuthenticationAccountDTO> => ({
-  body: {
-    email: faker.internet.email(),
-    password: faker.internet.password()
   }
 })
 

@@ -1,5 +1,5 @@
-import { CreateAccountDTO, UpdateAccountDTO, AuthenticationAccountDTO, ListAccountDTO, ShowAccountDTO, GetFilenameToAccountAvatarDTO } from '@/domain/usecases/auth/account'
-import { AccountModel, AuthenticationModel } from '@/domain/models/auth'
+import { CreateAccountDTO, UpdateAccountDTO, ListAccountDTO, ShowAccountDTO, GetFilenameToAccountAvatarDTO, ActiveAccountDTO, RecoverPasswordDTO } from '@/domain/usecases/auth/account'
+import { AccountModel } from '@/domain/models/auth'
 import faker from 'faker'
 import path from 'path'
 
@@ -27,19 +27,6 @@ export const mockAccountModel = (): AccountModel => ({
   updated_at: faker.date.past()
 })
 
-export const mockAuthenticationAccountDTO = (): AuthenticationAccountDTO => ({
-  email: faker.internet.email(),
-  password: faker.internet.password()
-})
-
-export const mockAuthenticationModel = (): AuthenticationModel => ({
-  access_token: faker.random.uuid(),
-  account: {
-    name: faker.name.findName(),
-    id: faker.random.uuid()
-  }
-})
-
 export const mockListAccountDTO = (): ListAccountDTO => ({
   name: faker.name.findName(),
   email: faker.internet.email()
@@ -52,4 +39,13 @@ export const mockShowAccountDTO = (): ShowAccountDTO => ({
 export const mockGetFilenameToAccountAvatarDTO = (): GetFilenameToAccountAvatarDTO => ({
   accountId: faker.random.uuid(),
   uploadDir: faker.system.directoryPath()
+})
+
+export const mockActiveAccountDTO = (): ActiveAccountDTO => ({
+  sessionId: faker.random.uuid()
+})
+
+export const mockRecoverPasswordDTO = (): RecoverPasswordDTO => ({
+  sessionId: faker.random.uuid(),
+  password: faker.internet.password()
 })

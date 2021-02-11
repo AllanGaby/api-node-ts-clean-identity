@@ -1,6 +1,6 @@
-import { ShowAccountBySession, ShowAccountBySessionDTO, Logout, LogoutDTO, ShowSessionByAccessToken, ShowSessionByAccessTokenDTO } from '@/domain/usecases/auth/session'
-import { AccountModel, SessionModel, SessionType } from '@/domain/models/auth'
-import { mockAccountModel, mockSessionModel } from '@/data/test'
+import { ShowAccountBySession, ShowAccountBySessionDTO, Logout, LogoutDTO, ShowSessionByAccessToken, ShowSessionByAccessTokenDTO, AuthenticationAccount, AuthenticationAccountDTO } from '@/domain/usecases/auth/session'
+import { AccountModel, AuthenticationModel, SessionModel, SessionType } from '@/domain/models/auth'
+import { mockAccountModel, mockAuthenticationModel, mockSessionModel } from '@/data/test'
 import { HttpRequest } from '@/presentation/protocols'
 import { LogoutRequest } from '@/presentation/controllers/auth/session'
 import faker from 'faker'
@@ -53,3 +53,20 @@ export class ShowSessionByAccessTokenSpy implements ShowSessionByAccessToken {
     return this.session
   }
 }
+
+export class AuthenticationAccountSpy implements AuthenticationAccount {
+  params: AuthenticationAccountDTO
+  authentication: AuthenticationModel = mockAuthenticationModel()
+
+  async authenticate (params: AuthenticationAccountDTO): Promise<AuthenticationModel> {
+    this.params = params
+    return this.authentication
+  }
+}
+
+export const mockAuthenticationAccountRequest = (): HttpRequest<AuthenticationAccountDTO> => ({
+  body: {
+    email: faker.internet.email(),
+    password: faker.internet.password()
+  }
+})

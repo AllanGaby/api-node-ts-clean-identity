@@ -1,7 +1,7 @@
 import { badRequest, ok, serverError, unauthorized } from '@/presentation/helpers'
 import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
 import { ValidationComposite } from '@/validation/validations'
-import { AuthenticationAccount, AuthenticationAccountDTO } from '@/domain/usecases/auth/account'
+import { AuthenticationAccount, AuthenticationAccountDTO } from '@/domain/usecases/auth/session'
 import { AuthenticationModel } from '@/domain/models/auth'
 import { InvalidCredentialsError } from '@/data/errors'
 

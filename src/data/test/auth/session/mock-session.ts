@@ -1,6 +1,5 @@
-import { ActiveAccountDTO, RecoverPasswordDTO } from '@/domain/usecases/auth/account'
-import { SendMailSessionDTO, ShowAccountBySessionDTO, LogoutDTO, ShowSessionByAccessTokenDTO } from '@/domain/usecases/auth/session'
-import { SessionModel, SessionType } from '@/domain/models/auth'
+import { SendMailSessionDTO, ShowAccountBySessionDTO, LogoutDTO, ShowSessionByAccessTokenDTO, AuthenticationAccountDTO } from '@/domain/usecases/auth/session'
+import { SessionModel, SessionType, AuthenticationModel } from '@/domain/models/auth'
 import faker from 'faker'
 
 export const mockSessionModel = (type: SessionType = SessionType.activeAccount): SessionModel => ({
@@ -12,10 +11,6 @@ export const mockSessionModel = (type: SessionType = SessionType.activeAccount):
   updated_at: faker.date.past()
 })
 
-export const mockActiveAccountDTO = (): ActiveAccountDTO => ({
-  sessionId: faker.random.uuid()
-})
-
 export const mockSendMailSessionDTO = (sessionType: SessionType, subject: string = faker.random.words()): SendMailSessionDTO => ({
   accountId: faker.random.uuid(),
   email: faker.internet.email(),
@@ -23,11 +18,6 @@ export const mockSendMailSessionDTO = (sessionType: SessionType, subject: string
   mailFilePath: faker.internet.url(),
   subject,
   sessionType
-})
-
-export const mockRecoverPasswordDTO = (): RecoverPasswordDTO => ({
-  sessionId: faker.random.uuid(),
-  password: faker.internet.password()
 })
 
 export const mockShowAccountBySessionDTO = (): ShowAccountBySessionDTO => ({
@@ -40,4 +30,17 @@ export const mockShowSessionByAccessTokenDTO = (): ShowSessionByAccessTokenDTO =
 
 export const mockLogoutDTO = (): LogoutDTO => ({
   sessionId: faker.random.uuid()
+})
+
+export const mockAuthenticationAccountDTO = (): AuthenticationAccountDTO => ({
+  email: faker.internet.email(),
+  password: faker.internet.password()
+})
+
+export const mockAuthenticationModel = (): AuthenticationModel => ({
+  access_token: faker.random.uuid(),
+  account: {
+    name: faker.name.findName(),
+    id: faker.random.uuid()
+  }
 })
