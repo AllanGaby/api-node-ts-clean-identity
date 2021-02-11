@@ -1,7 +1,6 @@
 import { MemoryAccountRepository } from './account-repository'
 import { mockCreateAccountModel } from '@/infra/test/db/auth'
 import faker from 'faker'
-import { AccountType } from '@/domain/models/auth'
 
 interface sutTypes {
   sut: MemoryAccountRepository
@@ -24,7 +23,6 @@ describe('MemoryAccountRepository', () => {
       expect(createdAccount.name).toBe(createAccountModel.name)
       expect(createdAccount.email).toBe(createAccountModel.email)
       expect(createdAccount.password).toBe(createAccountModel.password)
-      expect(createdAccount.type).toBe(AccountType.student)
     })
   })
 
@@ -67,8 +65,7 @@ describe('MemoryAccountRepository', () => {
         name: faker.name.findName(),
         email: faker.internet.email(),
         email_valided: true,
-        password: faker.internet.password(),
-        type: AccountType.student
+        password: faker.internet.password()
       })
       expect(updatedAccount).toBeFalsy()
     })
@@ -82,8 +79,7 @@ describe('MemoryAccountRepository', () => {
         name: createAccountModel.name,
         email: createAccountModel.email,
         password: createAccountModel.password,
-        email_valided: createdAccount.email_valided,
-        type: createdAccount.type
+        email_valided: createdAccount.email_valided
       })
       expect(updatedAccount.id).toBe(createdAccount.id)
       expect(updatedAccount.name).not.toBe(createdAccount.name)

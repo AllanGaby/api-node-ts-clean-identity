@@ -1,4 +1,4 @@
-import { AccountModel, AccountType } from '@/domain/models/auth'
+import { AccountModel } from '@/domain/models/auth'
 
 export interface UpdateAccountDTO {
   id: string
@@ -6,7 +6,6 @@ export interface UpdateAccountDTO {
   email: string
   password: string
   email_valided: boolean
-  type?: AccountType
   avatar_extention?: string
 }
 

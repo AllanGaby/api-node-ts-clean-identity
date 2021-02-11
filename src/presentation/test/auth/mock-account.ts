@@ -1,8 +1,8 @@
 import { HttpRequest } from '@/presentation/protocols'
-import { CreateAccount, CreateAccountDTO, UpdateAccount, UpdateAccountDTO, ActiveAccount, ActiveAccountDTO, AuthenticationAccount, AuthenticationAccountDTO, ListAccount, ListAccountDTO, RecoverPassword, RecoverPasswordDTO, RequestRecoverPassword, RequestRecoverPasswordDTO, SetAccountType, SetAccountTypeDTO, ShowAccount, ShowAccountDTO, GetFilenameToAccountAvatar, GetFilenameToAccountAvatarDTO } from '@/domain/usecases/auth/account'
-import { AccountModel, SessionModel, AuthenticationModel, AccountType, AvatarModel } from '@/domain/models/auth'
+import { CreateAccount, CreateAccountDTO, UpdateAccount, UpdateAccountDTO, ActiveAccount, ActiveAccountDTO, AuthenticationAccount, AuthenticationAccountDTO, ListAccount, ListAccountDTO, RecoverPassword, RecoverPasswordDTO, RequestRecoverPassword, RequestRecoverPasswordDTO, ShowAccount, ShowAccountDTO, GetFilenameToAccountAvatar, GetFilenameToAccountAvatarDTO } from '@/domain/usecases/auth/account'
+import { AccountModel, SessionModel, AuthenticationModel, AvatarModel } from '@/domain/models/auth'
 import { mockAccountModel, mockAuthenticationModel, mockSessionModel, mockListAccountDTO } from '@/data/test'
-import { CreateAccountRequest, ActiveAccountRequest, RecoverPasswordRequest, UpdateAccountRequest, SetAccountTypeRequest, ShowAccountRequest, ShowAccountByIdRequest, ShowAvatarAccountRequest } from '@/presentation/controllers/auth/account'
+import { CreateAccountRequest, ActiveAccountRequest, RecoverPasswordRequest, UpdateAccountRequest, ShowAccountRequest, ShowAccountByIdRequest, ShowAvatarAccountRequest } from '@/presentation/controllers/auth/account'
 import faker from 'faker'
 import path from 'path'
 
@@ -135,23 +135,6 @@ export class RequestRecoverPasswordSpy implements RequestRecoverPassword {
 export const mockRequestRecoverPasswordRequest = (): HttpRequest<RequestRecoverPasswordDTO> => ({
   body: {
     email: faker.internet.email()
-  }
-})
-
-export class SetAccountTypeSpy implements SetAccountType {
-  params: SetAccountTypeDTO
-  account: AccountModel
-
-  async setAccountType (params: SetAccountTypeDTO): Promise<AccountModel> {
-    this.params = params
-    return this.account
-  }
-}
-
-export const mockSetAccountTypeRequest = (type: AccountType = AccountType.student): HttpRequest<SetAccountTypeRequest> => ({
-  body: {
-    account_id: faker.random.uuid(),
-    account_type: type
   }
 })
 

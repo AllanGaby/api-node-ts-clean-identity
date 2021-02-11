@@ -158,7 +158,10 @@ describe('DbAuthenticationAccount', () => {
     const authenticationModel = await sut.authenticate(mockAuthenticationAccountDTO())
     expect(authenticationModel).toEqual({
       access_token: encrypterSpy.encryptedText,
-      account_type: getAccountByEmailRepositorySpy.account.type
+      account: {
+        id: getAccountByEmailRepositorySpy.account.id,
+        name: getAccountByEmailRepositorySpy.account.name
+      }
     })
   })
 })

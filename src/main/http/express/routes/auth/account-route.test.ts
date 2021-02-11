@@ -2,7 +2,7 @@ import app from '@/main/config/express/app'
 import request from 'supertest'
 import faker from 'faker'
 import { MemoryAccountRepository, MemorySessionRepository } from '@/infra/db/memory/repositories/auth'
-import { AccountModel, AccountType, SessionModel, SessionType } from '@/domain/models/auth'
+import { AccountModel, SessionModel, SessionType } from '@/domain/models/auth'
 import { JWTEncrypterAdapter } from '@/infra/criptografy'
 import { EnvConfig } from '@/main/config/env'
 import uploadConfig from '@/main/config/multer/config'
@@ -10,14 +10,11 @@ import fs from 'fs'
 import path from 'path'
 
 let account: AccountModel
-let managerAccount: AccountModel
 let session: SessionModel
-let managerSession: SessionModel
 let sessionRepository: MemorySessionRepository
 let accountRepository: MemoryAccountRepository
 let encrypter: JWTEncrypterAdapter
 let accessToken: string
-let managerAccessToken: string
 
 describe('Account Routes /account', () => {
   beforeAll(async () => {
@@ -27,16 +24,6 @@ describe('Account Routes /account', () => {
       name: faker.name.findName(),
       email: faker.internet.email(),
       password: faker.internet.password()
-    })
-    managerAccount = await accountRepository.create({
-      name: faker.name.findName(),
-      email: faker.internet.email(),
-      password: faker.internet.password()
-    })
-    managerAccount = await accountRepository.update({
-      ...managerAccount,
-      email_valided: true,
-      type: AccountType.manager
     })
     const sourceFile = `${uploadConfig.uploadDirectory}${path.sep}profile.png`
     const destinationFile = `${uploadConfig.uploadDirectory}${path.sep}${account.id}.png`
@@ -382,78 +369,6 @@ describe('Account Routes /account', () => {
       await request(app)
         .get('/api/auth/account/avatar')
         .set('x-access-token', accessToken)
-        .expect(401)
-    })
-  })
-
-  describe('PUT /type - Set Account Type', () => {
-    beforeEach(async () => {
-      account = await accountRepository.update({
-        ...account,
-        email_valided: true,
-        type: AccountType.student
-      })
-      encrypter = new JWTEncrypterAdapter(EnvConfig.jwtSecret, 1)
-      managerSession = await sessionRepository.create({
-        account_id: managerAccount.id,
-        experied_at: faker.date.future(),
-        type: SessionType.authentication
-      })
-      managerAccessToken = await encrypter.encrypt(managerSession.id)
-    })
-
-    test('Should return 200 if account is updated', async () => {
-      await request(app)
-        .put('/api/auth/account/type')
-        .set('x-access-token', managerAccessToken)
-        .send({
-          account_id: account.id,
-          account_type: AccountType.manager
-        })
-        .expect(200)
-    })
-
-    test('Should return 401 if account not is manager', async () => {
-      await request(app)
-        .put('/api/auth/account/type')
-        .set('x-access-token', accessToken)
-        .send({
-          account_id: managerAccount.id,
-          account_type: AccountType.manager
-        })
-        .expect(401)
-    })
-
-    test('Should return 400 if access token not provide', async () => {
-      await request(app)
-        .put('/api/auth/account/type')
-        .expect(400)
-    })
-
-    test('Should return 403 if access token is invalid', async () => {
-      encrypter = new JWTEncrypterAdapter(EnvConfig.jwtSecret, -1)
-      managerSession = await sessionRepository.create({
-        account_id: managerAccount.id,
-        experied_at: faker.date.past(),
-        type: SessionType.authentication
-      })
-      managerAccessToken = await encrypter.encrypt(session.id)
-      await request(app)
-        .put('/api/auth/account/type')
-        .set('x-access-token', managerAccessToken)
-        .expect(403)
-    })
-
-    test('Should return 401 if session is expired', async () => {
-      managerSession = await sessionRepository.create({
-        account_id: managerAccount.id,
-        experied_at: faker.date.past(),
-        type: SessionType.authentication
-      })
-      managerAccessToken = await encrypter.encrypt(session.id)
-      await request(app)
-        .put('/api/auth/account/type')
-        .set('x-access-token', managerAccessToken)
         .expect(401)
     })
   })

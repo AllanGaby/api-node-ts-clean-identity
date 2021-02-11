@@ -1,4 +1,4 @@
-import { AccountModel, AccountType } from './../../../../domain/models/auth'
+import { AccountModel } from './../../../../domain/models/auth'
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity('accounts')
@@ -17,9 +17,6 @@ export class Account implements AccountModel {
 
   @Column()
   email_valided: boolean
-
-  @Column('smallint')
-  type: AccountType
 
   @Column()
   avatar_extention?: string

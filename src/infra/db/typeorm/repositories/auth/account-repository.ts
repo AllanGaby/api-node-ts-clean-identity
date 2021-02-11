@@ -1,7 +1,6 @@
 import { Account } from '@/infra/db/typeorm/models'
 import { CreateAccountRepository, CreateAccountModel, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository, UpdateAccountDTO, ListAccountRepository, ListAccountRepositoryDTO } from '@/data/repositories/auth'
 import { getRepository, Repository } from 'typeorm'
-import { AccountType } from '@/domain/models/auth'
 
 export class AccountRepositoryTypeORM implements CreateAccountRepository, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository, ListAccountRepository {
   private readonly accountRepositoryTypeOrm: Repository<Account>
@@ -21,7 +20,6 @@ export class AccountRepositoryTypeORM implements CreateAccountRepository, GetAcc
   async create (data: CreateAccountModel): Promise<Account> {
     const createdAccount = this.accountRepositoryTypeOrm.create({
       ...data,
-      type: AccountType.student,
       email_valided: false,
       avatar_extention: null
     })

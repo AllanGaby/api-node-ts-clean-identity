@@ -1,11 +1,10 @@
 import { AccountRepositoryTypeORM } from './account-repository'
-import { Connection } from 'typeorm'
 import { mockCreateAccountDTO } from '@/data/test/auth'
 import { closeConnection, truncateTables } from '@/infra/test/db/typeorm'
 import { createTypeOrmConnection } from '@/infra/db/typeorm/connections'
-import { AccountType } from '@/domain/models/auth'
-import faker from 'faker'
 import { mockCreateAccountModel, mockUpdateAccountDTO } from '@/infra/test/db/auth'
+import { Connection } from 'typeorm'
+import faker from 'faker'
 
 let connection: Connection
 
@@ -44,7 +43,6 @@ describe('AccountRepositoryTypeORM', () => {
       expect(createdAccount.email).toBe(params.email)
       expect(createdAccount.password).toBe(params.password)
       expect(createdAccount.email_valided).toBeFalsy()
-      expect(createdAccount.type).toBe(AccountType.student)
       expect(createdAccount.created_at).toBeTruthy()
       expect(createdAccount.updated_at).toBeTruthy()
     })
@@ -89,8 +87,7 @@ describe('AccountRepositoryTypeORM', () => {
         name: faker.name.findName(),
         email: faker.internet.email(),
         email_valided: true,
-        password: faker.internet.password(),
-        type: AccountType.student
+        password: faker.internet.password()
       })
       expect(updatedAccount).toBeFalsy()
     })

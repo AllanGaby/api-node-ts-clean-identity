@@ -42,7 +42,10 @@ export class DbAuthenticationAccount implements AuthenticationAccount {
       const accessToken = await this.encrypter.encrypt(session.id)
       return {
         access_token: accessToken,
-        account_type: account.type
+        account: {
+          id: account.id,
+          name: account.name
+        }
       }
     }
     throw new InvalidCredentialsError()

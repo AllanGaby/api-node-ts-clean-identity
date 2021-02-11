@@ -1,7 +1,7 @@
 import { Middleware, HttpRequest, HttpResponse } from '@/presentation/protocols'
 import { ShowSessionByAccessToken } from '@/domain/usecases/auth/session'
 import { ShowAccount } from '@/domain/usecases/auth/account'
-import { AccountType, SessionType } from '@/domain/models/auth'
+import { SessionType } from '@/domain/models/auth'
 import { badRequest, serverError, ok, forbidden, unauthorized } from '@/presentation/helpers'
 import { MissingParamError } from '@/validation/errors'
 import { AccessDeniedError } from '@/presentation/errors'
@@ -16,8 +16,7 @@ export interface AuthenticationMiddlewareReponse {
 export class AuthenticationMiddleware implements Middleware<any, AuthenticationMiddlewareReponse | Error> {
   constructor (
     private readonly showSessionByAccessToken: ShowSessionByAccessToken,
-    private readonly showAccount: ShowAccount,
-    private readonly accountType: AccountType[] = null
+    private readonly showAccount: ShowAccount
   ) {}
 
   async handle (request: HttpRequest<any>): Promise<HttpResponse<AuthenticationMiddlewareReponse | Error>> {
@@ -31,7 +30,7 @@ export class AuthenticationMiddleware implements Middleware<any, AuthenticationM
         const account = await this.showAccount.show({
           accountId: session.account_id
         })
-        if ((account) && ((!this.accountType) || (this.accountType.includes(account.type)))) {
+        if (account) {
           return ok({
             accountId: account.id,
             sessionId: session.id

@@ -1,6 +1,6 @@
 import { AuthenticationMiddleware } from './authentication-middleware'
 import { ShowAccountSpy, mockAuthenticationRequest, mockAuthenticationFailRequest, ShowSessionByAccessTokenSpy } from '@/presentation/test/auth'
-import { AccountType, SessionType } from '@/domain/models/auth'
+import { SessionType } from '@/domain/models/auth'
 import { badRequest, serverError, ok, unauthorized } from '@/presentation/helpers'
 import { MissingParamError } from '@/validation/errors'
 import { throwError } from '@/data/test'
@@ -12,15 +12,10 @@ interface sutTypes {
   showAccountSpy: ShowAccountSpy
 }
 
-const makeSut = (accountType: AccountType[] = [AccountType.student]): sutTypes => {
+const makeSut = (): sutTypes => {
   const showSessionByAccessTokenSpy = new ShowSessionByAccessTokenSpy()
   const showAccountSpy = new ShowAccountSpy()
-  let sut: AuthenticationMiddleware
-  if (!accountType) {
-    sut = new AuthenticationMiddleware(showSessionByAccessTokenSpy, showAccountSpy)
-  } else {
-    sut = new AuthenticationMiddleware(showSessionByAccessTokenSpy, showAccountSpy, accountType)
-  }
+  const sut = new AuthenticationMiddleware(showSessionByAccessTokenSpy, showAccountSpy)
   return {
     sut,
     showSessionByAccessTokenSpy,
@@ -92,24 +87,8 @@ describe('AuthenticationMiddleware', () => {
     expect(result).toEqual(unauthorized(new AccessDeniedError()))
   })
 
-  test('Should return Forbidden if account type is different', async () => {
-    const { sut, showAccountSpy } = makeSut([AccountType.manager])
-    showAccountSpy.account.type = AccountType.student
-    const result = await sut.handle(mockAuthenticationRequest())
-    expect(result).toEqual(unauthorized(new AccessDeniedError()))
-  })
-
   test('Should return an Account if succeeds', async () => {
     const { sut, showAccountSpy, showSessionByAccessTokenSpy } = makeSut()
-    const result = await sut.handle(mockAuthenticationRequest())
-    expect(result).toEqual(ok({
-      accountId: showAccountSpy.account.id,
-      sessionId: showSessionByAccessTokenSpy.session.id
-    }))
-  })
-
-  test('Should return an Account if succeeds without account type check', async () => {
-    const { sut, showAccountSpy, showSessionByAccessTokenSpy } = makeSut(null)
     const result = await sut.handle(mockAuthenticationRequest())
     expect(result).toEqual(ok({
       accountId: showAccountSpy.account.id,
