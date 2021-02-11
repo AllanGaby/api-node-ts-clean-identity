@@ -1,7 +1,7 @@
 import { HttpRequest } from '@/presentation/protocols'
-import { CreateAccount, CreateAccountDTO, UpdateAccount, UpdateAccountDTO, ActiveAccount, ActiveAccountDTO, ListAccount, ListAccountDTO, RecoverPassword, RecoverPasswordDTO, RequestRecoverPassword, RequestRecoverPasswordDTO, ShowAccount, ShowAccountDTO, GetFilenameToAccountAvatar, GetFilenameToAccountAvatarDTO } from '@/domain/usecases/auth/account'
+import { CreateAccount, CreateAccountDTO, UpdateAccount, UpdateAccountDTO, ActiveAccount, ActiveAccountDTO, RecoverPassword, RecoverPasswordDTO, RequestRecoverPassword, RequestRecoverPasswordDTO, ShowAccount, ShowAccountDTO, GetFilenameToAccountAvatar, GetFilenameToAccountAvatarDTO } from '@/domain/usecases/auth/account'
 import { AccountModel, SessionModel, AvatarModel } from '@/domain/models/auth'
-import { mockAccountModel, mockSessionModel, mockListAccountDTO } from '@/data/test'
+import { mockAccountModel, mockSessionModel } from '@/data/test'
 import { CreateAccountRequest, ActiveAccountRequest, RecoverPasswordRequest, UpdateAccountRequest, ShowAccountRequest, ShowAccountByIdRequest, ShowAvatarAccountRequest } from '@/presentation/controllers/auth/account'
 import faker from 'faker'
 import path from 'path'
@@ -68,20 +68,6 @@ export const mockActiveAccountRequest = (): HttpRequest<ActiveAccountRequest> =>
   params: {
     session_id: faker.random.uuid()
   }
-})
-
-export class ListAccountSpy implements ListAccount {
-  params: ListAccountDTO
-  accounts: AccountModel[] = [mockAccountModel(), mockAccountModel()]
-
-  async list (params: ListAccountDTO): Promise<AccountModel[]> {
-    this.params = params
-    return this.accounts
-  }
-}
-
-export const mockListAccountRequest = (): HttpRequest<ListAccountDTO> => ({
-  body: mockListAccountDTO()
 })
 
 export class RecoverPasswordSpy implements RecoverPassword {

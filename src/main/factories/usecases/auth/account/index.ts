@@ -1,6 +1,5 @@
 export * from './create-account-factory'
 export * from './active-account-factory'
-export * from './list-account-factory'
 export * from './request-recover-password-factory'
 export * from './recover-password-factory'
 export * from './show-account-factory'

@@ -90,46 +90,4 @@ describe('MemoryAccountRepository', () => {
       expect(updatedAccount.password).toBe(createAccountModel.password)
     })
   })
-
-  describe('List Method', () => {
-    test('Should return null if account not found by name', async () => {
-      const { sut } = makeSut()
-      const accountByName = await sut.list({
-        name: faker.name.findName(),
-        email: null
-      })
-      expect(accountByName).toHaveLength(0)
-    })
-
-    test('Should return an account with same name', async () => {
-      const { sut } = makeSut()
-      const createdAccount = await sut.create(mockCreateAccountModel())
-      const accountByName = await sut.list({
-        name: createdAccount.name,
-        email: null
-      })
-      expect(accountByName).toHaveLength(1)
-      expect(accountByName[0]).toEqual(createdAccount)
-    })
-
-    test('Should return null if account not found by email', async () => {
-      const { sut } = makeSut()
-      const accountByName = await sut.list({
-        email: faker.internet.email(),
-        name: null
-      })
-      expect(accountByName).toHaveLength(0)
-    })
-
-    test('Should return an account with same email', async () => {
-      const { sut } = makeSut()
-      const createdAccount = await sut.create(mockCreateAccountModel())
-      const accountByEmail = await sut.list({
-        email: createdAccount.email,
-        name: null
-      })
-      expect(accountByEmail).toHaveLength(1)
-      expect(accountByEmail[0]).toEqual(createdAccount)
-    })
-  })
 })

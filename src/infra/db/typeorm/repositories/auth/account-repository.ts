@@ -1,8 +1,8 @@
 import { Account } from '@/infra/db/typeorm/models'
-import { CreateAccountRepository, CreateAccountModel, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository, UpdateAccountDTO, ListAccountRepository, ListAccountRepositoryDTO } from '@/data/repositories/auth'
+import { CreateAccountRepository, CreateAccountModel, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository, UpdateAccountDTO } from '@/data/repositories/auth'
 import { getRepository, Repository } from 'typeorm'
 
-export class AccountRepositoryTypeORM implements CreateAccountRepository, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository, ListAccountRepository {
+export class AccountRepositoryTypeORM implements CreateAccountRepository, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository {
   private readonly accountRepositoryTypeOrm: Repository<Account>
   private static instance: AccountRepositoryTypeORM
 
@@ -54,29 +54,5 @@ export class AccountRepositoryTypeORM implements CreateAccountRepository, GetAcc
     }
     await this.accountRepositoryTypeOrm.save(updatedAccount)
     return updatedAccount
-  }
-
-  async list ({ name, email }: ListAccountRepositoryDTO): Promise<Account[]> {
-    if ((name) && (email)) {
-      return await this.accountRepositoryTypeOrm.find({
-        where: {
-          name,
-          email
-        }
-      })
-    } else if (name) {
-      return await this.accountRepositoryTypeOrm.find({
-        where: {
-          name
-        }
-      })
-    } else if (email) {
-      return await this.accountRepositoryTypeOrm.find({
-        where: {
-          email
-        }
-      })
-    }
-    return []
   }
 }

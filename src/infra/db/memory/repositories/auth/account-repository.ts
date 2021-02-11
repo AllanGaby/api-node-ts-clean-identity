@@ -1,8 +1,8 @@
-import { CreateAccountRepository, CreateAccountModel, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository, UpdateAccountDTO, ListAccountRepository, ListAccountRepositoryDTO } from '@/data/repositories/auth/account'
+import { CreateAccountRepository, CreateAccountModel, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository, UpdateAccountDTO } from '@/data/repositories/auth/account'
 import { AccountModel } from '@/domain/models/auth'
 import faker from 'faker'
 
-export class MemoryAccountRepository implements CreateAccountRepository, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository, ListAccountRepository {
+export class MemoryAccountRepository implements CreateAccountRepository, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository {
   private readonly accounts: AccountModel[]
   private static instance: MemoryAccountRepository
 
@@ -54,9 +54,5 @@ export class MemoryAccountRepository implements CreateAccountRepository, GetAcco
       return this.accounts[index]
     }
     return null
-  }
-
-  async list (filter: ListAccountRepositoryDTO): Promise<AccountModel[]> {
-    return this.accounts.filter(account => ((!filter.name) || (account.name === filter.name)) && ((!filter.email) || (account.email === filter.email)))
   }
 }
