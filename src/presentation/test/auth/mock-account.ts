@@ -1,10 +1,9 @@
 import { HttpRequest } from '@/presentation/protocols'
-import { CreateAccountUseCase, CreateAccountDTO, UpdateAccountUseCase, UpdateAccountDTO, ActiveAccountUseCase, ActiveAccountDTO, RecoverPasswordUseCase, RecoverPasswordDTO, RequestRecoverPasswordUseCase, RequestRecoverPasswordDTO, ShowAccountUseCase, ShowAccountDTO, GetFilenameToAccountAvatarUseCase, GetFilenameToAccountAvatarDTO } from '@/domain/usecases/auth/account'
-import { AccountModel, SessionModel, AvatarModel } from '@/domain/models/auth'
+import { CreateAccountUseCase, CreateAccountDTO, UpdateAccountUseCase, UpdateAccountDTO, ActiveAccountUseCase, ActiveAccountDTO, RecoverPasswordUseCase, RecoverPasswordDTO, RequestRecoverPasswordUseCase, RequestRecoverPasswordDTO, ShowAccountUseCase, ShowAccountDTO } from '@/domain/usecases/auth/account'
+import { AccountModel, SessionModel } from '@/domain/models/auth'
 import { mockAccountModel, mockSessionModel } from '@/data/test'
-import { CreateAccountRequest, ActiveAccountRequest, RecoverPasswordRequest, UpdateAccountRequest, ShowAccountRequest, ShowAvatarAccountRequest } from '@/presentation/controllers/auth/account'
+import { CreateAccountRequest, ActiveAccountRequest, RecoverPasswordRequest, UpdateAccountRequest, ShowAccountRequest } from '@/presentation/controllers/auth/account'
 import faker from 'faker'
-import path from 'path'
 
 export class CreateAccountSpy implements CreateAccountUseCase {
   session: SessionModel = mockSessionModel()
@@ -118,26 +117,6 @@ export class ShowAccountSpy implements ShowAccountUseCase {
 }
 
 export const mockShowAccountRequest = (): HttpRequest<ShowAccountRequest> => ({
-  body: {
-    session: {
-      accountId: faker.random.uuid()
-    }
-  }
-})
-
-export class GetFilenameToAccountAvatarSpy implements GetFilenameToAccountAvatarUseCase {
-  params: GetFilenameToAccountAvatarDTO
-  avatar: AvatarModel = {
-    avatar_file_path: `${faker.system.directoryPath()}${path.sep}${faker.system.fileName()}.${faker.system.fileExt(faker.system.mimeType())}`
-  }
-
-  async getPath (params: GetFilenameToAccountAvatarDTO): Promise<AvatarModel> {
-    this.params = params
-    return this.avatar
-  }
-}
-
-export const mokeGetFilenameToAccountAvatar = (): HttpRequest<ShowAvatarAccountRequest> => ({
   body: {
     session: {
       accountId: faker.random.uuid()
