@@ -6,7 +6,6 @@ export class DbShowFileUseCase implements ShowFileUseCase {
   constructor (private readonly showFileRepository: ShowFileRepository) {}
 
   async show (fileId: string): Promise<FileModel> {
-    this.showFileRepository.show(fileId)
-    return undefined
+    return await this.showFileRepository.show(fileId)
   }
 }
