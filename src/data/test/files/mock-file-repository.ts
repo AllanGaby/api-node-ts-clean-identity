@@ -1,4 +1,4 @@
-import { CreateFileRepository, CreateFileModel } from '@/data/repositories/files'
+import { CreateFileRepository, CreateFileModel, ShowFileRepository } from '@/data/repositories/files'
 import { FileModel } from '@/domain/models/files'
 import { mockFileModel } from './mock-file'
 import path from 'path'
@@ -17,3 +17,13 @@ export class CreateFileRepositorySpy implements CreateFileRepository {
 export const mockCreateFileModel = (): CreateFileModel => ({
   filePath: `${faker.system.directoryPath()}${path.sep}${faker.system.filePath()}`
 })
+
+export class ShowFileRepositorySpy implements ShowFileRepository {
+  fileId: string
+  file: FileModel = mockFileModel()
+
+  async show (fileId: string): Promise<FileModel> {
+    this.fileId = fileId
+    return this.file
+  }
+}
