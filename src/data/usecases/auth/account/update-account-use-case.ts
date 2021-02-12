@@ -39,7 +39,8 @@ export class DbUpdateAccountUseCase implements UpdateAccountUseCase {
       await this.cacheRemoveByPrefix.removeByPrefix(`session-authentication:${id}`)
       await this.deleteSessionByAccountId.deleteByAccountId(id)
     }
-    const emailValided = email ? false : accountById.email_valided
+    const changeEmail = (email) && (email !== accountById.email)
+    const emailValided = changeEmail ? false : accountById.email_valided
     if (!email) {
       email = accountById.email
     }
@@ -53,7 +54,7 @@ export class DbUpdateAccountUseCase implements UpdateAccountUseCase {
       name,
       email_valided: emailValided
     })
-    if (!emailValided) {
+    if (changeEmail) {
       await this.sendMailSession.sendMail({
         accountId: updatedAccount.id,
         email: updatedAccount.email,
