@@ -31,4 +31,17 @@ describe('DbShowFileUseCase', () => {
     const promise = sut.show(faker.random.uuid())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return a fileModel if ShowFileRepository return fileModel', async () => {
+    const { sut, showFileRepository } = makeSut()
+    const file = await sut.show(faker.random.uuid())
+    expect(file).toEqual(showFileRepository.file)
+  })
+
+  test('Should return undefined if ShowFileRepository return undefined', async () => {
+    const { sut, showFileRepository } = makeSut()
+    showFileRepository.file = undefined
+    const file = await sut.show(faker.random.uuid())
+    expect(file).toBeFalsy()
+  })
 })
