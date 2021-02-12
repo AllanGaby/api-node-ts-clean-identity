@@ -1,10 +1,9 @@
 import { DbUpdateAccountUseCase } from './update-account-use-case'
 import { DeleteSessionByAccountIdRepositorySpy, GetAccountByIdRepositorySpy, UpdateAccountRepositorySpy } from '@/data/test/auth/account/mock-account-repository'
-import { CacheRemoveByPrefixSpy, CacheRemoveSpy, mockUpdateAccountDTO, SendMailSessionSpy, throwError, UploadFileSpy } from '@/data/test'
+import { CacheRemoveByPrefixSpy, CacheRemoveSpy, mockUpdateAccountDTO, SendMailSessionSpy, throwError } from '@/data/test'
 import { HashCreatorSpy } from '@/data/test/mock-criptography'
 import { SessionType } from '@/domain/models/auth'
 import faker from 'faker'
-import path from 'path'
 
 interface sutTypes {
   sut: DbUpdateAccountUseCase
@@ -12,7 +11,6 @@ interface sutTypes {
   hashCreatorSpy: HashCreatorSpy
   deleteSessionByAccountIdSpy: DeleteSessionByAccountIdRepositorySpy
   cacheRemoveByPrefixSpy: CacheRemoveByPrefixSpy
-  uploadFileSpy: UploadFileSpy
   updateAccountRepositorySpy: UpdateAccountRepositorySpy
   sendMailSessionSpy: SendMailSessionSpy
   mailFilePath: string
@@ -24,7 +22,6 @@ const makeSut = (): sutTypes => {
   const getAccountByIdRepositorySpy = new GetAccountByIdRepositorySpy()
   const deleteSessionByAccountIdSpy = new DeleteSessionByAccountIdRepositorySpy()
   const cacheRemoveByPrefixSpy = new CacheRemoveByPrefixSpy()
-  const uploadFileSpy = new UploadFileSpy()
   const updateAccountRepositorySpy = new UpdateAccountRepositorySpy()
   const sendMailSessionSpy = new SendMailSessionSpy()
   const mailFilePath = faker.internet.url()
@@ -34,7 +31,6 @@ const makeSut = (): sutTypes => {
     hashCreatorSpy,
     deleteSessionByAccountIdSpy,
     cacheRemoveByPrefixSpy,
-    uploadFileSpy,
     updateAccountRepositorySpy,
     sendMailSessionSpy,
     mailFilePath,
@@ -46,7 +42,6 @@ const makeSut = (): sutTypes => {
     updateAccountRepositorySpy,
     sendMailSessionSpy,
     mailFilePath,
-    uploadFileSpy,
     deleteSessionByAccountIdSpy,
     cacheRemoveByPrefixSpy,
     cacheRemoveSpy
@@ -155,35 +150,6 @@ describe('DbUpdateAccountUseCase', () => {
     delete updateAccountDTO.email
     await sut.update(updateAccountDTO)
     expect(sendMailSpy).not.toBeCalled()
-  })
-
-  test('Should call UploadFile if change AvatarFile', async () => {
-    const { sut, uploadFileSpy, updateAccountRepositorySpy } = makeSut()
-    const updateAccountDTO = mockUpdateAccountDTO()
-    const avatarExtention = path.extname(updateAccountDTO.avatarFilePath)
-    updateAccountRepositorySpy.account.avatar_extention = avatarExtention
-    const account = await sut.update(updateAccountDTO)
-    expect(uploadFileSpy.uploadParams).toEqual({
-      sourceFile: updateAccountDTO.avatarFilePath,
-      destinationFile: `${updateAccountDTO.id}${avatarExtention}`
-    })
-    expect(account.avatar_extention).toEqual(avatarExtention)
-  })
-
-  test('Should return throw if UploadFile throws', async () => {
-    const { sut, uploadFileSpy } = makeSut()
-    jest.spyOn(uploadFileSpy, 'upload').mockImplementationOnce(throwError)
-    const promise = sut.update(mockUpdateAccountDTO())
-    await expect(promise).rejects.toThrow()
-  })
-
-  test('Should not call UploadFile if not change AvatarFile', async () => {
-    const { sut, uploadFileSpy } = makeSut()
-    const uploadSpy = jest.spyOn(uploadFileSpy, 'upload')
-    const updateAccountDTO = mockUpdateAccountDTO()
-    delete updateAccountDTO.avatarFilePath
-    await sut.update(updateAccountDTO)
-    expect(uploadSpy).not.toBeCalled()
   })
 
   test('Should call CacheRemove with correct value', async () => {

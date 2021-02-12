@@ -5,7 +5,7 @@ export interface UpdateAccountDTO {
   name?: string
   email?: string
   password?: string
-  avatarFilePath?: string
+  new_password?: string
 }
 
 export interface UpdateAccountUseCase {

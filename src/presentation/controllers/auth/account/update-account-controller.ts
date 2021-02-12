@@ -31,8 +31,7 @@ export class UpdateAccountController implements Controller<UpdateAccountRequest,
         id: request.body.session.accountId,
         name: request.body.name,
         email: request.body.email,
-        password: request.body.password,
-        avatarFilePath: request.body.avatar_file_path
+        password: request.body.password
       })
       return ok(account)
     } catch (error) {
