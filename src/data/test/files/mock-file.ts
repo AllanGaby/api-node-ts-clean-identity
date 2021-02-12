@@ -5,8 +5,7 @@ import faker from 'faker'
 
 export const mockFileModel = (): FileModel => ({
   id: faker.random.uuid(),
-  path: faker.system.filePath(),
-  extention: faker.system.fileExt('png')
+  path: `${faker.system.directoryPath()}${path.sep}${faker.system.filePath()}`
 })
 
 export const mockUploadFileDTO = (): UploadFileDTO => ({
