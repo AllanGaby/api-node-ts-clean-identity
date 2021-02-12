@@ -1,4 +1,4 @@
-import { AccountNotFoundError } from '@/data/errors'
+import { AccountNotFoundError, InvalidCredentialsError } from '@/data/errors'
 import { CacheRemoveByPrefix, CacheRemove } from '@/data/protocols/cache'
 import { HashComparer, HashCreator } from '@/data/protocols/criptography'
 import { GetAccountByIdRepository, UpdateAccountRepository, DeleteSessionByAccountIdRepository } from '@/data/repositories/auth'
@@ -26,10 +26,13 @@ export class DbUpdateAccountUseCase implements UpdateAccountUseCase {
     }
     let passwordHashed = accountById.password
     if (password) {
-      await this.hashComparer.compare({
+      const isValidPassword = await this.hashComparer.compare({
         payload: passwordHashed,
         hashedText: password
       })
+      if (!isValidPassword) {
+        throw new InvalidCredentialsError()
+      }
     }
     if (newPassword) {
       passwordHashed = await this.hashCreator.createHash(newPassword)
