@@ -4,6 +4,7 @@ import { CacheRemoveByPrefixSpy, CacheRemoveSpy, mockUpdateAccountDTO, SendMailS
 import { HashComparerSpy, HashCreatorSpy } from '@/data/test/mock-criptography'
 import { SessionType } from '@/domain/models/auth'
 import faker from 'faker'
+import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {
   sut: DbUpdateAccountUseCase
@@ -94,11 +95,18 @@ describe('DbUpdateAccountUseCase', () => {
     })
   })
 
-  test('Should throw if HashCreator throws', async () => {
+  test('Should throw if HashComparer throws', async () => {
     const { sut, hashComparerSpy } = makeSut()
     jest.spyOn(hashComparerSpy, 'compare').mockImplementationOnce(throwError)
     const promise = sut.update(mockUpdateAccountDTO())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return InvalidCredentialsError if HashComparer return false', async () => {
+    const { sut, hashComparerSpy } = makeSut()
+    hashComparerSpy.isValidHash = false
+    const promise = sut.update(mockUpdateAccountDTO())
+    await expect(promise).rejects.toThrowError(InvalidCredentialsError)
   })
 
   test('Should not call HashCreator if not change password', async () => {
