@@ -6,7 +6,7 @@ export interface UpdateAccountDTO {
   email: string
   password: string
   email_valided: boolean
-  avatar_extention?: string
+  avatar_file_id: string
 }
 
 export interface UpdateAccountRepository {
