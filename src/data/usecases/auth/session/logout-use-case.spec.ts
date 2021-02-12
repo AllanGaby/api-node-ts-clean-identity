@@ -1,7 +1,7 @@
 import { DbLogoutUseCase } from './logout-use-case'
 import { GetSessionByIdRepositorySpy, DeleteSessionByIdRepositorySpy, mockLogoutDTO, mockSessionModel } from '@/data/test/auth/session'
-import { CacheRecoverSpy, CacheRemoveSpy } from '@/data/test'
-import { throwError } from '@/data/test'
+import { CacheRecoverSpy, CacheRemoveSpy, throwError } from '@/data/test'
+
 import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {
@@ -98,7 +98,7 @@ describe('DbLogoutUseCase', () => {
     const { sut, cacheRecoverSpy, cacheRemoveSpy } = makeSut()
     const request = mockLogoutDTO()
     await sut.logout(request)
-    expect(cacheRemoveSpy.key).toEqual(cacheRecoverSpy.key)    
+    expect(cacheRemoveSpy.key).toEqual(cacheRecoverSpy.key)
   })
 
   test('Should throw if CacheRemove throws', async () => {

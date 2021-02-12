@@ -1,6 +1,6 @@
-import { CreateFileRepositorySpy, mockUploadFileDTO } from '@/data/test/files';
+import { CreateFileRepositorySpy, mockUploadFileDTO } from '@/data/test/files'
 import { DbUploadFileUseCase } from './upload-file-use-case'
-import { throwError, UploadFileSpy } from '@/data/test';
+import { throwError, UploadFileSpy } from '@/data/test'
 import path from 'path'
 
 interface sutTypes {

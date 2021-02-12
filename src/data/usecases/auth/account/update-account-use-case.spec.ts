@@ -11,8 +11,8 @@ interface sutTypes {
   getAccountByIdRepositorySpy: GetAccountByIdRepositorySpy
   hashCreatorSpy: HashCreatorSpy
   deleteSessionByAccountIdSpy: DeleteSessionByAccountIdRepositorySpy
-  cacheRemoveByPrefixSpy: CacheRemoveByPrefixSpy,  
-  uploadFileSpy: UploadFileSpy  
+  cacheRemoveByPrefixSpy: CacheRemoveByPrefixSpy
+  uploadFileSpy: UploadFileSpy
   updateAccountRepositorySpy: UpdateAccountRepositorySpy
   sendMailSessionSpy: SendMailSessionSpy
   mailFilePath: string
@@ -23,8 +23,8 @@ const makeSut = (): sutTypes => {
   const hashCreatorSpy = new HashCreatorSpy()
   const getAccountByIdRepositorySpy = new GetAccountByIdRepositorySpy()
   const deleteSessionByAccountIdSpy = new DeleteSessionByAccountIdRepositorySpy()
-  const cacheRemoveByPrefixSpy = new CacheRemoveByPrefixSpy()  
-  const uploadFileSpy = new UploadFileSpy()  
+  const cacheRemoveByPrefixSpy = new CacheRemoveByPrefixSpy()
+  const uploadFileSpy = new UploadFileSpy()
   const updateAccountRepositorySpy = new UpdateAccountRepositorySpy()
   const sendMailSessionSpy = new SendMailSessionSpy()
   const mailFilePath = faker.internet.url()
@@ -33,8 +33,8 @@ const makeSut = (): sutTypes => {
     getAccountByIdRepositorySpy,
     hashCreatorSpy,
     deleteSessionByAccountIdSpy,
-    cacheRemoveByPrefixSpy,    
-    uploadFileSpy,    
+    cacheRemoveByPrefixSpy,
+    uploadFileSpy,
     updateAccountRepositorySpy,
     sendMailSessionSpy,
     mailFilePath,
@@ -197,7 +197,7 @@ describe('DbUpdateAccountUseCase', () => {
     jest.spyOn(cacheRemoveSpy, 'remove').mockImplementationOnce(throwError)
     const promise = sut.update(mockUpdateAccountDTO())
     await expect(promise).rejects.toThrow()
-  })  
+  })
 
   test('Should not call DeleteSessionByAccountId and CacheRemoveByPrefix if not change password', async () => {
     const { sut, deleteSessionByAccountIdSpy, cacheRemoveByPrefixSpy } = makeSut()
@@ -211,11 +211,11 @@ describe('DbUpdateAccountUseCase', () => {
   })
 
   test('Should call CacheRemoveByPrefix with correct value', async () => {
-    const {sut, cacheRemoveByPrefixSpy } = makeSut()
+    const { sut, cacheRemoveByPrefixSpy } = makeSut()
     const updateAccountDTO = mockUpdateAccountDTO()
     await sut.update(updateAccountDTO)
     expect(cacheRemoveByPrefixSpy.prefix).toBe(`session-authentication:${updateAccountDTO.id}`)
-  })  
+  })
 
   test('Should return throw if CacheRemoveByPrefix throws', async () => {
     const { sut, cacheRemoveByPrefixSpy } = makeSut()
@@ -236,5 +236,5 @@ describe('DbUpdateAccountUseCase', () => {
     jest.spyOn(deleteSessionByAccountIdSpy, 'deleteByAccountId').mockImplementationOnce(throwError)
     const promise = sut.update(mockUpdateAccountDTO())
     await expect(promise).rejects.toThrow()
-  })  
+  })
 })

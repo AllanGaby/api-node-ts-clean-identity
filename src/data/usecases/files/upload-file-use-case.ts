@@ -10,7 +10,7 @@ export class DbUploadFileUseCase implements UploadFileUseCase {
     private readonly uploadFile: UploadFile
   ) {}
 
-  async upload({ filePath }: UploadFileDTO): Promise<FileModel> {
+  async upload ({ filePath }: UploadFileDTO): Promise<FileModel> {
     const extension = path.extname(filePath)
     const file = await this.createFileRepository.create({
       filePath

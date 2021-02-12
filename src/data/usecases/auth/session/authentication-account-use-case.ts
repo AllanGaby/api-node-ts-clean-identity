@@ -19,8 +19,8 @@ export class DbAuthenticationAccountUseCase implements AuthenticationAccountUseC
     const cacheKey = `account:${email}`
     let account: AccountModel
     account = await this.cacheRecover.recover<AccountModel>(cacheKey)
-    let existsAccountInCache = Boolean(account)
-    if(!existsAccountInCache){
+    const existsAccountInCache = Boolean(account)
+    if (!existsAccountInCache) {
       account = await this.getAccountByEmailRepository.getAccountByEmail(email)
     }
     if ((account) && (account.email_valided)) {
@@ -31,7 +31,7 @@ export class DbAuthenticationAccountUseCase implements AuthenticationAccountUseC
       if (!isCorrectPassword) {
         throw new InvalidCredentialsError()
       }
-      if(!existsAccountInCache){
+      if (!existsAccountInCache) {
         await this.cacheCreate.create(cacheKey, account)
       }
       const session = await this.createSessionRepository.create({

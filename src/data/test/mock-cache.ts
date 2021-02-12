@@ -4,7 +4,7 @@ export class CacheCreateSpy implements CacheCreate {
   key: string
   record: object
 
-  async create(key: string, record: object): Promise<void> {
+  async create (key: string, record: object): Promise<void> {
     this.key = key
     this.record = record
   }
@@ -23,7 +23,7 @@ export class CacheRecoverSpy implements CacheRecover {
 export class CacheRemoveSpy implements CacheRemove {
   key: string
 
-  async remove(key: string): Promise<void> {
+  async remove (key: string): Promise<void> {
     this.key = key
   }
 }
@@ -31,7 +31,7 @@ export class CacheRemoveSpy implements CacheRemove {
 export class CacheRemoveByPrefixSpy implements CacheRemoveByPrefix {
   prefix: string
 
-  async removeByPrefix(prefix: string): Promise<void> {
+  async removeByPrefix (prefix: string): Promise<void> {
     this.prefix = prefix
   }
 }

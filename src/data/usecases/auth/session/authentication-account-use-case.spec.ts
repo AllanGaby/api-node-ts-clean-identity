@@ -11,7 +11,7 @@ interface sutTypes {
   hashComparerSpy: HashComparerSpy
   cacheCreateSpy: CacheCreateSpy
   createSessionRepositorySpy: CreateSessionRepositorySpy
-  encrypterSpy: EncrypterSpy  
+  encrypterSpy: EncrypterSpy
 }
 
 const makeSut = (): sutTypes => {
@@ -38,7 +38,7 @@ describe('DbAuthenticationAccountUseCase', () => {
   test('Should call CacheRecover with correct value', async () => {
     const { sut, cacheRecoverSpy } = makeSut()
     const authenticationAccountDTO = mockAuthenticationAccountDTO()
-    await sut.authenticate(authenticationAccountDTO)    
+    await sut.authenticate(authenticationAccountDTO)
     expect(cacheRecoverSpy.key).toBe(`account:${authenticationAccountDTO.email}`)
   })
 
@@ -47,13 +47,13 @@ describe('DbAuthenticationAccountUseCase', () => {
     jest.spyOn(cacheRecoverSpy, 'recover').mockImplementationOnce(throwError)
     const promise = sut.authenticate(mockAuthenticationAccountDTO())
     await expect(promise).rejects.toThrow()
-  })  
+  })
 
   test('Should not call GetAccountByEmailRepository if CacheRecover return a account', async () => {
     const { sut, cacheRecoverSpy, getAccountByEmailRepositorySpy } = makeSut()
     cacheRecoverSpy.result = getAccountByEmailRepositorySpy.account
-    const getAccountByEmailSpy = jest.spyOn(getAccountByEmailRepositorySpy, 'getAccountByEmail') 
-    await sut.authenticate(mockAuthenticationAccountDTO())    
+    const getAccountByEmailSpy = jest.spyOn(getAccountByEmailRepositorySpy, 'getAccountByEmail')
+    await sut.authenticate(mockAuthenticationAccountDTO())
     expect(getAccountByEmailSpy).not.toBeCalled()
   })
 
@@ -105,15 +105,15 @@ describe('DbAuthenticationAccountUseCase', () => {
   test('Should not call CacheCreate if exists Account with e-mail in Cache', async () => {
     const { sut, cacheRecoverSpy, getAccountByEmailRepositorySpy, cacheCreateSpy } = makeSut()
     cacheRecoverSpy.result = getAccountByEmailRepositorySpy.account
-    const createCacheSpy = jest.spyOn(cacheCreateSpy, 'create') 
-    await sut.authenticate(mockAuthenticationAccountDTO())    
-    expect(createCacheSpy).not.toBeCalled()    
+    const createCacheSpy = jest.spyOn(cacheCreateSpy, 'create')
+    await sut.authenticate(mockAuthenticationAccountDTO())
+    expect(createCacheSpy).not.toBeCalled()
   })
 
   test('Should call CacheCreate with correct value', async () => {
     const { sut, cacheCreateSpy, getAccountByEmailRepositorySpy } = makeSut()
     const authenticationAccountDTO = mockAuthenticationAccountDTO()
-    await sut.authenticate(authenticationAccountDTO)        
+    await sut.authenticate(authenticationAccountDTO)
     expect(cacheCreateSpy.key).toBe(`account:${authenticationAccountDTO.email}`)
     expect(cacheCreateSpy.record).toBe(getAccountByEmailRepositorySpy.account)
   })
@@ -123,7 +123,7 @@ describe('DbAuthenticationAccountUseCase', () => {
     jest.spyOn(cacheCreateSpy, 'create').mockImplementationOnce(throwError)
     const promise = sut.authenticate(mockAuthenticationAccountDTO())
     await expect(promise).rejects.toThrow()
-  })  
+  })
 
   test('Should call CreateSessionRepository with correct value', async () => {
     const { sut, createSessionRepositorySpy, getAccountByEmailRepositorySpy } = makeSut()

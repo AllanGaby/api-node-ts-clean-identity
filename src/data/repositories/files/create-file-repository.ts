@@ -5,5 +5,5 @@ export interface CreateFileModel {
 }
 
 export interface CreateFileRepository {
-  create(createFileModel: CreateFileModel): Promise<FileModel>
+  create: (createFileModel: CreateFileModel) => Promise<FileModel>
 }

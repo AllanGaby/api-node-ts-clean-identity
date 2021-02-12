@@ -6,7 +6,7 @@ export class CreateFileRepositorySpy implements CreateFileRepository {
   params: CreateFileModel
   file: FileModel = mockFileModel()
 
-  async create(params: CreateFileModel): Promise<FileModel> {
+  async create (params: CreateFileModel): Promise<FileModel> {
     this.params = params
     return this.file
   }
