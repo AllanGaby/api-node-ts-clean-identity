@@ -13,12 +13,11 @@ export class DbUploadFileUseCase implements UploadFileUseCase {
   async upload({ filePath }: UploadFileDTO): Promise<FileModel> {
     const extension = path.extname(filePath)
     const file = await this.createFileRepository.create({
-      filePath,
-      extension
+      filePath
     })
     await this.uploadFile.upload({
       sourceFile: filePath,
-      destinationFile: `${file.id}.${file.extention}`
+      destinationFile: `${file.id}.${extension}`
     })
     return file
   }
