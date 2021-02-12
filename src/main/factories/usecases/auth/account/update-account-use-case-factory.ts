@@ -15,6 +15,7 @@ export const makeUpdateAccountUseCase = (): UpdateAccountUseCase => {
   return new DbUpdateAccountUseCase(
     acccountRepository,
     hasherAdapter,
+    hasherAdapter,
     sessionRepository,
     cacheAdapter,
     acccountRepository,

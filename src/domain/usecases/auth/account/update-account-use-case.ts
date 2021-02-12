@@ -5,7 +5,7 @@ export interface UpdateAccountDTO {
   name?: string
   email?: string
   password?: string
-  new_password?: string
+  newPassword?: string
 }
 
 export interface UpdateAccountUseCase {

@@ -1,6 +1,6 @@
 import { AccountNotFoundError } from '@/data/errors'
 import { CacheRemoveByPrefix, CacheRemove } from '@/data/protocols/cache'
-import { HashCreator } from '@/data/protocols/criptography'
+import { HashComparer, HashCreator } from '@/data/protocols/criptography'
 import { GetAccountByIdRepository, UpdateAccountRepository, DeleteSessionByAccountIdRepository } from '@/data/repositories/auth'
 import { AccountModel, SessionType } from '@/domain/models/auth'
 import { UpdateAccountUseCase, UpdateAccountDTO } from '@/domain/usecases/auth/account'
@@ -9,6 +9,7 @@ import { SendMailSessionUseCase } from '@/domain/usecases/auth/session'
 export class DbUpdateAccountUseCase implements UpdateAccountUseCase {
   constructor (
     private readonly getAccountByIdRepository: GetAccountByIdRepository,
+    private readonly hashComparer: HashComparer,
     private readonly hashCreator: HashCreator,
     private readonly deleteSessionByAccountId: DeleteSessionByAccountIdRepository,
     private readonly cacheRemoveByPrefix: CacheRemoveByPrefix,
@@ -18,14 +19,20 @@ export class DbUpdateAccountUseCase implements UpdateAccountUseCase {
     private readonly cacheRemove: CacheRemove
   ) {}
 
-  async update ({ id, name, email, password }: UpdateAccountDTO): Promise<AccountModel> {
+  async update ({ id, name, email, password, newPassword }: UpdateAccountDTO): Promise<AccountModel> {
     const accountById = await this.getAccountByIdRepository.getAccountById(id)
     if (!accountById) {
       throw new AccountNotFoundError()
     }
     let passwordHashed = accountById.password
     if (password) {
-      passwordHashed = await this.hashCreator.createHash(password)
+      await this.hashComparer.compare({
+        payload: passwordHashed,
+        hashedText: password
+      })
+    }
+    if (newPassword) {
+      passwordHashed = await this.hashCreator.createHash(newPassword)
       await this.cacheRemoveByPrefix.removeByPrefix(`session-authentication:${id}`)
       await this.deleteSessionByAccountId.deleteByAccountId(id)
     }
