@@ -13,7 +13,8 @@ export const mockUpdateAccountDTO = (): UpdateAccountDTO => ({
   id: faker.random.uuid(),
   name: faker.name.findName(),
   email: faker.internet.email(),
-  password: faker.internet.password()
+  password: faker.internet.password(),
+  newPassword: faker.internet.password()
 })
 
 export const mockAccountModel = (): AccountModel => ({

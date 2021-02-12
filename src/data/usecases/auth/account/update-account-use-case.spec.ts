@@ -1,13 +1,14 @@
 import { DbUpdateAccountUseCase } from './update-account-use-case'
 import { DeleteSessionByAccountIdRepositorySpy, GetAccountByIdRepositorySpy, UpdateAccountRepositorySpy } from '@/data/test/auth/account/mock-account-repository'
 import { CacheRemoveByPrefixSpy, CacheRemoveSpy, mockUpdateAccountDTO, SendMailSessionSpy, throwError } from '@/data/test'
-import { HashCreatorSpy } from '@/data/test/mock-criptography'
+import { HashComparerSpy, HashCreatorSpy } from '@/data/test/mock-criptography'
 import { SessionType } from '@/domain/models/auth'
 import faker from 'faker'
 
 interface sutTypes {
   sut: DbUpdateAccountUseCase
   getAccountByIdRepositorySpy: GetAccountByIdRepositorySpy
+  hashComparerSpy: HashComparerSpy
   hashCreatorSpy: HashCreatorSpy
   deleteSessionByAccountIdSpy: DeleteSessionByAccountIdRepositorySpy
   cacheRemoveByPrefixSpy: CacheRemoveByPrefixSpy
@@ -18,8 +19,9 @@ interface sutTypes {
 }
 
 const makeSut = (): sutTypes => {
-  const hashCreatorSpy = new HashCreatorSpy()
   const getAccountByIdRepositorySpy = new GetAccountByIdRepositorySpy()
+  const hashComparerSpy = new HashComparerSpy()
+  const hashCreatorSpy = new HashCreatorSpy()
   const deleteSessionByAccountIdSpy = new DeleteSessionByAccountIdRepositorySpy()
   const cacheRemoveByPrefixSpy = new CacheRemoveByPrefixSpy()
   const updateAccountRepositorySpy = new UpdateAccountRepositorySpy()
@@ -28,6 +30,7 @@ const makeSut = (): sutTypes => {
   const cacheRemoveSpy = new CacheRemoveSpy()
   const sut = new DbUpdateAccountUseCase(
     getAccountByIdRepositorySpy,
+    hashComparerSpy,
     hashCreatorSpy,
     deleteSessionByAccountIdSpy,
     cacheRemoveByPrefixSpy,
@@ -38,6 +41,7 @@ const makeSut = (): sutTypes => {
   return {
     sut,
     getAccountByIdRepositorySpy,
+    hashComparerSpy,
     hashCreatorSpy,
     updateAccountRepositorySpy,
     sendMailSessionSpy,
@@ -70,12 +74,39 @@ describe('DbUpdateAccountUseCase', () => {
     await expect(promise).rejects.toThrow()
   })
 
+  test('Should not call HashComparer if not change password', async () => {
+    const { sut, hashComparerSpy } = makeSut()
+    const hashComparerSpyon = jest.spyOn(hashComparerSpy, 'compare')
+    const updateAccountDTO = mockUpdateAccountDTO()
+    delete updateAccountDTO.password
+    await sut.update(updateAccountDTO)
+    expect(hashComparerSpyon).not.toHaveBeenCalled()
+  })
+
+  test('Should not call HashComparer with correct values', async () => {
+    const { sut, hashComparerSpy, getAccountByIdRepositorySpy } = makeSut()
+    const hashComparerSpyon = jest.spyOn(hashComparerSpy, 'compare')
+    const updateAccountDTO = mockUpdateAccountDTO()
+    await sut.update(updateAccountDTO)
+    expect(hashComparerSpyon).toHaveBeenCalledWith({
+      payload: getAccountByIdRepositorySpy.account.password,
+      hashedText: updateAccountDTO.password
+    })
+  })
+
+  test('Should throw if HashCreator throws', async () => {
+    const { sut, hashComparerSpy } = makeSut()
+    jest.spyOn(hashComparerSpy, 'compare').mockImplementationOnce(throwError)
+    const promise = sut.update(mockUpdateAccountDTO())
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should not call HashCreator if not change password', async () => {
     const { sut, hashCreatorSpy, deleteSessionByAccountIdSpy } = makeSut()
     const createHashSpy = jest.spyOn(hashCreatorSpy, 'createHash')
     const deleteByAccountIdSpy = jest.spyOn(deleteSessionByAccountIdSpy, 'deleteByAccountId')
     const updateAccountDTO = mockUpdateAccountDTO()
-    delete updateAccountDTO.password
+    delete updateAccountDTO.newPassword
     await sut.update(updateAccountDTO)
     expect(createHashSpy).not.toBeCalled()
     expect(deleteByAccountIdSpy).not.toBeCalled()
@@ -92,7 +123,7 @@ describe('DbUpdateAccountUseCase', () => {
     const { sut, hashCreatorSpy } = makeSut()
     const updateAccountDTO = mockUpdateAccountDTO()
     await sut.update(updateAccountDTO)
-    expect(hashCreatorSpy.payload).toBe(updateAccountDTO.password)
+    expect(hashCreatorSpy.payload).toBe(updateAccountDTO.newPassword)
   })
 
   test('Should call UpdateAccountRepository with correct values', async () => {
@@ -170,7 +201,7 @@ describe('DbUpdateAccountUseCase', () => {
     const deleteByAccountIdSpy = jest.spyOn(deleteSessionByAccountIdSpy, 'deleteByAccountId')
     const removeCacheByPrefixSpy = jest.spyOn(cacheRemoveByPrefixSpy, 'removeByPrefix')
     const updateAccountDTO = mockUpdateAccountDTO()
-    delete updateAccountDTO.password
+    delete updateAccountDTO.newPassword
     await sut.update(updateAccountDTO)
     expect(deleteByAccountIdSpy).not.toBeCalled()
     expect(removeCacheByPrefixSpy).not.toBeCalled()
