@@ -2,6 +2,7 @@ import { UploadFile } from '@/data/protocols/storage'
 import { CreateFileRepository } from '@/data/repositories/files'
 import { FileModel } from '@/domain/models/files'
 import { UploadFileUseCase, UploadFileDTO } from '@/domain/usecases/files'
+import path from 'path'
 
 export class DbUploadFileUseCase implements UploadFileUseCase {
   constructor (
@@ -10,9 +11,15 @@ export class DbUploadFileUseCase implements UploadFileUseCase {
   ) {}
 
   async upload({ filePath }: UploadFileDTO): Promise<FileModel> {
-    this.createFileRepository.create({
-      filePath
+    const extension = path.extname(filePath)
+    const file = await this.createFileRepository.create({
+      filePath,
+      extension
     })
-    return undefined
+    await this.uploadFile.upload({
+      sourceFile: filePath,
+      destinationFile: `${file.id}.${file.extention}`
+    })
+    return file
   }
 }

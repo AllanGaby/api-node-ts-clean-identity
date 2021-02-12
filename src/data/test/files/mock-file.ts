@@ -1,5 +1,6 @@
 import { FileModel } from '@/domain/models/files'
 import { UploadFileDTO } from '@/domain/usecases/files'
+import path from 'path'
 import faker from 'faker'
 
 export const mockFileModel = (): FileModel => ({
@@ -9,5 +10,5 @@ export const mockFileModel = (): FileModel => ({
 })
 
 export const mockUploadFileDTO = (): UploadFileDTO => ({
-  filePath: faker.image.imageUrl()
+  filePath: `${faker.system.directoryPath()}${path.sep}${faker.system.filePath()}`
 })
