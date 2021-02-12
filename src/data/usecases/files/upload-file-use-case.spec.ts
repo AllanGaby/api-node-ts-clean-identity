@@ -24,12 +24,9 @@ describe('DbUploadFileUseCase', () => {
   test('Should call CreateFileRepository with correct values', async () => {
     const { sut, createFileRepositorySpy } = makeSut()
     const request = mockUploadFileDTO()
-    const fileExtention = path.extname(request.filePath)
-    createFileRepositorySpy.file.extention = fileExtention
     await sut.upload(request)
     expect(createFileRepositorySpy.params).toEqual({
-      filePath: request.filePath,
-      extension: fileExtention
+      filePath: request.filePath
     })
   })
 
@@ -43,10 +40,11 @@ describe('DbUploadFileUseCase', () => {
   test('Should call UploadFile with correct values', async () => {
     const { sut, createFileRepositorySpy, uploadFileSpy } = makeSut()
     const request = mockUploadFileDTO()
+    const fileExtention = path.extname(request.filePath)
     await sut.upload(request)
     expect(uploadFileSpy.uploadParams).toEqual({
       sourceFile: request.filePath,
-      destinationFile: `${createFileRepositorySpy.file.id}.${createFileRepositorySpy.file.extention}`
+      destinationFile: `${createFileRepositorySpy.file.id}.${fileExtention}`
     })
   })
 
