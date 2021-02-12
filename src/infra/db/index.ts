@@ -1,5 +1,6 @@
 import { MemoryAccountRepository, MemorySessionRepository } from './memory/repositories/auth'
 import { AccountRepositoryTypeORM, SessionRepositoryTypeORM } from './typeorm/repositories/auth'
+import { MemoryFileRepository } from './memory/repositories/files'
 
 export enum RepositoryTypes {
   TypeOrm = 'TypeORM',
@@ -22,6 +23,13 @@ export class RepositoryFactory {
         return MemorySessionRepository.getInstance()
       case RepositoryTypes.TypeOrm:
         return SessionRepositoryTypeORM.getInstance()
+    }
+  }
+
+  public static getFileRepository (type: RepositoryTypes): MemoryFileRepository {
+    switch (type) {
+      case RepositoryTypes.Memory:
+        return MemoryFileRepository.getInstance()
     }
   }
 }
