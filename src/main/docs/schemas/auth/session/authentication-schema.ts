@@ -22,10 +22,24 @@ export const authenticationResponseSchema = {
       type: 'string',
       description: 'Access token of account session'
     },
-    account_type: {
-      type: 'integer',
-      description: 'Account type (1 - Manager, 2 - Student)',
-      enum: [1, 2]
+    account: {
+      type: 'object',
+      properties: {
+        id: {
+          type: 'string',
+          format: 'uuid',
+          description: 'Account identification'
+        },
+        name: {
+          type: 'string',
+          description: 'User name'
+        },
+        avatar_file_id: {
+          type: 'string',
+          format: 'uuid',
+          description: 'Avatar file id, used to get avatar file'
+        }
+      }
     }
   }
 }

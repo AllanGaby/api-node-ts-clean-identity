@@ -23,10 +23,10 @@ export const accountModelSchema = {
     email_valided: {
       type: 'boolean'
     },
-    type: {
-      type: 'integer',
-      description: 'Account type (1 - Manager, 2 - Student)',
-      enum: [1, 2]
+    avatar_file_id: {
+      type: 'string',
+      format: 'uuid',
+      description: 'Avatar file id, used to get avatar file'
     },
     created_at: {
       type: 'string',

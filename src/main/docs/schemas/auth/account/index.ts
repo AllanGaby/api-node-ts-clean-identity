@@ -1,4 +1,5 @@
-export * from './create-account-schema'
 export * from './account-model-schema'
+export * from './avatar-account-schema'
+export * from './create-account-schema'
 export * from './recover-password-schema'
 export * from './update-account-schema'

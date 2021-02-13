@@ -15,15 +15,15 @@ export const updateAccountRequestSchema = {
       format: 'password',
       description: 'Access password'
     },
+    new_password: {
+      type: 'string',
+      format: 'password',
+      description: 'New access password'
+    },
     password_confirmation: {
       type: 'string',
       format: 'password',
       description: 'Password confirmation'
-    },
-    avatar_file_path: {
-      type: 'string',
-      format: 'binary',
-      description: 'Avatar file'
     }
   }
 }
