@@ -1,16 +1,16 @@
 import { CreateFileRepositorySpy, mockUploadFileDTO } from '@/data/test/files'
 import { DbUploadFileUseCase } from './upload-file-use-case'
-import { throwError, UploadFileSpy } from '@/data/test'
+import { throwError, UploadStorageFileSpy } from '@/data/test'
 import path from 'path'
 
 interface sutTypes {
   sut: DbUploadFileUseCase
   createFileRepositorySpy: CreateFileRepositorySpy
-  uploadFileSpy: UploadFileSpy
+  uploadFileSpy: UploadStorageFileSpy
 }
 
 const makeSut = (): sutTypes => {
-  const uploadFileSpy = new UploadFileSpy()
+  const uploadFileSpy = new UploadStorageFileSpy()
   const createFileRepositorySpy = new CreateFileRepositorySpy()
   const sut = new DbUploadFileUseCase(createFileRepositorySpy, uploadFileSpy)
   return {

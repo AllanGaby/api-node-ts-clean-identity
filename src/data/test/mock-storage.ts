@@ -1,10 +1,10 @@
-import { UploadFile, UploadFileDTO } from '@/data/protocols/storage'
+import { UploadStorageFile, UploadStorageFileDTO } from '@/data/protocols/storage'
 
-export class UploadFileSpy implements UploadFile {
-  uploadParams: UploadFileDTO
+export class UploadStorageFileSpy implements UploadStorageFile {
+  uploadParams: UploadStorageFileDTO
   isUploaded: boolean = false
 
-  async upload (params: UploadFileDTO): Promise<boolean> {
+  async upload (params: UploadStorageFileDTO): Promise<boolean> {
     this.uploadParams = params
     return this.isUploaded
   }
