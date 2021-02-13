@@ -44,7 +44,7 @@ describe('DbUploadFileUseCase', () => {
     await sut.upload(request)
     expect(uploadFileSpy.uploadParams).toEqual({
       sourceFile: request.filePath,
-      destinationFile: `${createFileRepositorySpy.file.id}.${fileExtention}`
+      destinationFile: `${createFileRepositorySpy.file.id}${fileExtention}`
     })
   })
 
