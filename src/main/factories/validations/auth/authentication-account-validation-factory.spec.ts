@@ -1,4 +1,4 @@
-import { makeAuthenticationAccountValidation } from './authentication-account-factory'
+import { makeAuthenticationAccountValidation } from './authentication-account-validation-factory'
 import { ValidationBuilder, ValidationComposite } from '@/validation/validations'
 import { Validation } from '@/validation/protocols'
 import { EmailValidatorSpy } from '@/validation/test'

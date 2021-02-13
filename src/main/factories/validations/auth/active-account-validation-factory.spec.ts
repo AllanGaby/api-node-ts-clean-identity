@@ -1,4 +1,4 @@
-import { makeActiveAccountValidation } from './active-account-factory'
+import { makeActiveAccountValidation } from './active-account-validation-factory'
 import { ValidationBuilder, ValidationComposite } from '@/validation/validations'
 
 jest.mock('@/validation/validations/validation-composite')

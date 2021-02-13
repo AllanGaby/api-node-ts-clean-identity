@@ -1,4 +1,4 @@
-import { makeRecoverPassowrdValidation } from './recover-password-factory'
+import { makeRecoverPassowrdValidation } from './recover-password-validation-factory'
 import { ValidationBuilder, ValidationComposite } from '@/validation/validations'
 import { Validation } from '@/validation/protocols'
 import faker from 'faker'

@@ -1,4 +1,4 @@
-import { makeRequestRecoverPasswordValidation } from './request-recover-password-factory'
+import { makeRequestRecoverPasswordValidation } from './request-recover-password-validation-factory'
 import { ValidationBuilder, ValidationComposite } from '@/validation/validations'
 import { Validation } from '@/validation/protocols'
 import { EmailValidatorSpy } from '@/validation/test'
