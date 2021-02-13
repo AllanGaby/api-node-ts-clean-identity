@@ -17,7 +17,7 @@ export const adaptFileRoute = (controller: Controller<any, any>, contentType: st
     if (httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299) {
       response.type(contentType)
       const uploadDir = path.resolve(__dirname, '..', '..', '..', '..', httpResponse.body.dir)
-      response.sendFile(`${uploadDir}${httpResponse.body.id}${httpResponse.body.extention}`)
+      response.sendFile(`${uploadDir}/${httpResponse.body.id}${httpResponse.body.extention}`)
       return response
     } else {
       response.status(httpResponse.statusCode).json({
