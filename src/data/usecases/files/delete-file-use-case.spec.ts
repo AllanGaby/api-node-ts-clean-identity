@@ -45,4 +45,17 @@ describe('DbDeleteFileUseCase', () => {
     const promise = sut.delete(faker.random.uuid())
     await expect(promise).rejects.toThrowError(FileNotFoundError)
   })
+
+  test('Should call DeleteStorageFile with correct values', async () => {
+    const { sut, showFileRepository, deleteStorageFile } = makeSut()
+    await sut.delete(faker.random.uuid())
+    expect(deleteStorageFile.params).toEqual({ filePath: showFileRepository.file.path })
+  })
+
+  test('Should return throw if DeleteStorageFile throws', async () => {
+    const { sut, deleteStorageFile } = makeSut()
+    jest.spyOn(deleteStorageFile, 'delete').mockImplementationOnce(throwError)
+    const promise = sut.delete(faker.random.uuid())
+    await expect(promise).rejects.toThrow()
+  })
 })
