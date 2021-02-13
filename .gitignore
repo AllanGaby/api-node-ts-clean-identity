@@ -4,5 +4,11 @@ coverage
 temp/*
 !temp/.gitkeep
 uploads/*
+uploads/auth/*
+uploads/auth/avatar/*
+!uploads/auth
+!uploads/auth/avatar
 !uploads/.gitkeep
+!uploads/auth/.gitkeep
+!uploads/auth/avatar/.gitkeep
 !uploads/profile.png

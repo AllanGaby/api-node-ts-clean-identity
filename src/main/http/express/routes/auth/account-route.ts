@@ -1,5 +1,5 @@
 import { adaptAuthenticationMiddleware, adaptRoute } from '@/main/adapters/express'
-import { makeCreateAccountController, makeActiveAccountController, makeRequestRecoverPasswordController, makeRecoverPasswordController, makeShowAccountBySessionController, makeUpdateAccountController } from '@/main/factories/controllers/auth/account'
+import { makeCreateAccountController, makeActiveAccountController, makeRequestRecoverPasswordController, makeRecoverPasswordController, makeShowAccountBySessionController, makeUpdateAccountController, makeUploadAvatarAccountController } from '@/main/factories/controllers/auth/account'
 import { makeAuthenticationMiddleware } from '@/main/factories/middlewares/auth'
 import { Router } from 'express'
 import multer from 'multer'
@@ -12,6 +12,7 @@ export default (): Router => {
   accountRouter.post('/password', adaptRoute(makeRequestRecoverPasswordController()))
   accountRouter.put('/password', adaptRoute(makeRecoverPasswordController()))
   accountRouter.put('/', uploadFile.single('avatar_file_path'), adaptAuthenticationMiddleware(makeAuthenticationMiddleware()), adaptRoute(makeUpdateAccountController(), 'avatar_file_path'))
+  accountRouter.patch('/avatar', uploadFile.single('avatar_file_path'), adaptAuthenticationMiddleware(makeAuthenticationMiddleware()), adaptRoute(makeUploadAvatarAccountController(), 'avatar_file_path'))
   accountRouter.put('/:session_id', adaptRoute(makeActiveAccountController()))
   accountRouter.get('/', adaptAuthenticationMiddleware(makeAuthenticationMiddleware()), adaptRoute(makeShowAccountBySessionController()))
   return accountRouter
