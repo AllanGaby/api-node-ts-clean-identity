@@ -1,9 +1,12 @@
 import { HttpRequest } from '@/presentation/protocols'
-import { CreateAccountUseCase, CreateAccountDTO, UpdateAccountUseCase, UpdateAccountDTO, ActiveAccountUseCase, ActiveAccountDTO, RecoverPasswordUseCase, RecoverPasswordDTO, RequestRecoverPasswordUseCase, RequestRecoverPasswordDTO, ShowAccountUseCase, ShowAccountDTO, UploadAvatarAccountUseCase, UploadAvatarAccountDTO } from '@/domain/usecases/auth/account'
+import { CreateAccountUseCase, CreateAccountDTO, UpdateAccountUseCase, UpdateAccountDTO, ActiveAccountUseCase, ActiveAccountDTO, RecoverPasswordUseCase, RecoverPasswordDTO, RequestRecoverPasswordUseCase, RequestRecoverPasswordDTO, ShowAccountUseCase, ShowAccountDTO, UploadAvatarAccountUseCase, UploadAvatarAccountDTO, ShowAvatarAccountUseCase, ShowAvatarAccountDTO } from '@/domain/usecases/auth/account'
 import { AccountModel, SessionModel } from '@/domain/models/auth'
 import { mockAccountModel, mockSessionModel } from '@/data/test'
 import { CreateAccountRequest, ActiveAccountRequest, RecoverPasswordRequest, UpdateAccountRequest, ShowAccountRequest, UploadAvatarAccountRequest } from '@/presentation/controllers/auth/account'
 import faker from 'faker'
+import { FileModel } from '@/domain/models/files'
+import { mockFileModel } from '@/data/test/files'
+import { ShowAvatarAccountRequest } from '@/presentation/controllers/auth/account/show-avatar-account-controller'
 
 export class CreateAccountSpy implements CreateAccountUseCase {
   session: SessionModel = mockSessionModel()
@@ -140,5 +143,21 @@ export const mockUploadAvatarAccountRequest = (): HttpRequest<UploadAvatarAccoun
     session: {
       accountId: faker.random.uuid()
     }
+  }
+})
+
+export class ShowAvatarAccountUseCaseSpy implements ShowAvatarAccountUseCase {
+  params: ShowAvatarAccountDTO
+  file: FileModel = mockFileModel()
+
+  async show (params: ShowAvatarAccountDTO): Promise<FileModel> {
+    this.params = params
+    return this.file
+  }
+}
+
+export const mockShowAvatarAccountRequest = (): HttpRequest<ShowAvatarAccountRequest> => ({
+  params: {
+    file_id: faker.random.uuid()
   }
 })
