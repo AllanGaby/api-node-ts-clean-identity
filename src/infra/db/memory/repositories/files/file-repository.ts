@@ -1,8 +1,8 @@
-import { CreateFileRepository, CreateFileModel, ShowFileRepository } from '@/data/repositories/files'
+import { CreateFileRepository, CreateFileModel, ShowFileRepository, DeleteFileRepository } from '@/data/repositories/files'
 import { FileModel } from '@/domain/models/files'
 import faker from 'faker'
 
-export class MemoryFileRepository implements CreateFileRepository, ShowFileRepository {
+export class MemoryFileRepository implements CreateFileRepository, ShowFileRepository, DeleteFileRepository {
   private readonly files: FileModel[]
   private static instance: MemoryFileRepository
 
@@ -30,5 +30,14 @@ export class MemoryFileRepository implements CreateFileRepository, ShowFileRepos
 
   async show (fileId: string): Promise<FileModel> {
     return this.files.find(file => file.id === fileId)
+  }
+
+  async delete (fileId: string): Promise<void> {
+    if (fileId) {
+      const index = this.files.findIndex(session => session.id === fileId)
+      if (index >= 0) {
+        this.files.splice(index)
+      }
+    }
   }
 }
