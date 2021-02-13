@@ -11,4 +11,4 @@ uploads/auth/avatar/*
 !uploads/.gitkeep
 !uploads/auth/.gitkeep
 !uploads/auth/avatar/.gitkeep
-!uploads/profile.png
+!uploads/auth/avatar/profile.png
