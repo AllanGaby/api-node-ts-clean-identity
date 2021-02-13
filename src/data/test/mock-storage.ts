@@ -1,4 +1,4 @@
-import { UploadStorageFile, UploadStorageFileDTO } from '@/data/protocols/storage'
+import { UploadStorageFile, UploadStorageFileDTO, DeleteStorageFile, DeleteStorageFileDTO } from '@/data/protocols/storage'
 
 export class UploadStorageFileSpy implements UploadStorageFile {
   uploadParams: UploadStorageFileDTO
@@ -7,5 +7,13 @@ export class UploadStorageFileSpy implements UploadStorageFile {
   async upload (params: UploadStorageFileDTO): Promise<boolean> {
     this.uploadParams = params
     return this.isUploaded
+  }
+}
+
+export class DeleteStorageFileStub implements DeleteStorageFile {
+  params: DeleteStorageFileDTO
+
+  async delete (params: DeleteStorageFileDTO): Promise<void> {
+    this.params = params
   }
 }

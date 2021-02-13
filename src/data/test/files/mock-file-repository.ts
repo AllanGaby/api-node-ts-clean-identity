@@ -1,4 +1,4 @@
-import { CreateFileRepository, CreateFileModel, ShowFileRepository } from '@/data/repositories/files'
+import { CreateFileRepository, CreateFileModel, ShowFileRepository, DeleteFileRepository } from '@/data/repositories/files'
 import { FileModel } from '@/domain/models/files'
 import { mockFileModel } from './mock-file'
 import path from 'path'
@@ -25,5 +25,13 @@ export class ShowFileRepositorySpy implements ShowFileRepository {
   async show (fileId: string): Promise<FileModel> {
     this.fileId = fileId
     return this.file
+  }
+}
+
+export class DeleteFileRepositoryStub implements DeleteFileRepository {
+  fileId: string
+
+  async delete (fileId: string): Promise<void> {
+    this.fileId = fileId
   }
 }
