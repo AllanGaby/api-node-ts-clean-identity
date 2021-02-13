@@ -58,4 +58,17 @@ describe('DbDeleteFileUseCase', () => {
     const promise = sut.delete(faker.random.uuid())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should call DeleteFileRepository with correct values', async () => {
+    const { sut, showFileRepository, deleteFileRepository } = makeSut()
+    await sut.delete(faker.random.uuid())
+    expect(deleteFileRepository.fileId).toBe(showFileRepository.file.id)
+  })
+
+  test('Should return throw if DeleteFileRepository throws', async () => {
+    const { sut, deleteFileRepository } = makeSut()
+    jest.spyOn(deleteFileRepository, 'delete').mockImplementationOnce(throwError)
+    const promise = sut.delete(faker.random.uuid())
+    await expect(promise).rejects.toThrow()
+  })
 })
