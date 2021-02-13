@@ -1,5 +1,5 @@
 import { DbUploadAvatarAccountUseCase } from './upload-avatar-account-use-case'
-import { GetAccountByIdRepositorySpy, mockUploadAvatarAccountDTO, throwError } from '@/data/test'
+import { GetAccountByIdRepositorySpy, mockUploadAvatarAccountDTO, throwError, UpdateAccountRepositorySpy } from '@/data/test'
 import { UploadFileUseCaseSpy } from '@/data/test/files'
 import { AccountNotFoundError } from '@/data/errors'
 
@@ -7,16 +7,19 @@ interface sutTypes {
   sut: DbUploadAvatarAccountUseCase
   getAccountByIdRepository: GetAccountByIdRepositorySpy
   uploadFileUseCase: UploadFileUseCaseSpy
+  updateAccountRepository: UpdateAccountRepositorySpy
 }
 
 const makeSut = (): sutTypes => {
   const getAccountByIdRepository = new GetAccountByIdRepositorySpy()
   const uploadFileUseCase = new UploadFileUseCaseSpy()
-  const sut = new DbUploadAvatarAccountUseCase(getAccountByIdRepository, uploadFileUseCase)
+  const updateAccountRepository = new UpdateAccountRepositorySpy()
+  const sut = new DbUploadAvatarAccountUseCase(getAccountByIdRepository, uploadFileUseCase, updateAccountRepository)
   return {
     sut,
     getAccountByIdRepository,
-    uploadFileUseCase
+    uploadFileUseCase,
+    updateAccountRepository
   }
 }
 
@@ -54,6 +57,23 @@ describe('DbUploadAvatarAccountUseCase', () => {
   test('Should return throw if UploadFile throws', async () => {
     const { sut, uploadFileUseCase } = makeSut()
     jest.spyOn(uploadFileUseCase, 'upload').mockImplementationOnce(throwError)
+    const promise = sut.upload(mockUploadAvatarAccountDTO())
+    await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call UpdateAccountRepository with correct values', async () => {
+    const { sut, updateAccountRepository, uploadFileUseCase, getAccountByIdRepository } = makeSut()
+    const request = mockUploadAvatarAccountDTO()
+    await sut.upload(request)
+    expect(updateAccountRepository.params).toEqual({
+      ...getAccountByIdRepository.account,
+      avatar_file_id: uploadFileUseCase.file.id
+    })
+  })
+
+  test('Should return throw if UpdateAccountRepository throws', async () => {
+    const { sut, updateAccountRepository } = makeSut()
+    jest.spyOn(updateAccountRepository, 'update').mockImplementationOnce(throwError)
     const promise = sut.upload(mockUploadAvatarAccountDTO())
     await expect(promise).rejects.toThrow()
   })
