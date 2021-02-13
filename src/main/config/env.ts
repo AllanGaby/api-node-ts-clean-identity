@@ -26,8 +26,8 @@ export const EnvConfig: Env = ({
   port: process.env.PORT || 3333,
   urlRabbitMQ: process.env.URL_RABBITMQ || 'amqp://identity:masterkey@localhost:5672',
   baseDir: process.env.BASEDIR || 'src',
-  repositoryType: process.env.REPOSITORY_TYPE as RepositoryTypes || RepositoryTypes.TypeOrm,
-  cacheType: process.env.CACHE_TYPE as CacheTypes || CacheTypes.Redis,
+  repositoryType: process.env.REPOSITORY_TYPE as RepositoryTypes || RepositoryTypes.Memory,
+  cacheType: process.env.CACHE_TYPE as CacheTypes || CacheTypes.Memory,
   jwtSecret: process.env.JWT_SECRET || '01c383ef-b869-43f6-a60a-7b0c1b161d3b',
   tokenName: process.env.AUTH_TOKEN_NAME || 'x-access-token',
   default: {
