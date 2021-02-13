@@ -1,7 +1,8 @@
 import { Controller, HttpRequest } from '@/presentation/protocols'
 import { Request, Response } from 'express'
+import path from 'path'
 
-export const adaptFileRoute = (controller: Controller<any, any>, fileField: string = 'file') => {
+export const adaptFileRoute = (controller: Controller<any, any>, contentType: string, fileField: string = 'file') => {
   return async (request: Request, response: Response) => {
     const httpRequest: HttpRequest<any> = {
       body: request.body,
@@ -14,7 +15,9 @@ export const adaptFileRoute = (controller: Controller<any, any>, fileField: stri
 
     const httpResponse = await controller.handle(httpRequest)
     if (httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299) {
-      response.sendFile(httpResponse.body[fileField])
+      response.type(contentType)
+      const uploadDir = path.resolve(__dirname, '..', '..', '..', '..', httpResponse.body.dir)
+      response.sendFile(`${uploadDir}${httpResponse.body.id}${httpResponse.body.extention}`)
       return response
     } else {
       response.status(httpResponse.statusCode).json({

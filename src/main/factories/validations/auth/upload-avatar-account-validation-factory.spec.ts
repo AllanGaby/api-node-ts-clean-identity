@@ -4,7 +4,7 @@ import { Validation } from '@/validation/protocols'
 
 jest.mock('@/validation/validations/validation-composite')
 
-describe('makeUpdateAccountValidation', () => {
+describe('makeUploadAvatarAccountValidation', () => {
   test('Should call ValidationComposite with all validations', () => {
     makeUploadAvatarAccountValidation()
     const validations: Validation[] = [
