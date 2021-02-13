@@ -49,7 +49,7 @@ describe('DbDeleteFileUseCase', () => {
   test('Should call DeleteStorageFile with correct values', async () => {
     const { sut, showFileRepository, deleteStorageFile } = makeSut()
     await sut.delete(faker.random.uuid())
-    expect(deleteStorageFile.params).toEqual({ filePath: showFileRepository.file.path })
+    expect(deleteStorageFile.params).toEqual({ filePath: `${showFileRepository.file.dir}${showFileRepository.file.id}${showFileRepository.file.extention}` })
   })
 
   test('Should return throw if DeleteStorageFile throws', async () => {

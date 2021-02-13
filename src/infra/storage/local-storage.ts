@@ -12,11 +12,7 @@ export class LocalStorage implements UploadStorageFile, DeleteStorageFile {
 
   async upload ({ sourceFile, destinationFile }: UploadStorageFileDTO): Promise<boolean> {
     const sourceFilePath = path.resolve(this.config.temporaryDir, sourceFile)
-    const destinationFilePath = path.resolve(
-      this.config.uploadDir,
-      destinationFile
-    )
-    await fs.promises.rename(sourceFilePath, destinationFilePath)
+    await fs.promises.rename(sourceFilePath, destinationFile)
     return true
   }
 

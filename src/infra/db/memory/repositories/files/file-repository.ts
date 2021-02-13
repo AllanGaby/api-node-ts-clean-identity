@@ -17,10 +17,11 @@ export class MemoryFileRepository implements CreateFileRepository, ShowFileRepos
     return MemoryFileRepository.instance
   }
 
-  async create ({ filePath }: CreateFileModel): Promise<FileModel> {
+  async create ({ dir, extention }: CreateFileModel): Promise<FileModel> {
     const file: FileModel = {
       id: faker.random.uuid(),
-      path: filePath,
+      dir,
+      extention,
       created_at: new Date()
     }
     this.files.push(file)

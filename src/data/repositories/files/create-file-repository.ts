@@ -1,7 +1,8 @@
 import { FileModel } from '@/domain/models/files'
 
 export interface CreateFileModel {
-  filePath: string
+  dir: string
+  extention: string
 }
 
 export interface CreateFileRepository {

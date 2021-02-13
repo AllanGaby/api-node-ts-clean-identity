@@ -1,5 +1,6 @@
 export interface FileModel {
   id: string
-  path: string
+  dir: string
+  extention: string
   created_at: Date
 }

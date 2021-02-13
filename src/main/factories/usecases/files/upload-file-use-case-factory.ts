@@ -9,5 +9,5 @@ export const makeUploadFileUseCase = (uploadDir: string): UploadFileUseCase => {
     temporaryDir: 'temp',
     uploadDir
   })
-  return new DbUploadFileUseCase(RepositoryFactory.getFileRepository(EnvConfig.repositoryType), localStorage)
+  return new DbUploadFileUseCase(RepositoryFactory.getFileRepository(EnvConfig.repositoryType), uploadDir, localStorage)
 }

@@ -2,31 +2,37 @@ import { CreateFileRepositorySpy, mockUploadFileDTO } from '@/data/test/files'
 import { DbUploadFileUseCase } from './upload-file-use-case'
 import { throwError, UploadStorageFileSpy } from '@/data/test'
 import path from 'path'
+import faker from 'faker'
 
 interface sutTypes {
   sut: DbUploadFileUseCase
   createFileRepositorySpy: CreateFileRepositorySpy
+  uploadDir: string
   uploadFileSpy: UploadStorageFileSpy
 }
 
 const makeSut = (): sutTypes => {
-  const uploadFileSpy = new UploadStorageFileSpy()
   const createFileRepositorySpy = new CreateFileRepositorySpy()
-  const sut = new DbUploadFileUseCase(createFileRepositorySpy, uploadFileSpy)
+  const uploadDir = faker.system.directoryPath()
+  const uploadFileSpy = new UploadStorageFileSpy()
+  const sut = new DbUploadFileUseCase(createFileRepositorySpy, uploadDir, uploadFileSpy)
   return {
     sut,
     createFileRepositorySpy,
+    uploadDir,
     uploadFileSpy
   }
 }
 
 describe('DbUploadFileUseCase', () => {
   test('Should call CreateFileRepository with correct values', async () => {
-    const { sut, createFileRepositorySpy } = makeSut()
+    const { sut, createFileRepositorySpy, uploadDir } = makeSut()
     const request = mockUploadFileDTO()
+    const extention = path.extname(request.filePath)
     await sut.upload(request)
     expect(createFileRepositorySpy.params).toEqual({
-      filePath: request.filePath
+      dir: uploadDir,
+      extention
     })
   })
 
@@ -38,13 +44,13 @@ describe('DbUploadFileUseCase', () => {
   })
 
   test('Should call UploadFile with correct values', async () => {
-    const { sut, createFileRepositorySpy, uploadFileSpy } = makeSut()
+    const { sut, createFileRepositorySpy, uploadDir, uploadFileSpy } = makeSut()
     const request = mockUploadFileDTO()
     const fileExtention = path.extname(request.filePath)
     await sut.upload(request)
     expect(uploadFileSpy.uploadParams).toEqual({
       sourceFile: request.filePath,
-      destinationFile: `${createFileRepositorySpy.file.id}${fileExtention}`
+      destinationFile: `${uploadDir}${createFileRepositorySpy.file.id}${fileExtention}`
     })
   })
 

@@ -7,17 +7,19 @@ import path from 'path'
 export class DbUploadFileUseCase implements UploadFileUseCase {
   constructor (
     private readonly createFileRepository: CreateFileRepository,
+    private readonly uploadDir: string,
     private readonly uploadFile: UploadStorageFile
   ) {}
 
   async upload ({ filePath }: UploadFileDTO): Promise<FileModel> {
-    const extension = path.extname(filePath)
+    const extention = path.extname(filePath)
     const file = await this.createFileRepository.create({
-      filePath
+      dir: `${this.uploadDir}`,
+      extention
     })
     await this.uploadFile.upload({
       sourceFile: filePath,
-      destinationFile: `${file.id}${extension}`
+      destinationFile: `${this.uploadDir}${file.id}${extention}`
     })
     return file
   }

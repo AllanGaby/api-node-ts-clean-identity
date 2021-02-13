@@ -15,7 +15,7 @@ export class DbDeleteFileUseCase implements DeleteFileUseCase {
     if (!file) {
       throw new FileNotFoundError()
     }
-    await this.deleteStorageFile.delete({ filePath: file.path })
+    await this.deleteStorageFile.delete({ filePath: `${file.dir}${file.id}${file.extention}` })
     await this.deleteFileRepository.delete(file.id)
   }
 }
