@@ -1,8 +1,8 @@
 import { HttpRequest } from '@/presentation/protocols'
-import { CreateAccountUseCase, CreateAccountDTO, UpdateAccountUseCase, UpdateAccountDTO, ActiveAccountUseCase, ActiveAccountDTO, RecoverPasswordUseCase, RecoverPasswordDTO, RequestRecoverPasswordUseCase, RequestRecoverPasswordDTO, ShowAccountUseCase, ShowAccountDTO } from '@/domain/usecases/auth/account'
+import { CreateAccountUseCase, CreateAccountDTO, UpdateAccountUseCase, UpdateAccountDTO, ActiveAccountUseCase, ActiveAccountDTO, RecoverPasswordUseCase, RecoverPasswordDTO, RequestRecoverPasswordUseCase, RequestRecoverPasswordDTO, ShowAccountUseCase, ShowAccountDTO, UploadAvatarAccountUseCase, UploadAvatarAccountDTO } from '@/domain/usecases/auth/account'
 import { AccountModel, SessionModel } from '@/domain/models/auth'
 import { mockAccountModel, mockSessionModel } from '@/data/test'
-import { CreateAccountRequest, ActiveAccountRequest, RecoverPasswordRequest, UpdateAccountRequest, ShowAccountRequest } from '@/presentation/controllers/auth/account'
+import { CreateAccountRequest, ActiveAccountRequest, RecoverPasswordRequest, UpdateAccountRequest, ShowAccountRequest, UploadAvatarAccountRequest } from '@/presentation/controllers/auth/account'
 import faker from 'faker'
 
 export class CreateAccountSpy implements CreateAccountUseCase {
@@ -118,6 +118,25 @@ export class ShowAccountSpy implements ShowAccountUseCase {
 
 export const mockShowAccountRequest = (): HttpRequest<ShowAccountRequest> => ({
   body: {
+    session: {
+      accountId: faker.random.uuid()
+    }
+  }
+})
+
+export class UploadAvatarAccountUseCaseSpy implements UploadAvatarAccountUseCase {
+  params: UploadAvatarAccountDTO
+  account: AccountModel = mockAccountModel()
+
+  async upload (params: UploadAvatarAccountDTO): Promise<AccountModel> {
+    this.params = params
+    return this.account
+  }
+}
+
+export const mockUploadAvatarAccountRequest = (): HttpRequest<UploadAvatarAccountRequest> => ({
+  body: {
+    avatar_file_path: faker.system.directoryPath() + faker.system.filePath(),
     session: {
       accountId: faker.random.uuid()
     }
