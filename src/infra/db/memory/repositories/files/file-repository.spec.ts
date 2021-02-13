@@ -1,5 +1,5 @@
 import { MemoryFileRepository } from './file-repository'
-import { mockCreateFileModel } from '@/data/test/files'
+import { mockCreateFileModel, mockFileModel } from '@/data/test/files'
 import faker from 'faker'
 
 interface sutTypes {
@@ -36,6 +36,37 @@ describe('MemoryFileRepository', () => {
       expect(file).toBeTruthy()
       expect(file.dir).toBe(request.dir)
       expect(file.extention).toBe(request.extention)
+    })
+  })
+
+  describe('Delete Method', () => {
+    test('Should return null if file not found', async () => {
+      const { sut } = makeSut()
+      const file = mockFileModel()
+      const fileId = file.id
+      const beforeFile = await sut.delete(fileId)
+      expect(beforeFile).toBeFalsy()
+      await sut.delete(fileId)
+      const afterFile = await sut.show(fileId)
+      expect(afterFile).toBeFalsy()
+    })
+
+    test('Should return null if fileId is undefined', async () => {
+      const { sut } = makeSut()
+      await sut.delete(undefined)
+      const file = await sut.show(undefined)
+      expect(file).toBeFalsy()
+    })
+
+    test('Should change file list if file found', async () => {
+      const { sut } = makeSut()
+      const createdFile = await sut.create(mockCreateFileModel())
+      const existsFile = await sut.show(createdFile.id)
+      expect(existsFile).toEqual(createdFile)
+      await sut.delete(existsFile.id)
+      expect(await sut.show(createdFile.id)).toBeFalsy()
+      await sut.delete(existsFile.id)
+      expect(await sut.show(createdFile.id)).toBeFalsy()
     })
   })
 })
