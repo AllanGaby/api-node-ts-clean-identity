@@ -7,7 +7,18 @@ export class MemoryFileRepository implements CreateFileRepository, ShowFileRepos
   private static instance: MemoryFileRepository
 
   private constructor () {
-    this.files = []
+    this.files = [
+      this.addFile('default', 'uploads/auth/avatar/', '.png')
+    ]
+  }
+
+  private addFile (id: string, dir: string, extention: string): FileModel {
+    return {
+      id,
+      dir,
+      extention,
+      created_at: new Date()
+    }
   }
 
   public static getInstance (): MemoryFileRepository {
@@ -18,12 +29,11 @@ export class MemoryFileRepository implements CreateFileRepository, ShowFileRepos
   }
 
   async create ({ dir, extention }: CreateFileModel): Promise<FileModel> {
-    const file: FileModel = {
-      id: faker.random.uuid(),
+    const file = this.addFile(
+      faker.random.uuid(),
       dir,
-      extention,
-      created_at: new Date()
-    }
+      extention
+    )
     this.files.push(file)
     return file
   }
