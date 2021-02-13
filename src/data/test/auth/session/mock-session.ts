@@ -41,6 +41,7 @@ export const mockAuthenticationModel = (): AuthenticationModel => ({
   access_token: faker.random.uuid(),
   account: {
     name: faker.name.findName(),
-    id: faker.random.uuid()
+    id: faker.random.uuid(),
+    avatar_id: faker.random.uuid()
   }
 })

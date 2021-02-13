@@ -160,7 +160,8 @@ describe('DbAuthenticationAccountUseCase', () => {
       access_token: encrypterSpy.encryptedText,
       account: {
         id: getAccountByEmailRepositorySpy.account.id,
-        name: getAccountByEmailRepositorySpy.account.name
+        name: getAccountByEmailRepositorySpy.account.name,
+        avatar_id: getAccountByEmailRepositorySpy.account.avatar_file_id
       }
     })
   })
