@@ -1,4 +1,4 @@
-import { CreateAccountDTO, UpdateAccountDTO, ShowAccountDTO, ActiveAccountDTO, RecoverPasswordDTO, UploadAvatarAccountDTO } from '@/domain/usecases/auth/account'
+import { CreateAccountDTO, UpdateAccountDTO, ShowAccountDTO, ActiveAccountDTO, RecoverPasswordDTO, UploadAvatarAccountDTO, ShowAvatarAccountDTO } from '@/domain/usecases/auth/account'
 import { AccountModel } from '@/domain/models/auth'
 import faker from 'faker'
 import path from 'path'
@@ -43,4 +43,8 @@ export const mockRecoverPasswordDTO = (): RecoverPasswordDTO => ({
 export const mockUploadAvatarAccountDTO = (): UploadAvatarAccountDTO => ({
   accountId: faker.random.uuid(),
   avatarFilePath: `${faker.system.directoryPath()}${path.sep}${faker.system.filePath()}`
+})
+
+export const mockShowAvatarAccountDTO = (): ShowAvatarAccountDTO => ({
+  fileId: faker.random.uuid()
 })
