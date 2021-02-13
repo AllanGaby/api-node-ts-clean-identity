@@ -17,7 +17,7 @@ export class DbUploadFileUseCase implements UploadFileUseCase {
     })
     await this.uploadFile.upload({
       sourceFile: filePath,
-      destinationFile: `${file.id}.${extension}`
+      destinationFile: `${file.id}${extension}`
     })
     return file
   }
