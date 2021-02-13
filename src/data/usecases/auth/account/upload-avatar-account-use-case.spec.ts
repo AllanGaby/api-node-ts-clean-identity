@@ -1,23 +1,26 @@
 import { DbUploadAvatarAccountUseCase } from './upload-avatar-account-use-case'
 import { GetAccountByIdRepositorySpy, mockUploadAvatarAccountDTO, throwError, UpdateAccountRepositorySpy } from '@/data/test'
-import { UploadFileUseCaseSpy } from '@/data/test/files'
+import { DeleteFileUseCaseStub, UploadFileUseCaseSpy } from '@/data/test/files'
 import { AccountNotFoundError } from '@/data/errors'
 
 interface sutTypes {
   sut: DbUploadAvatarAccountUseCase
   getAccountByIdRepository: GetAccountByIdRepositorySpy
+  deleteFileUseCase: DeleteFileUseCaseStub
   uploadFileUseCase: UploadFileUseCaseSpy
   updateAccountRepository: UpdateAccountRepositorySpy
 }
 
 const makeSut = (): sutTypes => {
   const getAccountByIdRepository = new GetAccountByIdRepositorySpy()
+  const deleteFileUseCase = new DeleteFileUseCaseStub()
   const uploadFileUseCase = new UploadFileUseCaseSpy()
   const updateAccountRepository = new UpdateAccountRepositorySpy()
-  const sut = new DbUploadAvatarAccountUseCase(getAccountByIdRepository, uploadFileUseCase, updateAccountRepository)
+  const sut = new DbUploadAvatarAccountUseCase(getAccountByIdRepository, deleteFileUseCase, uploadFileUseCase, updateAccountRepository)
   return {
     sut,
     getAccountByIdRepository,
+    deleteFileUseCase,
     uploadFileUseCase,
     updateAccountRepository
   }
@@ -43,6 +46,27 @@ describe('DbUploadAvatarAccountUseCase', () => {
     getAccountByIdRepository.account = undefined
     const promise = sut.upload(mockUploadAvatarAccountDTO())
     await expect(promise).rejects.toThrowError(AccountNotFoundError)
+  })
+
+  test('Should not call DeleteFile if account dont have avatar file', async () => {
+    const { sut, getAccountByIdRepository, deleteFileUseCase } = makeSut()
+    getAccountByIdRepository.account.avatar_file_id = undefined
+    const deleteSpyon = jest.spyOn(deleteFileUseCase, 'delete')
+    await sut.upload(mockUploadAvatarAccountDTO())
+    expect(deleteSpyon).not.toHaveBeenCalled()
+  })
+
+  test('Should call DeleteFile with correct values if account have avatar file', async () => {
+    const { sut, getAccountByIdRepository, deleteFileUseCase } = makeSut()
+    await sut.upload(mockUploadAvatarAccountDTO())
+    expect(deleteFileUseCase.fileId).toBe(getAccountByIdRepository.account.avatar_file_id)
+  })
+
+  test('Should return throw if DeleteFile throws', async () => {
+    const { sut, deleteFileUseCase } = makeSut()
+    jest.spyOn(deleteFileUseCase, 'delete').mockImplementationOnce(throwError)
+    const promise = sut.upload(mockUploadAvatarAccountDTO())
+    await expect(promise).rejects.toThrow()
   })
 
   test('Should call UploadFile with correct values', async () => {

@@ -23,6 +23,7 @@ export const mockAccountModel = (): AccountModel => ({
   email: faker.internet.email(),
   email_valided: true,
   password: faker.random.uuid(),
+  avatar_file_id: faker.random.uuid(),
   created_at: faker.date.past(),
   updated_at: faker.date.past()
 })

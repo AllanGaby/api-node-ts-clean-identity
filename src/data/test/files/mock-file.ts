@@ -1,5 +1,5 @@
 import { FileModel } from '@/domain/models/files'
-import { UploadFileUseCase, UploadFileDTO } from '@/domain/usecases/files'
+import { UploadFileUseCase, UploadFileDTO, DeleteFileUseCase } from '@/domain/usecases/files'
 import path from 'path'
 import faker from 'faker'
 
@@ -21,5 +21,13 @@ export class UploadFileUseCaseSpy implements UploadFileUseCase {
   async upload (params: UploadFileDTO): Promise<FileModel> {
     this.params = params
     return this.file
+  }
+}
+
+export class DeleteFileUseCaseStub implements DeleteFileUseCase {
+  fileId: string
+
+  async delete (fileId: string): Promise<void> {
+    this.fileId = fileId
   }
 }
