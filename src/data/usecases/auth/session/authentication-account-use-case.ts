@@ -44,7 +44,8 @@ export class DbAuthenticationAccountUseCase implements AuthenticationAccountUseC
         access_token: accessToken,
         account: {
           id: account.id,
-          name: account.name
+          name: account.name,
+          avatar_id: account.avatar_file_id
         }
       }
     }

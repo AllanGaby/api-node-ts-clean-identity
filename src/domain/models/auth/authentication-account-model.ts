@@ -3,5 +3,6 @@ export interface AuthenticationModel {
   account: {
     id: string
     name: string
+    avatar_id: string
   }
 }
