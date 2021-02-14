@@ -1,5 +1,5 @@
 import { DbUploadAvatarAccountUseCase } from './upload-avatar-account-use-case'
-import { GetAccountByIdRepositorySpy, mockUploadAvatarAccountDTO, throwError, UpdateAccountRepositorySpy } from '@/data/test'
+import { CacheRemoveSpy, GetAccountByIdRepositorySpy, mockUploadAvatarAccountDTO, throwError, UpdateAccountRepositorySpy } from '@/data/test'
 import { DeleteFileUseCaseStub, UploadFileUseCaseSpy } from '@/data/test/files'
 import { AccountNotFoundError } from '@/data/errors'
 
@@ -9,6 +9,7 @@ interface sutTypes {
   deleteFileUseCase: DeleteFileUseCaseStub
   uploadFileUseCase: UploadFileUseCaseSpy
   updateAccountRepository: UpdateAccountRepositorySpy
+  cacheRemoveSpy: CacheRemoveSpy
 }
 
 const makeSut = (): sutTypes => {
@@ -16,13 +17,15 @@ const makeSut = (): sutTypes => {
   const deleteFileUseCase = new DeleteFileUseCaseStub()
   const uploadFileUseCase = new UploadFileUseCaseSpy()
   const updateAccountRepository = new UpdateAccountRepositorySpy()
-  const sut = new DbUploadAvatarAccountUseCase(getAccountByIdRepository, deleteFileUseCase, uploadFileUseCase, updateAccountRepository)
+  const cacheRemoveSpy = new CacheRemoveSpy()
+  const sut = new DbUploadAvatarAccountUseCase(getAccountByIdRepository, deleteFileUseCase, uploadFileUseCase, updateAccountRepository, cacheRemoveSpy)
   return {
     sut,
     getAccountByIdRepository,
     deleteFileUseCase,
     uploadFileUseCase,
-    updateAccountRepository
+    updateAccountRepository,
+    cacheRemoveSpy
   }
 }
 
@@ -98,6 +101,19 @@ describe('DbUploadAvatarAccountUseCase', () => {
   test('Should return throw if UpdateAccountRepository throws', async () => {
     const { sut, updateAccountRepository } = makeSut()
     jest.spyOn(updateAccountRepository, 'update').mockImplementationOnce(throwError)
+    const promise = sut.upload(mockUploadAvatarAccountDTO())
+    await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call CacheRemove with correct value', async () => {
+    const { sut, cacheRemoveSpy, updateAccountRepository } = makeSut()
+    await sut.upload(mockUploadAvatarAccountDTO())
+    expect(cacheRemoveSpy.key).toBe(`account:${updateAccountRepository.account.email}`)
+  })
+
+  test('Should return throw if CacheRemove throws', async () => {
+    const { sut, cacheRemoveSpy } = makeSut()
+    jest.spyOn(cacheRemoveSpy, 'remove').mockImplementationOnce(throwError)
     const promise = sut.upload(mockUploadAvatarAccountDTO())
     await expect(promise).rejects.toThrow()
   })
