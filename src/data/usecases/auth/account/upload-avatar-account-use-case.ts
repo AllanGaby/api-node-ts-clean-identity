@@ -3,13 +3,15 @@ import { DeleteFileUseCase, UploadFileUseCase } from '@/domain/usecases/files'
 import { UploadAvatarAccountUseCase, UploadAvatarAccountDTO } from '@/domain/usecases/auth/account'
 import { GetAccountByIdRepository, UpdateAccountRepository } from '@/data/repositories/auth'
 import { AccountNotFoundError } from '@/data/errors'
+import { CacheRemove } from '@/data/protocols/cache'
 
 export class DbUploadAvatarAccountUseCase implements UploadAvatarAccountUseCase {
   constructor (
     private readonly getAccountByIdRepository: GetAccountByIdRepository,
     private readonly deleteFileUseCase: DeleteFileUseCase,
     private readonly uploadFileUseCase: UploadFileUseCase,
-    private readonly updateAccountRepository: UpdateAccountRepository
+    private readonly updateAccountRepository: UpdateAccountRepository,
+    private readonly cacheRemove: CacheRemove
   ) {}
 
   async upload ({ accountId, avatarFilePath }: UploadAvatarAccountDTO): Promise<AccountModel> {
@@ -23,9 +25,11 @@ export class DbUploadAvatarAccountUseCase implements UploadAvatarAccountUseCase 
     const file = await this.uploadFileUseCase.upload({
       filePath: avatarFilePath
     })
-    return await this.updateAccountRepository.update({
+    const updatedAccount = await this.updateAccountRepository.update({
       ...accountById,
       avatar_file_id: file.id
     })
+    await this.cacheRemove.remove(`account:${updatedAccount.email}`)
+    return updatedAccount
   }
 }
