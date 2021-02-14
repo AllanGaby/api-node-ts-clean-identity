@@ -10,7 +10,7 @@ export class CacheFactory {
   public static getCacheAdapter (type: CacheTypes): MemoryCacheAdapter | RedisCacheAdapter {
     switch (type) {
       case CacheTypes.Memory:
-        return new MemoryCacheAdapter()
+        return MemoryCacheAdapter.getInstance()
       case CacheTypes.Redis:
         return new RedisCacheAdapter()
     }

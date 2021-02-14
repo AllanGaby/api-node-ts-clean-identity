@@ -6,9 +6,17 @@ interface RecordsType {
 
 export class MemoryCacheAdapter implements CacheCreate, CacheRecover, CacheRemove, CacheRemoveByPrefix {
   records: RecordsType
+  public static instance: MemoryCacheAdapter
 
-  constructor () {
+  private constructor () {
     this.records = {}
+  }
+
+  public static getInstance (): MemoryCacheAdapter {
+    if (!MemoryCacheAdapter.instance) {
+      MemoryCacheAdapter.instance = new MemoryCacheAdapter()
+    }
+    return MemoryCacheAdapter.instance
   }
 
   async create (key: string, record: object): Promise<void> {
