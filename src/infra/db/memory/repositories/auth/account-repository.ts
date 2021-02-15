@@ -1,5 +1,6 @@
 import { CreateAccountRepository, CreateAccountModel, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository, UpdateAccountDTO } from '@/data/repositories/auth/account'
 import { AccountModel } from '@/domain/models/auth'
+import { EnvConfig } from '@/main/config/env'
 import faker from 'faker'
 
 export class MemoryAccountRepository implements CreateAccountRepository, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository {
@@ -13,6 +14,7 @@ export class MemoryAccountRepository implements CreateAccountRepository, GetAcco
       email,
       password,
       email_valided: false,
+      avatar_file_id: EnvConfig.default.avatar_file_id,
       created_at: new Date(),
       updated_at: new Date()
     }
@@ -22,6 +24,12 @@ export class MemoryAccountRepository implements CreateAccountRepository, GetAcco
 
   private constructor () {
     this.accounts = []
+    this.includeAccount({
+      name: EnvConfig.default.name,
+      email: EnvConfig.default.email,
+      password: EnvConfig.default.password
+    })
+    this.accounts[0].email_valided = true
   }
 
   public static getInstance (): MemoryAccountRepository {

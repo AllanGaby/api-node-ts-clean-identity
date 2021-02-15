@@ -7,6 +7,7 @@ export interface User {
   name: string
   email: string
   password: string
+  avatar_file_id: string
 }
 
 export interface Env {
@@ -33,7 +34,8 @@ export const EnvConfig: Env = ({
   default: {
     name: process.env.DEFAULT_USER_NAME || 'identity',
     email: process.env.DEFAULT_USER_EMAIL || 'identity@identity.com',
-    password: process.env.DEFAULT_USER_PASSWORD || 'masterkey'
+    password: process.env.DEFAULT_USER_PASSWORD || '$2b$12$YWnAIp/iCkQqSk0cLaRrz.noakEhyzvoKNlIcs6UVeTGy7TXGyQ/2',
+    avatar_file_id: process.env.DEFAULT_USER_AVATAR || 'default'
   },
   smtpConfig: {
     host: process.env.SMTP_HOST || 'smtp.ethereal.email',
