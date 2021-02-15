@@ -43,7 +43,7 @@ describe('ShowAvatarAccountController', () => {
     const request = mockShowAvatarAccountRequest()
     await sut.handle(request)
     expect(showAvatarAccount.params).toEqual({
-      fileId: request.params.file_id
+      fileId: request.params.avatar_id
     })
   })
 

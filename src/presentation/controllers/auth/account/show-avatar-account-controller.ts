@@ -6,7 +6,7 @@ import { FileModel } from '@/domain/models/files'
 import { ValidationComposite } from '@/validation/validations'
 
 export interface ShowAvatarAccountRequest {
-  file_id: string
+  avatar_id: string
 }
 
 export class ShowAvatarAccountController implements Controller<ShowAvatarAccountRequest, FileModel | Error> {
@@ -21,7 +21,7 @@ export class ShowAvatarAccountController implements Controller<ShowAvatarAccount
       if (validationErrors) {
         return badRequest(validationErrors)
       }
-      const avatarFile = await this.showAvatarAccount.show({ fileId: request.params.file_id })
+      const avatarFile = await this.showAvatarAccount.show({ fileId: request.params.avatar_id })
       return ok(avatarFile)
     } catch (error) {
       if (error instanceof InvalidCredentialsError) {

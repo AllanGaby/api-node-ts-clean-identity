@@ -158,6 +158,6 @@ export class ShowAvatarAccountUseCaseSpy implements ShowAvatarAccountUseCase {
 
 export const mockShowAvatarAccountRequest = (): HttpRequest<ShowAvatarAccountRequest> => ({
   params: {
-    file_id: faker.random.uuid()
+    avatar_id: faker.random.uuid()
   }
 })
