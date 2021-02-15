@@ -2,8 +2,14 @@ export const showAvatarAccountPath = {
   get: {
     tags: ['Account'],
     summary: 'Method to show avatar account',
-    security: [{
-      apiKeyAuth: []
+    parameters: [{
+      in: 'path',
+      name: 'avatar_id',
+      description: 'Avatar file id',
+      required: true,
+      schema: {
+        type: 'string'
+      }
     }],
     responses: {
       200: {
