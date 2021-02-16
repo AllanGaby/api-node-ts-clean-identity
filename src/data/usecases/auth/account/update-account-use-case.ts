@@ -27,8 +27,8 @@ export class DbUpdateAccountUseCase implements UpdateAccountUseCase {
     let passwordHashed = accountById.password
     if (password) {
       const isValidPassword = await this.hashComparer.compare({
-        payload: passwordHashed,
-        hashedText: password
+        payload: password,
+        hashedText: passwordHashed
       })
       if (!isValidPassword) {
         throw new InvalidCredentialsError()
