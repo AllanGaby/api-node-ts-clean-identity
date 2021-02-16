@@ -19,8 +19,8 @@ describe('makeUpdateAccountValidation', () => {
     const validations: Validation[] = [
       ...ValidationBuilder.field('name').min(config.minLengthName).build(),
       ...ValidationBuilder.field('email').email(config.emailValidator).build(),
-      ...ValidationBuilder.field('password').min(config.minLengthPassword).build(),
-      ...ValidationBuilder.field('new_password').min(config.minLengthPassword).build(),
+      ...ValidationBuilder.field('password').min(config.minLengthPassword).conditionalRequired('new_password').build(),
+      ...ValidationBuilder.field('new_password').min(config.minLengthPassword).conditionalRequired('password').build(),
       ...ValidationBuilder.field('password_confirmation').min(config.minLengthPassword).sameAs('new_password').build()
     ]
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
