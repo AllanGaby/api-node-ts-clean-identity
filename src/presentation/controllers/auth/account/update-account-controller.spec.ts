@@ -3,6 +3,7 @@ import { ValidationCompositeSpy } from '@/validation/test'
 import { UpdateAccountSpy, mockUpdateAccountRequest } from '@/presentation/test/auth'
 import { badRequest, serverError, ok } from '@/presentation/helpers'
 import { throwError } from '@/data/test'
+import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {
   sut: UpdateAccountController
@@ -46,6 +47,13 @@ describe('UpdateAccountController', () => {
       email: request.body.email,
       password: request.body.password
     })
+  })
+
+  test('Should return badRequest if UpdateAccount return InvalidCredentialError', async () => {
+    const { sut, updateAccountSpy } = makeSut()
+    jest.spyOn(updateAccountSpy, 'update').mockImplementationOnce(() => { throw new InvalidCredentialsError() })
+    const result = await sut.handle(mockUpdateAccountRequest())
+    expect(result).toEqual(badRequest(new InvalidCredentialsError()))
   })
 
   test('Should return ServerError if UpdateAccount throws', async () => {
