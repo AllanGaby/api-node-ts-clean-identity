@@ -1,7 +1,7 @@
 import app from '@/main/config/express/app'
 import { MemoryAccountRepository, MemorySessionRepository } from '@/infra/db/memory/repositories/auth'
 import { AccountModel, SessionModel, SessionType } from '@/domain/models/auth'
-import { JWTEncrypterAdapter } from '@/infra/criptografy'
+import { BCrypterHasherAdapter, JWTEncrypterAdapter } from '@/infra/criptografy'
 import { EnvConfig } from '@/main/config/env'
 import { HttpStatusCode } from '@/presentation/protocols'
 import request from 'supertest'
@@ -16,16 +16,19 @@ let sessionRepository: MemorySessionRepository
 let accountRepository: MemoryAccountRepository
 let encrypter: JWTEncrypterAdapter
 let accessToken: string
+let accountPassword: string
 const url = '/api/auth/account'
 
 describe('PUT / - Update Account', () => {
   beforeAll(async () => {
+    const hasher = new BCrypterHasherAdapter(12)
     accountRepository = MemoryAccountRepository.getInstance()
     sessionRepository = MemorySessionRepository.getInstance()
+    accountPassword = faker.internet.password()
     account = await accountRepository.create({
       name: faker.name.findName(),
       email: faker.internet.email(),
-      password: faker.internet.password()
+      password: await hasher.createHash(accountPassword)
     })
   })
 
@@ -140,6 +143,35 @@ describe('PUT / - Update Account', () => {
     expect(response.body).toEqual({
       error: new InvalidParamError('password_confirmation').message
     })
+  })
+
+  test('Should return badRequest status code if password is incorrect', async () => {
+    const password = faker.internet.password()
+    const response = await request(app)
+      .put(url)
+      .set(EnvConfig.tokenName, accessToken)
+      .send({
+        password: faker.internet.password(),
+        new_password: password,
+        password_confirmation: password
+      })
+    expect(response.status).toBe(HttpStatusCode.badRequest)
+    expect(response.body).toEqual({
+      error: new InvalidCredentialsError().message
+    })
+  })
+
+  test('Should return ok status code if password is updated', async () => {
+    const password = faker.internet.password()
+    const response = await request(app)
+      .put(url)
+      .set(EnvConfig.tokenName, accessToken)
+      .send({
+        password: accountPassword,
+        new_password: password,
+        password_confirmation: password
+      })
+    expect(response.status).toBe(HttpStatusCode.ok)
   })
 
   test('Should return badRequest status code if access token not provide', async () => {
