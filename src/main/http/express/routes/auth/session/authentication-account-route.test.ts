@@ -10,14 +10,13 @@ import { InvalidParamError, MissingParamError } from '@/validation/errors'
 
 let account: AccountModel
 let accountRepository: MemoryAccountRepository
-let hasher: BCrypterHasherAdapter
 let password: string
 const url = '/api/auth/session'
 
 describe('POST / - Authentication', () => {
   beforeAll(async () => {
+    const hasher = new BCrypterHasherAdapter(12)
     accountRepository = MemoryAccountRepository.getInstance()
-    hasher = new BCrypterHasherAdapter(12)
     password = faker.internet.password()
     account = await accountRepository.create({
       name: faker.name.findName(),
