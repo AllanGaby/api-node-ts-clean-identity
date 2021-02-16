@@ -88,12 +88,52 @@ describe('PUT / - Update Account', () => {
     })
   })
 
+  test('Should return badRequest status code if password provide but new password not provide', async () => {
+    const response = await request(app)
+      .put(url)
+      .set(EnvConfig.tokenName, accessToken)
+      .send({
+        password: faker.internet.password()
+      })
+    expect(response.status).toBe(HttpStatusCode.badRequest)
+    expect(response.body).toEqual({
+      error: new InvalidParamError('new_password').message
+    })
+  })
+
+  test('Should return badRequest status code if new password is invalid', async () => {
+    const response = await request(app)
+      .put(url)
+      .set(EnvConfig.tokenName, accessToken)
+      .send({
+        new_password: faker.random.alphaNumeric(5)
+      })
+    expect(response.status).toBe(HttpStatusCode.badRequest)
+    expect(response.body).toEqual({
+      error: new InvalidParamError('password').message
+    })
+  })
+
+  test('Should return badRequest status code if new password provide but password not provide', async () => {
+    const response = await request(app)
+      .put(url)
+      .set(EnvConfig.tokenName, accessToken)
+      .send({
+        new_password: faker.internet.password()
+      })
+    expect(response.status).toBe(HttpStatusCode.badRequest)
+    expect(response.body).toEqual({
+      error: new InvalidParamError('password').message
+    })
+  })
+
   test('Should return badRequest status code if password_confirmation is invalid', async () => {
     const response = await request(app)
       .put(url)
       .set(EnvConfig.tokenName, accessToken)
       .send({
         password: faker.internet.password(),
+        new_password: faker.internet.password(),
         password_confirmation: faker.random.alphaNumeric(5)
       })
     expect(response.status).toBe(HttpStatusCode.badRequest)
