@@ -8,8 +8,8 @@ export interface UpdateAccountRequest {
   name?: string
   email?: string
   password?: string
+  new_password?: string
   password_confirmation?: string
-  avatar_file_path?: string
   session: {
     accountId: string
   }
@@ -31,7 +31,8 @@ export class UpdateAccountController implements Controller<UpdateAccountRequest,
         id: request.body.session.accountId,
         name: request.body.name,
         email: request.body.email,
-        password: request.body.password
+        password: request.body.password,
+        newPassword: request.body.new_password
       })
       return ok(account)
     } catch (error) {

@@ -3,5 +3,5 @@ import { makeActiveAccountController } from '@/main/factories/controllers/auth/a
 import { Router } from 'express'
 
 export const makeActiveAccountRoute = (): Router => {
-  return Router().put('/:session_id', adaptRoute(makeActiveAccountController()))
+  return Router().put('/active/:session_id', adaptRoute(makeActiveAccountController()))
 }

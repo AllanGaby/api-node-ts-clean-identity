@@ -49,7 +49,6 @@ export const mockUpdateAccountRequest = (): HttpRequest<UpdateAccountRequest> =>
       },
       name: faker.name.findName(),
       email: faker.internet.email(),
-      avatar_file_path: faker.system.directoryPath() + faker.system.filePath(),
       password,
       password_confirmation: password
     }

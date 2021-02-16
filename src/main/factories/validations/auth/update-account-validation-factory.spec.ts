@@ -20,7 +20,8 @@ describe('makeUpdateAccountValidation', () => {
       ...ValidationBuilder.field('name').min(config.minLengthName).build(),
       ...ValidationBuilder.field('email').email(config.emailValidator).build(),
       ...ValidationBuilder.field('password').min(config.minLengthPassword).build(),
-      ...ValidationBuilder.field('password_confirmation').min(config.minLengthPassword).sameAs('password').build()
+      ...ValidationBuilder.field('new_password').min(config.minLengthPassword).build(),
+      ...ValidationBuilder.field('password_confirmation').min(config.minLengthPassword).sameAs('new_password').build()
     ]
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })
