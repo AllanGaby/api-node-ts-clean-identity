@@ -90,8 +90,8 @@ describe('DbUpdateAccountUseCase', () => {
     const updateAccountDTO = mockUpdateAccountDTO()
     await sut.update(updateAccountDTO)
     expect(hashComparerSpyon).toHaveBeenCalledWith({
-      payload: getAccountByIdRepositorySpy.account.password,
-      hashedText: updateAccountDTO.password
+      payload: updateAccountDTO.password,
+      hashedText: getAccountByIdRepositorySpy.account.password
     })
   })
 
