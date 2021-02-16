@@ -18,6 +18,7 @@ export interface Env {
   urlRabbitMQ: string
   jwtSecret: string
   tokenName: string
+  uploadAvatarDir: string
   default: User
   smtpConfig: SMTPConfig
   redisConfig: RedisOptions
@@ -31,6 +32,7 @@ export const EnvConfig: Env = ({
   cacheType: process.env.CACHE_TYPE as CacheTypes || CacheTypes.Memory,
   jwtSecret: process.env.JWT_SECRET || '01c383ef-b869-43f6-a60a-7b0c1b161d3b',
   tokenName: process.env.AUTH_TOKEN_NAME || 'x-access-token',
+  uploadAvatarDir: process.env.UPLOAD_AVATAR_DIR || 'uploads/auth/avatar/',
   default: {
     name: process.env.DEFAULT_USER_NAME || 'identity',
     email: process.env.DEFAULT_USER_EMAIL || 'identity@identity.com',
