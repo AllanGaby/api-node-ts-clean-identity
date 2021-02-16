@@ -1,8 +1,5 @@
 import { Validation, EmailValidator } from '@/validation/protocols'
-import { CompareFieldValidation } from './compare-field-validation'
-import { EmailFieldValidation } from './email-field-validation'
-import { MinLengthFieldValidation } from './min-length-field-validation'
-import { RequiredFieldValidation } from './required-field-validation'
+import { CompareFieldValidation, EmailFieldValidation, MinLengthFieldValidation, RequiredFieldValidation, ConditionalRequiredFieldValidation } from './'
 
 export class ValidationBuilder {
   constructor (
@@ -31,6 +28,11 @@ export class ValidationBuilder {
 
   sameAs (compareField: string): ValidationBuilder {
     this.validations.push(new CompareFieldValidation(this.field, compareField))
+    return this
+  }
+
+  conditionalRequired (conditionalRequiredField: string): ValidationBuilder {
+    this.validations.push(new ConditionalRequiredFieldValidation(this.field, conditionalRequiredField))
     return this
   }
 
