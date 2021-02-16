@@ -3,6 +3,7 @@ import { ValidationComposite } from '@/validation/validations'
 import { UpdateAccountUseCase } from '@/domain/usecases/auth/account'
 import { AccountModel } from '@/domain/models/auth'
 import { badRequest, serverError, ok } from '@/presentation/helpers'
+import { InvalidCredentialsError } from '@/data/errors'
 
 export interface UpdateAccountRequest {
   name?: string
@@ -36,6 +37,9 @@ export class UpdateAccountController implements Controller<UpdateAccountRequest,
       })
       return ok(account)
     } catch (error) {
+      if (error instanceof InvalidCredentialsError) {
+        return badRequest(new InvalidCredentialsError())
+      }
       return serverError(error)
     }
   }
