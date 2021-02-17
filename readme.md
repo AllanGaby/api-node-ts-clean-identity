@@ -4,21 +4,25 @@ Projeto criado para praticar alguns conceitos da Clean Architecture e TDD com No
 O projeto é uma Web API para controle de acesso, passando por cadastro de usuário, autenticação, atualização do usuário.
 Aproveitei para implementar a ativação da conta do usuário através de link enviado por e-mail. E-mail enviado em segundo plano, através de uma fila de processamento. Também implementei o upload de imagem de avatar para a conta do usuário.
 
-> ## Features / Casos de uso
+> ## Features e Rotas
 ### Conta de usuário (Account)
-* Cadastro (CreateAccount)
-* Atualização (UpdateAccount)
-* Usuário logado (ShowAccount)
-* Ativar conta (ActiveAccount)
-* Esqueci minha senha (RequestRecoverPassword)
-* Alterar senha (RecoverPassword)
-* Definição do avatar (UplodaAvatarAccount)
-* Exclusão do avatar (DeleteAvatarAccount)
-* Visualizar avatar (ShowAvatarAccount)
+|Método|Rota|Use Case|Descrição|
+|:---:|---|---|---|
+|POST|/api/auth/account/|CreateAccount|Criação de uma nova conta de usuário|
+|PUT|/api/auth/account/ :lock:|UpdateAccount|Atualização das informações da conta do usuário autenticado|
+|GET|/api/auth/account/ :lock:|ShowAccount|Retorna as informações da conta do usuário autenticado|
+|PUT|/api/auth/account/active/:session_id|ActiveAccount|Ativa a conta do usuário da sessão recebida|
+|POST|/api/auth/account/password|RequestRecoverPassword|Solicita a recuperação de senha (As instruções são enviadas para o e-mail informado)|
+|PUT|/api/auth/account/password|RecoverPassword|Altera a senha da conta da sessão informada|
+|PUT|/api/auth/account/avatar :lock:|UplodaAvatarAccount|Atualiza a imagem de avatar do usuário logado|
+|DELETE|/api/auth/account/avatar :lock:|DeleteAvatarAccount|Exclui a imagem de avatar do usuário logado|
+|GET|/api/auth/account/avatar/:account_id|ShowAvatarAccount|Exibe a imagem de avatar do usuário informado(Se o usuário não tiver um avatar definido, será exibido um avatar padrão)|
 
 ### Sessão (Session)
-* Autenticação do usuário (AuthenticationAccount)
-* Logout (Logout)
+|Método|Rota|Use Case|Descrição|
+|:---:|---|---|---|
+|POST|/api/auth/session/|AuthenticationAccount|Autenticação do usuário(Login)|
+|DELETE|/api/auth/session/ :lock:|Logout|Invalida a sessão do usuário autenticado(Logout)|
 
 > ## Bibliotecas e ferramentas
 
