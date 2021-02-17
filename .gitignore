@@ -12,3 +12,4 @@ uploads/auth/avatar/*
 !uploads/auth/.gitkeep
 !uploads/auth/avatar/.gitkeep
 !uploads/auth/avatar/default.png
+!uploads/auth/avatar/test.jpg
