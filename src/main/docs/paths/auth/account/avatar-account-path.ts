@@ -56,5 +56,36 @@ export const avatarAccountPath = {
         }
       }
     }
+  },
+  delete: {
+    tags: ['Account'],
+    summary: 'Method to delete avatar account',
+    security: [{
+      apiKeyAuth: []
+    }],
+    responses: {
+      200: {
+        description: 'Account updated without avatar',
+        content: {
+          'application/json': {
+            schema: {
+              $ref: '#/schemas/accountModel'
+            }
+          }
+        }
+      },
+      400: {
+        $ref: '#/components/badRequest'
+      },
+      401: {
+        $ref: '#/components/unauthorized'
+      },
+      403: {
+        $ref: '#/components/forbidden'
+      },
+      500: {
+        $ref: '#/components/serverError'
+      }
+    }
   }
 }
