@@ -3,7 +3,7 @@ export const errorSchema = {
   properties: {
     message: {
       type: 'string',
-      description: 'Error message'
+      description: 'Descrição do erro que aconteceu'
     }
   }
 }

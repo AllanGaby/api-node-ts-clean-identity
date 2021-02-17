@@ -4,37 +4,40 @@ export const accountModelSchema = {
     id: {
       type: 'string',
       format: 'uuid',
-      description: 'Account identification'
+      description: 'Identificador único da conta do usuário'
     },
     name: {
       type: 'string',
-      description: 'User name'
+      description: 'Nome do usuário'
     },
     email: {
       type: 'string',
       format: 'email',
-      description: 'E-mail address to authentication and comunication of API'
+      description: 'Endereço de e-mail do usuário'
     },
     password: {
       type: 'string',
       format: 'password',
-      description: 'Access password'
+      description: 'Senha de acesso'
     },
     email_valided: {
-      type: 'boolean'
+      type: 'boolean',
+      description: 'Endereço de e-mail validado?'
     },
     avatar_file_id: {
       type: 'string',
       format: 'uuid',
-      description: 'Avatar file id, used to get avatar file'
+      description: 'Identificador único do avatar do usuário'
     },
     created_at: {
       type: 'string',
-      format: 'date'
+      format: 'date',
+      description: 'Data de criação da conta do usuário'
     },
     updated_at: {
       type: 'string',
-      format: 'date'
+      format: 'date',
+      description: 'Data da última atualização da conta do usuário'
     }
   }
 }

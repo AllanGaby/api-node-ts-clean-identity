@@ -3,27 +3,27 @@ export const updateAccountRequestSchema = {
   properties: {
     name: {
       type: 'string',
-      description: 'User name'
+      description: 'Nome do usuário'
     },
     email: {
       type: 'string',
       format: 'email',
-      description: 'E-mail address to authentication and comunication of API'
+      description: 'Endereço de e-mail do usuário'
     },
     password: {
       type: 'string',
       format: 'password',
-      description: 'Access password'
+      description: 'Senha de acesso atual do usuário'
     },
     new_password: {
       type: 'string',
       format: 'password',
-      description: 'New access password'
+      description: 'Nova senha de acesso'
     },
     password_confirmation: {
       type: 'string',
       format: 'password',
-      description: 'Password confirmation'
+      description: 'Confirmação da senha de acesso'
     }
   }
 }

@@ -1,7 +1,7 @@
 export const recoverPasswordPath = {
   post: {
-    tags: ['Account'],
-    summary: 'Method to request recover password',
+    tags: ['Usuário'],
+    summary: 'Solicitação de recuperação de senha',
     requestBody: {
       required: true,
       content: {
@@ -14,7 +14,7 @@ export const recoverPasswordPath = {
     },
     responses: {
       200: {
-        description: 'Request recover password is succeeds',
+        description: 'Solicitação de recuperação de senha enviada com sucesso',
         content: {
           'application/json': {
             schema: {
@@ -38,8 +38,8 @@ export const recoverPasswordPath = {
     }
   },
   put: {
-    tags: ['Account'],
-    summary: 'Method to recover password',
+    tags: ['Usuário'],
+    summary: 'Recupera a senha de acesso do usuário',
     requestBody: {
       required: true,
       content: {
@@ -52,7 +52,7 @@ export const recoverPasswordPath = {
     },
     responses: {
       200: {
-        description: 'Recover password is succeeds',
+        description: 'Senha de acesso atualizada com sucesso',
         content: {
           'application/json': {
             schema: {

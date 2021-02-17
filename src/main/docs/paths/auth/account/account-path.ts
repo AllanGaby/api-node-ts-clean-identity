@@ -1,7 +1,7 @@
 export const accountPath = {
   post: {
-    tags: ['Account'],
-    summary: 'Method to create user account',
+    tags: ['Usuário'],
+    summary: 'Cria conta de usuário',
     requestBody: {
       required: true,
       content: {
@@ -14,7 +14,7 @@ export const accountPath = {
     },
     responses: {
       201: {
-        description: 'Account created',
+        description: 'Conta de usuário criada com sucesso',
         content: {
           'application/json': {
             schema: {
@@ -38,8 +38,8 @@ export const accountPath = {
     }
   },
   put: {
-    tags: ['Account'],
-    summary: 'Method to update user account',
+    tags: ['Usuário'],
+    summary: 'Atualiza a conta do usuário',
     security: [{
       apiKeyAuth: []
     }],
@@ -55,7 +55,7 @@ export const accountPath = {
     },
     responses: {
       200: {
-        description: 'Account updated',
+        description: 'Conta do usuário atualizada com sucesso',
         content: {
           'application/json': {
             schema: {
@@ -79,14 +79,14 @@ export const accountPath = {
     }
   },
   get: {
-    tags: ['Account'],
-    summary: 'Method to show user account',
+    tags: ['Usuário'],
+    summary: 'Exibe as informações do usuário autenticado',
     security: [{
       apiKeyAuth: []
     }],
     responses: {
       200: {
-        description: 'Show user account',
+        description: 'Informações do usuário autenticado',
         content: {
           'application/json': {
             schema: {

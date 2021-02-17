@@ -4,29 +4,37 @@ export const sessionModelSchema = {
     id: {
       type: 'string',
       format: 'uuid',
-      description: 'Session identification'
+      description: 'Identificador único da sessão de acesso'
     },
     account_id: {
       type: 'string',
       format: 'uuid',
-      description: 'Account identification'
+      description: 'Identificador da conta do usuário'
     },
     type: {
       type: 'integer',
-      description: 'Session type (1 - Active account, 2 - Authentication, 3 - Recover password)',
-      enum: [1, 2]
+      description: 'Tipo da sessão <br/> ' +
+                   '<ul>' +
+                   '<li>1 - Active account</li>' +
+                   '<li>2 - Authentication</li>' +
+                   '<li>3 - Recover password</li>' +
+                   '</ul>',
+      enum: [1, 2, 3]
     },
     experied_at: {
       type: 'string',
-      format: 'date'
+      format: 'date',
+      description: 'Data de expiração da sessão de acesso'
     },
     created_at: {
       type: 'string',
-      format: 'date'
+      format: 'date',
+      description: 'Data de criação da sessão de acesso'
     },
     updated_at: {
       type: 'string',
-      format: 'date'
+      format: 'date',
+      description: 'Data da última atualização da sessão de acesso'
     }
   }
 }

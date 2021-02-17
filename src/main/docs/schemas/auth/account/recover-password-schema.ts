@@ -4,7 +4,7 @@ export const requestRecoverPasswordSchema = {
     email: {
       type: 'string',
       format: 'email',
-      description: 'E-mail address to authentication and comunication of API'
+      description: 'Endereço de e-mail do usuário'
     }
   },
   required: [
@@ -18,20 +18,20 @@ export const recoverPasswordSchema = {
     session_id: {
       type: 'string',
       format: 'uuid',
-      description: 'Session Id sended in e-mail to recover password'
+      description: 'Identificador único da sessão de acesso para a recuperação da senha'
     },
     password: {
       type: 'string',
       format: 'password',
-      description: 'Access password'
+      description: 'Nova senha de acesso'
     },
     password_confirmation: {
       type: 'string',
       format: 'password',
-      description: 'Password confirmation'
+      description: 'Confirmação da senha de acesso'
     }
   },
   required: [
-    'email'
+    'session_id', 'password', 'password_confirmation'
   ]
 }

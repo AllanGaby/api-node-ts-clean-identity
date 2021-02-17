@@ -3,11 +3,11 @@ export const authenticationRequestSchema = {
   properties: {
     email: {
       type: 'string',
-      description: 'E-mail address to authentication'
+      description: 'Endereço de e-mail usado no cadastro do usuário'
     },
     password: {
       type: 'string',
-      description: 'Access password'
+      description: 'Senha de acesso'
     }
   },
   required: [
@@ -20,7 +20,7 @@ export const authenticationResponseSchema = {
   properties: {
     access_token: {
       type: 'string',
-      description: 'Access token of account session'
+      description: 'Token de autenticação para as rotas autenticadas'
     },
     account: {
       type: 'object',
@@ -28,16 +28,16 @@ export const authenticationResponseSchema = {
         id: {
           type: 'string',
           format: 'uuid',
-          description: 'Account identification'
+          description: 'Identificador único da conta do usuário'
         },
         name: {
           type: 'string',
-          description: 'User name'
+          description: 'Nome do usuário'
         },
         avatar_file_id: {
           type: 'string',
           format: 'uuid',
-          description: 'Avatar file id, used to get avatar file'
+          description: 'Identificador único do avatar do usuário'
         }
       }
     }

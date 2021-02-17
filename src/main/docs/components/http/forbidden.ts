@@ -1,5 +1,5 @@
 export const forbidden = {
-  description: 'Forbidden',
+  description: 'Requisição não permitida - Maiores detalhes na mensagem de erro',
   content: {
     'application/json': {
       schema: {

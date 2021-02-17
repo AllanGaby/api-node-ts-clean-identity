@@ -4,7 +4,7 @@ export const avatarAccountRequestSchema = {
     avatar_file_path: {
       type: 'string',
       format: 'binary',
-      description: 'Avatar file'
+      description: 'Imagem do avatar do usuário'
     }
   }
 }

@@ -1,7 +1,7 @@
 export const avatarAccountPath = {
   patch: {
-    tags: ['Account'],
-    summary: 'Method to upload avatar account',
+    tags: ['Avatar do usuário'],
+    summary: 'Define um avatar para o usuário',
     security: [{
       apiKeyAuth: []
     }],
@@ -17,7 +17,7 @@ export const avatarAccountPath = {
     },
     responses: {
       200: {
-        description: 'Account updated',
+        description: 'Avatar definido com sucesso',
         content: {
           'application/json': {
             schema: {
@@ -41,11 +41,11 @@ export const avatarAccountPath = {
     }
   },
   get: {
-    tags: ['Account'],
-    summary: 'Method to show default avatar account',
+    tags: ['Avatar do usuário'],
+    summary: 'Exibe a imagem padrão de avatar',
     responses: {
       200: {
-        description: 'Show avatar account',
+        description: 'Imagem padrão de avatar',
         content: {
           'image/png': {
             schema: {
@@ -58,14 +58,14 @@ export const avatarAccountPath = {
     }
   },
   delete: {
-    tags: ['Account'],
-    summary: 'Method to delete avatar account',
+    tags: ['Avatar do usuário'],
+    summary: 'Exclui a imagem de avatar do usuário',
     security: [{
       apiKeyAuth: []
     }],
     responses: {
       200: {
-        description: 'Account updated without avatar',
+        description: 'Imagem de avatar do usuário excluída com sucesso',
         content: {
           'application/json': {
             schema: {

@@ -1,11 +1,11 @@
 export const activeAccountPath = {
   put: {
-    tags: ['Account'],
-    summary: 'Method to active user account',
+    tags: ['Usuário'],
+    summary: 'Ativa a conta do usuário',
     parameters: [{
       in: 'path',
       name: 'session_id',
-      description: 'Session id to active account sended to account e-mail',
+      description: 'Identificador único da sessão de acesso para a ativação da conta do usuário',
       required: true,
       schema: {
         type: 'string',
@@ -14,7 +14,7 @@ export const activeAccountPath = {
     }],
     responses: {
       200: {
-        description: 'Account activated',
+        description: 'Conta do usuário ativada com sucesso',
         content: {
           'application/json': {
             schema: {

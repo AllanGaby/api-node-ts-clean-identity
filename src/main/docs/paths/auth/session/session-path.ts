@@ -1,7 +1,7 @@
 export const authenticationPath = {
   post: {
-    tags: ['Authentication'],
-    summary: 'Method to authentication user',
+    tags: ['Autenticação'],
+    summary: 'Autenticação da conta do usuário',
     requestBody: {
       required: true,
       content: {
@@ -14,7 +14,7 @@ export const authenticationPath = {
     },
     responses: {
       200: {
-        description: 'Success',
+        description: 'Autenticação efetuada com sucesso',
         content: {
           'application/json': {
             schema: {
@@ -38,11 +38,11 @@ export const authenticationPath = {
     security: [{
       apiKeyAuth: []
     }],
-    tags: ['Authentication'],
-    summary: 'Method to logout session account',
+    tags: ['Autenticação'],
+    summary: 'Sair da sessão de acesso',
     responses: {
       204: {
-        description: 'Success',
+        description: 'Sessão de acesso fechada com sucesso',
         $ref: '#/components/noContent'
       },
       403: {

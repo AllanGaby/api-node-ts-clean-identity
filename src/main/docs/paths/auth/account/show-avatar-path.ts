@@ -1,11 +1,11 @@
 export const showAvatarAccountPath = {
   get: {
-    tags: ['Account'],
-    summary: 'Method to show avatar account',
+    tags: ['Avatar do usuário'],
+    summary: 'Busca o avatar da conta do usuário',
     parameters: [{
       in: 'path',
       name: 'avatar_id',
-      description: 'Avatar file id',
+      description: 'Identificador do avatar do usuário',
       required: true,
       schema: {
         type: 'string'
@@ -13,7 +13,7 @@ export const showAvatarAccountPath = {
     }],
     responses: {
       200: {
-        description: 'Show avatar account',
+        description: 'Exibe a imagem do avatar do usuário',
         content: {
           'image/png': {
             schema: {

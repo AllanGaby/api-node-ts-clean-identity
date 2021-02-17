@@ -1,5 +1,5 @@
 export const unauthorized = {
-  description: 'Unauthorized',
+  description: 'Requisição não autorizada',
   content: {
     'application/json': {
       schema: {
