@@ -4,11 +4,11 @@ import { AccountModel, SessionModel, SessionType } from '@/domain/models/auth'
 import { BCrypterHasherAdapter, JWTEncrypterAdapter } from '@/infra/criptografy'
 import { EnvConfig } from '@/main/config/env'
 import { HttpStatusCode } from '@/presentation/protocols'
-import request from 'supertest'
-import faker from 'faker'
 import { InvalidParamError, MissingParamError } from '@/validation/errors'
 import { InvalidCredentialsError } from '@/data/errors'
 import { AccessDeniedError } from '@/presentation/errors'
+import request from 'supertest'
+import faker from 'faker'
 
 let account: AccountModel
 let session: SessionModel
