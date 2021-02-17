@@ -1,36 +1,41 @@
 # **Clean Node TS Clean Identity**
 
-Projeto criado para praticar os conhecimentos adquiridos no treinamento do professor Rodrigo Manguinho (Mango) da Udemy. Apesar de simples, o projeto me permitiu práticar diversos conceitos e boas práticas de desenvolvimento e arquiteruta da aplicação. Além disso, fiz questão de fazer a documentação de todos os métodos da API usando o Swagger para isso.
+Projeto criado para praticar alguns conceitos da Clean Architecture e TDD com Node JS e TypeScript.
+O projeto é uma Web API para controle de acesso, passando por cadastro de usuário, autenticação, atualização do usuário.
+Aproveitei para implementar a ativação da conta do usuário através de link enviado por e-mail. E-mail enviado em segundo plano, através de uma fila de processamento. Também implementei o upload de imagem de avatar para a conta do usuário.
 
 > ## Features / Casos de uso
 ### Conta de usuário (Account)
-* [Cadastro (CreateAccount)](./requirements/auth/account/create.md)
-* [Atualização (UpdateAccount)]()
-* [Usuário logado (ShowAccount)]()
-* [Ativar conta (ActiveAccount)]()
-* [Visualizar Avatar (ShowAccount)]()
-* [Esqueci minha senha (RequestRecoverPassword)]()
-* [Alterar senha (RecoverPassword)]()
-* [Trocar o tipo de conta (ChangeAccountType)]()
+* Cadastro (CreateAccount)
+* Atualização (UpdateAccount)
+* Usuário logado (ShowAccount)
+* Ativar conta (ActiveAccount)
+* Esqueci minha senha (RequestRecoverPassword)
+* Alterar senha (RecoverPassword)
+* Definição do avatar (UplodaAvatarAccount)
+* Exclusão do avatar (DeleteAvatarAccount)
+* Visualizar avatar (ShowAvatarAccount)
 
 ### Sessão (Session)
-* [Login (AuthenticationAccount)]()
-* [Logout (Logout)]()
-
-**Projeto transformado em template para um start mais rápido de novos projetos**
+* Autenticação do usuário (AuthenticationAccount)
+* Logout (Logout)
 
 > ## Bibliotecas e ferramentas
 
-* [Yarn - Gerenciador de pacotes](https://yarnpkg.com/)
-* Typescript
-* [Git - Gerenciador de versões](https://git-scm.com/)
 * Docker
   * [RabbitMQ - Gerenciador de filas de processo](https://www.rabbitmq.com/)
-* [Jest - Lib para testes unitários / integração](https://jestjs.io/)
-* [BCrypt - Criptografia de senhas](https://www.npmjs.com/package/bcrypt)
-* [JsonWebToken - Controle de sessão de usuário](https://www.npmjs.com/package/jsonwebtoken)
-* [Faker - Gerador de informações aleatórios para auxilio nos testes](https://www.npmjs.com/package/faker)
-* [Swagger - Documentação dos métodos da API](https://swagger.io/)
-* [Supertest - Teste de integração end-to-end](https://www.npmjs.com/package/supertest)
-* [Eslint - Padronização de código](https://www.npmjs.com/package/eslint)
-* [Nodemailer - Gerenciador de e-mails](https://nodemailer.com/about/)
+  * [PostgreSQL - SGDB para armazenar os dados em banco de dados relacional](https://www.postgresql.org/)
+  * [Redis - Gerenciador do cache da aplicação](https://redis.io/)
+* Segurança
+  * [BCrypt - Implementação de um dos mais utilizados algoritimos de criptografia](https://www.npmjs.com/package/bcrypt)
+  * [JsonWebToken - Controle de sessão de acesso sem a necessidade de recursos de memória no servidor](https://www.npmjs.com/package/jsonwebtoken)
+* Testes
+  * [Jest - Lib para testes unitários / integração](https://jestjs.io/)
+  * [Faker - Gerador de informações aleatórios para auxilio nos testes](https://www.npmjs.com/package/faker)
+  * [Supertest - Teste de integração end-to-end](https://www.npmjs.com/package/supertest)
+* Envio de e-mail
+  * [Nodemailer - Gerenciador de e-mails](https://nodemailer.com/about/)
+* Documentação e padrão de código
+  * [Eslint - Lib para garantir a padronização de código](https://www.npmjs.com/package/eslint)
+  * [Standard JS - Padrão utilizado no desenvolvimento](https://standardjs.com/)
+  * [Swagger - Documentação dos métodos da API](https://swagger.io/)
