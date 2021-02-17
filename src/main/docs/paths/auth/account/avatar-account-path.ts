@@ -39,5 +39,22 @@ export const avatarAccountPath = {
         $ref: '#/components/serverError'
       }
     }
+  },
+  get: {
+    tags: ['Account'],
+    summary: 'Method to show default avatar account',
+    responses: {
+      200: {
+        description: 'Show avatar account',
+        content: {
+          'image/png': {
+            schema: {
+              type: 'string',
+              format: 'binary'
+            }
+          }
+        }
+      }
+    }
   }
 }
