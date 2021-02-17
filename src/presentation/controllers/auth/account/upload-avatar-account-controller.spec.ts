@@ -1,6 +1,6 @@
 import { UploadAvatarAccountController } from './upload-avatar-account-controller'
 import { ValidationCompositeSpy } from '@/validation/test'
-import { UploadAvatarAccountUseCaseSpy, mockUpdateAccountRequest, mockUploadAvatarAccountRequest } from '@/presentation/test/auth'
+import { UploadAvatarAccountUseCaseSpy, mockUploadAvatarAccountRequest } from '@/presentation/test/auth'
 import { badRequest, serverError, ok } from '@/presentation/helpers'
 import { throwError } from '@/data/test'
 
@@ -24,7 +24,7 @@ const makeSut = (): sutTypes => {
 describe('UploadAvatarAccountController', () => {
   test('Should call ValidationComposite with correct values', async () => {
     const { sut, validationCompositeSpy } = makeSut()
-    const request = mockUpdateAccountRequest()
+    const request = mockUploadAvatarAccountRequest()
     await sut.handle(request)
     expect(validationCompositeSpy.params).toEqual(request.body)
   })
@@ -32,7 +32,7 @@ describe('UploadAvatarAccountController', () => {
   test('Should return BadRequest if validation is fails', async () => {
     const { sut, validationCompositeSpy } = makeSut()
     validationCompositeSpy.error = new Error('Validation error')
-    const result = await sut.handle(mockUpdateAccountRequest())
+    const result = await sut.handle(mockUploadAvatarAccountRequest())
     expect(result).toEqual(badRequest(validationCompositeSpy.error))
   })
 
