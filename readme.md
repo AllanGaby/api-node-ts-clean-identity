@@ -50,7 +50,7 @@ Todas as variáveis de ambiente podem ter seu valor alterado no arquivo /src/mai
 ```
 
 |Variável|Descrição|Valor padrão|
-|:---|---|---:|
+|:---|---|---|
 |PORT|Porta que a aplicação deve rodar|3333|
 |URL_RABBITMQ|URL para integração com o RabbitMQ|amqp://identity:masterkey@localhost:5672|
 |BASEDIR|Diretório base para a execução da aplicação(Usado para definir o path das views do e-mail)|src|
@@ -70,3 +70,14 @@ Todas as variáveis de ambiente podem ter seu valor alterado no arquivo /src/mai
 |REDIS_HOST|Servidor do Redis Cache|localhost|
 |REDIS_PORT|Porta do servidor Redis Cache|6379|
 |REDIS_PASSWORD|Senha de autenticação do Redis Cache|undefined|
+
+> ## Scripts
+|Script|Descrição|
+|:---|---|
+|test|Executa todos os testes da aplicação|
+|test:staged|Executa o testes em todos os arquivos alterados e relacionados a eles|
+|test:ci|Executa todos os testes e gera o relatório de cobertura|
+|build|Apaga o diretório dist e recompila a aplicação|
+|build:watch|Executa o build a cada alteração salva|
+|dev:server|Sobe o servidor da aplicação|
+|typeorm|Atalho para a execução dos comandos do TypeOrm|
