@@ -43,3 +43,30 @@ Aproveitei para implementar a ativação da conta do usuário através de link e
   * [Eslint - Lib para garantir a padronização de código](https://www.npmjs.com/package/eslint)
   * [Standard JS - Padrão utilizado no desenvolvimento](https://standardjs.com/)
   * [Swagger - Documentação dos métodos da API](https://swagger.io/)
+
+> ## Variáveis de ambiente
+```
+Todas as variáveis de ambiente podem ter seu valor alterado no arquivo /src/main/config/env.ts
+```
+
+|Variável|Descrição|Valor padrão|
+|:---|---|---:|
+|PORT|Porta que a aplicação deve rodar|3333|
+|URL_RABBITMQ|URL para integração com o RabbitMQ|amqp://identity:masterkey@localhost:5672|
+|BASEDIR|Diretório base para a execução da aplicação(Usado para definir o path das views do e-mail)|src|
+|REPOSITORY_TYPE|Tipo de repositório (TypeORM / Memory)|Memory * Significa que as informações não são salvas em um banco de dados, mas sim em memória|
+|REPOSITORY_TYPE|Tipo de cache (Redis / Memory)|Memory * O Cache fica salvo apenas em memória|
+|JWT_SECRET|Chave para a geração do JWT|01c383ef-b869-43f6-a60a-7b0c1b161d3b|
+|AUTH_TOKEN_NAME|Nome do token de acesso que deve ser passado nas rotas autenticadas|x-access-token|
+|UPLOAD_AVATAR_DIR|Diretório para o upload definitivo das imagens de avatar do usuário|uploads/auth/avatar/|
+|DEFAULT_USER_NAME|Nome do usuário padrão(Criado quando a aplicação foi iniciada)|identity|
+|DEFAULT_USER_EMAIL|Endereço de e-mail do usuário padrão|identity@identity.com|
+|DEFAULT_USER_PASSWORD|Senha de acesso do usuário padrão(Deve ser a senha criptografada)|$2b$12$YWnAIp/iCkQqSk0cLaRrz.noakEhyzvoKNlIcs6UVeTGy7TXGyQ/2|
+|SMTP_HOST|Servidor SMTP usado para o envio dos e-mails da aplicação|smtp.ethereal.email|
+|SMTP_PORT|Porta do servidor SMTP|587|
+|SMTP_SECURE|Define se o servidor SMTP utiliza conexão segura|false|
+|SMTP_USER|E-mail usado para a autenticação no servidor SMTP|sammy.gutmann2@ethereal.email|
+|SMTP_PASS|Senha para autenticação no servidor SMTP|6FRHEGTxfJXwt1t5u6|
+|REDIS_HOST|Servidor do Redis Cache|localhost|
+|REDIS_PORT|Porta do servidor Redis Cache|6379|
+|REDIS_PASSWORD|Senha de autenticação do Redis Cache|undefined|

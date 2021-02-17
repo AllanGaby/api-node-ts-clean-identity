@@ -43,8 +43,7 @@
     "build": "rimraf dist && tsc -p tsconfig-build.json",
     "build:watch": "rimraf dist && tsc -p tsconfig-build.json -w",
     "dev:server": "ts-node-dev --inspect --transpile-only --watch --ignore-watch node_modules src/main/http/express/server.ts",
-    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
-    "test:coveralls": "yarn test:ci && coveralls < coverage/lcov.info"
+    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
     "amqplib": "^0.6.0",
