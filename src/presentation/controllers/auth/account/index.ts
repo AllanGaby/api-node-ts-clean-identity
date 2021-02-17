@@ -1,5 +1,6 @@
 export * from './active-account-controller'
 export * from './create-account-controller'
+export * from './delete-avatar-account-controller'
 export * from './recover-password-controller'
 export * from './request-recover-password-controller'
 export * from './show-account-by-session-controller'

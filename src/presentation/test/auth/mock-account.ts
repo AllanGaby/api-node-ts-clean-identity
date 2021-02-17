@@ -1,8 +1,8 @@
 import { HttpRequest } from '@/presentation/protocols'
-import { CreateAccountUseCase, CreateAccountDTO, UpdateAccountUseCase, UpdateAccountDTO, ActiveAccountUseCase, ActiveAccountDTO, RecoverPasswordUseCase, RecoverPasswordDTO, RequestRecoverPasswordUseCase, RequestRecoverPasswordDTO, ShowAccountUseCase, ShowAccountDTO, UploadAvatarAccountUseCase, UploadAvatarAccountDTO, ShowAvatarAccountUseCase, ShowAvatarAccountDTO } from '@/domain/usecases/auth/account'
+import { CreateAccountUseCase, CreateAccountDTO, UpdateAccountUseCase, UpdateAccountDTO, ActiveAccountUseCase, ActiveAccountDTO, RecoverPasswordUseCase, RecoverPasswordDTO, RequestRecoverPasswordUseCase, RequestRecoverPasswordDTO, ShowAccountUseCase, ShowAccountDTO, UploadAvatarAccountUseCase, UploadAvatarAccountDTO, ShowAvatarAccountUseCase, ShowAvatarAccountDTO, DeleteAvatarAccountDTO, DeleteAvatarAccountUseCase } from '@/domain/usecases/auth/account'
 import { AccountModel, SessionModel } from '@/domain/models/auth'
 import { mockAccountModel, mockSessionModel } from '@/data/test'
-import { CreateAccountRequest, ActiveAccountRequest, RecoverPasswordRequest, UpdateAccountRequest, ShowAccountRequest, UploadAvatarAccountRequest } from '@/presentation/controllers/auth/account'
+import { CreateAccountRequest, ActiveAccountRequest, RecoverPasswordRequest, UpdateAccountRequest, ShowAccountRequest, UploadAvatarAccountRequest, DeleteAvatarAccountRequest } from '@/presentation/controllers/auth/account'
 import { ShowAvatarAccountRequest } from '@/presentation/controllers/auth/account/show-avatar-account-controller'
 import faker from 'faker'
 
@@ -156,5 +156,23 @@ export class ShowAvatarAccountUseCaseSpy implements ShowAvatarAccountUseCase {
 export const mockShowAvatarAccountRequest = (): HttpRequest<ShowAvatarAccountRequest> => ({
   params: {
     avatar_id: faker.random.uuid()
+  }
+})
+
+export class DeleteAvatarAccountUseCaseSpy implements DeleteAvatarAccountUseCase {
+  params: DeleteAvatarAccountDTO
+  account: AccountModel = mockAccountModel()
+
+  async delete (params: DeleteAvatarAccountDTO): Promise<AccountModel> {
+    this.params = params
+    return this.account
+  }
+}
+
+export const mockDeleteAvatarAccountRequest = (): HttpRequest<DeleteAvatarAccountRequest> => ({
+  body: {
+    session: {
+      accountId: faker.random.uuid()
+    }
   }
 })
