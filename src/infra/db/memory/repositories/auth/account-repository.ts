@@ -14,7 +14,7 @@ export class MemoryAccountRepository implements CreateAccountRepository, GetAcco
       email,
       password,
       email_valided: false,
-      avatar_file_id: EnvConfig.default.avatar_file_id,
+      avatar_file_id: undefined,
       created_at: new Date(),
       updated_at: new Date()
     }
