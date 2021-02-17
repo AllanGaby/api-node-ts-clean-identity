@@ -48,6 +48,14 @@ describe('GET /avatar/:avatar_id - Show Avatar Account', () => {
     expect(fileTest.toString()).toBe(buffer.toString())
   })
 
+  test('Should return ok status code and default avatar if avatar is not found', async () => {
+    const response = await request(app).get(`${url}${faker.random.uuid()}`)
+    const fileTest = await fs.promises.readFile(defaultFilePath)
+    const buffer = Buffer.from(response.body)
+    expect(response.status).toBe(HttpStatusCode.ok)
+    expect(fileTest.toString()).toBe(buffer.toString())
+  })
+
   test('Should return ok status code and correct avatar if account have avatar', async () => {
     account.avatar_file_id = file.id
     const response = await request(app).get(`${url}${account.avatar_file_id}`)
