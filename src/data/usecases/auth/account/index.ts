@@ -1,5 +1,6 @@
 export * from './active-account-use-case'
 export * from './create-account-use-case'
+export * from './delete-avatar-account-use-case'
 export * from './recover-password-use-case'
 export * from './request-recover-password-use-case'
 export * from './show-account-use-case'
