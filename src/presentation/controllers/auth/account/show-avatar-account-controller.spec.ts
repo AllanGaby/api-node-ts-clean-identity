@@ -2,7 +2,7 @@ import { ShowAvatarAccountController } from './show-avatar-account-controller'
 import { mockShowAvatarAccountRequest, ShowAvatarAccountUseCaseSpy } from '@/presentation/test/auth'
 import { badRequest, serverError, ok } from '@/presentation/helpers'
 import { throwError } from '@/data/test'
-import { InvalidCredentialsError } from '@/data/errors'
+import { AccountNotFoundError } from '@/data/errors'
 
 interface sutTypes {
   sut: ShowAvatarAccountController
@@ -24,7 +24,7 @@ describe('ShowAvatarAccountController', () => {
     const request = mockShowAvatarAccountRequest()
     await sut.handle(request)
     expect(showAvatarAccount.params).toEqual({
-      fileId: request.params.avatar_id
+      accountId: request.params.account_id
     })
   })
 
@@ -35,11 +35,11 @@ describe('ShowAvatarAccountController', () => {
     expect(result).toEqual(serverError(new Error('')))
   })
 
-  test('Should return BadRequest if ShowAvatarAccount return InvalidCredentialsError', async () => {
+  test('Should return BadRequest if ShowAvatarAccount return AccountNotFoundError', async () => {
     const { sut, showAvatarAccount } = makeSut()
-    jest.spyOn(showAvatarAccount, 'show').mockImplementationOnce(() => { throw new InvalidCredentialsError() })
+    jest.spyOn(showAvatarAccount, 'show').mockImplementationOnce(() => { throw new AccountNotFoundError() })
     const result = await sut.handle(mockShowAvatarAccountRequest())
-    expect(result).toEqual(badRequest(new InvalidCredentialsError()))
+    expect(result).toEqual(badRequest(new AccountNotFoundError()))
   })
 
   test('Should return Ok and correct entity if usecase is succeeds', async () => {

@@ -1,5 +1,5 @@
 export interface ShowAvatarAccountDTO {
-  fileId: string
+  accountId: string
 }
 
 export interface ShowAvatarAccountUseCase {

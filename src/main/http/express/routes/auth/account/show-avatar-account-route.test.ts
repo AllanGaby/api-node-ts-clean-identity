@@ -9,6 +9,7 @@ import fs from 'fs'
 import path from 'path'
 import request from 'supertest'
 import faker from 'faker'
+import { AccountNotFoundError } from '@/data/errors'
 
 let account: AccountModel
 let accountRepository: MemoryAccountRepository
@@ -19,7 +20,7 @@ const defaultFilePath = path.resolve(__dirname, '..', '..', '..', '..', '..', '.
 const testFilePath = `${EnvConfig.uploadAvatarDir}/test.jpg`
 const url = '/api/auth/account/avatar/'
 
-describe('GET /avatar/:avatar_id - Show Avatar Account', () => {
+describe('GET /avatar/:account_id - Show Avatar Account', () => {
   beforeAll(async () => {
     fileRepository = MemoryFileRepository.getInstance()
     accountRepository = MemoryAccountRepository.getInstance()
@@ -40,16 +41,16 @@ describe('GET /avatar/:avatar_id - Show Avatar Account', () => {
     fs.promises.unlink(accountFilePath)
   })
 
-  test('Should return ok status code and default avatar if account without avatar', async () => {
-    const response = await request(app).get(`${url}`)
-    const fileTest = await fs.promises.readFile(defaultFilePath)
-    const buffer = Buffer.from(response.body)
-    expect(response.status).toBe(HttpStatusCode.ok)
-    expect(fileTest.toString()).toBe(buffer.toString())
+  test('Should return badRequest status code if account not found', async () => {
+    const response = await request(app).get(`${url}${faker.random.uuid()}`)
+    expect(response.status).toBe(HttpStatusCode.badRequest)
+    expect(response.body).toEqual({
+      error: new AccountNotFoundError().message
+    })
   })
 
-  test('Should return ok status code and default avatar if avatar is not found', async () => {
-    const response = await request(app).get(`${url}${faker.random.uuid()}`)
+  test('Should return ok status code and default avatar if account dont have avatar', async () => {
+    const response = await request(app).get(`${url}${account.id}`)
     const fileTest = await fs.promises.readFile(defaultFilePath)
     const buffer = Buffer.from(response.body)
     expect(response.status).toBe(HttpStatusCode.ok)
@@ -58,7 +59,7 @@ describe('GET /avatar/:avatar_id - Show Avatar Account', () => {
 
   test('Should return ok status code and correct avatar if account have avatar', async () => {
     account.avatar_file_id = file.id
-    const response = await request(app).get(`${url}${account.avatar_file_id}`)
+    const response = await request(app).get(`${url}${account.id}`)
     const fileTest = await fs.promises.readFile(accountFilePath)
     const buffer = Buffer.from(response.body)
     expect(response.status).toBe(HttpStatusCode.ok)

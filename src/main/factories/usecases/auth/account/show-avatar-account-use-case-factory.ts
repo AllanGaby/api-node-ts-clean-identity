@@ -5,6 +5,7 @@ import { EnvConfig } from '@/main/config/env'
 
 export const makeShowAvatarAccountUseCase = (): ShowAvatarAccountUseCase => {
   return new DbShowAvatarAccountUseCase(
+    RepositoryFactory.getAccountRepository(EnvConfig.repositoryType),
     RepositoryFactory.getFileRepository(EnvConfig.repositoryType),
     `${EnvConfig.uploadAvatarDir}/default.png`)
 }

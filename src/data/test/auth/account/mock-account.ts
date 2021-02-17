@@ -47,7 +47,7 @@ export const mockUploadAvatarAccountDTO = (): UploadAvatarAccountDTO => ({
 })
 
 export const mockShowAvatarAccountDTO = (): ShowAvatarAccountDTO => ({
-  fileId: faker.random.uuid()
+  accountId: faker.random.uuid()
 })
 
 export const mockDeleteAvatarAccountDTO = (): DeleteAvatarAccountDTO => ({

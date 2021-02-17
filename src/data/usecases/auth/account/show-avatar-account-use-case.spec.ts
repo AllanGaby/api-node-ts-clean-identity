@@ -1,31 +1,57 @@
 import { DbShowAvatarAccountUseCase } from './show-avatar-account-use-case'
 import { ShowFileRepositorySpy } from '@/data/test/files'
-import { mockShowAvatarAccountDTO, throwError } from '@/data/test'
+import { GetAccountByIdRepositorySpy, mockShowAvatarAccountDTO, throwError } from '@/data/test'
+import { AccountNotFoundError } from '@/data/errors'
 import faker from 'faker'
 
 interface sutTypes {
   sut: DbShowAvatarAccountUseCase
   defaultAvatarPath: string
+  getAccountByIdRepository: GetAccountByIdRepositorySpy
   showFileRepository: ShowFileRepositorySpy
 }
 
 const makeSut = (): sutTypes => {
+  const getAccountByIdRepository = new GetAccountByIdRepositorySpy()
+  getAccountByIdRepository.account.avatar_file_id = faker.random.uuid()
   const showFileRepository = new ShowFileRepositorySpy()
   const defaultAvatarPath = faker.system.filePath()
-  const sut = new DbShowAvatarAccountUseCase(showFileRepository, defaultAvatarPath)
+  const sut = new DbShowAvatarAccountUseCase(getAccountByIdRepository, showFileRepository, defaultAvatarPath)
   return {
     sut,
+    getAccountByIdRepository,
     showFileRepository,
     defaultAvatarPath
   }
 }
 
 describe('DbShowAvatarAccountUseCase', () => {
-  test('Should call ShowFileRepository with correct value', async () => {
-    const { sut, showFileRepository } = makeSut()
+  test('Should call GetAccountByIdRepository with correct value', async () => {
+    const { sut, getAccountByIdRepository } = makeSut()
     const request = mockShowAvatarAccountDTO()
     await sut.show(request)
-    expect(showFileRepository.fileId).toBe(request.fileId)
+    expect(getAccountByIdRepository.accountId).toBe(request.accountId)
+  })
+
+  test('Should return throw if GetAccountByIdRepository throws', async () => {
+    const { sut, getAccountByIdRepository } = makeSut()
+    jest.spyOn(getAccountByIdRepository, 'getAccountById').mockImplementationOnce(throwError)
+    const promise = sut.show(mockShowAvatarAccountDTO())
+    await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return AccountNotFound if GetAccountByIdRepository return undefined', async () => {
+    const { sut, getAccountByIdRepository } = makeSut()
+    getAccountByIdRepository.account = undefined
+    const promise = sut.show(mockShowAvatarAccountDTO())
+    await expect(promise).rejects.toThrowError(AccountNotFoundError)
+  })
+
+  test('Should call ShowFileRepository with correct value', async () => {
+    const { sut, showFileRepository, getAccountByIdRepository } = makeSut()
+    const request = mockShowAvatarAccountDTO()
+    await sut.show(request)
+    expect(showFileRepository.fileId).toBe(getAccountByIdRepository.account.avatar_file_id)
   })
 
   test('Should return throw if ShowFileRepository throws', async () => {
@@ -49,10 +75,9 @@ describe('DbShowAvatarAccountUseCase', () => {
   })
 
   test('Should return default avatar path if avatar id not found', async () => {
-    const { sut, defaultAvatarPath } = makeSut()
-    const filePath = await sut.show({
-      fileId: undefined
-    })
+    const { sut, getAccountByIdRepository, defaultAvatarPath } = makeSut()
+    getAccountByIdRepository.account.avatar_file_id = undefined
+    const filePath = await sut.show(mockShowAvatarAccountDTO())
     expect(filePath).toBe(defaultAvatarPath)
   })
 })
