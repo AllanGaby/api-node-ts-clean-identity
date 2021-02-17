@@ -9,20 +9,20 @@ Aproveitei para implementar a ativação da conta do usuário através de link e
 |Método|Rota|Use Case|Descrição|
 |:---:|---|---|---|
 |POST|/api/auth/account/|CreateAccount|Criação de uma nova conta de usuário|
-|PUT|/api/auth/account/ :lock:|UpdateAccount|Atualização das informações da conta do usuário autenticado|
-|GET|/api/auth/account/ :lock:|ShowAccount|Retorna as informações da conta do usuário autenticado|
+|PUT :lock:|/api/auth/account/|UpdateAccount|Atualização das informações da conta do usuário autenticado|
+|GET :lock:|/api/auth/account/|ShowAccount|Retorna as informações da conta do usuário autenticado|
 |PUT|/api/auth/account/active/:session_id|ActiveAccount|Ativa a conta do usuário da sessão recebida|
 |POST|/api/auth/account/password|RequestRecoverPassword|Solicita a recuperação de senha (As instruções são enviadas para o e-mail informado)|
 |PUT|/api/auth/account/password|RecoverPassword|Altera a senha da conta da sessão informada|
-|PUT|/api/auth/account/avatar :lock:|UplodaAvatarAccount|Atualiza a imagem de avatar do usuário logado|
-|DELETE|/api/auth/account/avatar :lock:|DeleteAvatarAccount|Exclui a imagem de avatar do usuário logado|
+|PUT :lock:|/api/auth/account/avatar|UplodaAvatarAccount|Atualiza a imagem de avatar do usuário logado|
+|DELETE :lock:|/api/auth/account/avatar|DeleteAvatarAccount|Exclui a imagem de avatar do usuário logado|
 |GET|/api/auth/account/avatar/:account_id|ShowAvatarAccount|Exibe a imagem de avatar do usuário informado(Se o usuário não tiver um avatar definido, será exibido um avatar padrão)|
 
 ### Sessão (Session)
 |Método|Rota|Use Case|Descrição|
 |:---:|---|---|---|
 |POST|/api/auth/session/|AuthenticationAccount|Autenticação do usuário(Login)|
-|DELETE|/api/auth/session/ :lock:|Logout|Invalida a sessão do usuário autenticado(Logout)|
+|DELETE :lock:|/api/auth/session/|Logout|Invalida a sessão do usuário autenticado(Logout)|
 
 > ## Bibliotecas e ferramentas
 
