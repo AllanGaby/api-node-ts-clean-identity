@@ -1,5 +1,6 @@
 export * from './active-account-route'
 export * from './create-account-route'
+export * from './delete-avatar-account-route'
 export * from './recover-password-route'
 export * from './request-recover-password-route'
 export * from './show-account-by-session-route'
