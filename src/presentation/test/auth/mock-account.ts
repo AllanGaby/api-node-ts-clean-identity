@@ -3,10 +3,8 @@ import { CreateAccountUseCase, CreateAccountDTO, UpdateAccountUseCase, UpdateAcc
 import { AccountModel, SessionModel } from '@/domain/models/auth'
 import { mockAccountModel, mockSessionModel } from '@/data/test'
 import { CreateAccountRequest, ActiveAccountRequest, RecoverPasswordRequest, UpdateAccountRequest, ShowAccountRequest, UploadAvatarAccountRequest } from '@/presentation/controllers/auth/account'
-import faker from 'faker'
-import { FileModel } from '@/domain/models/files'
-import { mockFileModel } from '@/data/test/files'
 import { ShowAvatarAccountRequest } from '@/presentation/controllers/auth/account/show-avatar-account-controller'
+import faker from 'faker'
 
 export class CreateAccountSpy implements CreateAccountUseCase {
   session: SessionModel = mockSessionModel()
@@ -147,11 +145,11 @@ export const mockUploadAvatarAccountRequest = (): HttpRequest<UploadAvatarAccoun
 
 export class ShowAvatarAccountUseCaseSpy implements ShowAvatarAccountUseCase {
   params: ShowAvatarAccountDTO
-  file: FileModel = mockFileModel()
+  filePath: string = faker.system.directoryPath() + faker.system.filePath()
 
-  async show (params: ShowAvatarAccountDTO): Promise<FileModel> {
+  async show (params: ShowAvatarAccountDTO): Promise<string> {
     this.params = params
-    return this.file
+    return this.filePath
   }
 }
 
