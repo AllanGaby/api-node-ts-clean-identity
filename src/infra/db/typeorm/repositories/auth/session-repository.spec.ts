@@ -94,14 +94,14 @@ describe('MemorySessionRepository', () => {
       expect(session).toBeFalsy()
     })
 
-    test('Should change session list if session found', async () => {
+    test('Should set deleted_at in session correct session', async () => {
       const { sut } = makeSut()
       const existsSession = await sut.getSessionById(session.id)
       expect(existsSession).toEqual(session)
+      expect(existsSession.deleted_at).toBeFalsy()
       await sut.deleteById(existsSession.id)
-      expect(await sut.getSessionById(session.id)).toBeFalsy()
-      await sut.deleteById(existsSession.id)
-      expect(await sut.getSessionById(session.id)).toBeFalsy()
+      const deletedSession = await sut.getSessionById(session.id)
+      expect(deletedSession.deleted_at).toBeTruthy()
     })
   })
 
@@ -149,9 +149,14 @@ describe('MemorySessionRepository', () => {
       const accountId = session.account_id
       const list = await sut.getSessionByAccountId(accountId)
       expect(list).toHaveLength(4)
+      list.map(session => {
+        expect(session.deleted_at).toBeFalsy()
+      })
       await sut.deleteByAccountId(accountId)
       const beforeList = await sut.getSessionByAccountId(accountId)
-      expect(beforeList).toEqual([])
+      beforeList.map(session => {
+        expect(session.deleted_at).toBeTruthy()
+      })
     })
 
     test('Should return null if accountId is undefined', async () => {
