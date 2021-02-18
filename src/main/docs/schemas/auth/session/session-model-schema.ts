@@ -21,6 +21,11 @@ export const sessionModelSchema = {
                    '</ul>',
       enum: [1, 2, 3]
     },
+    deleted_at: {
+      type: 'string',
+      format: 'date',
+      description: 'Data em que a sessão de acesso foi invalidada (Logout)'
+    },
     experied_at: {
       type: 'string',
       format: 'date',

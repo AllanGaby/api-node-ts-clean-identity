@@ -40,23 +40,6 @@ export const avatarAccountPath = {
       }
     }
   },
-  get: {
-    tags: ['Avatar do usuário'],
-    summary: 'Exibe a imagem padrão de avatar',
-    responses: {
-      200: {
-        description: 'Imagem padrão de avatar',
-        content: {
-          'image/png': {
-            schema: {
-              type: 'string',
-              format: 'binary'
-            }
-          }
-        }
-      }
-    }
-  },
   delete: {
     tags: ['Avatar do usuário'],
     summary: 'Exclui a imagem de avatar do usuário',

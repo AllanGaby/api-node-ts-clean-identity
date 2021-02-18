@@ -4,8 +4,8 @@ export const showAvatarAccountPath = {
     summary: 'Busca o avatar da conta do usuário',
     parameters: [{
       in: 'path',
-      name: 'avatar_id',
-      description: 'Identificador do avatar do usuário',
+      name: 'account_id',
+      description: 'Identificador da conta do usuário',
       required: true,
       schema: {
         type: 'string'
