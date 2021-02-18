@@ -41,20 +41,26 @@ export class MemorySessionRepository implements CreateSessionRepository, GetSess
     if (sessionId) {
       const index = this.sessions.findIndex(session => session.id === sessionId)
       if (index >= 0) {
-        this.sessions.splice(index)
+        this.sessions[index] = {
+          ...this.sessions[index],
+          deleted_at: new Date(),
+          updated_at: new Date()
+        }
       }
     }
   }
 
   async deleteByAccountId (accountId: string): Promise<void> {
     if (accountId) {
-      let index = 0
-      do {
-        index = this.sessions.findIndex(session => session.account_id === accountId)
-        if (index >= 0) {
-          this.sessions.splice(index)
+      for (let index = 0; index < this.sessions.length; index++) {
+        if (this.sessions[index].account_id === accountId) {
+          this.sessions[index] = {
+            ...this.sessions[index],
+            deleted_at: new Date(),
+            updated_at: new Date()
+          }
         }
-      } while (index >= 0)
+      }
     }
   }
 
