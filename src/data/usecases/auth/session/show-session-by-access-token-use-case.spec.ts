@@ -75,6 +75,13 @@ describe('DbShowSessionByAccessTokenUseCase', () => {
     expect(session).toEqual(getSessionByIdRepositorySpy.session)
   })
 
+  test('Should return InvalidCredentialsError if GetSessionByIdRepository return deleted session', async () => {
+    const { sut, getSessionByIdRepositorySpy } = makeSut()
+    getSessionByIdRepositorySpy.session.deleted_at = new Date()
+    const promise = sut.show(mockShowSessionByAccessTokenDTO())
+    await expect(promise).rejects.toThrow(new InvalidCredentialsError())
+  })
+
   test('Should call CacheRecover with correct value', async () => {
     const { sut, cacheRecoverSpy, decrypterSpy } = makeSut()
     await sut.show(mockShowSessionByAccessTokenDTO())
