@@ -35,9 +35,14 @@ export class SessionRepositoryTypeORM implements CreateSessionRepository, GetSes
 
   async deleteById (id: string): Promise<void> {
     if (id) {
-      await this.sessionRepositoryTypeOrm.delete({
-        id
-      })
+      const session = await this.sessionRepositoryTypeOrm.findOne(id)
+      if (session) {
+        const updatedSession = {
+          ...session,
+          deleted_at: new Date()
+        }
+        await this.sessionRepositoryTypeOrm.save(updatedSession)
+      }
     }
   }
 
