@@ -2,6 +2,7 @@ node_modules
 dist
 coverage
 .scannerwork
+.vscode
 temp/*
 !temp/.gitkeep
 uploads/*
