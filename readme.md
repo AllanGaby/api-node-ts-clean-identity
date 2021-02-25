@@ -1,4 +1,5 @@
 # **Clean Node TS Clean Identity**
+[![Quality Gate Status](http://127.0.0.1:9000/api/project_badges/measure?project=Identity&metric=alert_status)](http://127.0.0.1:9000/dashboard?id=Identity) [![Maintainability Rating](http://127.0.0.1:9000/api/project_badges/measure?project=Identity&metric=sqale_rating)](http://127.0.0.1:9000/dashboard?id=Identity) [![Quality Gate Status](http://127.0.0.1:9000/api/project_badges/measure?project=Identity&metric=alert_status)](http://127.0.0.1:9000/dashboard?id=Identity) [![Security Rating](http://127.0.0.1:9000/api/project_badges/measure?project=Identity&metric=security_rating)](http://127.0.0.1:9000/dashboard?id=Identity)
 
 Projeto criado para praticar alguns conceitos da Clean Architecture e TDD com Node JS e TypeScript.
 O projeto é uma Web API para controle de acesso, passando por cadastro de usuário, autenticação, atualização do usuário.
