@@ -10,6 +10,8 @@ module.exports = {
     '!**/protocols/**',
     '!**/index.ts'
   ],
+  testResultsProcessor: 'jest-sonar-reporter',
+  collectCoverage: true,
   coverageDirectory: 'coverage',
   coverageProvider: 'babel',
   testEnvironment: 'node',

@@ -30,13 +30,16 @@
     "git-commit-msg-linter": "^3.0.0",
     "husky": "^4.3.0",
     "jest": "^26.5.3",
+    "jest-sonar-reporter": "^2.0.0",
     "lint-staged": "^10.4.2",
     "rimraf": "^3.0.2",
+    "sonarqube-scanner": "^2.8.0",
     "supertest": "^6.0.1",
     "ts-jest": "^26.4.1",
     "typescript": "^4.0.3"
   },
   "scripts": {
+    "sonar:scanner": "sonar-scanner",
     "test": "cross-env NODE_ENV=test cross-env REPOSITORY_TYPE=Memory jest --passWithNoTests --noStackTrace --runInBand --no-cache --detectOpenHandles",
     "test:staged": "yarn test --silent",
     "test:ci": "yarn test  --coverage",
@@ -69,5 +72,10 @@
   },
   "_moduleAliases": {
     "@": "dist"
-  }
+  },
+  "jestSonar": {
+    "reportPath": "coverage",
+    "reportFile": "test-reporter.xml",
+    "indent": 4
+  }  
 }
