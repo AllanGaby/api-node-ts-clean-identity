@@ -27,9 +27,8 @@ export class RepositoryFactory {
   }
 
   public static getFileRepository (type: RepositoryTypes): MemoryFileRepository {
-    switch (type) {
-      case RepositoryTypes.Memory:
-        return MemoryFileRepository.getInstance()
+    if (type === RepositoryTypes.Memory) {
+      return MemoryFileRepository.getInstance()
     }
   }
 }
