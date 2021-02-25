@@ -2,7 +2,7 @@ import { HashCreator, HashComparer, ComparerDTO } from '@/data/protocols/criptog
 import bcrypt from 'bcrypt'
 
 export class BCrypterHasherAdapter implements HashCreator, HashComparer {
-  constructor (private readonly salt: number = 12) {}
+  constructor (private readonly salt: number) {}
 
   async createHash (payload: string): Promise<string> {
     return await bcrypt.hash(payload, this.salt)

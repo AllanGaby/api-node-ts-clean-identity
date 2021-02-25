@@ -10,7 +10,7 @@ interface TokenPayload {
 export class JWTEncrypterAdapter implements Encrypter, Decrypter {
   constructor (
     private readonly secret: string,
-    private readonly deadlineInDays: number = 1
+    private readonly deadlineInDays: number
   ) {}
 
   async encrypt (plainText: string): Promise<string> {
