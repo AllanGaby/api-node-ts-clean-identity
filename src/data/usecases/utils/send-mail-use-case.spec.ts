@@ -1,5 +1,5 @@
 import { DbSendMailUseCase } from './send-mail-use-case'
-import { MailTemplateAdapterSpy, SendMailAdapterSpy, mockSendMailDTO, throwError } from '@/data/test'
+import { MailTemplateAdapterSpy, SendMailAdapterSpy, mockSendMailDTO, throwError } from '@/data/tests'
 import faker from 'faker'
 
 interface sutTypes {

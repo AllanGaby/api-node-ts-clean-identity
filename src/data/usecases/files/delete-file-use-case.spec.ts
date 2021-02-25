@@ -1,8 +1,7 @@
 import { DbDeleteFileUseCase } from './delete-file-use-case'
-import { ShowFileRepositorySpy, DeleteFileRepositoryStub } from '@/data/test/files'
-import { DeleteStorageFileStub, throwError } from '@/data/test'
-import faker from 'faker'
+import { DeleteStorageFileStub, throwError, ShowFileRepositorySpy, DeleteFileRepositoryStub } from '@/data/tests'
 import { FileNotFoundError } from '@/data/errors'
+import faker from 'faker'
 
 interface sutTypes {
   sut: DbDeleteFileUseCase

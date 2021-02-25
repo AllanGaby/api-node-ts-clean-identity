@@ -1,5 +1,5 @@
 import { DbShowSessionByAccessTokenUseCase } from './show-session-by-access-token-use-case'
-import { DecrypterSpy, mockShowSessionByAccessTokenDTO, throwError, GetSessionByIdRepositorySpy, CacheCreateSpy, CacheRecoverSpy, mockSessionModel } from '@/data/test'
+import { DecrypterSpy, mockShowSessionByAccessTokenDTO, throwError, GetSessionByIdRepositorySpy, CacheCreateSpy, CacheRecoverSpy, mockSessionModel } from '@/data/tests'
 import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {

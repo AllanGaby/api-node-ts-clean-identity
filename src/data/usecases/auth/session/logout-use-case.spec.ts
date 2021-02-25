@@ -1,7 +1,5 @@
 import { DbLogoutUseCase } from './logout-use-case'
-import { GetSessionByIdRepositorySpy, DeleteSessionByIdRepositorySpy, mockLogoutDTO, mockSessionModel } from '@/data/test/auth/session'
-import { CacheRecoverSpy, CacheRemoveSpy, throwError } from '@/data/test'
-
+import { GetSessionByIdRepositorySpy, DeleteSessionByIdRepositorySpy, mockLogoutDTO, mockSessionModel, CacheRecoverSpy, CacheRemoveSpy, throwError } from '@/data/tests'
 import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {

@@ -1,6 +1,6 @@
 import { ConditionalRequiredFieldValidation } from './conditional-required-field-validation'
 import { InvalidParamError } from '@/validation/errors'
-import { mockInput } from '@/validation/test/mock-validation'
+import { mockInput } from '@/validation/tests/mock-validation'
 import faker from 'faker'
 
 interface sutTypes {
@@ -11,7 +11,7 @@ interface sutTypes {
 
 const makeSut = (): sutTypes => {
   const field = faker.database.column()
-  const conditionalRequiredField = faker.database.column()
+  const conditionalRequiredField = faker.random.uuid()
   const sut = new ConditionalRequiredFieldValidation(field, conditionalRequiredField)
   return {
     sut,

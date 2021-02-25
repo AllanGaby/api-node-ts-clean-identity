@@ -1,5 +1,5 @@
 import { MemoryFileRepository } from './file-repository'
-import { mockCreateFileModel, mockFileModel } from '@/data/test/files'
+import { mockCreateFileModel, mockFileModel } from '@/data/tests'
 import faker from 'faker'
 
 interface sutTypes {

@@ -1,5 +1,5 @@
 import { ValidationBuilder as sut, EmailFieldValidation, RequiredFieldValidation, MinLengthFieldValidation, ConditionalRequiredFieldValidation } from './'
-import { EmailValidatorSpy } from '@/validation/test/mock-email-validator'
+import { EmailValidatorSpy } from '@/validation/tests/mock-email-validator'
 import { CompareFieldValidation } from './compare-field-validation'
 import faker from 'faker'
 

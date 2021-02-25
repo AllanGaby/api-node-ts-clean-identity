@@ -1,7 +1,7 @@
 import { CompareFieldValidation } from './compare-field-validation'
-import faker from 'faker'
 import { InvalidParamError } from '@/validation/errors'
-import { mockInput } from '@/validation/test/mock-validation'
+import { mockInput } from '@/validation/tests/mock-validation'
+import faker from 'faker'
 
 interface sutTypes {
   sut: CompareFieldValidation
@@ -11,7 +11,7 @@ interface sutTypes {
 
 const makeSut = (): sutTypes => {
   const field = faker.database.column()
-  const compareField = faker.database.column()
+  const compareField = faker.random.uuid()
   const sut = new CompareFieldValidation(field, compareField)
   return {
     sut,

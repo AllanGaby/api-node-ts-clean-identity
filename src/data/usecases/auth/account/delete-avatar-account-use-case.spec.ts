@@ -1,6 +1,6 @@
 import { DbDeleteAvatarAccountUseCase } from './delete-avatar-account-use-case'
-import { CacheRemoveSpy, GetAccountByIdRepositorySpy, mockDeleteAvatarAccountDTO, throwError, UpdateAccountRepositorySpy } from '@/data/test'
-import { DeleteFileUseCaseStub } from '@/data/test/files'
+import { CacheRemoveSpy, GetAccountByIdRepositorySpy, mockDeleteAvatarAccountDTO, throwError, UpdateAccountRepositorySpy } from '@/data/tests'
+import { DeleteFileUseCaseStub } from '@/data/tests/files'
 import { AccountNotFoundError } from '@/data/errors'
 
 interface sutTypes {

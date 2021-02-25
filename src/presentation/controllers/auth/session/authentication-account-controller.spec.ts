@@ -1,8 +1,8 @@
 import { AuthenticationAccountController } from './authentication-account-controller'
-import { ValidationCompositeSpy } from '@/validation/test'
-import { AuthenticationAccountSpy, mockAuthenticationAccountRequest } from '@/presentation/test/auth'
+import { ValidationCompositeSpy } from '@/validation/tests'
+import { AuthenticationAccountSpy, mockAuthenticationAccountRequest } from '@/presentation/tests/auth'
 import { badRequest, serverError, unauthorized, ok } from '@/presentation/helpers'
-import { throwError } from '@/data/test'
+import { throwError } from '@/data/tests'
 import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {

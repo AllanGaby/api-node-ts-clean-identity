@@ -1,8 +1,8 @@
 import { RecoverPasswordController } from './recover-password-controller'
-import { ValidationCompositeSpy } from '@/validation/test'
-import { RecoverPasswordSpy, mockRecoverPasswordRequest } from '@/presentation/test/auth'
+import { ValidationCompositeSpy } from '@/validation/tests'
+import { RecoverPasswordSpy, mockRecoverPasswordRequest } from '@/presentation/tests/auth'
 import { badRequest, ok, serverError } from '@/presentation/helpers'
-import { throwError } from '@/data/test'
+import { throwError } from '@/data/tests'
 
 interface sutTypes {
   sut: RecoverPasswordController

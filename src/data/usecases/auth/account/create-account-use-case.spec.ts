@@ -1,5 +1,5 @@
 import { DbCreateAccountUseCase } from './create-account-use-case'
-import { GetAccountByEmailRepositorySpy, CreateAccountRepositorySpy, mockCreateAccountDTO, mockAccountModel, HashCreatorSpy, throwError, SendMailSessionSpy } from '@/data/test'
+import { GetAccountByEmailRepositorySpy, CreateAccountRepositorySpy, mockCreateAccountDTO, mockAccountModel, HashCreatorSpy, throwError, SendMailSessionSpy } from '@/data/tests'
 import faker from 'faker'
 import { SessionType } from '@/domain/models/auth'
 

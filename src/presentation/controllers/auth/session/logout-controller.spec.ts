@@ -1,7 +1,7 @@
 import { LogoutController } from './logout-controller'
-import { LogoutSpy, mockLogoutRequest } from '@/presentation/test/auth'
+import { LogoutSpy, mockLogoutRequest } from '@/presentation/tests/auth'
 import { forbidden, noContent, serverError } from '@/presentation/helpers'
-import { throwError } from '@/data/test'
+import { throwError } from '@/data/tests'
 import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {

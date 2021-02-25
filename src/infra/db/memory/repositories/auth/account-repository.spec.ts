@@ -1,5 +1,5 @@
 import { MemoryAccountRepository } from './account-repository'
-import { mockCreateAccountModel } from '@/infra/test/db/auth'
+import { mockCreateAccountModel } from '@/infra/tests/db/auth'
 import faker from 'faker'
 
 interface sutTypes {

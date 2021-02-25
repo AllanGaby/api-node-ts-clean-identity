@@ -1,7 +1,7 @@
 import { ShowAvatarAccountController } from './show-avatar-account-controller'
-import { mockShowAvatarAccountRequest, ShowAvatarAccountUseCaseSpy } from '@/presentation/test/auth'
+import { mockShowAvatarAccountRequest, ShowAvatarAccountUseCaseSpy } from '@/presentation/tests/auth'
 import { badRequest, serverError, ok } from '@/presentation/helpers'
-import { throwError } from '@/data/test'
+import { throwError } from '@/data/tests'
 import { AccountNotFoundError } from '@/data/errors'
 
 interface sutTypes {

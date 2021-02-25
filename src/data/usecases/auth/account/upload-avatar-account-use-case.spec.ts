@@ -1,6 +1,5 @@
 import { DbUploadAvatarAccountUseCase } from './upload-avatar-account-use-case'
-import { CacheRemoveSpy, GetAccountByIdRepositorySpy, mockUploadAvatarAccountDTO, throwError, UpdateAccountRepositorySpy } from '@/data/test'
-import { DeleteFileUseCaseStub, UploadFileUseCaseSpy } from '@/data/test/files'
+import { CacheRemoveSpy, GetAccountByIdRepositorySpy, mockUploadAvatarAccountDTO, throwError, UpdateAccountRepositorySpy, DeleteFileUseCaseStub, UploadFileUseCaseSpy } from '@/data/tests'
 import { AccountNotFoundError } from '@/data/errors'
 
 interface sutTypes {

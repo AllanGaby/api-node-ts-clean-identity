@@ -1,5 +1,5 @@
 import { DbRecoverPasswordUseCase } from './recover-password-use-case'
-import { GetSessionByIdRepositorySpy, mockRecoverPasswordDTO, throwError, GetAccountByIdRepositorySpy, mockSessionModel, HashCreatorSpy, UpdateAccountRepositorySpy, DeleteSessionByAccountIdRepositorySpy } from '@/data/test'
+import { GetSessionByIdRepositorySpy, mockRecoverPasswordDTO, throwError, GetAccountByIdRepositorySpy, mockSessionModel, HashCreatorSpy, UpdateAccountRepositorySpy, DeleteSessionByAccountIdRepositorySpy } from '@/data/tests'
 import { SessionType } from '@/domain/models/auth'
 import { InvalidCredentialsError } from '@/data/errors'
 

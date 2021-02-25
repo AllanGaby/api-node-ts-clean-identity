@@ -1,7 +1,7 @@
 import { HttpRequest } from '@/presentation/protocols'
 import { CreateAccountUseCase, CreateAccountDTO, UpdateAccountUseCase, UpdateAccountDTO, ActiveAccountUseCase, ActiveAccountDTO, RecoverPasswordUseCase, RecoverPasswordDTO, RequestRecoverPasswordUseCase, RequestRecoverPasswordDTO, ShowAccountUseCase, ShowAccountDTO, UploadAvatarAccountUseCase, UploadAvatarAccountDTO, ShowAvatarAccountUseCase, ShowAvatarAccountDTO, DeleteAvatarAccountDTO, DeleteAvatarAccountUseCase } from '@/domain/usecases/auth/account'
 import { AccountModel, SessionModel } from '@/domain/models/auth'
-import { mockAccountModel, mockSessionModel } from '@/data/test'
+import { mockAccountModel, mockSessionModel } from '@/data/tests'
 import { CreateAccountRequest, ActiveAccountRequest, RecoverPasswordRequest, UpdateAccountRequest, ShowAccountRequest, UploadAvatarAccountRequest, DeleteAvatarAccountRequest } from '@/presentation/controllers/auth/account'
 import { ShowAvatarAccountRequest } from '@/presentation/controllers/auth/account/show-avatar-account-controller'
 import faker from 'faker'

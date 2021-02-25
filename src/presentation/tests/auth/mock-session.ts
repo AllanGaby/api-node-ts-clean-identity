@@ -1,6 +1,6 @@
 import { ShowAccountBySessionUseCase, ShowAccountBySessionDTO, LogoutUseCase, LogoutDTO, ShowSessionByAccessTokenUseCase, ShowSessionByAccessTokenDTO, AuthenticationAccountUseCase, AuthenticationAccountDTO } from '@/domain/usecases/auth/session'
 import { AccountModel, AuthenticationModel, SessionModel, SessionType } from '@/domain/models/auth'
-import { mockAccountModel, mockAuthenticationModel, mockSessionModel } from '@/data/test'
+import { mockAccountModel, mockAuthenticationModel, mockSessionModel } from '@/data/tests'
 import { HttpRequest } from '@/presentation/protocols'
 import { LogoutRequest } from '@/presentation/controllers/auth/session'
 import faker from 'faker'

@@ -1,5 +1,5 @@
 import { DbShowAccountUseCase } from './show-account-use-case'
-import { mockAccountModel, GetAccountByIdRepositorySpy, mockShowAccountDTO, throwError } from '@/data/test'
+import { mockAccountModel, GetAccountByIdRepositorySpy, mockShowAccountDTO, throwError } from '@/data/tests'
 
 interface sutTypes {
   sut: DbShowAccountUseCase

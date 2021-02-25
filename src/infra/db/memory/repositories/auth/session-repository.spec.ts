@@ -1,8 +1,8 @@
 import { MemorySessionRepository } from './session-repository'
-import { mockCreateSessionModel } from '@/infra/test/db/auth'
-import faker from 'faker'
-import { mockSessionModel } from '@/data/test'
+import { mockCreateSessionModel } from '@/infra/tests/db/auth'
+import { mockSessionModel } from '@/data/tests'
 import { SessionModel } from '@/domain/models/auth'
+import faker from 'faker'
 
 interface sutType {
   sut: MemorySessionRepository

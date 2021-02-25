@@ -1,5 +1,5 @@
 import { DbShowAccountBySessionUseCase } from './show-account-by-session-use-case'
-import { DecrypterSpy, mockShowAccountBySessionDTO, throwError, GetSessionByIdRepositorySpy, GetAccountByIdRepositorySpy } from '@/data/test'
+import { DecrypterSpy, mockShowAccountBySessionDTO, throwError, GetSessionByIdRepositorySpy, GetAccountByIdRepositorySpy } from '@/data/tests'
 
 interface sutTypes {
   sut: DbShowAccountBySessionUseCase

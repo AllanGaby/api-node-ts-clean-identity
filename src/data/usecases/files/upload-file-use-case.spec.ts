@@ -1,6 +1,5 @@
-import { CreateFileRepositorySpy, mockUploadFileDTO } from '@/data/test/files'
 import { DbUploadFileUseCase } from './upload-file-use-case'
-import { throwError, UploadStorageFileSpy } from '@/data/test'
+import { CreateFileRepositorySpy, mockUploadFileDTO, throwError, UploadStorageFileSpy } from '@/data/tests'
 import path from 'path'
 import faker from 'faker'
 

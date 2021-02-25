@@ -1,7 +1,7 @@
 import { DeleteAvatarAccountController } from './delete-avatar-account-controller'
-import { DeleteAvatarAccountUseCaseSpy, mockDeleteAvatarAccountRequest } from '@/presentation/test/auth'
+import { DeleteAvatarAccountUseCaseSpy, mockDeleteAvatarAccountRequest } from '@/presentation/tests/auth'
 import { serverError, ok } from '@/presentation/helpers'
-import { throwError } from '@/data/test'
+import { throwError } from '@/data/tests'
 
 interface sutTypes {
   sut: DeleteAvatarAccountController

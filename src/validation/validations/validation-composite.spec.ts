@@ -1,5 +1,5 @@
 import { ValidationComposite } from './validation-composite'
-import { ValidationSpy, mockInput } from '@/validation/test/mock-validation'
+import { ValidationSpy, mockInput } from '@/validation/tests/mock-validation'
 import { InvalidParamError, MissingParamError } from '@/validation/errors'
 import faker from 'faker'
 

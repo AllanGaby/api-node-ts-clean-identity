@@ -1,7 +1,7 @@
 import { ShowAccountBySessionController } from './show-account-by-session-controller'
-import { ShowAccountSpy, mockShowAccountRequest } from '@/presentation/test/auth'
+import { ShowAccountSpy, mockShowAccountRequest } from '@/presentation/tests/auth'
 import { serverError, ok } from '@/presentation/helpers'
-import { throwError } from '@/data/test'
+import { throwError } from '@/data/tests'
 
 interface sutTypes {
   sut: ShowAccountBySessionController

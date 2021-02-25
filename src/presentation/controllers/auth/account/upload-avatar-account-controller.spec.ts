@@ -1,8 +1,8 @@
 import { UploadAvatarAccountController } from './upload-avatar-account-controller'
-import { ValidationCompositeSpy } from '@/validation/test'
-import { UploadAvatarAccountUseCaseSpy, mockUploadAvatarAccountRequest } from '@/presentation/test/auth'
+import { ValidationCompositeSpy } from '@/validation/tests'
+import { UploadAvatarAccountUseCaseSpy, mockUploadAvatarAccountRequest } from '@/presentation/tests/auth'
 import { badRequest, serverError, ok } from '@/presentation/helpers'
-import { throwError } from '@/data/test'
+import { throwError } from '@/data/tests'
 
 interface sutTypes {
   sut: UploadAvatarAccountController

@@ -1,7 +1,7 @@
 import { EmailFieldValidation } from './email-field-validation'
-import { EmailValidatorSpy } from '@/validation/test/mock-email-validator'
+import { EmailValidatorSpy } from '@/validation/tests/mock-email-validator'
+import { InvalidParamError } from '@/validation/errors'
 import faker from 'faker'
-import { InvalidParamError } from '../errors'
 
 interface sutTypes {
   sut: EmailFieldValidation

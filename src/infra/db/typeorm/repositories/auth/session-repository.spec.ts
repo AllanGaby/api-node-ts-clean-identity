@@ -1,5 +1,5 @@
-import { mockCreateSessionModel, mockCreateAccountModel } from '@/infra/test/db/auth'
-import { closeConnection, truncateTables } from '@/infra/test/db/typeorm'
+import { mockCreateSessionModel, mockCreateAccountModel } from '@/infra/tests/db/auth'
+import { closeConnection, truncateTables } from '@/infra/tests/db/typeorm'
 import { Connection } from 'typeorm'
 import { createTypeOrmConnection } from '@/infra/db/typeorm/connections'
 import { Account, Session } from '@/infra/db/typeorm/models'

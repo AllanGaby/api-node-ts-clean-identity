@@ -1,6 +1,6 @@
 import { DbShowAvatarAccountUseCase } from './show-avatar-account-use-case'
-import { ShowFileRepositorySpy } from '@/data/test/files'
-import { GetAccountByIdRepositorySpy, mockShowAvatarAccountDTO, throwError } from '@/data/test'
+import { ShowFileRepositorySpy } from '@/data/tests/files'
+import { GetAccountByIdRepositorySpy, mockShowAvatarAccountDTO, throwError } from '@/data/tests'
 import { AccountNotFoundError } from '@/data/errors'
 import faker from 'faker'
 

@@ -1,8 +1,8 @@
 import { AccountRepositoryTypeORM } from './account-repository'
-import { mockCreateAccountDTO } from '@/data/test/auth'
-import { closeConnection, truncateTables } from '@/infra/test/db/typeorm'
+import { mockCreateAccountDTO } from '@/data/tests'
+import { closeConnection, truncateTables } from '@/infra/tests/db/typeorm'
 import { createTypeOrmConnection } from '@/infra/db/typeorm/connections'
-import { mockCreateAccountModel, mockUpdateAccountDTO } from '@/infra/test/db/auth'
+import { mockCreateAccountModel, mockUpdateAccountDTO } from '@/infra/tests/db/auth'
 import { Connection } from 'typeorm'
 import faker from 'faker'
 

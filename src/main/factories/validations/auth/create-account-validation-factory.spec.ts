@@ -1,7 +1,7 @@
 import { makeCreateAccountValidation, CreateAccountValidationConfig } from './create-account-validation-factory'
 import { ValidationBuilder, ValidationComposite } from '@/validation/validations'
 import { Validation } from '@/validation/protocols'
-import { EmailValidatorSpy } from '@/validation/test'
+import { EmailValidatorSpy } from '@/validation/tests'
 import faker from 'faker'
 
 jest.mock('@/validation/validations/validation-composite')

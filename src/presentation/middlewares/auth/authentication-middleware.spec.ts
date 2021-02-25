@@ -1,9 +1,9 @@
 import { AuthenticationMiddleware } from './authentication-middleware'
-import { ShowAccountSpy, mockAuthenticationRequest, mockAuthenticationFailRequest, ShowSessionByAccessTokenSpy } from '@/presentation/test/auth'
+import { ShowAccountSpy, mockAuthenticationRequest, mockAuthenticationFailRequest, ShowSessionByAccessTokenSpy } from '@/presentation/tests/auth'
 import { SessionType } from '@/domain/models/auth'
 import { badRequest, serverError, ok, unauthorized } from '@/presentation/helpers'
 import { MissingParamError } from '@/validation/errors'
-import { throwError } from '@/data/test'
+import { throwError } from '@/data/tests'
 import { AccessDeniedError } from '@/presentation/errors'
 import faker from 'faker'
 

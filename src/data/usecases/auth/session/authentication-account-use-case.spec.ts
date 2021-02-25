@@ -1,6 +1,5 @@
 import { DbAuthenticationAccountUseCase } from './authentication-account-use-case'
-import { mockAuthenticationAccountDTO, throwError, HashComparerSpy, mockAccountModel, EncrypterSpy, CreateSessionRepositorySpy, CacheCreateSpy, CacheRecoverSpy } from '@/data/test'
-import { GetAccountByEmailRepositorySpy } from '@/data/test/auth/account/mock-account-repository'
+import { mockAuthenticationAccountDTO, throwError, HashComparerSpy, mockAccountModel, EncrypterSpy, CreateSessionRepositorySpy, CacheCreateSpy, CacheRecoverSpy, GetAccountByEmailRepositorySpy } from '@/data/tests'
 import { SessionType } from '@/domain/models/auth'
 import { InvalidCredentialsError } from '@/data/errors'
 

@@ -1,5 +1,5 @@
 import { DbRequestRecoverPasswordUseCase } from './request-recover-password-use-case'
-import { GetAccountByEmailRepositorySpy, throwError, mockAccountModel, SendMailSessionSpy } from '@/data/test'
+import { GetAccountByEmailRepositorySpy, throwError, mockAccountModel, SendMailSessionSpy } from '@/data/tests'
 import { SessionType } from '@/domain/models/auth'
 import faker from 'faker'
 
