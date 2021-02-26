@@ -1,7 +1,9 @@
-import { SendToQueue, ConsumeQueue, SendToQueueDTO, ConsumeQueueDTO } from '@/data/protocols/message-queue'
+import { SendToQueue, ConsumeQueue, SendToQueueDTO, ConsumeQueueDTO, ExecuteQueue } from '@/data/protocols/message-queue'
 import { Channel, connect, ConsumeMessage } from 'amqplib'
 
 export class RabbitMQMessageQueueAdapter implements SendToQueue, ConsumeQueue {
+  private executor: ExecuteQueue
+
   constructor (private readonly url: string) {}
 
   private readonly getChannel = async (): Promise<Channel> => {
@@ -26,12 +28,15 @@ export class RabbitMQMessageQueueAdapter implements SendToQueue, ConsumeQueue {
     return channel.sendToQueue(queueName, Buffer.from(JSON.stringify(params)))
   }
 
+  executeQueue (paramsRabbitMQ: ConsumeMessage): void {
+    const params = JSON.parse(paramsRabbitMQ.content.toString())
+    this.executor.execute(params)
+  }
+
   async consume ({ queueName, executor }: ConsumeQueueDTO): Promise<any> {
     const channel = await this.getChannel()
     await this.createQueue(channel, queueName)
-    channel.consume(queueName, (paramsRabbitMQ: ConsumeMessage) => {
-      const params = JSON.parse(paramsRabbitMQ.content.toString())
-      executor.execute(params)
-    }, { noAck: true })
+    this.executor = executor
+    channel.consume(queueName, (paramsRabbitMQ: ConsumeMessage) => this.executeQueue(paramsRabbitMQ), { noAck: true })
   }
 }
