@@ -1,5 +1,5 @@
 import { RabbitMQMessageQueueAdapter } from './rabbitmq-message-queue-adapter'
-import { mockSendToQueueDTO, ConnectionRabbitMQSpy, ChannelRabbitMQSpy, ExecuteQueueSpy, mockConsumeQueueDTO } from '@/infra/tests/message-queue'
+import { mockSendToQueueDTO, ConnectionRabbitMQSpy, ChannelRabbitMQSpy, mockConsumeQueueDTO, mockConsumeMessage } from '@/infra/tests/message-queue'
 import amqplib from 'amqplib'
 import faker from 'faker'
 import { throwError } from '@/data/tests'
@@ -13,18 +13,15 @@ jest.mock('amqplib', () => ({
 
 interface sutTypes {
   sut: RabbitMQMessageQueueAdapter
-  executeQueueSpy: ExecuteQueueSpy
   url: string
 }
 
 const makeSut = (): sutTypes => {
   const url = faker.internet.url()
-  const executeQueueSpy = new ExecuteQueueSpy()
   const sut = new RabbitMQMessageQueueAdapter(url)
   return {
     sut,
-    url,
-    executeQueueSpy
+    url
   }
 }
 
@@ -150,6 +147,27 @@ describe('RabbitMQMessageQueueAdapter', () => {
       jest.spyOn(channel, 'consume').mockImplementationOnce(throwError)
       const promise = sut.consume(mockConsumeQueueDTO())
       await expect(promise).rejects.toThrow()
+    })
+  })
+
+  describe('executeQueue', () => {
+    test('Should call JSON parse with correct value', async () => {
+      const { sut } = makeSut()
+      const parseSpyon = jest.spyOn(JSON, 'parse')
+      const request = mockConsumeMessage()
+      await sut.consume(mockConsumeQueueDTO())
+      sut.executeQueue(request)
+      expect(parseSpyon).toHaveBeenCalledWith(request.content.toString())
+    })
+
+    test('Should call executor with correct value', async () => {
+      const { sut } = makeSut()
+      const consumeDTO = mockConsumeQueueDTO()
+      const request = mockConsumeMessage()
+      const executeSpyon = jest.spyOn(consumeDTO.executor, 'execute')
+      await sut.consume(consumeDTO)
+      sut.executeQueue(request)
+      expect(executeSpyon).toHaveBeenCalledWith(JSON.parse(request.content.toString()))
     })
   })
 })

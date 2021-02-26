@@ -45,3 +45,11 @@ export const mockConsumeQueueDTO = (): ConsumeQueueDTO => {
     executor
   }
 }
+
+export const mockConsumeMessage = (): ConsumeMessage => ({
+  content: Buffer.from(JSON.stringify({
+    id: faker.random.uuid()
+  })),
+  fields: undefined,
+  properties: undefined
+})
