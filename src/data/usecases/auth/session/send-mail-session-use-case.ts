@@ -35,7 +35,10 @@ export class DbSendMailSessionUseCase implements SendMailSessionUseCase {
         variables
       }
     })
-    this.consumeQueue.consume(this.queueName, this.sendMailByMessageQueue)
+    this.consumeQueue.consume({
+      queueName: this.queueName,
+      executor: this.sendMailByMessageQueue
+    })
     return session
   }
 }

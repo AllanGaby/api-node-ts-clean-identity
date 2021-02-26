@@ -1,4 +1,4 @@
-import { SendToQueue, ConsumeQueue, ExecuteQueue, SendToQueueDTO } from '@/data/protocols/message-queue'
+import { SendToQueue, ConsumeQueue, ExecuteQueue, SendToQueueDTO, ConsumeQueueDTO } from '@/data/protocols/message-queue'
 
 export class SendToQueueSpy implements SendToQueue {
   params: SendToQueueDTO<any>
@@ -18,12 +18,10 @@ export class ExecuteQueueSpy implements ExecuteQueue {
   }
 }
 
-export class ConsumeQueueSpy implements ConsumeQueue {
-  queueName: string
-  executor: ExecuteQueue
+export class ConsumeQueueStub implements ConsumeQueue {
+  params: ConsumeQueueDTO
 
-  async consume (queueName: string, executor: ExecuteQueue): Promise<void> {
-    this.queueName = queueName
-    this.executor = executor
+  async consume (params: ConsumeQueueDTO): Promise<void> {
+    this.params = params
   }
 }

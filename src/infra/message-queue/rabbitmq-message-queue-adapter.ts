@@ -1,4 +1,4 @@
-import { SendToQueue, ConsumeQueue, ExecuteQueue, SendToQueueDTO } from '@/data/protocols/message-queue'
+import { SendToQueue, ConsumeQueue, SendToQueueDTO, ConsumeQueueDTO } from '@/data/protocols/message-queue'
 import { Channel, connect, ConsumeMessage } from 'amqplib'
 
 export class RabbitMQMessageQueueAdapter implements SendToQueue, ConsumeQueue {
@@ -26,7 +26,7 @@ export class RabbitMQMessageQueueAdapter implements SendToQueue, ConsumeQueue {
     return channel.sendToQueue(queueName, Buffer.from(JSON.stringify(params)))
   }
 
-  async consume (queueName: string, executor: ExecuteQueue): Promise<any> {
+  async consume ({ queueName, executor }: ConsumeQueueDTO): Promise<any> {
     const channel = await this.getChannel()
     await this.createQueue(channel, queueName)
     channel.consume(queueName, (paramsRabbitMQ: ConsumeMessage) => {

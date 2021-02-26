@@ -1,5 +1,10 @@
 import { ExecuteQueue } from './execute-queue'
 
+export interface ConsumeQueueDTO {
+  queueName: string
+  executor: ExecuteQueue
+}
+
 export interface ConsumeQueue {
-  consume: (queueName: string, executor: ExecuteQueue) => Promise<void>
+  consume: (params: ConsumeQueueDTO) => Promise<void>
 }

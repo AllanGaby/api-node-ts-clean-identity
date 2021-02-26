@@ -1,5 +1,5 @@
 import { DbSendMailSessionUseCase } from './send-mail-session-use-case'
-import { CreateSessionRepositorySpy, mockSendMailSessionDTO, SendToQueueSpy, ConsumeQueueSpy, ExecuteQueueSpy, throwError } from '@/data/tests'
+import { CreateSessionRepositorySpy, mockSendMailSessionDTO, SendToQueueSpy, ConsumeQueueStub, ExecuteQueueSpy, throwError } from '@/data/tests'
 import { SessionType } from '@/domain/models/auth'
 import faker from 'faker'
 
@@ -8,7 +8,7 @@ interface sutTypes {
   createSessionRepositorySpy: CreateSessionRepositorySpy
   queueName: string
   sendToQueueSpy: SendToQueueSpy
-  consumeQueueSpy: ConsumeQueueSpy
+  consumeQueueStub: ConsumeQueueStub
   executeQueueSpy: ExecuteQueueSpy
 }
 
@@ -16,15 +16,15 @@ const makeSut = (): sutTypes => {
   const createSessionRepositorySpy = new CreateSessionRepositorySpy()
   const queueName = faker.database.column()
   const sendToQueueSpy = new SendToQueueSpy()
-  const consumeQueueSpy = new ConsumeQueueSpy()
+  const consumeQueueStub = new ConsumeQueueStub()
   const executeQueueSpy = new ExecuteQueueSpy()
-  const sut = new DbSendMailSessionUseCase(createSessionRepositorySpy, queueName, sendToQueueSpy, consumeQueueSpy, executeQueueSpy)
+  const sut = new DbSendMailSessionUseCase(createSessionRepositorySpy, queueName, sendToQueueSpy, consumeQueueStub, executeQueueSpy)
   return {
     sut,
     createSessionRepositorySpy,
     queueName,
     sendToQueueSpy,
-    consumeQueueSpy,
+    consumeQueueStub,
     executeQueueSpy
   }
 }
@@ -75,9 +75,11 @@ describe('DbSendMailSessionUseCase', () => {
   })
 
   test('Should call ConsumeQueue with correct value', async () => {
-    const { sut, consumeQueueSpy, queueName, executeQueueSpy } = makeSut()
+    const { sut, consumeQueueStub, queueName, executeQueueSpy } = makeSut()
     await sut.sendMail(mockSendMailSessionDTO(SessionType.activeAccount))
-    expect(consumeQueueSpy.queueName).toBe(queueName)
-    expect(consumeQueueSpy.executor).toEqual(executeQueueSpy)
+    expect(consumeQueueStub.params).toEqual({
+      queueName,
+      executor: executeQueueSpy
+    })
   })
 })
