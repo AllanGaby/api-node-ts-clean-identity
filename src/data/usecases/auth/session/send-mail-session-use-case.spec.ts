@@ -53,15 +53,17 @@ describe('DbSendMailSessionUseCase', () => {
       name: request.name
     }
     await sut.sendMail(request)
-    expect(sendToQueueSpy.queueName).toBe(queueName)
     expect(sendToQueueSpy.params).toEqual({
-      subject: request.subject,
-      templateFileName: request.mailFilePath,
-      to: {
-        name: request.name,
-        email: request.email
-      },
-      variables
+      queueName,
+      params: {
+        subject: request.subject,
+        templateFileName: request.mailFilePath,
+        to: {
+          name: request.name,
+          email: request.email
+        },
+        variables
+      }
     })
   })
 

@@ -1,12 +1,10 @@
-import { SendToQueue, ConsumeQueue, ExecuteQueue } from '@/data/protocols/message-queue'
+import { SendToQueue, ConsumeQueue, ExecuteQueue, SendToQueueDTO } from '@/data/protocols/message-queue'
 
 export class SendToQueueSpy implements SendToQueue {
-  params: any
-  queueName: string
+  params: SendToQueueDTO<any>
   result: boolean = true
 
-  async sendToQueue<ParamsType = any>(queueName: string, params: ParamsType): Promise<boolean> {
-    this.queueName = queueName
+  async sendToQueue<ParamsType = any>(params: SendToQueueDTO<ParamsType>): Promise<boolean> {
     this.params = params
     return this.result
   }

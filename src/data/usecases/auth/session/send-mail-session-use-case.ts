@@ -2,6 +2,7 @@ import { SendMailSessionUseCase, SendMailSessionDTO } from '@/domain/usecases/au
 import { SessionModel } from '@/domain/models/auth'
 import { CreateSessionRepository } from '@/data/repositories/auth/session'
 import { ConsumeQueue, SendToQueue, ExecuteQueue } from '@/data/protocols/message-queue'
+import { SendMailDTO } from '@/domain/usecases/utils'
 
 export class DbSendMailSessionUseCase implements SendMailSessionUseCase {
   constructor (
@@ -22,14 +23,17 @@ export class DbSendMailSessionUseCase implements SendMailSessionUseCase {
       link: session.id,
       name
     }
-    this.sendToQueue.sendToQueue(this.queueName, {
-      subject,
-      templateFileName: mailFilePath,
-      to: {
-        name,
-        email
-      },
-      variables
+    this.sendToQueue.sendToQueue<SendMailDTO>({
+      queueName: this.queueName,
+      params: {
+        subject,
+        templateFileName: mailFilePath,
+        to: {
+          name,
+          email
+        },
+        variables
+      }
     })
     this.consumeQueue.consume(this.queueName, this.sendMailByMessageQueue)
     return session
