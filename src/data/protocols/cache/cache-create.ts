@@ -1,3 +1,8 @@
+export interface CacheCreateDTO {
+  key: string
+  record: object
+}
+
 export interface CacheCreate {
-  create: (key: string, record: object) => Promise<void>
+  create: (params: CacheCreateDTO) => Promise<void>
 }

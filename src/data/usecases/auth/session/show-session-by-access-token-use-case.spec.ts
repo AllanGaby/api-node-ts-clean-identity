@@ -1,5 +1,5 @@
 import { DbShowSessionByAccessTokenUseCase } from './show-session-by-access-token-use-case'
-import { DecrypterSpy, mockShowSessionByAccessTokenDTO, throwError, GetSessionByIdRepositorySpy, CacheCreateSpy, CacheRecoverSpy, mockSessionModel } from '@/data/tests'
+import { DecrypterSpy, mockShowSessionByAccessTokenDTO, throwError, GetSessionByIdRepositorySpy, CacheCreateStub, CacheRecoverSpy, mockSessionModel } from '@/data/tests'
 import { InvalidCredentialsError } from '@/data/errors'
 
 interface sutTypes {
@@ -7,21 +7,21 @@ interface sutTypes {
   decrypterSpy: DecrypterSpy
   getSessionByIdRepositorySpy: GetSessionByIdRepositorySpy
   cacheRecoverSpy: CacheRecoverSpy
-  cacheCreateSpy: CacheCreateSpy
+  cacheCreateStub: CacheCreateStub
 }
 
 const makeSut = (): sutTypes => {
   const decrypterSpy = new DecrypterSpy()
   const getSessionByIdRepositorySpy = new GetSessionByIdRepositorySpy()
   const cacheRecoverSpy = new CacheRecoverSpy()
-  const cacheCreateSpy = new CacheCreateSpy()
-  const sut = new DbShowSessionByAccessTokenUseCase(decrypterSpy, getSessionByIdRepositorySpy, cacheRecoverSpy, cacheCreateSpy)
+  const cacheCreateStub = new CacheCreateStub()
+  const sut = new DbShowSessionByAccessTokenUseCase(decrypterSpy, getSessionByIdRepositorySpy, cacheRecoverSpy, cacheCreateStub)
   return {
     sut,
     decrypterSpy,
     getSessionByIdRepositorySpy,
     cacheRecoverSpy,
-    cacheCreateSpy
+    cacheCreateStub
   }
 }
 
@@ -105,14 +105,14 @@ describe('DbShowSessionByAccessTokenUseCase', () => {
   })
 
   test('Should call CacheCreate with correct value', async () => {
-    const { sut, cacheCreateSpy, getSessionByIdRepositorySpy } = makeSut()
+    const { sut, cacheCreateStub, getSessionByIdRepositorySpy } = makeSut()
     await sut.show(mockShowSessionByAccessTokenDTO())
-    expect(cacheCreateSpy.key).toEqual(`session-authentication:${getSessionByIdRepositorySpy.session.id}`)
+    expect(cacheCreateStub.params.key).toEqual(`session-authentication:${getSessionByIdRepositorySpy.session.id}`)
   })
 
   test('Should throw if CacheRecover throws', async () => {
-    const { sut, cacheCreateSpy } = makeSut()
-    jest.spyOn(cacheCreateSpy, 'create').mockImplementationOnce(throwError)
+    const { sut, cacheCreateStub } = makeSut()
+    jest.spyOn(cacheCreateStub, 'create').mockImplementationOnce(throwError)
     const promise = sut.show(mockShowSessionByAccessTokenDTO())
     await expect(promise).rejects.toThrow()
   })

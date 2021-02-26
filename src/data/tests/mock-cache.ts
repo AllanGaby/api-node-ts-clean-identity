@@ -1,12 +1,10 @@
-import { CacheCreate, CacheRecover, CacheRemove, CacheRemoveByPrefix } from '@/data/protocols/cache'
+import { CacheCreate, CacheCreateDTO, CacheRecover, CacheRemove, CacheRemoveByPrefix } from '@/data/protocols/cache'
 
-export class CacheCreateSpy implements CacheCreate {
-  key: string
-  record: object
+export class CacheCreateStub implements CacheCreate {
+  params: CacheCreateDTO
 
-  async create (key: string, record: object): Promise<void> {
-    this.key = key
-    this.record = record
+  async create (params: CacheCreateDTO): Promise<void> {
+    this.params = params
   }
 }
 

@@ -1,4 +1,4 @@
-import { CacheCreate, CacheRecover, CacheRemove, CacheRemoveByPrefix } from '@/data/protocols/cache'
+import { CacheCreate, CacheCreateDTO, CacheRecover, CacheRemove, CacheRemoveByPrefix } from '@/data/protocols/cache'
 
 interface RecordsType {
   [key: string]: string
@@ -19,7 +19,7 @@ export class MemoryCacheAdapter implements CacheCreate, CacheRecover, CacheRemov
     return MemoryCacheAdapter.instance
   }
 
-  async create (key: string, record: object): Promise<void> {
+  async create ({ key, record }: CacheCreateDTO): Promise<void> {
     this.records[key] = JSON.stringify(record)
   }
 

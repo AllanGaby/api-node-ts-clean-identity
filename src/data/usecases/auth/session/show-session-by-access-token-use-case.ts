@@ -22,7 +22,10 @@ export class DbShowSessionByAccessTokenUseCase implements ShowSessionByAccessTok
     if (sessionId) {
       const session = await this.getSessionByIdRepository.getSessionById(sessionId)
       if ((session) && (!session.deleted_at)) {
-        await this.cacheCreate.create(`session-authentication:${session.id}`, session)
+        await this.cacheCreate.create({
+          key: `session-authentication:${session.id}`,
+          record: session
+        })
         return session
       }
     }

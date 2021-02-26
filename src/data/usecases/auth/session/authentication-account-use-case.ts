@@ -32,7 +32,10 @@ export class DbAuthenticationAccountUseCase implements AuthenticationAccountUseC
         throw new InvalidCredentialsError()
       }
       if (!existsAccountInCache) {
-        await this.cacheCreate.create(cacheKey, account)
+        await this.cacheCreate.create({
+          key: cacheKey,
+          record: account
+        })
       }
       const session = await this.createSessionRepository.create({
         account_id: account.id,
