@@ -3,7 +3,7 @@ import { MemoryAccountRepository, MemorySessionRepository } from '@/infra/db/mem
 import { BCrypterHasherAdapter, JWTEncrypterAdapter } from '@/infra/criptografy'
 import { AccountModel, SessionModel, SessionType } from '@/domain/models/auth'
 import { HttpStatusCode } from '@/presentation/protocols'
-import { EnvConfig } from '@/main/config/env'
+import { EnvConfig } from '@/main/config/environment'
 import request from 'supertest'
 import faker from 'faker'
 import { MissingParamError } from '@/validation/errors'

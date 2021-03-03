@@ -1,7 +1,7 @@
 import { RecoverPasswordUseCase } from '@/domain/usecases/auth/account'
 import { DbRecoverPasswordUseCase } from '@/data/usecases/auth/account'
 import { BCrypterHasherAdapter } from '@/infra/criptografy'
-import { EnvConfig } from '@/main/config/env'
+import { EnvConfig } from '@/main/config/environment'
 import { RepositoryFactory } from '@/infra/db'
 
 export const makeRecoverPasswordUseCase = (): RecoverPasswordUseCase => {

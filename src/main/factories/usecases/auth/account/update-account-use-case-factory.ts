@@ -2,7 +2,7 @@ import { UpdateAccountUseCase } from '@/domain/usecases/auth/account'
 import { DbUpdateAccountUseCase } from '@/data/usecases/auth/account'
 import { BCrypterHasherAdapter } from '@/infra/criptografy'
 import { makeSendMailSessionUseCase } from '@/main/factories/usecases/auth/session'
-import { EnvConfig } from '@/main/config/env'
+import { EnvConfig } from '@/main/config/environment'
 import { RepositoryFactory } from '@/infra/db'
 import { CacheFactory } from '@/infra/cache'
 

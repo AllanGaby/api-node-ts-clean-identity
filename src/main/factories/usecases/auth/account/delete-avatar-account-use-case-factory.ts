@@ -3,7 +3,7 @@ import { DbDeleteAvatarAccountUseCase } from '@/data/usecases/auth/account'
 import { RepositoryFactory } from '@/infra/db'
 import { makeDeleteFileUseCase } from '@/main/factories/usecases/files'
 import { CacheFactory } from '@/infra/cache'
-import { EnvConfig } from '@/main/config/env'
+import { EnvConfig } from '@/main/config/environment'
 
 export const makeDeleteAvatarAccountUseCase = (): DeleteAvatarAccountUseCase => {
   const cacheAdapter = CacheFactory.getCacheAdapter(EnvConfig.cacheType)

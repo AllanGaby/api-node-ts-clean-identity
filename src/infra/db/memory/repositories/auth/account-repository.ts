@@ -1,6 +1,6 @@
 import { CreateAccountRepository, CreateAccountModel, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository, UpdateAccountDTO } from '@/data/repositories/auth/account'
 import { AccountModel } from '@/domain/models/auth'
-import { EnvConfig } from '@/main/config/env'
+import { EnvConfig } from '@/main/config/environment'
 import faker from 'faker'
 
 export class MemoryAccountRepository implements CreateAccountRepository, GetAccountByEmailRepository, GetAccountByIdRepository, UpdateAccountRepository {

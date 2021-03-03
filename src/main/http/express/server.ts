@@ -1,5 +1,5 @@
 import 'module-alias/register'
-import { EnvConfig } from '@/main/config/env'
+import { EnvConfig } from '@/main/config/environment'
 import { createTypeOrmConnection } from '@/infra/db/typeorm/connections'
 
 createTypeOrmConnection().then(async () => {

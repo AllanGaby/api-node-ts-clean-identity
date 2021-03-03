@@ -1,4 +1,4 @@
-import { EnvConfig } from '@/main/config/env'
+import { EnvConfig } from '@/main/config/environment'
 import Redis, { Redis as RedisClient } from 'ioredis'
 import { CacheCreate, CacheCreateDTO, CacheRecover, CacheRemove, CacheRemoveByPrefix } from '@/data/protocols/cache'
 

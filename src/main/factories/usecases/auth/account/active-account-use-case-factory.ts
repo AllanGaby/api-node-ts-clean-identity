@@ -1,6 +1,6 @@
 import { ActiveAccountUseCase } from '@/domain/usecases/auth/account'
 import { DbActiveAccountUseCase } from '@/data/usecases/auth/account'
-import { EnvConfig } from '@/main/config/env'
+import { EnvConfig } from '@/main/config/environment'
 import { RepositoryFactory } from '@/infra/db'
 
 export const makeActiveAccountUseCase = (): ActiveAccountUseCase => {

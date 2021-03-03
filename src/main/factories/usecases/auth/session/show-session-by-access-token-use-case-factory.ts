@@ -1,7 +1,7 @@
 import { ShowSessionByAccessTokenUseCase } from '@/domain/usecases/auth/session'
 import { DbShowSessionByAccessTokenUseCase } from '@/data/usecases/auth/session'
 import { JWTEncrypterAdapter } from '@/infra/criptografy'
-import { EnvConfig } from '@/main/config/env'
+import { EnvConfig } from '@/main/config/environment'
 import { CacheFactory } from '@/infra/cache'
 import { RepositoryFactory } from '@/infra/db'
 

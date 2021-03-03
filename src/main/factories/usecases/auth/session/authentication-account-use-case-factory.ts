@@ -3,7 +3,7 @@ import { DbAuthenticationAccountUseCase } from '@/data/usecases/auth/session'
 import { CacheFactory } from '@/infra/cache'
 import { BCrypterHasherAdapter, JWTEncrypterAdapter } from '@/infra/criptografy'
 import { RepositoryFactory } from '@/infra/db'
-import { EnvConfig } from '@/main/config/env'
+import { EnvConfig } from '@/main/config/environment'
 
 export const makeAuthenticationAccountUseCase = (): AuthenticationAccountUseCase => {
   const accountRepository = RepositoryFactory.getAccountRepository(EnvConfig.repositoryType)

@@ -1,7 +1,7 @@
 import { UploadFileUseCase } from '@/domain/usecases/files'
 import { DbUploadFileUseCase } from '@/data/usecases/files'
 import { RepositoryFactory } from '@/infra/db'
-import { EnvConfig } from '@/main/config/env'
+import { EnvConfig } from '@/main/config/environment'
 import { LocalStorage } from '@/infra/storage'
 
 export const makeUploadFileUseCase = (uploadDir: string): UploadFileUseCase => {
