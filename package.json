@@ -43,8 +43,8 @@
     "test": "cross-env NODE_ENV=test cross-env REPOSITORY_TYPE=Memory jest --passWithNoTests --noStackTrace --runInBand --no-cache --detectOpenHandles",
     "test:staged": "yarn test --silent",
     "test:ci": "yarn test  --coverage",
-    "build": "rimraf dist && tsc -p tsconfig-build.json",
-    "build:watch": "rimraf dist && tsc -p tsconfig-build.json -w",
+    "build": "rimraf public && tsc -p tsconfig-build.json",
+    "build:watch": "rimraf public && tsc -p tsconfig-build.json -w",
     "dev:server": "ts-node-dev --inspect --transpile-only --watch --ignore-watch node_modules src/main/http/express/server.ts",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
   },
@@ -72,7 +72,7 @@
     "node": "12.x"
   },
   "_moduleAliases": {
-    "@": "dist"
+    "@": "public"
   },
   "jestSonar": {
     "reportPath": "coverage",

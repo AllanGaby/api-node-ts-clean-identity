@@ -9,11 +9,11 @@
         "database": "identity",
         "entities": [
             "./src/infra/db/typeorm/models/*.ts",
-            "./dist/infra/db/typeorm/models/*.js"
+            "./public/infra/db/typeorm/models/*.js"
         ],
         "migrations": [
             "./src/infra/db/typeorm/migrations/*.ts",
-            "./dist/infra/db/typeorm/migrations/*.js"
+            "./public/infra/db/typeorm/migrations/*.js"
         ],
         "cli": {
             "migrationsDir": "./src/infra/db/typeorm/migrations"
