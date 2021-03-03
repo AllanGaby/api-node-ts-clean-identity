@@ -39,13 +39,16 @@
     "typescript": "^4.0.3"
   },
   "scripts": {
-    "sonar:scanner": "sonar-scanner",
+    "build": "rimraf public && npm run compile-to-public",
+    "build:debug": "nodemon -L --watch ./public --inspect=0.0.0.0:$DEBUG_PORT --ignore node_modules public/main/http/express/server.js",
+    "build:server": "nodemon --ignore node_modules public/main/http/express/server.js",
+    "build:watch": "rimraf public && npm run compile-to-public:watch",
+    "compile-to-public": "tsc -p tsconfig-build.json",
+    "compile-to-public:watch": "npm run compile-to-public -- --w",
+    "sonar:scanner": "npm run test:ci && sonar-scanner",
     "test": "cross-env NODE_ENV=test cross-env REPOSITORY_TYPE=Memory jest --passWithNoTests --noStackTrace --runInBand --no-cache --detectOpenHandles",
-    "test:staged": "yarn test --silent",
-    "test:ci": "yarn test  --coverage",
-    "build": "rimraf public && tsc -p tsconfig-build.json",
-    "build:watch": "rimraf public && tsc -p tsconfig-build.json -w",
-    "dev:server": "ts-node-dev --inspect --transpile-only --watch --ignore-watch node_modules src/main/http/express/server.ts",
+    "test:ci": "npm run test --coverage",
+    "test:staged": "npm run test --silent",    
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
