@@ -3,8 +3,10 @@ public
 coverage
 .scannerwork
 .vscode
+/data
 temp/*
 !temp/.gitkeep
+.env
 uploads/*
 uploads/auth/*
 uploads/auth/avatar/*
