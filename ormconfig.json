@@ -2,9 +2,9 @@
     {
         "name": "default",
         "type": "postgres",
-        "host": "localhost",
+        "host": "db",
         "port": 5432,
-        "username": "postgres",
+        "username": "identity",
         "password": "masterkey",
         "database": "identity",
         "entities": [
