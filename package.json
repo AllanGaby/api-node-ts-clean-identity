@@ -52,6 +52,7 @@
     "amqplib": "^0.6.0",
     "bcrypt": "^5.0.0",
     "cross-env": "^7.0.3",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "faker": "^5.1.0",
     "handlebars": "^4.7.6",
@@ -77,5 +78,5 @@
     "reportPath": "coverage",
     "reportFile": "test-reporter.xml",
     "indent": 4
-  }  
+  }
 }
