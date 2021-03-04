@@ -8,3 +8,5 @@ export const serverError = {
     }
   }
 }
+
+export const serverErrorRef = '#/components/serverError'

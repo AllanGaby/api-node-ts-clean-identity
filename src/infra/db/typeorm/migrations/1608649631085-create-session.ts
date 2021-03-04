@@ -2,6 +2,8 @@ import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm
 
 export class createSession1608649631085 implements MigrationInterface {
   public async up (queryRunner: QueryRunner): Promise<void> {
+    const tymestampType = 'timestamp with time zone'
+
     await queryRunner.createTable(
       new Table({
         name: 'sessions',
@@ -24,20 +26,20 @@ export class createSession1608649631085 implements MigrationInterface {
           {
             name: 'deleted_at',
             isNullable: true,
-            type: 'timestamp with time zone'
+            type: tymestampType
           },
           {
             name: 'experied_at',
-            type: 'timestamp with time zone'
+            type: tymestampType
           },
           {
             name: 'created_at',
-            type: 'timestamp with time zone',
+            type: tymestampType,
             default: 'now()'
           },
           {
             name: 'updated_at',
-            type: 'timestamp with time zone',
+            type: tymestampType,
             default: 'now()'
           }
         ],

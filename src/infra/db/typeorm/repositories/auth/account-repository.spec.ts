@@ -21,7 +21,7 @@ const makeSut = (): sutType => {
 
 describe('AccountRepositoryTypeORM', () => {
   beforeAll(async () => {
-    connection = await createTypeOrmConnection()
+    connection = await createTypeOrmConnection('localhost')
   })
 
   beforeEach(async () => {
@@ -49,7 +49,7 @@ describe('AccountRepositoryTypeORM', () => {
   })
 
   describe('GetAccountByEmail Method', () => {
-    test('Should return null if account not found', async () => {
+    test('Should return null if account not found by email', async () => {
       const { sut } = makeSut()
       const accountByEmail = await sut.getAccountByEmail(faker.internet.email())
       expect(accountByEmail).toBeFalsy()
@@ -65,9 +65,9 @@ describe('AccountRepositoryTypeORM', () => {
   })
 
   describe('GetAccountById Method', () => {
-    test('Should return null if account not found', async () => {
+    test('Should return null if account not found by id', async () => {
       const { sut } = makeSut()
-      const accountByEmail = await sut.getAccountByEmail(faker.internet.email())
+      const accountByEmail = await sut.getAccountById(faker.random.uuid())
       expect(accountByEmail).toBeFalsy()
     })
 

@@ -16,6 +16,10 @@ export interface User {
   password: string
 }
 
+export interface DatabaseConfig {
+  host: string
+}
+
 export interface Env {
   port: string | number
   baseDir: string
@@ -29,6 +33,7 @@ export interface Env {
   default: User
   smtpConfig: SMTPConfig
   redisConfig: RedisOptions
+  databaseConfig: DatabaseConfig
 }
 
 dotenv.config({
@@ -37,7 +42,7 @@ dotenv.config({
 
 export const EnvConfig: Env = ({
   port: process.env.PORT,
-  urlRabbitMQ: process.env.URL_RABBITMQ,
+  urlRabbitMQ: process.env.RABBITMQ_HOST,
   baseDir: process.env.BASEDIR,
   environment: process.env.ENVIRONMENT as Environment,
   repositoryType: process.env.REPOSITORY_TYPE as RepositoryTypes,
@@ -64,5 +69,8 @@ export const EnvConfig: Env = ({
     host: process.env.REDIS_HOST,
     port: Number(process.env.REDIS_PORT),
     password: process.env.REDIS_PASSWORD
+  },
+  databaseConfig: {
+    host: process.env.DATABASE_HOST
   }
 })

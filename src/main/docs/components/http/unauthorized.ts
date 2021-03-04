@@ -8,3 +8,5 @@ export const unauthorized = {
     }
   }
 }
+
+export const unauthorizedRef = '#/components/unauthorized'

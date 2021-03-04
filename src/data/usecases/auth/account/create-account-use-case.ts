@@ -25,7 +25,7 @@ export class DbCreateAccountUseCase implements CreateAccountUseCase {
         email,
         password: passwordHashed
       })
-      const session = await this.sendMailSession.sendMail({
+      return await this.sendMailSession.sendMail({
         accountId: account.id,
         email: account.email,
         name: account.name,
@@ -33,7 +33,6 @@ export class DbCreateAccountUseCase implements CreateAccountUseCase {
         mailFilePath: this.mailFilePath,
         sessionType: SessionType.activeAccount
       })
-      return session
     }
   }
 }

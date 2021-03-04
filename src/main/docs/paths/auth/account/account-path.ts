@@ -1,3 +1,5 @@
+import { badRequestRef, forbiddenRef, unauthorizedRef, serverErrorRef } from '@/main/docs/components/http'
+
 export const accountPath = {
   post: {
     tags: ['Usuário'],
@@ -24,16 +26,16 @@ export const accountPath = {
         }
       },
       400: {
-        $ref: '#/components/badRequest'
+        $ref: badRequestRef
       },
       401: {
-        $ref: '#/components/unauthorized'
+        $ref: unauthorizedRef
       },
       403: {
-        $ref: '#/components/forbidden'
+        $ref: forbiddenRef
       },
       500: {
-        $ref: '#/components/serverError'
+        $ref: serverErrorRef
       }
     }
   },
@@ -65,16 +67,16 @@ export const accountPath = {
         }
       },
       400: {
-        $ref: '#/components/badRequest'
+        $ref: badRequestRef
       },
       401: {
-        $ref: '#/components/unauthorized'
+        $ref: unauthorizedRef
       },
       403: {
-        $ref: '#/components/forbidden'
+        $ref: forbiddenRef
       },
       500: {
-        $ref: '#/components/serverError'
+        $ref: serverErrorRef
       }
     }
   },
@@ -96,16 +98,16 @@ export const accountPath = {
         }
       },
       400: {
-        $ref: '#/components/badRequest'
+        $ref: badRequestRef
       },
       401: {
-        $ref: '#/components/unauthorized'
+        $ref: unauthorizedRef
       },
       403: {
-        $ref: '#/components/forbidden'
+        $ref: forbiddenRef
       },
       500: {
-        $ref: '#/components/serverError'
+        $ref: serverErrorRef
       }
     }
   }

@@ -24,8 +24,7 @@ export class DbActiveAccountUseCase implements ActiveAccountUseCase {
       if (account) {
         if (!account.email_valided) {
           account.email_valided = true
-          const updatedAccount = await this.updateAccountRepository.update(account)
-          return updatedAccount
+          return await this.updateAccountRepository.update(account)
         } else {
           return account
         }

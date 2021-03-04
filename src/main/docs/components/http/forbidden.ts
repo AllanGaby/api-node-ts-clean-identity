@@ -8,3 +8,5 @@ export const forbidden = {
     }
   }
 }
+
+export const forbiddenRef = '#/components/forbidden'

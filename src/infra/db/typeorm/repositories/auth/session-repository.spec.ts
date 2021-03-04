@@ -24,7 +24,7 @@ let accountRepository: AccountRepositoryTypeORM
 
 describe('MemorySessionRepository', () => {
   beforeAll(async () => {
-    connection = await createTypeOrmConnection()
+    connection = await createTypeOrmConnection('localhost')
     accountRepository = AccountRepositoryTypeORM.getInstance()
   })
 
@@ -57,7 +57,7 @@ describe('MemorySessionRepository', () => {
   })
 
   describe('GetSessionById Method', () => {
-    test('Should return null if session not found', async () => {
+    test('Should return null if session not found by session id', async () => {
       const { sut } = makeSut()
       const sessionById = await sut.getSessionById(faker.random.uuid())
       expect(sessionById).toBeFalsy()
@@ -77,7 +77,7 @@ describe('MemorySessionRepository', () => {
   })
 
   describe('DeleteById Method', () => {
-    test('Should return null if session not found', async () => {
+    test('Should return null if session not found to delete', async () => {
       const { sut } = makeSut()
       const sessionId = faker.random.uuid()
       const beforeSession = await sut.getSessionById(sessionId)
@@ -105,7 +105,7 @@ describe('MemorySessionRepository', () => {
     })
   })
 
-  describe('GetSessionByAccountId Method', () => {
+  describe('Actions By Account Id', () => {
     beforeEach(async () => {
       const { sut } = makeSut()
       const createdSession = mockCreateSessionModel()
@@ -115,68 +115,61 @@ describe('MemorySessionRepository', () => {
       await sut.create(createdSession)
     })
 
-    test('Should return a list with 4 sessions', async () => {
-      const { sut } = makeSut()
-      const list = await sut.getSessionByAccountId(session.account_id)
-      expect(list).toHaveLength(4)
-    })
-
-    test('Should return null if accountId is undefined', async () => {
-      const { sut } = makeSut()
-      const list = await sut.getSessionByAccountId(undefined)
-      expect(list).toEqual([])
-    })
-
-    test('Should return null if session not found', async () => {
-      const { sut } = makeSut()
-      const list = await sut.getSessionByAccountId(faker.random.uuid())
-      expect(list).toEqual([])
-    })
-  })
-
-  describe('DeleteSessionByAccountId Method', () => {
-    beforeEach(async () => {
-      const { sut } = makeSut()
-      const createdSession = mockCreateSessionModel()
-      createdSession.account_id = account.id
-      await sut.create(createdSession)
-      await sut.create(createdSession)
-      await sut.create(createdSession)
-    })
-
-    test('Should delete correct sessions', async () => {
-      const { sut } = makeSut()
-      const accountId = session.account_id
-      const list = await sut.getSessionByAccountId(accountId)
-      expect(list).toHaveLength(4)
-      list.map(session => {
-        expect(session.deleted_at).toBeFalsy()
+    describe('GetSessionByAccountId Method', () => {
+      test('Should return a list with 4 sessions', async () => {
+        const { sut } = makeSut()
+        const list = await sut.getSessionByAccountId(session.account_id)
+        expect(list).toHaveLength(4)
       })
-      await sut.deleteByAccountId(accountId)
-      const beforeList = await sut.getSessionByAccountId(accountId)
-      beforeList.map(session => {
-        expect(session.deleted_at).toBeTruthy()
+
+      test('Should return null if accountId is undefined', async () => {
+        const { sut } = makeSut()
+        const list = await sut.getSessionByAccountId(undefined)
+        expect(list).toEqual([])
+      })
+
+      test('Should return null if session not found', async () => {
+        const { sut } = makeSut()
+        const list = await sut.getSessionByAccountId(faker.random.uuid())
+        expect(list).toEqual([])
       })
     })
 
-    test('Should return null if accountId is undefined', async () => {
-      const { sut } = makeSut()
-      const accountId = undefined
-      const list = await sut.getSessionByAccountId(accountId)
-      expect(list).toEqual([])
-      await sut.deleteByAccountId(accountId)
-      const beforeList = await sut.getSessionByAccountId(accountId)
-      expect(beforeList).toEqual([])
-    })
+    describe('DeleteSessionByAccountId Method', () => {
+      test('Should delete correct sessions', async () => {
+        const { sut } = makeSut()
+        const accountId = session.account_id
+        const list = await sut.getSessionByAccountId(accountId)
+        expect(list).toHaveLength(4)
+        list.map(session => {
+          expect(session.deleted_at).toBeFalsy()
+        })
+        await sut.deleteByAccountId(accountId)
+        const beforeList = await sut.getSessionByAccountId(accountId)
+        beforeList.map(session => {
+          expect(session.deleted_at).toBeTruthy()
+        })
+      })
 
-    test('Should return null if session not found', async () => {
-      const { sut } = makeSut()
-      const accountId = faker.random.uuid()
-      const list = await sut.getSessionByAccountId(accountId)
-      expect(list).toEqual([])
-      await sut.deleteByAccountId(accountId)
-      const beforeList = await sut.getSessionByAccountId(accountId)
-      expect(beforeList).toEqual([])
+      test('Should return null if accountId is undefined', async () => {
+        const { sut } = makeSut()
+        const accountId = undefined
+        const list = await sut.getSessionByAccountId(accountId)
+        expect(list).toEqual([])
+        await sut.deleteByAccountId(accountId)
+        const beforeList = await sut.getSessionByAccountId(accountId)
+        expect(beforeList).toEqual([])
+      })
+
+      test('Should return null if session not found', async () => {
+        const { sut } = makeSut()
+        const accountId = faker.random.uuid()
+        const list = await sut.getSessionByAccountId(accountId)
+        expect(list).toEqual([])
+        await sut.deleteByAccountId(accountId)
+        const beforeList = await sut.getSessionByAccountId(accountId)
+        expect(beforeList).toEqual([])
+      })
     })
   })
 })

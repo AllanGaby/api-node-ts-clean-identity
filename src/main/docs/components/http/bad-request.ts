@@ -8,3 +8,5 @@ export const badRequest = {
     }
   }
 }
+
+export const badRequestRef = '#/components/badRequest'
