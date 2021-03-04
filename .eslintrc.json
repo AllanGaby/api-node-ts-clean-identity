@@ -1,8 +1,12 @@
 {
-  "extends": "standard-with-typescript",
+  "extends": [
+    "standard-with-typescript",
+    "plugin:sonarjs/recommended"
+  ],
   "parserOptions": {
     "project": "./tsconfig.json"
   },
+  "plugins": ["sonarjs"],
   "rules": {
     "@typescript-eslint/no-redeclare": "off",
     "@typescript-eslint/strict-boolean-expressions": "off",

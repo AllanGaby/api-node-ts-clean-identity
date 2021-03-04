@@ -26,6 +26,7 @@
     "eslint-plugin-import": "2",
     "eslint-plugin-node": "11",
     "eslint-plugin-promise": "4",
+    "eslint-plugin-sonarjs": "^0.6.0",
     "eslint-plugin-standard": "4",
     "git-commit-msg-linter": "^3.0.0",
     "husky": "^4.3.0",
@@ -53,7 +54,7 @@
     "sonar:scanner": "npm run test:ci && sonar-scanner",
     "test": "cross-env NODE_ENV=test cross-env REPOSITORY_TYPE=Memory jest --passWithNoTests --noStackTrace --runInBand --no-cache --detectOpenHandles",
     "test:ci": "npm run test --coverage",
-    "test:staged": "npm run test --silent",    
+    "test:staged": "npm run test --silent",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
