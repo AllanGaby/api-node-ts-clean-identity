@@ -5,6 +5,7 @@ export interface SMTPConfig {
   host: string
   port: number
   secure: boolean
+  service?: string
   auth: {
     user: string
     pass: string
@@ -14,19 +15,29 @@ export interface SMTPConfig {
 export class NodemailerSendMailAdapter implements SendMailAdapter {
   private readonly client: Transporter
 
-  constructor ({ host, port, secure, auth }: SMTPConfig) {
-    this.client = nodemailer.createTransport({
-      host,
-      port,
-      secure,
-      auth: {
-        user: auth.user,
-        pass: auth.pass
-      },
-      tls: {
-        rejectUnauthorized: false
-      }
-    })
+  constructor ({ host, port, secure, auth, service }: SMTPConfig, test: boolean) {
+    if (test) {
+      this.client = nodemailer.createTransport({
+        host,
+        port,
+        secure,
+        auth: {
+          user: auth.user,
+          pass: auth.pass
+        },
+        tls: {
+          rejectUnauthorized: false
+        }
+      })
+    } else {
+      this.client = nodemailer.createTransport({
+        service,
+        auth: {
+          user: auth.user,
+          pass: auth.pass
+        }
+      })
+    }
   }
 
   async sendMail ({ sender, to, subject, content }: SendMailDTO): Promise<void> {
