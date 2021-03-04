@@ -5,6 +5,11 @@ import { CacheTypes } from '@/infra/cache'
 import dotenv from 'dotenv'
 import path from 'path'
 
+export enum Environment {
+  test = 'Test',
+  production = 'Production'
+}
+
 export interface User {
   name: string
   email: string
@@ -14,6 +19,7 @@ export interface User {
 export interface Env {
   port: string | number
   baseDir: string
+  environment: Environment
   repositoryType: RepositoryTypes
   cacheType: CacheTypes
   urlRabbitMQ: string
@@ -33,6 +39,7 @@ export const EnvConfig: Env = ({
   port: process.env.PORT,
   urlRabbitMQ: process.env.URL_RABBITMQ,
   baseDir: process.env.BASEDIR,
+  environment: process.env.ENVIRONMENT as Environment,
   repositoryType: process.env.REPOSITORY_TYPE as RepositoryTypes,
   cacheType: process.env.CACHE_TYPE as CacheTypes,
   jwtSecret: process.env.JWT_SECRET,
@@ -47,6 +54,7 @@ export const EnvConfig: Env = ({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT),
     secure: Boolean(process.env.SMTP_SECURE),
+    service: process.env.SMTP_SERVICE,
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS
