@@ -6,7 +6,7 @@ networks:
 
 services:
   identity_api:
-    container_name: 'identity_api'
+    container_name: identity-api
     image: node:12
     working_dir: /opt/identity
     volumes:
@@ -16,7 +16,7 @@ services:
       - ./ormconfig.json:/opt/identity/ormconfig.json
     ports:
       - $PORT:$PORT
-    command: bash -c "npm install --only=prod && npm run create-uploads-dir && npm run build:debug"
+    command: bash -c "npm install --only=prod && npm run create-uploads-dir && node ./node_modules/typeorm/cli.js migration:run && npm run build:debug"
     depends_on:
       - db
       - rabbit
@@ -56,7 +56,7 @@ services:
       - identity-net    
   rabbit:
     image: rabbitmq:3.8.2-management
-    container_name: rabbitmq-identity
+    container_name: identity-rabbitmq
     restart: always
     environment:
       RABBITMQ_DEFAULT_USER: identity
@@ -65,7 +65,6 @@ services:
       RABBITMQ_NODENAME: rabbit-identity
       TZ: America/Sao_Paulo
     volumes:
-      - ./data/rabbitmq:/var/lib/rabbitmq
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
       - /usr/share/zoneinfo:/usr/share/zoneinfo
