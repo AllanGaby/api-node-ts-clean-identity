@@ -43,7 +43,7 @@
     "build:debug": "nodemon -L --watch ./public --inspect=0.0.0.0:9999 --ignore node_modules public/main/http/express/server.js",
     "build:down": "docker-compose down",
     "build:server": "nodemon --ignore node_modules public/main/http/express/server.js",
-    "build:up": "npm run build && docker-compose up",
+    "build:up": "npm run build && docker-compose up -d",
     "build:watch": "rimraf public && npm run copy-views-to-public && npm run compile-to-public:watch",
     "compile-to-public": "tsc -p tsconfig-build.json",
     "compile-to-public:watch": "npm run compile-to-public -- --w",
