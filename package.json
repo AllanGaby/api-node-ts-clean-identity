@@ -52,7 +52,7 @@
     "create-uploads-dir": "mkdir -p temp && mkdir -p uploads && mkdir -p uploads/auth && mkdir -p uploads/auth/avatar",
     "create-views-in-public": "mkdir -p public && mkdir -p public/infra && mkdir -p public/infra/comunication",
     "sonar:scanner": "npm run test:ci && sonar-scanner",
-    "test": "cross-env NODE_ENV=test cross-env REPOSITORY_TYPE=Memory jest --passWithNoTests --noStackTrace --runInBand --no-cache --detectOpenHandles",
+    "test": "jest --passWithNoTests --noStackTrace --runInBand --no-cache --detectOpenHandles",
     "test:ci": "npm run test --coverage",
     "test:staged": "npm run test --silent",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
@@ -60,7 +60,6 @@
   "dependencies": {
     "amqplib": "^0.6.0",
     "bcrypt": "^5.0.0",
-    "cross-env": "^7.0.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "faker": "^5.1.0",
