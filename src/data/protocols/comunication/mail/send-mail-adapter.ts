@@ -4,7 +4,7 @@ export interface Contact {
 }
 
 export interface SendMailDTO {
-  sender?: Contact
+  sender: Contact
   to: Contact
   subject: string
   content: string

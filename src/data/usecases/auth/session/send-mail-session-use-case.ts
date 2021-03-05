@@ -26,6 +26,10 @@ export class DbSendMailSessionUseCase implements SendMailSessionUseCase {
     this.sendToQueue.sendToQueue<SendMailDTO>({
       queueName: this.queueName,
       params: {
+        sender: {
+          name: 'Identity',
+          email: 'identity@identity.com.br'
+        },
         subject,
         templateFileName: mailFilePath,
         to: {

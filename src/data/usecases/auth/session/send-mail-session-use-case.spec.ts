@@ -56,6 +56,10 @@ describe('DbSendMailSessionUseCase', () => {
     expect(sendToQueueSpy.params).toEqual({
       queueName,
       params: {
+        sender: {
+          name: 'Identity',
+          email: 'identity@identity.com.br'
+        },
         subject: request.subject,
         templateFileName: request.mailFilePath,
         to: {
