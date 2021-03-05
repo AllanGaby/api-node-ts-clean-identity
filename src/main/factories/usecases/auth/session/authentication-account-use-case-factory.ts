@@ -8,7 +8,7 @@ import { EnvConfig } from '@/main/config/environment'
 export const makeAuthenticationAccountUseCase = (): AuthenticationAccountUseCase => {
   const accountRepository = RepositoryFactory.getAccountRepository(EnvConfig.repositoryType)
   const sessionRepository = RepositoryFactory.getSessionRepository(EnvConfig.repositoryType)
-  const cacheAdapter = CacheFactory.getCacheAdapter(EnvConfig.cacheType)
+  const cacheAdapter = CacheFactory.getCacheAdapter(EnvConfig.cacheType, EnvConfig.cacheConfig)
   const hasherAdapter = new BCrypterHasherAdapter(12)
   const encrypter = new JWTEncrypterAdapter(EnvConfig.jwtSecret, 1)
   return new DbAuthenticationAccountUseCase(cacheAdapter, accountRepository, hasherAdapter, cacheAdapter, sessionRepository, encrypter)

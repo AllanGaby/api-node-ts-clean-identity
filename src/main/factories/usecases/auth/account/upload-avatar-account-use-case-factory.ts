@@ -6,7 +6,7 @@ import { CacheFactory } from '@/infra/cache'
 import { EnvConfig } from '@/main/config/environment'
 
 export const makeUploadAvatarAccountUseCase = (): UploadAvatarAccountUseCase => {
-  const cacheAdapter = CacheFactory.getCacheAdapter(EnvConfig.cacheType)
+  const cacheAdapter = CacheFactory.getCacheAdapter(EnvConfig.cacheType, EnvConfig.cacheConfig)
   return new DbUploadAvatarAccountUseCase(
     RepositoryFactory.getAccountRepository(EnvConfig.repositoryType),
     makeDeleteFileUseCase(EnvConfig.uploadAvatarDir),

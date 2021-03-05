@@ -5,11 +5,12 @@ export class RedisCacheAdapter implements CacheCreate, CacheRecover, CacheRemove
   client: RedisClient
 
   constructor (options: RedisOptions) {
+    options.password = undefined
     this.client = new Redis(options)
   }
 
   async create ({ key, record }: CacheCreateDTO): Promise<void> {
-    this.client.set(key, JSON.stringify(record))
+    await this.client.set(key, JSON.stringify(record))
   }
 
   async recover<ResultType = any>(key: string): Promise<ResultType> {

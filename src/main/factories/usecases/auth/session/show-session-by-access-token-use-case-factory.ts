@@ -8,6 +8,6 @@ import { RepositoryFactory } from '@/infra/db'
 export const makeShowSessionByAccessTokenUseCase = (): ShowSessionByAccessTokenUseCase => {
   const encrypterAdapter = new JWTEncrypterAdapter(EnvConfig.jwtSecret, 1)
   const sessionRepository = RepositoryFactory.getSessionRepository(EnvConfig.repositoryType)
-  const cacheAdapter = CacheFactory.getCacheAdapter(EnvConfig.cacheType)
+  const cacheAdapter = CacheFactory.getCacheAdapter(EnvConfig.cacheType, EnvConfig.cacheConfig)
   return new DbShowSessionByAccessTokenUseCase(encrypterAdapter, sessionRepository, cacheAdapter, cacheAdapter)
 }

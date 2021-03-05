@@ -11,7 +11,7 @@ export const makeUpdateAccountUseCase = (): UpdateAccountUseCase => {
   const acccountRepository = RepositoryFactory.getAccountRepository(EnvConfig.repositoryType)
   const sessionRepository = RepositoryFactory.getSessionRepository(EnvConfig.repositoryType)
   const hasherAdapter = new BCrypterHasherAdapter(12)
-  const cacheAdapter = CacheFactory.getCacheAdapter(EnvConfig.cacheType)
+  const cacheAdapter = CacheFactory.getCacheAdapter(EnvConfig.cacheType, EnvConfig.cacheConfig)
   return new DbUpdateAccountUseCase(
     acccountRepository,
     hasherAdapter,

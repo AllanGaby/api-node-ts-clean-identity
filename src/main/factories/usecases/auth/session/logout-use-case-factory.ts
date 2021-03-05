@@ -6,6 +6,6 @@ import { RepositoryFactory } from '@/infra/db'
 
 export const makeLogoutUseCase = (): LogoutUseCase => {
   const sessionRepository = RepositoryFactory.getSessionRepository(EnvConfig.repositoryType)
-  const cacheAdapter = CacheFactory.getCacheAdapter(EnvConfig.cacheType)
+  const cacheAdapter = CacheFactory.getCacheAdapter(EnvConfig.cacheType, EnvConfig.cacheConfig)
   return new DbLogoutUseCase(sessionRepository, sessionRepository, cacheAdapter, cacheAdapter)
 }
