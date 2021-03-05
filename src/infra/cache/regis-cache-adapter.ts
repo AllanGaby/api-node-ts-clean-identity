@@ -1,12 +1,11 @@
-import { EnvConfig } from '@/main/config/environment'
-import Redis, { Redis as RedisClient } from 'ioredis'
+import Redis, { Redis as RedisClient, RedisOptions } from 'ioredis'
 import { CacheCreate, CacheCreateDTO, CacheRecover, CacheRemove, CacheRemoveByPrefix } from '@/data/protocols/cache'
 
 export class RedisCacheAdapter implements CacheCreate, CacheRecover, CacheRemove, CacheRemoveByPrefix {
-  private readonly client: RedisClient
+  client: RedisClient
 
-  constructor () {
-    this.client = new Redis(EnvConfig.redisConfig)
+  constructor (options: RedisOptions) {
+    this.client = new Redis(options)
   }
 
   async create ({ key, record }: CacheCreateDTO): Promise<void> {

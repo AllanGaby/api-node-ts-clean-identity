@@ -20,6 +20,8 @@ export interface DatabaseConfig {
   host: string
 }
 
+export type CacheOptions = RedisOptions
+
 export interface Env {
   port: string | number
   baseDir: string
@@ -32,7 +34,7 @@ export interface Env {
   uploadAvatarDir: string
   default: User
   smtpConfig: SMTPConfig
-  redisConfig: RedisOptions
+  cacheConfig: CacheOptions
   databaseConfig: DatabaseConfig
 }
 
@@ -65,10 +67,10 @@ export const EnvConfig: Env = ({
       pass: process.env.SMTP_PASS
     }
   },
-  redisConfig: {
-    host: process.env.REDIS_HOST,
-    port: Number(process.env.REDIS_PORT),
-    password: process.env.REDIS_PASSWORD
+  cacheConfig: {
+    host: process.env.CACHE_HOST,
+    port: Number(process.env.CACHE_PORT),
+    password: process.env.CACHE_PASSWORD
   },
   databaseConfig: {
     host: process.env.DATABASE_HOST

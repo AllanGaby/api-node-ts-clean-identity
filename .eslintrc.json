@@ -8,6 +8,7 @@
   },
   "plugins": ["sonarjs"],
   "rules": {
+    "@typescript-eslint/consistent-type-definitions": "off",    
     "@typescript-eslint/no-redeclare": "off",
     "@typescript-eslint/strict-boolean-expressions": "off",
     "@typescript-eslint/no-floating-promises": "off",
