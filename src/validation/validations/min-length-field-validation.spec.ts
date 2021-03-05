@@ -10,7 +10,7 @@ interface sutTypes {
 
 const makeSut = (): sutTypes => {
   const field = faker.database.column()
-  const minLength = faker.random.number({ min: 1, max: 20 })
+  const minLength = faker.random.number({ min: 10, max: 20 })
   const sut = new MinLengthFieldValidation(field, minLength)
   return {
     sut,
@@ -21,8 +21,8 @@ const makeSut = (): sutTypes => {
 
 describe('MinLengthFieldValidation', () => {
   test('Should return InvalidParamError if validation fails', () => {
-    const { sut, field, minLength } = makeSut()
-    const error = sut.validate({ [field]: faker.random.alphaNumeric(minLength - 1) })
+    const { sut, field } = makeSut()
+    const error = sut.validate({ [field]: faker.random.alphaNumeric(5) })
     expect(error).toEqual(new InvalidParamError(field))
   })
 
