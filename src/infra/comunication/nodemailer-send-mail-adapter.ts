@@ -13,7 +13,7 @@ export interface SMTPConfig {
 }
 
 export class NodemailerSendMailAdapter implements SendMailAdapter {
-  private readonly client: Transporter
+  client: Transporter
 
   constructor ({ host, port, secure, auth, service }: SMTPConfig) {
     if (service) {
