@@ -54,7 +54,7 @@
     "sonar:scanner": "npm run test:ci && sonar-scanner",
     "test": "jest --passWithNoTests --noStackTrace --runInBand --no-cache --detectOpenHandles",
     "test:ci": "npm run test --coverage",
-    "test:staged": "npm run test --silent --findRelatedTests",
+    "test:staged": "npm run test --silent",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
